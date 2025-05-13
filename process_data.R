@@ -4,15 +4,6 @@ library(tidyverse)
 
 dt_list <- list()
 
-# We will want to make use of the following columns:
-# study
-# year
-# effect size
-# SE
-# z
-# metaid
-# truncated
-
 # Brodeur et al ------
 
 dt_list[["Brodeur"]] <- read_dta("data/Brodeur/merged.dta") %>% 
@@ -88,7 +79,7 @@ dt_list[["Arel-Bundock"]] <- read.csv2("data/ArelBundock/estimates.csv",sep=",")
 # “What Works Clearinghouse” on December 29, 2023. The website is 
 # https://ies.ed.gov/ncee/WWC/StudyFindings 
 
-dt_list[["WWC"]] <- read_csv("data/WWC/Kraft_wwc_merge.csv") %>% 
+dt_list[["WWC"]] <- read_csv("data/WWC/Kraft_wwc_merge.csv", show_col_types = FALSE) %>% 
   mutate(pval = as.numeric(f_p_Value_WWC),
          b = as.numeric(Effect.size)) %>% 
   mutate(sign = sign(b),
@@ -219,22 +210,23 @@ dt_list[["Sladekova"]] <- lapply(dfs, function(df){
 
 
 
-# metaPsy -----
+# Metapsy -----
 
-dt_list[["metaPsy"]] <- readRDS("data/metaPsy/metapsy_dt.rds") %>% 
+dt_list[["Metapsy"]] <- readRDS("data/Metapsy/metapsy_dt.rds") %>% 
   lapply(function(df) {
     if (all(c("study", "year", ".g", ".g_se") %in% colnames(df))) {
       return(df[, c("study", "year", ".g", ".g_se"), drop = FALSE])
     } else {
-      return(data.frame()) 
+      return(data.frame())
     }
   }) %>% 
   bind_rows(.id = "metaid") %>% 
   transmute(
+    metaid = metaid,
     studyid = study,
     year = year,
     z = .g/.g_se,
-    b= .g,
+    b = .g,
     se = .g_se)
   # filter(!is.na(z)) %>%
   # group_by(set, study) %>% 
@@ -250,10 +242,14 @@ load("data/BarnettWren/Georgescu.Wren.RData")
 dt_list[["BarnettWren"]] <- complete %>% 
   filter(!mistake) %>% 
   # 0.3% of available values have CI widths other than 95%, let's remove these
+  # but if ci.level is unknown, assume that it's actually 95% 
+  mutate(ci.level = ifelse(is.na(ci.level), 0.95, ci.level)) %>% 
+  filter(ci.level == 0.95) %>% 
   mutate(se = (log(upper) - log(lower))/(2*1.96)) %>% 
   mutate(b = (log(upper) + log(lower))/2) %>% 
   mutate(z = b/se) %>% 
-  transmute(studyid = pubmed,
+  transmute(metaid = NA,
+            studyid = pubmed,
             z = b/se,
             b = b,
             se = se,
@@ -281,11 +277,18 @@ dt_list[["CDSR"]] <- data %>%
     se = s,
     year = study.year)
 
-# Save a list of all datasets for further processing -----
-saveRDS(dt_list, file = "data/dt_list.rds") #20-30 MBs of data
 
-lapply(dt_list, filter, !is.na(z))
-saveRDS("data/BEAR.rds")
-# Joined and cleaned up list of datasets
-dt_clean <- dt_list %>% lapply(ungroup) %>% lapply(select, z, k) %>% bind_rows(.id = "metastudy")
 
+# Processing of individual datasets and binding into a single large dataset ----
+bear <- dt_list %>% 
+  lapply(function(x) {x$studyid <- as.character(x$studyid); x}) %>% 
+  lapply(filter, !is.na(z)) %>% 
+  bind_rows(.id = "dataset") %>% 
+  group_by(dataset, metaid, studyid) %>% 
+  mutate(k = n()) %>% 
+  ungroup() %>% 
+  group_by(dataset, metaid) %>% 
+  mutate(j = ifelse(is.na(metaid), NA, n())) %>% 
+  ungroup()
+
+saveRDS(bear, "data/BEAR.rds")

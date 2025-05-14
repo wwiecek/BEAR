@@ -38,17 +38,18 @@ Post-processing:
 
 <!-- -->
 
-    ## # A tibble: 11 × 7
+    ## # A tibble: 12 × 7
     ##    dataset              n_z n_meta median_j n_study median_k pct_signif
     ##    <chr>              <int>  <int>    <dbl>   <int>    <dbl>      <dbl>
-    ##  1 Arel-Bundock       16649     46     1083    2252       25      0.467
-    ##  2 Askarov            21408      1       NA    1913       28      0.520
-    ##  3 BarnettWren      1305303      1       NA  415855        4      0.809
-    ##  4 Brodeur             8241      1       NA     176       67      0.374
-    ##  5 CDSR               40383   4057       22   23566        2      0.434
-    ##  6 Costello and Fox   88218    232     1064   12927       18      0.419
-    ##  7 Jager and Leek     15653      1       NA    5322        4      0.777
-    ##  8 Metapsy             2532     12      315     945        4      0.520
-    ##  9 Sladekova          11540    406       55   11540        1      0.590
-    ## 10 WWC                 1399      1       NA     245        9      0.377
-    ## 11 Yang et al         17748      1       NA    3807       10      0.403
+    ##  1 Adda               12273      1       NA    4940        4      0.550
+    ##  2 Arel-Bundock       16649     46     1083    2252       25      0.467
+    ##  3 Askarov            21408      1       NA    1913       28      0.520
+    ##  4 BarnettWren      1305303      1       NA  415855        4      0.809
+    ##  5 Brodeur             8241      1       NA     176       67      0.374
+    ##  6 CDSR               40383   4057       22   23566        2      0.434
+    ##  7 Costello and Fox   88218    232     1064   12927       18      0.419
+    ##  8 Jager and Leek     15653      1       NA    5322        4      0.777
+    ##  9 Metapsy             2532     12      315     945        4      0.520
+    ## 10 Sladekova          11540    406       55   11540        1      0.590
+    ## 11 WWC                 1399      1       NA     245        9      0.377
+    ## 12 Yang et al         17748      1       NA    3807       10      0.403

@@ -48,7 +48,7 @@ mix = function(z,trunc,k=4,weights=1){
   return(df)
 }
 
-fit_mixture <- function(z,truncated,k=4,weight){
+fit_mixture <- function(z,truncated,k=4,weights){
   z.trunc=abs(z)
   ind=which(z.trunc>20)
   z.trunc[ind]=20
@@ -56,8 +56,7 @@ fit_mixture <- function(z,truncated,k=4,weight){
   ind=which(z.trunc==0)
   z.trunc[ind]=0.5
   truncated[ind]="truncated"
-  
-  fit = mix(z=z.trunc,trunc=truncated,k=k,weight=weight)
+  fit = mix(z=z.trunc,trunc=truncated,k=k,weights=weights)
   fit$sigma_SNR=sqrt(fit$sigma^2 - 1)          # stdev van SNR
   
   return(fit)

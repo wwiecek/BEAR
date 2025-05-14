@@ -95,10 +95,6 @@ dt_list[["WWC"]] <- read_csv("data/WWC/Kraft_wwc_merge.csv", show_col_types = FA
 # potentially also of interest:
 # read_csv("data/WWC/Kraft_wwc_merge.csv") %>% pull(Academic.subject) %>% table
 
-  # dplyr::filter(!is.na(z)) %>% 
-  # group_by(cite_trunc) %>% 
-  # mutate(k=n()) %>% 
-  # ungroup()
 
 
 
@@ -279,6 +275,29 @@ dt_list[["CDSR"]] <- data %>%
 
 
 
+# Adda -----
+
+dt_list[["Adda"]] <- read_dta("data/Adda/data_counterfactual_analysis.dta") %>% 
+  # We lose about 1-1.5% of p-values with lower truncation (e.g. "p > 0.05")
+  # This will slightly bias publication bias adjustments, but it's a small 
+  # difference
+  filter(phase %in% c("Phase 2","Phase 3") & p_value_modifier!=">") %>% 
+  transmute(metaid = NA,
+            studyid = nct_id,
+            year = completion_year,
+            z = z,
+            b = NA,
+            se = NA,
+            truncated = factor(p_value_modifier, 
+                               levels = c("", "<"), 
+                               labels=c("not truncated","truncated")))
+
+
+# Could be useful to add
+# d$phase=factor(d$phase)
+# table(d$phase,useNA = "ifany")
+
+
 # Processing of individual datasets and binding into a single large dataset ----
 bear <- dt_list %>% 
   lapply(function(x) {x$studyid <- as.character(x$studyid); x}) %>% 
@@ -292,3 +311,6 @@ bear <- dt_list %>%
   ungroup()
 
 saveRDS(bear, "data/BEAR.rds")
+
+# Refresh README
+rmarkdown::render("README.Rmd", output_format = "github_document")

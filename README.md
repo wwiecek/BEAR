@@ -34,7 +34,7 @@ Post-processing:
 - Add number of observations in each study,
 - Add number of studies in each meta-analysis
 - For large datasets, choose one z-value per study
-- …something about calculating weights
+- Add study weights as 1 / (N values reported in that study)
 
 <!-- -->
 
@@ -44,12 +44,12 @@ Post-processing:
     ##  1 Adda               12273      1       NA    4940        4      0.550
     ##  2 Arel-Bundock       16649     46     1083    2252       25      0.467
     ##  3 Askarov            21408      1       NA    1913       28      0.520
-    ##  4 BarnettWren      1305303      1       NA  415855        4      0.809
+    ##  4 BarnettWren      1306551      1       NA  416027        4      0.808
     ##  5 Brodeur             8241      1       NA     176       67      0.374
     ##  6 CDSR               40383   4057       22   23566        2      0.434
     ##  7 Costello and Fox   88218    232     1064   12927       18      0.419
     ##  8 Jager and Leek     15653      1       NA    5322        4      0.777
     ##  9 Metapsy             2532     12      315     945        4      0.520
     ## 10 Sladekova          11540    406       55   11540        1      0.590
-    ## 11 WWC                 1399      1       NA     245        9      0.377
+    ## 11 WWC                 1431      1       NA     246        9      0.372
     ## 12 Yang et al         17748      1       NA    3807       10      0.403

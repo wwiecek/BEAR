@@ -29,7 +29,7 @@ Post-processing:
 - Add number of observations in each study, 
 - Add number of studies in each meta-analysis 
 - For large datasets, choose one z-value per study
-- ...something about calculating weights
+- Add study weights as 1 / (N values reported in that study)
 
 
 ```{r echo=FALSE, messages=FALSE}

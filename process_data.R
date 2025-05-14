@@ -4,16 +4,12 @@ library(tidyverse)
 
 dt_list <- list()
 
+
+
 # Brodeur et al ------
 
 dt_list[["Brodeur"]] <- read_dta("data/Brodeur/merged.dta") %>% 
-  # rename(z = myz) %>% 
-  # mutate(z = ifelse(abs(z) > 20, 20, z)) %>% 
-  # mutate(trunc = ifelse(abs(z) == 20, "truncated", "not truncated")) %>% 
   filter(method=="RCT") %>%
-  # mutate(
-  # prereg = factor(prereg, labels=c("not pre-registered","pre-registered")), 
-  # papregistry = factor(papregistry,labels=c("no analysis plan","analysis plan"))) %>% 
   transmute(
     metaid = NA,
     studyid = title,
@@ -21,6 +17,11 @@ dt_list[["Brodeur"]] <- read_dta("data/Brodeur/merged.dta") %>%
     b = NA,
     se = NA,
     year = year)
+
+# Could use:
+# mutate(
+# prereg = factor(prereg, labels=c("not pre-registered","pre-registered")), 
+# papregistry = factor(papregistry,labels=c("no analysis plan","analysis plan"))) %>% 
 
 
 
@@ -38,12 +39,9 @@ dt_list[["Askarov"]] <- read_dta("data/Askarov/Mandatory data-sharing 30 Aug 202
     b = effectsize,
     se = standarderror,
     year = YEARintervention)
-# I'm guessing:
+
+# could be useful:
 # mutate(data_sharing = (EVENT==0 | INTERVENTION==1)) %>% 
-# filter(!is.na(z)) %>% 
-# group_by(studyid) %>% 
-# mutate(k=n()) %>% 
-# ungroup()
 
 
 
@@ -65,10 +63,6 @@ dt_list[["Arel-Bundock"]] <- read.csv2("data/ArelBundock/estimates.csv",sep=",")
     b = as.numeric(estimate),
     se = as.numeric(std.error),
     year = study_year) 
-# filter(!is.na(z)) %>% 
-# group_by(study_id) %>% 
-# mutate(k=n()) %>% 
-# ungroup() 
 
 
 
@@ -82,8 +76,10 @@ dt_list[["Arel-Bundock"]] <- read.csv2("data/ArelBundock/estimates.csv",sep=",")
 dt_list[["WWC"]] <- read_csv("data/WWC/Kraft_wwc_merge.csv", show_col_types = FALSE) %>% 
   mutate(pval = as.numeric(f_p_Value_WWC),
          b = as.numeric(Effect.size)) %>% 
-  mutate(sign = sign(b),
-         z = sign(b)*qnorm(1 - pval/2)) %>% 
+  # For some p-values the database records p = 0, so z = Inf, but we can "rescue"
+  # some information by setting it to the smallest value in WWC dataset:
+  mutate(pval = ifelse(pval == 0, 2e-16, pval)) %>%
+  mutate(pval = ifelse(is.na(pval), f_p_Value_Any, pval)) %>% 
   transmute(
     metaid = NA, 
     studyid = cite_trunc,
@@ -94,7 +90,6 @@ dt_list[["WWC"]] <- read_csv("data/WWC/Kraft_wwc_merge.csv", show_col_types = FA
 
 # potentially also of interest:
 # read_csv("data/WWC/Kraft_wwc_merge.csv") %>% pull(Academic.subject) %>% table
-
 
 
 
@@ -123,10 +118,7 @@ dt_list[["Yang et al"]] <- read.csv("data/Yang/dat_processed_rob.csv") %>%
     b = es,
     se = se) %>%
   mutate(year = sapply(studyid, extract_year_yang))
-  # mutate(year = as.numeric(sub(".*?(\\d{4}).*", "\\1", studyid))) %>% summary
-  # filter(!is.na(z)) %>%
-  # group_by(study) %>% 
-  # mutate(k=n())
+
 
 
 # Costello and Fox -----
@@ -138,20 +130,16 @@ dt_list[["Yang et al"]] <- read.csv("data/Yang/dat_processed_rob.csv") %>%
 dt_list[["Costello and Fox"]] <- 
   read.csv("data/Yang/main_dat_processed.csv") %>% 
   transmute(
-    metaid = meta.analysis.paper, 
+    metaid = meta.analysis.paper, #could use meta.analysis.id
     studyid = study2,
     z = z,
     b = eff.size,
     se = se.eff.size,
     year = study.year) 
 
-  # # pull(meta.analysis.id) %>% n_distinct()
-  # filter(!is.na(z)) %>% 
   # # group_by(key) %>% 
   # # # Erik chose one 
-  # # slice_sample(n = 1) %>% 
-  # group_by(study2) %>% 
-  # mutate(k = n())
+  # # slice_sample(n = 1) 
 
 
 
@@ -165,14 +153,12 @@ dt_list[["Jager and Leek"]] <-
   mutate_at(c('pvalue','year'), as.numeric) %>%
   transmute(
     metaid = NA,
-    studyid = title,
+    studyid = pubmedID,
     z=-qnorm(pvalue/2),
     b = NA, se = NA,
+    # about 1/3 truncated, almost always .0001, .001, .01, or .05, so it's "<"
     truncated = factor(pvalueTruncated,labels=c("not truncated","truncated")),
     year = year) 
-  # group_by(title) %>%  
-  # mutate(k=n()) %>% 
-  # ungroup()
 
 
 
@@ -196,10 +182,6 @@ dt_list[["Sladekova"]] <- lapply(dfs, function(df){
          year = NA,
          studyid = 1:nrow(.)) %>% 
   filter(!is.na(metaid)) 
-  # filter(!is.na(z)) %>%
-  # group_by(metaid) %>% 
-  # mutate(k=n()) %>% 
-  # ungroup() 
 
 # year and studyid could be extracted, but they would need some cleaning up of strings
 # in each of the 406 files, so it may be best to do it later
@@ -224,10 +206,6 @@ dt_list[["Metapsy"]] <- readRDS("data/Metapsy/metapsy_dt.rds") %>%
     z = .g/.g_se,
     b = .g,
     se = .g_se)
-  # filter(!is.na(z)) %>%
-  # group_by(set, study) %>% 
-  # mutate(k=n()) %>% 
-  # ungroup() 
 
 
 
@@ -241,6 +219,10 @@ dt_list[["BarnettWren"]] <- complete %>%
   # but if ci.level is unknown, assume that it's actually 95% 
   mutate(ci.level = ifelse(is.na(ci.level), 0.95, ci.level)) %>% 
   filter(ci.level == 0.95) %>% 
+  # Remove cases where CI is zero
+  filter(lower < upper) %>% 
+  # To allow for log(lower), add a tiny value to zeroes (~0.1% of the sample)
+  mutate(lower = ifelse(lower > 0, lower, 1e-05)) %>%
   mutate(se = (log(upper) - log(lower))/(2*1.96)) %>% 
   mutate(b = (log(upper) + log(lower))/2) %>% 
   mutate(z = b/se) %>% 
@@ -251,7 +233,7 @@ dt_list[["BarnettWren"]] <- complete %>%
             se = se,
             year = Year)
 # filter(!is.na(z))
-# There is median 2 values per paper (max = 5,045), Erik sampled one from each
+# There are median of 2 values per paper (max = 5,045), Erik sampled one from each
 # (dplyr syntax can be a tiny bit slow here, unfortunately)
 # group_by(pubmed) %>%
 # slice(sample(n(), 1)) %>%

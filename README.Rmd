@@ -10,7 +10,7 @@ General methodology for creating sets of z-values:
     - `z = b/se` in most datasets 
     - if no SE is avaialble, but we have p-value, we do `-qnorm(p/2)` (or `sign(b)*qnorm(1-p/2)` to retrieve sign of z)
     - for Barnett and Wren there are no SE but we have 95% intervals; we switch to log scale, calculate `se` by dividing by 3.96 and `b` as midpoint
-    - for Sladekova et al `b = 0.5*log((1 + yi)/(1 - yi))`
+    - for Sladekova et al we use Fisher's z transformation of correlation coefficients, `b = 0.5*log((1 + yi)/(1 - yi))`
     - for MetaPsy database it is standardised to Hedges' $g$
 - If some `z` values were truncated in some way, keep an indicator for that (Jager and Leek only)
 - Extract year

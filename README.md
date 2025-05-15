@@ -14,7 +14,8 @@ General methodology for creating sets of z-values:
   - for Barnett and Wren there are no SE but we have 95% intervals; we
     switch to log scale, calculate `se` by dividing by 3.96 and `b` as
     midpoint
-  - for Sladekova et al `b = 0.5*log((1 + yi)/(1 - yi))`
+  - for Sladekova et al we use Fisher’s z transformation of correlation
+    coefficients, `b = 0.5*log((1 + yi)/(1 - yi))`
   - for MetaPsy database it is standardised to Hedges’ $g$
 - If some `z` values were truncated in some way, keep an indicator for
   that (Jager and Leek only)
@@ -49,7 +50,7 @@ Post-processing:
     ##  6 CDSR               40383   4057       22   23566        2      0.434
     ##  7 Costello and Fox   88218    232     1064   12927       18      0.419
     ##  8 Jager and Leek     15653      1       NA    5322        4      0.777
-    ##  9 Metapsy             2532     12      315     945        4      0.520
+    ##  9 Metapsy             3544     16      315    1276        2      0.491
     ## 10 Sladekova          11540    406       55   11540        1      0.590
     ## 11 WWC                 1431      1       NA     246        9      0.372
     ## 12 Yang et al         17748      1       NA    3807       10      0.403

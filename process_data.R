@@ -192,8 +192,23 @@ dt_list[["Sladekova"]] <- lapply(dfs, function(df){
 
 dt_list[["Metapsy"]] <- readRDS("data/Metapsy/metapsy_dt.rds") %>% 
   lapply(function(df) {
-    if (all(c("study", "year", ".g", ".g_se") %in% colnames(df))) {
-      return(df[, c("study", "year", ".g", ".g_se"), drop = FALSE])
+    if(is.null(df$.g)) {
+      # for total-response dataset, I calculate log(OR) and convert to SMD
+      # (there is a shorter way to do it, but I didn't notice initially that
+      #  there are raw counts in this dataset)
+      df <- df %>% 
+        mutate(logor =     plogit.ig - plogit.cg,
+               se.logor =  se.plogit.ig^2 + se.plogit.cg^2) %>% 
+        mutate(.g  = logor/(pi/sqrt(3)),
+               .g_se = se.logor/(pi/sqrt(3)))
+    }
+    if (all(c("study", ".g", ".g_se") %in% colnames(df))) {
+      ret <- df[, c("study", ".g", ".g_se"), drop = FALSE]
+      if(!is.null(df$year))
+        ret$year <- df$year
+      else #this happens in suicide-psyctr
+        ret$year <- as.numeric(sub(".*?(\\d{4}).*?$", "\\1", df$study))
+      return(ret)
     } else {
       return(data.frame())
     }
@@ -254,6 +269,35 @@ dt_list[["CDSR"]] <- data %>%
     b = b,
     se = s,
     year = study.year)
+
+
+
+# load("data/CDSR.RData")  # read dataframe "data"
+# 
+# d = dplyr::filter(data, outcome.flag %in% c("CONT","DICH") &
+#                     outcome.group=="efficacy" &
+#                     outcome.nr==1 &
+#                     comparison.nr==1)
+# 
+# # make sure each study used only once:
+# d=group_by(d,study.name) %>% sample_n(size=1)
+# 
+# d1=dplyr::filter(d, outcome.flag=="CONT")
+# d1=escalc(m1i=mean1,sd1i=sd1,n1i=total1,
+#           m2i=mean2,sd2i=sd2,n2i=total2,measure="SMD",
+#           data=d1, append=TRUE)
+# d2=dplyr::filter(d, outcome.flag=="DICH")
+# d2=escalc(ai=events1,n1i=total1,
+#           ci=events2,n2i=total2,measure="PBIT",
+#           data=d2,append=TRUE)
+# d=rbind(d1,d2)
+# 
+# d=mutate(d,b=yi,s=sqrt(vi),z=b/s)
+# d=dplyr::filter(d,abs(z)<20, abs(b)<5)
+# 
+# d$b=d$yi
+# d$s=sqrt(d$vi)
+# d$z=d$b/d$s
 
 
 

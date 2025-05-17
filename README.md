@@ -6,7 +6,19 @@ Doc](https://docs.google.com/document/d/1ZZAEwfHS0aAELN1w1lqEO6-eeu31_WdL/edit?u
 
 General methodology for creating sets of z-values:
 
-- Remove non-RCTs and various malformed inputs
+- Characterise the method used to obtain the estimates:
+  - `RCT` is the main category we care about (available in Adda et al,
+    Cochrane database, Askarov, Brodeur)
+  - in Jager and Leek there is no classification done by the authors,
+    but we can look for keywords “randomised”, “randomized” and
+    “controlled” in study titles to categorise them as RCTs
+  - `mixed` category in Askarov et al means “experimental and
+    observational”
+  - `observational` means non-RCT in Cochrane
+  - we have a few instrumental variable and differences-in-differences
+    estimates from Brodeur et al
+  - all other datasets mix various types of effects and are therefore
+    `NA`
 - Extract or calculate `z`:
   - `z = b/se` in most datasets
   - if no SE is avaialble, but we have p-value, we do `-qnorm(p/2)` (or
@@ -39,18 +51,18 @@ Post-processing:
 
 <!-- -->
 
-    ## # A tibble: 12 × 7
-    ##    dataset              n_z n_meta median_j n_study median_k pct_signif
-    ##    <chr>              <int>  <int>    <dbl>   <int>    <dbl>      <dbl>
-    ##  1 Adda               12273      1       NA    4940        4      0.550
-    ##  2 Arel-Bundock       16649     46     1083    2252       25      0.467
-    ##  3 Askarov            21408      1       NA    1913       28      0.520
-    ##  4 BarnettWren      1306551      1       NA  416027        4      0.808
-    ##  5 Brodeur             8241      1       NA     176       67      0.374
-    ##  6 CDSR               40383   4057       22   23566        2      0.434
-    ##  7 Costello and Fox   88218    232     1064   12927       18      0.419
-    ##  8 Jager and Leek     15653      1       NA    5322        4      0.777
-    ##  9 Metapsy             3544     16      315    1276        2      0.491
-    ## 10 Sladekova          11540    406       55   11540        1      0.590
-    ## 11 WWC                 1431      1       NA     246        9      0.372
-    ## 12 Yang et al         17748      1       NA    3807       10      0.403
+    ## # A tibble: 12 × 8
+    ##    dataset              n_z n_meta median_j n_study median_k pct_signif type                                       
+    ##    <chr>              <int>  <int>    <dbl>   <int>    <dbl>      <dbl> <chr>                                      
+    ##  1 Adda               12273      1       NA    4940        4      0.550 RCT: 12273                                 
+    ##  2 Arel-Bundock       16649     46     1083    2252       25      0.467 NA: 16649                                  
+    ##  3 Askarov            21408      1       NA    1913       28      0.520 mixed: 1297, observational: 19446, RCT: 665
+    ##  4 BarnettWren      1306551      1       NA  416027        4      0.808 NA: 1306551                                
+    ##  5 Brodeur             8424      1       NA     176       67      0.374 DID: 50, IV: 133, RCT: 8241                
+    ##  6 Cochrane          329611   6183      113   63595        6      0.283 observational: 169274, RCT: 160337         
+    ##  7 Costello and Fox   88218    232     1064   12927       18      0.419 NA: 88218                                  
+    ##  8 Jager and Leek     15653      1       NA    5322        4      0.777 RCT: 4771, NA: 10882                       
+    ##  9 Metapsy             3544     16      315    1276        2      0.491 RCT: 3544                                  
+    ## 10 Sladekova          11540    406       55    3471        1      0.590 NA: 11540                                  
+    ## 11 WWC                 1431      1       NA     246        9      0.372 NA: 1431                                   
+    ## 12 Yang et al         17748      1       NA    3807       10      0.403 NA: 17748

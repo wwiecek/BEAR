@@ -5,18 +5,6 @@ knit_with_df(d, fit)
 stitch_and_knit("brodeur_desc.Rmd", "template.Rmd", d, fit, "template_stitch.pdf")
 
 #
-source("R/helpers.R")
-source("R/mix.R")
-bear %>% group_by(dataset, truncated) %>% tally() %>% spread(truncated, n) 
-bear_list <- 
-  bear %>% 
-  mutate(weight = 1/k) %>% 
-  mutate(truncated = ifelse(is.na(truncated), "not truncated", truncated)) %>% 
-  split(bear$dataset)
-
-fitm <- fit_mixture(df$z, df$truncated, k = k, weight = df$weight)
-plot_mixture(fitm, df$z, 1/df$k)
-knit_with_df()
 
 library(rstan)
 library(tidybayes)

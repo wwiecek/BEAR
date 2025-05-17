@@ -1,6 +1,8 @@
 # Prepare data -----
 library(haven)
 library(tidyverse)
+library(metafor) #for CDSR calculations of effect sizes (binary data)
+library(stringi) #for cleaning up some study names
 
 dt_list <- list()
 
@@ -9,10 +11,11 @@ dt_list <- list()
 # Brodeur et al ------
 
 dt_list[["Brodeur"]] <- read_dta("data/Brodeur/merged.dta") %>% 
-  filter(method=="RCT") %>%
+  # filter(method=="RCT") %>%
   transmute(
     metaid = NA,
     studyid = title,
+    method = method,
     z = myz,
     b = NA,
     se = NA,
@@ -35,6 +38,7 @@ dt_list[["Askarov"]] <- read_dta("data/Askarov/Mandatory data-sharing 30 Aug 202
   transmute(
     metaid = NA,
     studyid = studyid,
+    method = ifelse(EXPERIMENT == 1, "RCT", ifelse(mixed == 1, "mixed", "observational")),
     z = effectsize/standarderror,
     b = effectsize,
     se = standarderror,
@@ -55,10 +59,17 @@ dt_list[["Askarov"]] <- read_dta("data/Askarov/Mandatory data-sharing 30 Aug 202
 # hypothesis tests, grouped in 351 meta-analyses, reported in 46 peer-reviewed
 # meta-analytic articles"
 
-dt_list[["Arel-Bundock"]] <- read.csv2("data/ArelBundock/estimates.csv",sep=",") %>% 
+dt_list[["Arel-Bundock"]] <- 
+  read_csv("data/ArelBundock/estimates.csv", 
+           show_col_types = FALSE) %>% 
+  # There may be problems printing and encoding some characters down the line
+  # e.g. "unable to translate 'Garc<cd>a Bedolla and Michelson' to a wide string"
+  # so best to normalise them
+  mutate(study_id = stri_trans_nfc(study_id)) %>% 
   transmute(
     metaid = meta_id, 
     studyid = study_id,
+    method = NA,
     z = as.numeric(estimate)/as.numeric(std.error),
     b = as.numeric(estimate),
     se = as.numeric(std.error),
@@ -83,6 +94,7 @@ dt_list[["WWC"]] <- read_csv("data/WWC/Kraft_wwc_merge.csv", show_col_types = FA
   transmute(
     metaid = NA, 
     studyid = cite_trunc,
+    method = NA,
     z = sign(b)*qnorm(1 - pval/2),
     b = b,
     se = NA,
@@ -114,6 +126,7 @@ dt_list[["Yang et al"]] <- read.csv("data/Yang/dat_processed_rob.csv") %>%
   transmute(
     metaid = NA, 
     studyid = study,
+    method = NA,
     z = z,
     b = es,
     se = se) %>%
@@ -132,14 +145,15 @@ dt_list[["Costello and Fox"]] <-
   transmute(
     metaid = meta.analysis.paper, #could use meta.analysis.id
     studyid = study2,
+    method = NA,
     z = z,
     b = eff.size,
     se = se.eff.size,
     year = study.year) 
 
-  # # group_by(key) %>% 
-  # # # Erik chose one 
-  # # slice_sample(n = 1) 
+# # group_by(key) %>% 
+# # # Erik chose one 
+# # slice_sample(n = 1) 
 
 
 
@@ -151,13 +165,15 @@ dt_list[["Jager and Leek"]] <-
   pvalueData %>% 
   data.frame() %>% 
   mutate_at(c('pvalue','year'), as.numeric) %>%
+  mutate(method = ifelse(grepl("randomized|randomised|controlled", title), "RCT", NA)) %>% 
   transmute(
     metaid = NA,
     studyid = pubmedID,
+    method = method,
     z=-qnorm(pvalue/2),
     b = NA, se = NA,
     # about 1/3 truncated, almost always .0001, .001, .01, or .05, so it's "<"
-    truncated = factor(pvalueTruncated,labels=c("not truncated","truncated")),
+    truncated = ifelse(pvalueTruncated == "1","truncated", "not truncated"),
     year = year) 
 
 
@@ -168,19 +184,24 @@ dfs <- lapply(list.files("data/Sladekova/", full.names = TRUE), read.csv)
 names(dfs) <- list.files("data/Sladekova/")
 
 dt_list[["Sladekova"]] <- lapply(dfs, function(df){
-  df %>% 
+  ret <- df %>% 
     filter(!is.na(yi) & !is.na(vi)) %>% 
-    transmute(
+    # Fisher's z won't work otherwise; this affects less than 0.5% of observations
+    filter((1 + yi)/(1 - yi) > 0) %>% 
+    mutate(
       b = 0.5*log((1 + yi)/(1 - yi)),
       se = sqrt(vi)) 
-      # studyid = author, 
-      # year = year)
+  if(nrow(ret) == 0)
+    return(data.frame())
+  if(!is.null(ret$author)) ret$studyid <- ret$author else ret$studyid <- as.character(1:nrow(ret))
+  if(is.null(ret$year)) ret$year <- as.numeric(NA) else ret$year <- as.numeric(ret$year)
+  ret %>% select(studyid, b, se, year)
 }) %>% 
   bind_rows(.id = "metaid") %>% 
   filter(!is.na(b) & !is.infinite(b)) %>% 
-  mutate(z = b/se,
-         year = NA,
-         studyid = 1:nrow(.)) %>% 
+  mutate(method = NA, 
+         z = b/se,
+         year = NA) %>% 
   filter(!is.na(metaid)) 
 
 # year and studyid could be extracted, but they would need some cleaning up of strings
@@ -217,6 +238,7 @@ dt_list[["Metapsy"]] <- readRDS("data/Metapsy/metapsy_dt.rds") %>%
   transmute(
     metaid = metaid,
     studyid = study,
+    method = "RCT",
     year = year,
     z = .g/.g_se,
     b = .g,
@@ -243,6 +265,7 @@ dt_list[["BarnettWren"]] <- complete %>%
   mutate(z = b/se) %>% 
   transmute(metaid = NA,
             studyid = pubmed,
+            method = NA,
             z = b/se,
             b = b,
             se = se,
@@ -257,47 +280,40 @@ dt_list[["BarnettWren"]] <- complete %>%
 
 # Cochrane -----
 
-load("data/Cochrane/CDSR.RData") #this has object 'data' in it, with >400,000 rows
+load("data/Cochrane/CDSR.RData")  # reads in dataframe "data"
+data_filtered <- data %>% 
+  select(-char.interventions) %>% 
+  filter(
+    # non-RCT data comprise more than half of all data
+    # RCT=="yes",
+    # small minority of data is IPD or IV ("results with effects and standard errors 
+    # but without the data necessary for their computation") and we exclude these
+    outcome.flag %in% c("CONT","DICH"),
+    outcome.group=="efficacy")
+# outcome.nr==1,
+# comparison.nr==1)
 
-dt_list[["CDSR"]] <- data %>% 
-  filter(RCT=="yes") %>% 
-  filter(outcome.group=="efficacy" & outcome.nr==1) %>% 
+dt_list[["Cochrane"]] <- rbind(
+  dplyr::filter(data_filtered, outcome.flag=="CONT") %>% 
+    escalc(m1i=mean1,sd1i=sd1,n1i=total1,
+           m2i=mean2,sd2i=sd2,n2i=total2,measure="SMD",
+           data=., append=TRUE),
+  dplyr::filter(data_filtered, outcome.flag=="DICH") %>% 
+    escalc(ai=events1,n1i=total1,
+           ci=events2,n2i=total2,measure="PBIT",
+           data=.,append=TRUE)
+) %>% 
+  as_tibble() %>% 
   transmute(
     metaid = id,
     studyid = study.name,
-    z = b/s,
-    b = b,
-    se = s,
+    method = ifelse(RCT == "yes", "RCT", "observational"),
+    z = yi/sqrt(vi),
+    b = yi,
+    se = sqrt(vi),
     year = study.year)
 
-
-
-# load("data/CDSR.RData")  # read dataframe "data"
-# 
-# d = dplyr::filter(data, outcome.flag %in% c("CONT","DICH") &
-#                     outcome.group=="efficacy" &
-#                     outcome.nr==1 &
-#                     comparison.nr==1)
-# 
-# # make sure each study used only once:
-# d=group_by(d,study.name) %>% sample_n(size=1)
-# 
-# d1=dplyr::filter(d, outcome.flag=="CONT")
-# d1=escalc(m1i=mean1,sd1i=sd1,n1i=total1,
-#           m2i=mean2,sd2i=sd2,n2i=total2,measure="SMD",
-#           data=d1, append=TRUE)
-# d2=dplyr::filter(d, outcome.flag=="DICH")
-# d2=escalc(ai=events1,n1i=total1,
-#           ci=events2,n2i=total2,measure="PBIT",
-#           data=d2,append=TRUE)
-# d=rbind(d1,d2)
-# 
-# d=mutate(d,b=yi,s=sqrt(vi),z=b/s)
-# d=dplyr::filter(d,abs(z)<20, abs(b)<5)
-# 
-# d$b=d$yi
-# d$s=sqrt(d$vi)
-# d$z=d$b/d$s
+rm(data, data_filtered)
 
 
 
@@ -310,13 +326,14 @@ dt_list[["Adda"]] <- read_dta("data/Adda/data_counterfactual_analysis.dta") %>%
   filter(phase %in% c("Phase 2","Phase 3") & p_value_modifier!=">") %>% 
   transmute(metaid = NA,
             studyid = nct_id,
+            method = "RCT",
             year = completion_year,
             z = z,
             b = NA,
             se = NA,
-            truncated = factor(p_value_modifier, 
-                               levels = c("", "<"), 
-                               labels=c("not truncated","truncated")))
+            truncated = as.character(factor(p_value_modifier, 
+                                            levels = c("", "<"), 
+                                            labels=c("not truncated","truncated"))))
 
 
 # Could be useful to add

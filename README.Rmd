@@ -5,7 +5,13 @@ Up-to-date document with short descriptions is
 
 General methodology for creating sets of z-values:
 
-- Remove non-RCTs and various malformed inputs
+- Characterise the method used to obtain the estimates:
+    - `RCT` is the main category we care about (available in Adda et al, Cochrane database, Askarov, Brodeur)
+    - in Jager and Leek there is no classification done by the authors, but we can look for keywords "randomised", "randomized" and "controlled" in study titles to categorise them as RCTs
+    - `mixed` category in Askarov et al means "experimental and observational"
+    - `observational` means non-RCT in Cochrane
+    - we have a few instrumental variable and differences-in-differences estimates from Brodeur et al
+    - all other datasets mix various types of effects and are therefore `NA` 
 - Extract or calculate `z`:
     - `z = b/se` in most datasets 
     - if no SE is avaialble, but we have p-value, we do `-qnorm(p/2)` (or `sign(b)*qnorm(1-p/2)` to retrieve sign of z)
@@ -42,5 +48,13 @@ bear %>%
             median_j  = median(j),
             n_study = n_distinct(studyid), 
             median_k = median(k), 
-            pct_signif = sum(abs(z)>1.96)/n())
+            pct_signif = sum(abs(z)>1.96)/n(),
+            type = {
+              tab <- table(method)
+              counts <- c(tab)
+              na_count <- sum(is.na(method))
+              if (na_count > 0) counts <- c(counts, `NA` = na_count)
+              paste(paste0(names(counts), ": ", counts), collapse = ", ")
+            }
+  )
 ```

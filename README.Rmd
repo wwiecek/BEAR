@@ -40,6 +40,7 @@ Post-processing:
 
 ```{r echo=FALSE, messages=FALSE}
 library(dplyr)
+source("R/settings.R")
 bear <- readRDS("data/BEAR.rds")
 bear %>% 
   group_by(dataset) %>% 
@@ -56,5 +57,5 @@ bear %>%
               if (na_count > 0) counts <- c(counts, `NA` = na_count)
               paste(paste0(names(counts), ": ", counts), collapse = ", ")
             }
-  )
+  ) %>% mutate(dataset = bear_names[dataset])
 ```

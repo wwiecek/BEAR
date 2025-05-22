@@ -52,17 +52,17 @@ Post-processing:
 <!-- -->
 
     ## # A tibble: 12 × 8
-    ##    dataset              n_z n_meta median_j n_study median_k pct_signif type                                       
-    ##    <chr>              <int>  <int>    <dbl>   <int>    <dbl>      <dbl> <chr>                                      
-    ##  1 Adda               12273      1       NA    4940        4      0.550 RCT: 12273                                 
-    ##  2 Arel-Bundock       16649     46     1083    2252       25      0.467 NA: 16649                                  
-    ##  3 Askarov            21408      1       NA    1913       28      0.520 mixed: 1297, observational: 19446, RCT: 665
-    ##  4 BarnettWren      1306551      1       NA  416027        4      0.808 NA: 1306551                                
-    ##  5 Brodeur             8424      1       NA     176       67      0.374 DID: 50, IV: 133, RCT: 8241                
-    ##  6 Cochrane          329611   6183      113   63595        6      0.283 observational: 169274, RCT: 160337         
-    ##  7 Costello and Fox   88218    232     1064   12927       18      0.419 NA: 88218                                  
-    ##  8 Jager and Leek     15653      1       NA    5322        4      0.777 RCT: 4771, NA: 10882                       
-    ##  9 Metapsy             3544     16      315    1276        2      0.491 RCT: 3544                                  
-    ## 10 Sladekova          11540    406       55    3471        1      0.590 NA: 11540                                  
-    ## 11 WWC                 1431      1       NA     246        9      0.372 NA: 1431                                   
-    ## 12 Yang et al         17748      1       NA    3807       10      0.403 NA: 17748
+    ##    dataset                      n_z n_meta median_j n_study median_k pct_signif type                                
+    ##    <chr>                      <int>  <int>    <dbl>   <int>    <dbl>      <dbl> <chr>                               
+    ##  1 Adda et al                 12273      1       NA    4940        4      0.550 RCT: 12273                          
+    ##  2 Arel-Bundock et al         16649     46     1083    2252       25      0.467 NA: 16649                           
+    ##  3 Askarov et al              21408      1       NA    1913       28      0.520 mixed: 1297, observational: 19446, …
+    ##  4 Barnett and Wren         1306551      1       NA  416027        4      0.808 NA: 1306551                         
+    ##  5 Brodeur et al               8424      1       NA     176       67      0.374 DID: 50, IV: 133, RCT: 8241         
+    ##  6 Cochrane                  329611   6183      113   63595        6      0.283 observational: 169274, RCT: 160337  
+    ##  7 Costello and Fox           88218    232     1064   12927       18      0.419 NA: 88218                           
+    ##  8 Jager and Leek             15653      1       NA    5322        4      0.777 RCT: 4771, NA: 10882                
+    ##  9 Metapsy                     3544     16      315    1276        2      0.491 RCT: 3544                           
+    ## 10 Sladekova et al            11540    406       55    3471        1      0.590 NA: 11540                           
+    ## 11 What Works Clearinghouse    1431      1       NA     246        9      0.372 NA: 1431                            
+    ## 12 Yang et al                 17748      1       NA    3807       10      0.403 NA: 17748

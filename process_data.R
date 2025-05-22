@@ -6,8 +6,6 @@ library(stringi) #for cleaning up some study names
 
 dt_list <- list()
 
-
-
 # Brodeur et al ------
 
 dt_list[["Brodeur"]] <- read_dta("data/Brodeur/merged.dta") %>% 
@@ -59,7 +57,7 @@ dt_list[["Askarov"]] <- read_dta("data/Askarov/Mandatory data-sharing 30 Aug 202
 # hypothesis tests, grouped in 351 meta-analyses, reported in 46 peer-reviewed
 # meta-analytic articles"
 
-dt_list[["Arel-Bundock"]] <- 
+dt_list[["ArelBundock"]] <- 
   read_csv("data/ArelBundock/estimates.csv", 
            show_col_types = FALSE) %>% 
   # There may be problems printing and encoding some characters down the line
@@ -122,7 +120,7 @@ extract_year_yang <- function(x) {
   return(NA)
 }
 
-dt_list[["Yang et al"]] <- read.csv("data/Yang/dat_processed_rob.csv") %>% 
+dt_list[["Yang"]] <- read.csv("data/Yang/dat_processed_rob.csv") %>% 
   transmute(
     metaid = NA, 
     studyid = study,
@@ -140,7 +138,7 @@ dt_list[["Yang et al"]] <- read.csv("data/Yang/dat_processed_rob.csv") %>%
 # and made available at 
 # [Github](https://github.com/Yefeng0920/replication_EcoEvo_git/blob/main/data/main/main_dat_processed.csv)
 
-dt_list[["Costello and Fox"]] <- 
+dt_list[["CostelloFox"]] <- 
   read.csv("data/Yang/main_dat_processed.csv") %>% 
   transmute(
     metaid = meta.analysis.paper, #could use meta.analysis.id
@@ -161,7 +159,7 @@ dt_list[["Costello and Fox"]] <-
 
 load("data/JagerLeek/pvalueData.rda")
 
-dt_list[["Jager and Leek"]] <-  
+dt_list[["JagerLeek"]] <-  
   pvalueData %>% 
   data.frame() %>% 
   mutate_at(c('pvalue','year'), as.numeric) %>%
@@ -297,13 +295,14 @@ dt_list[["Cochrane"]] <- rbind(
   dplyr::filter(data_filtered, outcome.flag=="CONT") %>% 
     escalc(m1i=mean1,sd1i=sd1,n1i=total1,
            m2i=mean2,sd2i=sd2,n2i=total2,measure="SMD",
-           data=., append=TRUE),
+           data=., append=TRUE) %>% 
+    as_tibble(), #%>% mutate(estimator = "SMD"),
   dplyr::filter(data_filtered, outcome.flag=="DICH") %>% 
     escalc(ai=events1,n1i=total1,
            ci=events2,n2i=total2,measure="PBIT",
-           data=.,append=TRUE)
+           data=.,append=TRUE) %>% 
+    as_tibble() #%>% mutate(estimator = "probit")
 ) %>% 
-  as_tibble() %>% 
   transmute(
     metaid = id,
     studyid = study.name,

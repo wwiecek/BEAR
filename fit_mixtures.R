@@ -1,3 +1,5 @@
+library(tidyverse)
+library(digest)
 source("R/helpers.R")
 source("R/mix.R")
 
@@ -7,6 +9,8 @@ bear_list <-
   bear %>% 
   mutate(truncated = ifelse(is.na(truncated), "not truncated", truncated)) %>% 
   split(bear$dataset)
+
+bear_hash <- lapply(bear_list, digest)
 
 # For test purposes, pick only up to 10,000 rows from each dataset
 # This may take a while to run, because 
@@ -30,11 +34,15 @@ bear_list_thin <- bear_list %>% lapply(function(df) {
     mutate(weight = 1/k)
 })
 
-mixture_fit_list <- list()
-for(nm in names(bear_list_thin)) {
-  print(nm)
-  df <- bear_list_thin[[nm]]
-  mixture_fit_list[[nm]] <- fit_mixture(df$z, df$truncated, k = 4, weight = df$weight)
-}
+previous_hash <- readRDS("results/mixtures_hash.rds")
 
-saveRDS(mixture_fit_list, "results/mixturesR.rds")
+# Each takes 1-10 minutes per dataset on my puny laptop
+for(nm in names(bear_list_thin)) {
+  fnm <- paste0("results/mixtures/", nm, ".rds")
+  if(!file.exists(fnm) || previous_hash[[nm]] != bear_hash[[nm]]) {
+    cat(nm); cat("\n")
+    df <- bear_list_thin[[nm]]
+    cfit <- fit_mixture(df$z, df$truncated, k = 4, weight = df$weight)
+    saveRDS(cfit, fnm)
+  }
+}

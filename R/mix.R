@@ -63,15 +63,17 @@ fit_mixture <- function(z,truncated,k=4,weights){
 }
 
 plot_mixture <- function(fit, z, weight) {
+  
   omega=fit$omega[1]
   B1=2*pmix(-1.96,p=fit$p,m=fit$m,s=fit$sigma) # prob. |z|>1.96
   B2=1-B1
 
-  df=data.frame(z=abs(z),weight)
-  df$fz=2*(omega*(df$z<1.96) + (df$z>=1.96))*
-    dmix(d$z,p=fit$p,m=fit$m,s=fit$sigma)/(B1 + omega*B2)
+  df <- data.frame(z=abs(z),weight)
   
-  df$fz2=2*dmix(df$z,p=fit$p,m=fit$m,s=fit$sigma)
+  df$fz <- 2*(omega*(df$z<1.96) + (df$z>=1.96))*
+    dmix(z, p=fit$p, m=fit$m, s=fit$sigma)/(B1 + omega*B2)
+  
+  df$fz2=2*dmix(df$z, p=fit$p, m=fit$m, s=fit$sigma)
   
   ggplot(df, aes(x = z)) +
     geom_histogram(aes(y = after_stat(density),

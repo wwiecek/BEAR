@@ -20,7 +20,7 @@ exaggeration_plot = function(p,m,s){
   
   ggp=ggplot(df,aes(x=abs(z),y=R, group=label)) + geom_line() + 
     geom_hline(yintercept = 1) +
-    scale_y_continuous(minor_breaks = seq(0,5,0.25), 
+    scale_y_continuous(minor_breaks = seq(0,5,0.25),
                        breaks = seq(0,5,0.5),lim=c(0,5)) +
     scale_x_continuous(minor_breaks = seq(0,5,0.25), 
                        breaks = seq(0,5,1),lim=c(0,5)) +

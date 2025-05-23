@@ -1,4 +1,8 @@
 
+# Benchmarks of Experimental Accuracy in Research
+
+![](doc/bear_banner.png)
+
 # Sources of data in this project
 
 Up-to-date document with short descriptions is [available as a Google

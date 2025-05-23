@@ -1,10 +1,35 @@
-d$truncated="not truncated"
-fit <- fit_mixture(z=d$z, truncated=d$truncated, k=4, weight=1/d$k)
+# Read all mixtures
+mixture_fit_list <- list()
+nms <- gsub(".rds", "", list.files("results/mixtures/"))
+for(nm in nms) {
+  fnm <- paste0("results/mixtures/", nm, ".rds")
+  mixture_fit_list[[nm]] <- readRDS(fnm)
+}
 
-knit_with_df(d, fit)
+# Load BEAR data
+bear <- readRDS("data/BEAR.rds")
+bear_list <- 
+  bear %>% 
+  mutate(truncated = ifelse(is.na(truncated), "not truncated", truncated)) %>% 
+  split(bear$dataset)
+
+identical(names(bear_list), names(mixture_fit_list))
+
+source("R/knit.R")
+for(nm in nms)
+  knit_with_df(bear_list[[nm]], 
+               mixture_fit_list[[nm]], 
+               output_file = paste0("results/reports/", nm, ".pdf"))
+
 stitch_and_knit("brodeur_desc.Rmd", "template.Rmd", d, fit, "template_stitch.pdf")
 
-#
+d <- bear_list[[nm]]
+fit <- mixture_fit_list[[nm]]
+
+
+
+
+
 
 library(rstan)
 library(tidybayes)

@@ -1,39 +1,3 @@
-## Functions for mixture of normals 
-dmix = function(x,p,m,s){ # density of normal mixture (vector x)
-  drop(p %*% sapply(x, function(x) dnorm(x,mean=m,sd=s)))
-}
-
-rmix = function(n,p,m,s){    # sample from a normal mixture
-  d=rmultinom(n,1,p)
-  rnorm(n,m%*%d,s%*%d)
-}
-
-pmix = function(x,p,m,s){ # cdf of normal mixture (vector x)
-  drop(p %*% sapply(x, function(x) pnorm(x,mean=m,sd=s)))
-}
-
-qfun = function(q,p,m,s){   # quantile function scalar q
-  uniroot(function(x) pmix(x,p,m,s)-q, interval=c(-20,20))$root
-}
-qmix = function(q,p,m,s){   # quantile function vector q
-  sapply(q, function(q) qfun(q,p=p,m=m,s=s) )
-}
-
-## Functions for mixture of half-normals
-dmixabs = function(x,p,m,s){ # density of normal mixture (vector x)
-  drop(p %*% sapply(x, function(x) (dnorm(-x,mean=m,sd=s) + dnorm(x,mean=m,sd=s))))
-}
-
-pmixabs = function(x,p,m,s){ # cumulative distr of |x|
-  drop(p %*% sapply(x, function(x) pnorm(x,mean=m,sd=s) - pnorm(-x,mean=m,sd=s)))
-}
-
-qfunabs = function(q,p,m,s){ # quantile function scalar q
-  uniroot(function(x) pmixabs(x,p,m,s)-q, interval=c(0,20))$root
-}
-qmixabs = function(q,p,m,s){ # quantile function vector q
-  sapply(q, function(q) qfunabs(q,p=p,m=m,s=s) )
-}
 
 collect_results = function(fit,db="CDSR",studies,zstats,signif,power,sgn){
   result=data.frame(db,studies,zstats,signif)

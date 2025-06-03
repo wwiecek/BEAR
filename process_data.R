@@ -287,9 +287,9 @@ data_filtered <- data %>%
     # small minority of data is IPD or IV ("results with effects and standard errors 
     # but without the data necessary for their computation") and we exclude these
     outcome.flag %in% c("CONT","DICH"),
-    outcome.group=="efficacy")
-# outcome.nr==1,
-# comparison.nr==1)
+    outcome.group=="efficacy",
+    outcome.nr==1,
+    comparison.nr==1)
 
 dt_list[["Cochrane"]] <- rbind(
   dplyr::filter(data_filtered, outcome.flag=="CONT") %>% 

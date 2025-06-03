@@ -21,10 +21,14 @@ for(nm in nms)
                mixture_fit_list[[nm]], 
                output_file = paste0("results/reports/", nm, ".pdf"))
 
-stitch_and_knit("brodeur_desc.Rmd", "template.Rmd", d, fit, "template_stitch.pdf")
 
-d <- bear_list[[nm]]
-fit <- mixture_fit_list[[nm]]
+
+
+# WIP
+# stitch_and_knit("brodeur_desc.Rmd", "template.Rmd", d, fit, "template_stitch.pdf")
+
+# d <- bear_list[[nm]]
+# fit <- mixture_fit_list[[nm]]
 
 
 

@@ -1,12 +1,48 @@
 
 # Benchmarks of Experimental Accuracy in Research
 
+BEAR is a database containing z values, effect sizes and standard errors from 
+various scientific disciplines. It doesn't contribute any new data, but 
+repackages and merges publicly available datasets in a manner which we hope 
+is maximally user-friendly. Our intention is to help researchers interested in 
+issues of replication, exchangeability, meta-analysis etc. etc. to 
+
 ![](doc/bear_banner.png)
 
 # Sources of data in this project
 
-Up-to-date document with short descriptions is 
+Current version of the dataset includes:
+
+```{r echo=FALSE, messages=FALSE}
+library(dplyr)
+source("R/settings.R")
+bear <- readRDS("data/BEAR.rds")
+bear %>% 
+  group_by(dataset) %>% 
+  summarise(n_z = n(), 
+            n_meta = n_distinct(metaid), 
+            median_j  = median(j),
+            n_study = n_distinct(studyid), 
+            median_k = median(k), 
+            pct_signif = sum(abs(z)>1.96)/n(),
+            type = {
+              tab <- table(method)
+              counts <- c(tab)
+              na_count <- sum(is.na(method))
+              if (na_count > 0) counts <- c(counts, `NA` = na_count)
+              paste(paste0(names(counts), ": ", counts), collapse = ", ")
+            }
+  ) %>% mutate(dataset = bear_names[dataset])
+```
+
+References and short descriptions of datasets we included are 
 [available as a Google Doc](https://docs.google.com/document/d/1ZZAEwfHS0aAELN1w1lqEO6-eeu31_WdL/edit?usp=sharing&ouid=114240127695432531696&rtpof=true&sd=true).
+
+
+
+# How this dataset was created 
+
+## Processing of individual datasets 
 
 General methodology for creating sets of z-values:
 
@@ -32,35 +68,12 @@ General methodology for creating sets of z-values:
 - Remove studies where z's are NA before saving (to reduce size of data)
 - Join into a single table with column `dataset` 
 
+## Optional post-processing 
 
-
-Post-processing:
-
-- Truncate very large z values ourselves 
+- Truncate very large z values
 - Add number of observations in each study, 
 - Add number of studies in each meta-analysis 
 - For large datasets, choose one z-value per study
 - Add study weights as 1 / (N values reported in that study)
 
 
-```{r echo=FALSE, messages=FALSE}
-library(dplyr)
-source("R/settings.R")
-bear <- readRDS("data/BEAR.rds")
-bear %>% 
-  group_by(dataset) %>% 
-  summarise(n_z = n(), 
-            n_meta = n_distinct(metaid), 
-            median_j  = median(j),
-            n_study = n_distinct(studyid), 
-            median_k = median(k), 
-            pct_signif = sum(abs(z)>1.96)/n(),
-            type = {
-              tab <- table(method)
-              counts <- c(tab)
-              na_count <- sum(is.na(method))
-              if (na_count > 0) counts <- c(counts, `NA` = na_count)
-              paste(paste0(names(counts), ": ", counts), collapse = ", ")
-            }
-  ) %>% mutate(dataset = bear_names[dataset])
-```

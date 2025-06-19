@@ -14,7 +14,7 @@ etc. to
 
 Current version of the dataset includes:
 
-    ## # A tibble: 12 × 8
+    ## # A tibble: 13 × 8
     ##    dataset                      n_z n_meta median_j n_study median_k pct_signif type                                       
     ##    <chr>                      <int>  <int>    <dbl>   <int>    <dbl>      <dbl> <chr>                                      
     ##  1 Adda et al                 12273      1       NA    4940        4      0.550 RCT: 12273                                 
@@ -24,11 +24,12 @@ Current version of the dataset includes:
     ##  5 Brodeur et al               8424      1       NA     176       67      0.374 DID: 50, IV: 133, RCT: 8241                
     ##  6 Cochrane                   31594   5452       10   25593        1      0.328 observational: 15878, RCT: 15716           
     ##  7 Costello and Fox           88218    232     1064   12927       18      0.419 NA: 88218                                  
-    ##  8 Jager and Leek             15653      1       NA    5322        4      0.777 RCT: 4771, NA: 10882                       
-    ##  9 Metapsy                     3544     16      315    1276        2      0.491 RCT: 3544                                  
-    ## 10 Sladekova et al            11540    406       55    3471        1      0.590 NA: 11540                                  
-    ## 11 What Works Clearinghouse    1431      1       NA     246        9      0.372 NA: 1431                                   
-    ## 12 Yang et al                 17748      1       NA    3807       10      0.403 NA: 17748
+    ##  8 Head et al               2010875      1       NA  219867       15      0.622 NA: 2010875                                
+    ##  9 Jager and Leek             15653      1       NA    5322        4      0.777 RCT: 4771, NA: 10882                       
+    ## 10 Metapsy                     3544     16      315    1276        2      0.491 RCT: 3544                                  
+    ## 11 Sladekova et al            11540    406       55    3471        1      0.590 NA: 11540                                  
+    ## 12 What Works Clearinghouse    1431      1       NA     246        9      0.372 NA: 1431                                   
+    ## 13 Yang et al                 17748      1       NA    3807       10      0.403 NA: 17748
 
 References and short descriptions of datasets we included are [available
 as a Google

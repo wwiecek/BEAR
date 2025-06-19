@@ -168,10 +168,12 @@ dt_list[["JagerLeek"]] <-
     metaid = NA,
     studyid = pubmedID,
     method = method,
-    z=-qnorm(pvalue/2),
+    p = pvalue,
+    z = -qnorm(pvalue/2),
     b = NA, se = NA,
     # about 1/3 truncated, almost always .0001, .001, .01, or .05, so it's "<"
-    truncated = ifelse(pvalueTruncated == "1","truncated", "not truncated"),
+    # truncated = ifelse(pvalueTruncated == "1","truncated", "not truncated"),
+    z_operator = ifelse(pvalueTruncated == "1", ">", "="),
     year = year) 
 
 
@@ -330,15 +332,54 @@ dt_list[["Adda"]] <- read_dta("data/Adda/data_counterfactual_analysis.dta") %>%
             z = z,
             b = NA,
             se = NA,
-            truncated = as.character(factor(p_value_modifier, 
-                                            levels = c("", "<"), 
-                                            labels=c("not truncated","truncated"))))
+            z_operator = as.character(factor(
+              p_value_modifier, levels = c("", "<"), labels=c("=",">")))
+            # truncated = as.character(factor(p_value_modifier, 
+            #                                 levels = c("", "<"), 
+            #                                 labels=c("not truncated","truncated")))
+  )
 
 
 # Could be useful to add
 # d$phase=factor(d$phase)
 # table(d$phase,useNA = "ifany")
 
+
+
+# Head -----
+
+head <- read_csv("data/Head/p_values_cleaned_ww.csv")
+
+dt_list[["Head"]] <- head %>% 
+  transmute(metaid = NA,
+            studyid = first.doi,
+            method = NA,
+            year = year,
+            p = p.value,
+            z = qnorm(1 - p.value/2),
+            b = NA,
+            se = NA,
+            # we do not differntiate between leq and lesser, because it doesn't 
+            # really change analytical procedures we have in mind
+            z_operator = case_when(
+              operator == "=" ~ "=",
+              operator == "<" ~ ">",
+              operator == ">" ~ "<",
+              operator == "≤" ~ ">",
+              operator == "≥" ~ "<"
+            )) 
+
+
+
+
+# Bogdan -----
+
+# x <- read_csv("data/Bogdan/df_combined_pruned_Jan21.csv")
+# x <- read_csv("data/Bogdan/df_combined_w_no_sig_all_aff_Jan21.csv")
+# x <- read_csv("data/Bogdan/Youyou_etal_replications.csv")
+# View(x)
+# 
+# dt_list[["Bogdan"]] <- x
 
 # Processing of individual datasets and binding into a single large dataset ----
 bear <- dt_list %>% 

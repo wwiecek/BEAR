@@ -7,13 +7,23 @@ source("R/mix_v2.R")
 
 bear <- readRDS("data/BEAR.rds")
 
-bear_list <- 
+set.seed(1990)
+
+bear_processed <- 
   bear %>% 
-  mutate(truncated = ifelse(is.na(truncated), "not truncated", truncated)) %>% 
-  mutate(truncated = ifelse(truncated == "truncated", 1, 0)) %>% 
-  split(bear$dataset)
+  mutate(z_operator = ifelse(is.na(z_operator), "=", z_operator)) %>% 
+  mutate(truncated  = ifelse(z_operator != "=", 1, 0)) %>% 
+  # in some datasets some fraction of a % of studies have truncation going in the 
+  # opposite of "expected" direction,  think e.g. "p > 0.1"; easiest to remove them
+  # since in analysis we will assume that meaning of "truncated" flips as we cross ~1.96
+  filter(!((z_operator == "<" & z > 1.96) | (z_operator == ">" & z <= 1.959)))
+  
+bear_list <- split(bear_processed, bear_processed$dataset)
+
+
 
 bear_hash <- lapply(bear_list, digest)
+previous_hash <- readRDS("results/mixtures_hash.rds")
 
 # For test purposes, if there are too many rows
 # first try to pick only one estimate per study
@@ -36,15 +46,15 @@ bear_list_thin <- bear_list %>% lapply(function(df) {
     select(-j)
 })
 
-previous_hash <- readRDS("results/mixtures_hash.rds")
-
 # Nelder-Mead will take minutes, sometimes 10+ per dataset
 # L-BFGS will take <1 min. and has been shown to give similar results
 # although the optimisation constraints are shoddy
 mixture_fit_list <- list()
-for(nm in names(bear_list_thin)) {
+mtofit <- names(bear_list_thin)
+mtofit <- c("Head", "JagerLeek")
+for(nm in mtofit) {
   fnm <- paste0("results/mixtures/", nm, ".rds")
-  if(!file.exists(fnm) || previous_hash[[nm]] != bear_hash[[nm]]) {
+  if(!file.exists(fnm) || !(nm %in% names(previous_hash)) || previous_hash[[nm]] != bear_hash[[nm]]) {
     cat(nm); cat("\n")
     tic()
     df <- bear_list_thin[[nm]]
@@ -57,11 +67,11 @@ for(nm in names(bear_list_thin)) {
   }
 }
 
-
+saveRDS(bear_hash, file="results/mixtures_hash.rds")
 
 # Look at all the plots
 pl <- list()
-for(nm in nms) {
+for(nm in names(bear_list_thin)) {
   pl[[nm]] <- plot_mixture(mixture_fit_list[[nm]],
                            bear_list_thin[[nm]]$z,
                            bear_list_thin[[nm]]$weight)
@@ -69,5 +79,5 @@ for(nm in nms) {
 library(gridExtra)
 grid.arrange(grobs = Map(function(p, name) {
   p + ggtitle(name)
-}, pl, names(pl)), ncol = 4)
+}, pl, names(pl)), ncol = 5)
 

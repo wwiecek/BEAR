@@ -75,10 +75,12 @@ loglik <- function(theta, z, truncated, k=4, weights) {
   p_mix_eval <- pmixabs(abs_z,p,m=m,s=s)
   d_mix_eval <- dmixabs(abs_z,p,m=m,s=s)
   
-  lik1 <- (abs_z <  1.96)*( truncated)*omega*p_mix_eval
-  lik2 <- (abs_z <  1.96)*(!truncated)*omega*d_mix_eval
-  lik3 <- (abs_z >= 1.96)*(!truncated)*d_mix_eval
-  lik4 <- (abs_z >= 1.96)*( truncated)*(1-p_mix_eval)
+  # it's common to have truncated == 1 and abs_z == 1.959964,
+  # so setting the inequality at 1.96 would "flip" the truncation
+  lik1 <- (abs_z <  1.9599)*( truncated)*omega*p_mix_eval
+  lik2 <- (abs_z <  1.9599)*(!truncated)*omega*d_mix_eval
+  lik3 <- (abs_z >= 1.9599)*(!truncated)*d_mix_eval
+  lik4 <- (abs_z >= 1.9599)*( truncated)*(1-p_mix_eval)
   
   lik <- (lik1+lik2+lik3+lik4)/(B1 + omega*B2)
   

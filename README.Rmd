@@ -75,5 +75,3 @@ General methodology for creating sets of z-values:
 - Add number of studies in each meta-analysis 
 - For large datasets, choose one z-value per study
 - Add study weights as 1 / (N values reported in that study)
-
-

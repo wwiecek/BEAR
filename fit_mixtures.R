@@ -46,12 +46,12 @@ bear_list_thin <- bear_list %>% lapply(function(df) {
     select(-j)
 })
 
+
 # Nelder-Mead will take minutes, sometimes 10+ per dataset
 # L-BFGS will take <1 min. and has been shown to give similar results
 # although the optimisation constraints are shoddy
 mixture_fit_list <- list()
 mtofit <- names(bear_list_thin)
-mtofit <- c("Head", "JagerLeek")
 for(nm in mtofit) {
   fnm <- paste0("results/mixtures/", nm, ".rds")
   if(!file.exists(fnm) || !(nm %in% names(previous_hash)) || previous_hash[[nm]] != bear_hash[[nm]]) {
@@ -69,15 +69,40 @@ for(nm in mtofit) {
 
 saveRDS(bear_hash, file="results/mixtures_hash.rds")
 
+
+
+
+# Plot some figures of mixtures -----
+
+# Years of studies (after thinning)
+
+bind_rows(bear_list_thin) %>% 
+  ggplot(aes(year)) +
+  geom_histogram(binwidth = 1, fill = "white", color = "black") + 
+  coord_cartesian(xlim = c(1980, 2020)) +
+  ylab("N studies (after thinning)") + xlab("year (of study/publication)")
+
+ggsave(width = 5, height = 5, file = "results/years_thinned.pdf")
+
+
 # Look at all the plots
 pl <- list()
+# read mixtures
+mixture_fit_list <- list()
+nms <- gsub(".rds", "", list.files("results/mixtures/"))
+for(nm in nms) {
+  fnm <- paste0("results/mixtures/", nm, ".rds")
+  mixture_fit_list[[nm]] <- readRDS(fnm)
+}
+
 for(nm in names(bear_list_thin)) {
   pl[[nm]] <- plot_mixture(mixture_fit_list[[nm]],
                            bear_list_thin[[nm]]$z,
                            bear_list_thin[[nm]]$weight)
 }
 library(gridExtra)
-grid.arrange(grobs = Map(function(p, name) {
-  p + ggtitle(name)
+combined_plot <- arrangeGrob(grobs = Map(function(p, name) {
+  p + ggtitle(bear_names[[name]])
 }, pl, names(pl)), ncol = 5)
 
+ggsave("results/mixtures_plot.pdf", combined_plot, width = 16, height = 9)

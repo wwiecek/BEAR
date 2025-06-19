@@ -4,6 +4,7 @@ bear_names <- c(
    "Askarov" = "Askarov et al",
    "BarnettWren" = "Barnett and Wren",
    "Brodeur" = "Brodeur et al",
+   "Chavalarias" = "Chavalarias et al",
    "Cochrane" = "Cochrane",
    "CostelloFox" = "Costello and Fox",
    "Head" = "Head et al",

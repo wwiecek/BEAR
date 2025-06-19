@@ -40,7 +40,7 @@ dt_list[["Askarov"]] <- read_dta("data/Askarov/Mandatory data-sharing 30 Aug 202
     z = effectsize/standarderror,
     b = effectsize,
     se = standarderror,
-    year = YEARintervention)
+    year = ifelse(YEARintervention != 0, YEARintervention, NA))
 
 # could be useful:
 # mutate(data_sharing = (EVENT==0 | INTERVENTION==1)) %>% 
@@ -369,6 +369,47 @@ dt_list[["Head"]] <- head %>%
               operator == "≥" ~ "<"
             )) 
 
+
+
+# Chavalarias -----
+
+# https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/6FMTT3
+
+chava <- rbind(
+  read_csv("data/Chavalarias/medline_full_txt_pv.csv", 
+           col_names = c("studyid", "journal", "operator", "p", "year", "p_format", "flag")) %>% 
+    mutate(source = "PMC full text"),
+  read_csv("data/Chavalarias/medline_pt.csv", 
+           col_names = c("operator", "p", "p_format", "year", "journal", "studyid", "flag")) %>% 
+    mutate(source = "MEDLINE")
+) 
+
+chava %>% group_by(operator, p_format, flag, source) %>% tally %>% View
+
+dt_list[["Chavalarias"]] <- chava %>% 
+  # p_format coding is explained on Harvard Dataverse, but 99.3% of the values are "plain", 
+  # so we stick to that
+  filter(p_format == "plain") %>% 
+  mutate(operator = case_when(
+    operator %in% c("<", "<<", "<<<", "<=", "less than", "=<") ~ "<",
+    operator == "=" ~ "=",
+    operator == ">" ~ ">",
+    TRUE ~ NA)) %>%
+  # removes <0.08% of data with some edge cases we are not interested in
+  filter(!is.na(operator)) %>% 
+  transmute(metaid = NA,
+            studyid = studyid,
+            method = NA,
+            year = year,
+            p = p,
+            z = qnorm(1 - p/2),
+            b = NA,
+            se = NA,
+            z_operator = case_when(
+              operator == "=" ~ "=",
+              operator == "<" ~ ">",
+              operator == ">" ~ "<"
+            )) 
 
 
 

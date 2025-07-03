@@ -141,7 +141,7 @@ dt_list[["Yang"]] <- read.csv("data/Yang/dat_processed_rob.csv") %>%
 dt_list[["CostelloFox"]] <- 
   read.csv("data/Yang/main_dat_processed.csv") %>% 
   transmute(
-    metaid = meta.analysis.paper, #could use meta.analysis.id
+    metaid = meta.analysis.id, #meta.analysis.paper has only 232 unique values, this has 466
     studyid = study2,
     method = NA,
     z = z,
@@ -270,12 +270,6 @@ dt_list[["BarnettWren"]] <- complete %>%
             b = b,
             se = se,
             year = Year)
-# filter(!is.na(z))
-# There are median of 2 values per paper (max = 5,045), Erik sampled one from each
-# (dplyr syntax can be a tiny bit slow here, unfortunately)
-# group_by(pubmed) %>%
-# slice(sample(n(), 1)) %>%
-# ungroup()
 
 
 # Cochrane -----
@@ -384,7 +378,7 @@ chava <- rbind(
     mutate(source = "MEDLINE")
 ) 
 
-chava %>% group_by(operator, p_format, flag, source) %>% tally %>% View
+# chava %>% group_by(operator, p_format, flag, source) %>% tally %>% View
 
 dt_list[["Chavalarias"]] <- chava %>% 
   # p_format coding is explained on Harvard Dataverse, but 99.3% of the values are "plain", 

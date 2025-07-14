@@ -34,7 +34,7 @@ dt_list[["Askarov"]] <- read_dta("data/Askarov/Mandatory data-sharing 30 Aug 202
   mutate(z = effectsize/standarderror) %>% 
   dplyr:: filter(Excludegroup==0) %>% 
   transmute(
-    metaid = NA,
+    metaid = filename,
     studyid = studyid,
     method = ifelse(EXPERIMENT == 1, "RCT", ifelse(mixed == 1, "mixed", "observational")),
     z = effectsize/standarderror,
@@ -141,7 +141,7 @@ dt_list[["Yang"]] <- read.csv("data/Yang/dat_processed_rob.csv") %>%
 dt_list[["CostelloFox"]] <- 
   read.csv("data/Yang/main_dat_processed.csv") %>% 
   transmute(
-    metaid = meta.analysis.id, #meta.analysis.paper has only 232 unique values, this has 466
+    metaid = as.character(meta.analysis.id), #meta.analysis.paper has only 232 unique values, this has 466
     studyid = study2,
     method = NA,
     z = z,

@@ -1,12 +1,12 @@
 
 # Benchmarks of Experimental Accuracy in Research
 
-BEAR is a database containing z values, effect sizes and standard errors
-from various scientific disciplines. It doesn’t contribute any new data,
-but repackages and merges publicly available datasets in a manner which
-we hope is maximally user-friendly. Our intention is to help researchers
-interested in issues of replication, exchangeability, meta-analysis etc.
-etc. to
+BEAR is a “meta”-database containing z values, effect sizes and standard
+errors from existing databases in various scientific disciplines. It
+doesn’t contribute any new data, but repackages and merges what’s
+publicly available in a manner which we hope is maximally user-friendly.
+Our intention is to help researchers interested in issues of
+replication, exchangeability, meta-analysis etc. etc.
 
 ![](doc/bear_banner.png)
 
@@ -15,21 +15,21 @@ etc. to
 Current version of the dataset includes:
 
     ## # A tibble: 14 × 8
-    ##    dataset                      n_z n_meta median_j n_study median_k pct_signif type                        
-    ##    <chr>                      <int>  <int>    <dbl>   <int>    <dbl>      <dbl> <chr>                       
-    ##  1 Adda et al                 12273      1       NA    4940        4      0.550 RCT: 12273                  
-    ##  2 Arel-Bundock et al         16649     46     1083    2252       25      0.467 NA: 16649                   
-    ##  3 Askarov et al              21408      1       NA    1913       28      0.520 mixed: 1297, observational:…
-    ##  4 Barnett and Wren         1306551      1       NA  416027        4      0.808 NA: 1306551                 
-    ##  5 Brodeur et al               8424      1       NA     176       67      0.374 DID: 50, IV: 133, RCT: 8241 
-    ##  6 Chavalarias et al        7935864      1       NA 1887178        6      0.627 NA: 7935864                 
-    ##  7 Cochrane                   31594   5452       10   25593        1      0.328 observational: 15878, RCT: …
-    ##  8 Costello and Fox           88218    232     1064   12927       18      0.419 NA: 88218                   
-    ##  9 Head et al               2010875      1       NA  219867       15      0.622 NA: 2010875                 
-    ## 10 Jager and Leek             15653      1       NA    5322        4      0.777 RCT: 4771, NA: 10882        
-    ## 11 Metapsy                     3544     16      315    1276        2      0.491 RCT: 3544                   
-    ## 12 Sladekova et al            11540    406       55    3471        1      0.590 NA: 11540                   
-    ## 13 What Works Clearinghouse    1431      1       NA     246        9      0.372 NA: 1431                    
+    ##    dataset                      n_z n_meta median_j n_study median_k pct_signif type                                       
+    ##    <chr>                      <int>  <int>    <dbl>   <int>    <dbl>      <dbl> <chr>                                      
+    ##  1 Adda et al                 12273      1       NA    4940        4      0.550 RCT: 12273                                 
+    ##  2 Arel-Bundock et al         16649     46     1083    2252       25      0.467 NA: 16649                                  
+    ##  3 Askarov et al              21408    352      239    1913       28      0.520 mixed: 1297, observational: 19446, RCT: 665
+    ##  4 Barnett and Wren         1306551      1       NA  416027        4      0.808 NA: 1306551                                
+    ##  5 Brodeur et al               8424      1       NA     176       67      0.374 DID: 50, IV: 133, RCT: 8241                
+    ##  6 Chavalarias et al        7935864      1       NA 1887178        6      0.627 NA: 7935864                                
+    ##  7 Cochrane                   31594   5452       10   25593        1      0.328 observational: 15878, RCT: 15716           
+    ##  8 Costello and Fox           88218    466      731   12927       16      0.419 NA: 88218                                  
+    ##  9 Head et al               2010875      1       NA  219867       15      0.622 NA: 2010875                                
+    ## 10 Jager and Leek             15653      1       NA    5322        4      0.777 RCT: 4771, NA: 10882                       
+    ## 11 Metapsy                     3544     16      315    1276        2      0.491 RCT: 3544                                  
+    ## 12 Sladekova et al            11540    406       55    3471        1      0.590 NA: 11540                                  
+    ## 13 What Works Clearinghouse    1431      1       NA     246        9      0.372 NA: 1431                                   
     ## 14 Yang et al                 17748      1       NA    3807       10      0.403 NA: 17748
 
 References and short descriptions of datasets we included are [available

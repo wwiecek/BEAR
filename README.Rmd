@@ -1,11 +1,12 @@
 
 # Benchmarks of Experimental Accuracy in Research
 
-BEAR is a database containing z values, effect sizes and standard errors from 
-various scientific disciplines. It doesn't contribute any new data, but 
-repackages and merges publicly available datasets in a manner which we hope 
+BEAR is a "meta"-database containing z values, effect sizes and standard errors 
+from existing databases in various scientific disciplines. 
+It doesn't contribute any new data, but 
+repackages and merges what's publicly available in a manner which we hope 
 is maximally user-friendly. Our intention is to help researchers interested in 
-issues of replication, exchangeability, meta-analysis etc. etc. to 
+issues of replication, exchangeability, meta-analysis etc. etc.
 
 ![](doc/bear_banner.png)
 

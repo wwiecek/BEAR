@@ -2,8 +2,9 @@ library(tidyverse)
 library(tictoc)
 library(digest)
 source("R/helpers.R")
+source("R/settings.R")
 source("R/mix.R")
-source("R/mix_v2.R")
+source("R/mix_v2.R") #faster alternatives!
 
 bear <- readRDS("data/BEAR.rds")
 
@@ -24,6 +25,11 @@ bear_list <- split(bear_processed, bear_processed$dataset)
 
 bear_hash <- lapply(bear_list, digest)
 previous_hash <- readRDS("results/mixtures_hash.rds")
+for(nm in names(bear_hash)){
+  if(bear_hash[[nm]] != previous_hash[[nm]])
+    cat(nm)
+}
+
 
 # For test purposes, if there are too many rows
 # first try to pick only one estimate per study
@@ -43,6 +49,9 @@ bear_list_thin <- bear_list %>% lapply(function(df) {
     mutate(k = n()) %>% 
     ungroup() %>% 
     mutate(weight = 1/k) %>% 
+    # large values make no sense in experimental research 
+    # and are likely entry errors or rounding artefacts
+    mutate(z = ifelse(abs(z) > 100, sign(z)*100, z)) %>% 
     select(-j)
 })
 
@@ -59,7 +68,8 @@ for(nm in mtofit) {
     tic()
     df <- bear_list_thin[[nm]]
     mixture_fit_list[[nm]] <- fit_mixture(z = df$z, 
-                                          truncated = df$truncated, 
+                                          operator = df$z_operator,
+                                          # truncated = df$truncated, 
                                           weight = df$weight, 
                                           optimiser = "L-BFGS")
     saveRDS(mixture_fit_list[[nm]], fnm)

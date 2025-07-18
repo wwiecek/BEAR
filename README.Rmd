@@ -10,7 +10,7 @@ issues of replication, exchangeability, meta-analysis etc. etc.
 
 ![](doc/bear_banner.png)
 
-# Sources of data in this project
+# Contents of the dataset and this repo
 
 Current version of the dataset includes:
 
@@ -22,9 +22,8 @@ bear %>%
   group_by(dataset) %>% 
   summarise(n_z = n(), 
             n_meta = n_distinct(metaid), 
-            median_j  = median(j),
             n_study = n_distinct(studyid), 
-            median_k = median(k), 
+            mean_k  = n()/n_distinct(studyid), 
             pct_signif = sum(abs(z)>1.96)/n(),
             type = {
               tab <- table(method)
@@ -37,16 +36,13 @@ bear %>%
 ```
 
 References and short descriptions of datasets we included are 
-[available as a Google Doc](https://docs.google.com/document/d/1ZZAEwfHS0aAELN1w1lqEO6-eeu31_WdL/edit?usp=sharing&ouid=114240127695432531696&rtpof=true&sd=true).
+[available as a Google Doc](https://docs.google.com/document/d/1ZZAEwfHS0aAELN1w1lqEO6-eeu31_WdL/edit?usp=sharing&ouid=114240127695432531696&rtpof=true&sd=true). Summaries and details about contents of each dataset (e.g. how study IDs are coded) are in the [summary spreadsheet](https://docs.google.com/spreadsheets/d/1x2A4pgNDfrXRTdzI_LX219twXDXPPPiS7DRw1s6dHyo/edit?gid=0#gid=0)
 
+The dataset is created in `process_data.R`. Brief data dictionary is as follows:
 
-
-# How this dataset was created 
-
-## Processing of individual datasets 
-
-General methodology for creating sets of z-values:
-
+- `studyid` is study indicator
+    - each dataset has different naming convention (which we retain from original authors) but for many we have access to DOIs or PMIDs and they can be cross-referenced
+- For sets of meta-analyses, also retain `metaid` indicator
 - Characterise the method used to obtain the estimates:
     - `RCT` is the main category we care about (available in Adda et al, Cochrane database, Askarov, Brodeur)
     - in Jager and Leek there is no classification done by the authors, but we can look for keywords "randomised", "randomized" and "controlled" in study titles to categorise them as RCTs
@@ -54,25 +50,22 @@ General methodology for creating sets of z-values:
     - `observational` means non-RCT in Cochrane
     - we have a few instrumental variable and differences-in-differences estimates from Brodeur et al
     - all other datasets mix various types of effects and are therefore `NA` 
-- Extract or calculate `z`:
-    - `z = b/se` in most datasets 
+- In columns `z` (z value), `b` (effect size), `se` (standard error), `p` (p-value). Our main aim is to extract or calculate `z`:
+    - We calculate `z = b/se` in most datasets 
     - if no SE is avaialble, but we have p-value, we do `-qnorm(p/2)` (or `sign(b)*qnorm(1-p/2)` to retrieve sign of z)
     - for Barnett and Wren there are no SE but we have 95% intervals; we switch to log scale, calculate `se` by dividing by 3.96 and `b` as midpoint
     - for Sladekova et al we use Fisher's z transformation of correlation coefficients, `b = 0.5*log((1 + yi)/(1 - yi))`
     - for MetaPsy database it is standardised to Hedges' $g$
-- If some `z` values were truncated in some way, keep an indicator for that (Jager and Leek only)
-- Extract year
-    - if available, year of intervention (Askarov et al); if not, year of study; 
-    - in one case (Yang et al) I retrieve year of study it from study titles, since half of them have dates available
-- Keep study indicator, labelled `studyid`
-- For sets of meta-analyses, also retain `metaid` indicator
+- `z_operator` column denotes if `z` values were truncated in some way (usually because they were extracted as statements about p values such as "p < 0.05", "p < 0.001", "p > 0.5"), we retain that information
+- `year` denotes, if available, year of intervention (Askarov et al); if not, year of study; 
+    - in one case (Yang et al) I retrieve year of study from study titles, since half of them have dates available
 - Remove studies where z's are NA before saving (to reduce size of data)
-- Join into a single table with column `dataset` 
 
 ## Optional post-processing 
 
-- Truncate very large z values
-- Add number of observations in each study, 
-- Add number of studies in each meta-analysis 
-- For large datasets, choose one z-value per study
+We fit mixtures of half-normals to each dataset in `fit_mixtures.R`. To do that, we do some additional post-processing
+
+- Add number of observations in each study and number of studies in each meta-analysis 
 - Add study weights as 1 / (N values reported in that study)
+- For large datasets, choose one z-value per study
+- Truncate very large z values (z > 20) and replace "z = 0" statements with "z < 0.5"

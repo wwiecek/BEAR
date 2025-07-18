@@ -4,7 +4,7 @@ library(digest)
 source("R/helpers.R")
 source("R/settings.R")
 source("R/mix.R")
-source("R/mix_v2.R") #faster alternatives!
+# source("R/mix_v2.R") #faster alternatives!
 
 bear <- readRDS("data/BEAR.rds")
 
@@ -13,15 +13,16 @@ set.seed(1990)
 bear_processed <- 
   bear %>% 
   mutate(z_operator = ifelse(is.na(z_operator), "=", z_operator)) %>% 
-  mutate(truncated  = ifelse(z_operator != "=", 1, 0)) %>% 
+  # large values make no sense in experimental research 
+  # and are likely entry errors or rounding artefacts
+  mutate(z = ifelse(abs(z) > 20, sign(z)*20, z))
+  # mutate(truncated  = ifelse(z_operator != "=", 1, 0))
   # in some datasets some fraction of a % of studies have truncation going in the 
   # opposite of "expected" direction,  think e.g. "p > 0.1"; easiest to remove them
   # since in analysis we will assume that meaning of "truncated" flips as we cross ~1.96
-  filter(!((z_operator == "<" & z > 1.96) | (z_operator == ">" & z <= 1.959)))
+  # filter(!((z_operator == "<" & z > 1.96) | (z_operator == ">" & z <= 1.959)))
   
 bear_list <- split(bear_processed, bear_processed$dataset)
-
-
 
 bear_hash <- lapply(bear_list, digest)
 previous_hash <- readRDS("results/mixtures_hash.rds")
@@ -49,9 +50,6 @@ bear_list_thin <- bear_list %>% lapply(function(df) {
     mutate(k = n()) %>% 
     ungroup() %>% 
     mutate(weight = 1/k) %>% 
-    # large values make no sense in experimental research 
-    # and are likely entry errors or rounding artefacts
-    mutate(z = ifelse(abs(z) > 100, sign(z)*100, z)) %>% 
     select(-j)
 })
 
@@ -70,8 +68,7 @@ for(nm in mtofit) {
     mixture_fit_list[[nm]] <- fit_mixture(z = df$z, 
                                           operator = df$z_operator,
                                           # truncated = df$truncated, 
-                                          weight = df$weight, 
-                                          optimiser = "L-BFGS")
+                                          weight = df$weight)
     saveRDS(mixture_fit_list[[nm]], fnm)
     toc()
   }
@@ -115,4 +112,6 @@ combined_plot <- arrangeGrob(grobs = Map(function(p, name) {
   p + ggtitle(bear_names[[name]])
 }, pl, names(pl)), ncol = 5)
 
-ggsave("results/mixtures_plot.pdf", combined_plot, width = 16, height = 9)
+# ggsave("results/mixtures_plot.pdf", combined_plot, width = 16, height = 9)
+ggsave("results/mixtures_plot.pdf", combined_plot, width = 11.69 - 2, height = 8.27 - 1,  # A4 landscape in inches
+       units = "in", dpi = 300, device = cairo_pdf)

@@ -1,5 +1,3 @@
-## Conditional distribution of SNR given z
-
 # Conditional distribution of SNR given z, when SNR ~ dmix(p,m,s)
 
 posterior <- function(z,p,m,s) {

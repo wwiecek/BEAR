@@ -17,28 +17,34 @@ gap = function(z,
 }
 
 
-gap_plot = function(p,m,s){
+# gap_plot = function(p,m,s){
+gap_plot = function(fit, pow = NA){
+  z_grid <- data.frame(z=seq(0,5,0.1))
   
-  df0=data.frame(z=seq(0,5,0.01))
-  df0=df0 %>% rowwise() %>% mutate(prob=gap(z)) %>%
-    unnest_wider(prob)
-  df0= df0 %>% pivot_longer(cols=c('sgn', 'rep'),
-                            names_to='label',
-                            values_to='prob')
+  df0 <- z_grid %>% 
+    rowwise() %>% 
+    mutate(prob=gap(z)) %>%
+    unnest_wider(prob) %>% 
+    pivot_longer(cols=c('sgn', 'rep'),
+                 names_to='label',
+                 values_to='prob')
   
-  df=data.frame(z=seq(0,5,0.01),prior="Empirical prior")
-  df=df %>% rowwise() %>% mutate(prob=gap(z,p=p,m=m,s=s)) %>%
-    unnest_wider(prob)
-  df = df %>% pivot_longer(cols=c('sgn', 'rep'),
-                           names_to='label',
-                           values_to='prob')
-  df$label=recode_factor(df$label,
-                         "rep" = "successful replication", 
-                         "sgn" = "correct sign")
+  df <- z_grid %>% 
+    rowwise() %>% 
+    mutate(prob=gap(z = z, p = fit$p, m = fit$m, s = fit$sigma_SNR)) %>%
+    unnest_wider(prob) %>% 
+    pivot_longer(cols=c('sgn', 'rep'),
+                 names_to='label',
+                 values_to='prob') %>% 
+    mutate(label=recode_factor(label,
+                               "rep" = "successful replication", 
+                               "sgn" = "correct sign")) %>% 
+    mutate(prior = "Empirical prior")
   
-  snr=rmix(10^5,p=p,m=m,s=s)
-  power=pnorm(-1.96,snr,1) + 1 - pnorm(1.96,snr,1)
-  pow=mean(power)
+  
+  # snr=rmix(10^5,p=p,m=m,s=s)
+  # power=pnorm(-1.96,snr,1) + 1 - pnorm(1.96,snr,1)
+  # pow=mean(power)
   ggp=ggplot(df,aes(x=z,y=prob,group=label)) + 
     geom_abline(intercept=pow,slope=0,linetype="dashed",alpha=0.5) +
     geom_line() + 

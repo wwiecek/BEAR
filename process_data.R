@@ -422,10 +422,9 @@ bear <- dt_list %>%
   lapply(filter, !is.na(z)) %>% 
   bind_rows(.id = "dataset") %>% 
   group_by(dataset, metaid, studyid) %>% 
-  mutate(k = n()) %>% 
+  # mutate(k = n()) %>% 
   ungroup() %>% 
   group_by(dataset, metaid) %>% 
-  mutate(j = ifelse(is.na(metaid), NA, n())) %>% 
   ungroup()
 
 saveRDS(bear, "data/BEAR.rds")

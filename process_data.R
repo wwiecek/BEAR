@@ -14,9 +14,10 @@ dt_list[["Brodeur"]] <- read_dta("data/Brodeur/merged.dta") %>%
     metaid = NA,
     studyid = title,
     method = method,
+    measure = NA,
     z = myz,
-    b = NA,
-    se = NA,
+    b = coeff,
+    se = stderror,
     year = year)
 
 # Could use:
@@ -37,6 +38,7 @@ dt_list[["Askarov"]] <- read_dta("data/Askarov/Mandatory data-sharing 30 Aug 202
     metaid = filename,
     studyid = studyid,
     method = ifelse(EXPERIMENT == 1, "RCT", ifelse(mixed == 1, "mixed", "observational")),
+    measure = NA,
     z = effectsize/standarderror,
     b = effectsize,
     se = standarderror,
@@ -67,10 +69,13 @@ dt_list[["ArelBundock"]] <-
   transmute(
     metaid = meta_id, 
     studyid = study_id,
+    field = subfield,
     method = NA,
+    measure = NA,
     z = as.numeric(estimate)/as.numeric(std.error),
     b = as.numeric(estimate),
     se = as.numeric(std.error),
+    ss = n,
     year = study_year) 
 
 
@@ -93,9 +98,11 @@ dt_list[["WWC"]] <- read_csv("data/WWC/Kraft_wwc_merge.csv", show_col_types = FA
     metaid = NA, 
     studyid = cite_trunc,
     method = NA,
+    measure = NA,
     z = sign(b)*qnorm(1 - pval/2),
     b = b,
     se = NA,
+    ss = Sample.size,
     year = Publication.year) 
 
 # potentially also of interest:
@@ -120,16 +127,52 @@ extract_year_yang <- function(x) {
   return(NA)
 }
 
-dt_list[["Yang"]] <- read.csv("data/Yang/dat_processed_rob.csv") %>% 
-  transmute(
-    metaid = NA, 
-    studyid = study,
-    method = NA,
-    z = z,
-    b = es,
-    se = se) %>%
-  mutate(year = sapply(studyid, extract_year_yang))
+# this derived dataset is OK, but it does not have year, method, and meta_id
+# that I'd like to use, therefore I do minimal data processing in data/Yang/
+# to get data from Yang 2023 paper
 
+# dt_list[["Yang"]] <- read.csv("data/Yang/dat_processed_rob.csv") %>% 
+#   transmute(
+#     metaid = NA, 
+#     studyid = study,
+#     method = NA,
+#     z = z,
+#     b = es,
+#     se = se) %>%
+#   mutate(year = sapply(studyid, extract_year_yang))
+
+load("data/Yang/EcoEvo_PB_datasets.Rdata")
+
+dt_list[["Yang"]] <- rbind(
+  lnRR %>% 
+    lapply(function(x) select(x, study_ID, year_pub, es, sei) %>% 
+             mutate(study_ID = as.character(study_ID))) %>% 
+    bind_rows(.id = "meta_id") %>% 
+    mutate(measure = "lnRR"),
+  
+  Zr %>% 
+    lapply(function(x) select(x, study_ID, year_pub, es, sei) %>% 
+             mutate(study_ID = as.character(study_ID))) %>% 
+    bind_rows(.id = "meta_id") %>% 
+    mutate(measure = "Zr"),
+  
+  SMD %>% 
+    lapply(function(x) select(x, study_ID, year_pub, es, sei) %>% 
+             mutate(study_ID = as.character(study_ID))) %>% 
+    bind_rows(.id = "meta_id") %>% 
+    mutate(measure = "SMD")
+) %>% 
+  mutate(year_pub = ifelse(year_pub < 1900, NA, year_pub)) %>% # 1 typo
+  transmute(
+      metaid = meta_id,
+      studyid = study_ID,
+      year = year_pub,
+      measure = measure,
+      method = NA,
+      z = es/sei,
+      b = es,
+      se = sei,
+      ss = NA)
 
 
 # Costello and Fox -----
@@ -143,10 +186,12 @@ dt_list[["CostelloFox"]] <-
   transmute(
     metaid = as.character(meta.analysis.id), #meta.analysis.paper has only 232 unique values, this has 466
     studyid = study2,
+    measure = grouped_es, #could use eff.size.measure for more info
     method = NA,
     z = z,
     b = eff.size,
     se = se.eff.size,
+    ss = NA,
     year = study.year) 
 
 # # group_by(key) %>% 
@@ -162,17 +207,18 @@ load("data/JagerLeek/pvalueData.rda")
 dt_list[["JagerLeek"]] <-  
   pvalueData %>% 
   data.frame() %>% 
+  select(-abstract) %>% 
   mutate_at(c('pvalue','year'), as.numeric) %>%
   mutate(method = ifelse(grepl("randomized|randomised|controlled", title), "RCT", NA)) %>% 
   transmute(
     metaid = NA,
     studyid = pubmedID,
     method = method,
+    measure = NA,
     p = pvalue,
     z = -qnorm(pvalue/2),
-    b = NA, se = NA,
-    # about 1/3 truncated, almost always .0001, .001, .01, or .05, so it's "<"
-    # truncated = ifelse(pvalueTruncated == "1","truncated", "not truncated"),
+    b = NA, se = NA, ss=NA,
+    # about 1/3 truncated, almost always .0001, .001, .01, or .05, so it's "p <"
     z_operator = ifelse(pvalueTruncated == "1", ">", "="),
     year = year) 
 
@@ -183,7 +229,14 @@ dt_list[["JagerLeek"]] <-
 dfs <- lapply(list.files("data/Sladekova/", full.names = TRUE), read.csv)
 names(dfs) <- list.files("data/Sladekova/")
 
+
+
+# sort(table(unlist(lapply(dfs, function(f) names(f)))), decreasing = TRUE)
+
 dt_list[["Sladekova"]] <- lapply(dfs, function(df){
+  
+  if(all(c("n_treatment", "n_control") %in% colnames(df))) df$n <- df$n_treatment + df$n_control
+  
   ret <- df %>% 
     filter(!is.na(yi) & !is.na(vi)) %>% 
     # Fisher's z won't work otherwise; this affects less than 0.5% of observations
@@ -191,15 +244,24 @@ dt_list[["Sladekova"]] <- lapply(dfs, function(df){
     mutate(
       b = 0.5*log((1 + yi)/(1 - yi)),
       se = sqrt(vi)) 
+  
+  # Trying to count sample sizes where possible
+  
   if(nrow(ret) == 0)
     return(data.frame())
-  if(!is.null(ret$author)) ret$studyid <- ret$author else ret$studyid <- as.character(1:nrow(ret))
+  # Study column is broken, as a temporary fix I need to assign new numerical study IDs
+  # if(!is.null(ret$author)) ret$studyid <- as.character(ret$author) else ret$studyid <- as.character(1:nrow(ret))
   if(is.null(ret$year)) ret$year <- as.numeric(NA) else ret$year <- as.numeric(ret$year)
-  ret %>% select(studyid, b, se, year)
+  if(is.null(ret$n)) ret$ss <- as.numeric(NA) else ret$ss <- as.numeric(ret$n)
+  
+  ret %>% 
+    select(b, se, year, ss)
 }) %>% 
   bind_rows(.id = "metaid") %>% 
   filter(!is.na(b) & !is.infinite(b)) %>% 
-  mutate(method = NA, 
+  mutate(studyid = 1:nrow(.)) %>% 
+  mutate(method = NA,
+         measure = "Zr",
          z = b/se,
          year = NA) %>% 
   filter(!is.na(metaid)) 
@@ -210,6 +272,8 @@ dt_list[["Sladekova"]] <- lapply(dfs, function(df){
 
 
 # Metapsy -----
+
+sort(table(unlist(lapply(readRDS("data/Metapsy/metapsy_dt.rds"), function(f) names(f)))), decreasing = TRUE)
 
 dt_list[["Metapsy"]] <- readRDS("data/Metapsy/metapsy_dt.rds") %>% 
   lapply(function(df) {
@@ -223,8 +287,12 @@ dt_list[["Metapsy"]] <- readRDS("data/Metapsy/metapsy_dt.rds") %>%
         mutate(.g  = logor/(pi/sqrt(3)),
                .g_se = se.logor/(pi/sqrt(3)))
     }
+    
+    if(all(c("n_arm1", "n_arm2") %in% colnames(df))) df$ss <- df$n_arm1 + df$n_arm2
+    else df$ss <- NA
+    
     if (all(c("study", ".g", ".g_se") %in% colnames(df))) {
-      ret <- df[, c("study", ".g", ".g_se"), drop = FALSE]
+      ret <- df[, c("study", ".g", ".g_se", "ss"), drop = FALSE]
       if(!is.null(df$year))
         ret$year <- df$year
       else #this happens in suicide-psyctr
@@ -239,10 +307,12 @@ dt_list[["Metapsy"]] <- readRDS("data/Metapsy/metapsy_dt.rds") %>%
     metaid = metaid,
     studyid = study,
     method = "RCT",
+    measure = "g",
     year = year,
     z = .g/.g_se,
     b = .g,
-    se = .g_se)
+    se = .g_se,
+    ss = ss)
 
 
 
@@ -266,10 +336,12 @@ dt_list[["BarnettWren"]] <- complete %>%
   transmute(metaid = NA,
             studyid = pubmed,
             method = NA,
+            measure = "ratio",
             z = b/se,
             b = b,
             se = se,
-            year = Year)
+            year = Year,
+            ss = NA)
 
 
 # Cochrane -----
@@ -292,21 +364,23 @@ dt_list[["Cochrane"]] <- rbind(
     escalc(m1i=mean1,sd1i=sd1,n1i=total1,
            m2i=mean2,sd2i=sd2,n2i=total2,measure="SMD",
            data=., append=TRUE) %>% 
-    as_tibble(), #%>% mutate(estimator = "SMD"),
+    as_tibble() %>% mutate(measure = "SMD"),
   dplyr::filter(data_filtered, outcome.flag=="DICH") %>% 
     escalc(ai=events1,n1i=total1,
            ci=events2,n2i=total2,measure="PBIT",
            data=.,append=TRUE) %>% 
-    as_tibble() #%>% mutate(estimator = "probit")
+    as_tibble() %>% mutate(measure = "probit")
 ) %>% 
   transmute(
     metaid = id,
     studyid = study.name,
     method = ifelse(RCT == "yes", "RCT", "observational"),
+    measure = measure,
     z = yi/sqrt(vi),
     b = yi,
     se = sqrt(vi),
-    year = study.year)
+    year = study.year,
+    ss = total1 + total2)
 
 rm(data, data_filtered)
 
@@ -314,45 +388,54 @@ rm(data, data_filtered)
 
 # Adda -----
 
-dt_list[["Adda"]] <- read_dta("data/Adda/data_counterfactual_analysis.dta") %>% 
-  # We lose about 1-1.5% of p-values with lower truncation (e.g. "p > 0.05")
-  # This will slightly bias publication bias adjustments, but it's a small 
-  # difference
-  filter(phase %in% c("Phase 2","Phase 3") & p_value_modifier!=">") %>% 
-  transmute(metaid = NA,
-            studyid = nct_id,
+# dt_list[["Adda"]] <- read_dta("data/Adda/data_counterfactual_analysis.dta") %>% 
+#   # 15 cases of trials that will finish in the future, so set to NA just in case
+#   mutate(ifelse(completion_year >= 2025, NA, completion_year)) %>% 
+#   filter(phase %in% c("Phase 2","Phase 3")) %>% 
+#   transmute(metaid = NA,
+#             studyid = nct_id,
+#             method = "RCT",
+#             measure = NA,
+#             year = completion_year,
+#             z = z,
+#             b = NA,
+#             se = NA,
+#             ss = enrollment, #remember to note this in dataset notes!
+#             z_operator = case_when(p_value_modifier == "<" ~ ">",
+#                                    p_value_modifier == ">" ~ "<",
+#                                    .default = "=")
+#   )
+
+dt_list[["clinicaltrials"]] <- readRDS("data/clinicaltrials.gov/data_cut_with_z.rds") %>% 
+  filter(study_type == "INTERVENTIONAL" & allocation == "RANDOMIZED") %>% 
+  # Remove some studies with huge numbers of arms; they are typically phase 1 or 2 studies
+  # that are just throwing darts at many outcomes, so let's keep more ideal outcomes
+  group_by(nct_id) %>% filter(n() < 20) %>% ungroup %>% 
+  transmute(studyid = nct_id,
+            year = year,
+            group = tolower(phase),
             method = "RCT",
-            year = completion_year,
+            measure = measure_class,
             z = z,
-            b = NA,
-            se = NA,
-            z_operator = as.character(factor(
-              p_value_modifier, levels = c("", "<"), labels=c("=",">")))
-            # truncated = as.character(factor(p_value_modifier, 
-            #                                 levels = c("", "<"), 
-            #                                 labels=c("not truncated","truncated")))
-  )
-
-
-# Could be useful to add
-# d$phase=factor(d$phase)
-# table(d$phase,useNA = "ifany")
-
-
+            b = effect,
+            se = se,
+            ss = enrollment,
+            z_operator = "=")
 
 # Head -----
 
-head <- read_csv("data/Head/p_values_cleaned_ww.csv")
-
-dt_list[["Head"]] <- head %>% 
+dt_list[["Head"]] <- readRDS("data/Head/head.rds") %>% 
   transmute(metaid = NA,
-            studyid = first.doi,
+            studyid = pmid,
+            source = section,
             method = NA,
+            measure = NA,
             year = year,
             p = p.value,
             z = qnorm(1 - p.value/2),
             b = NA,
             se = NA,
+            ss = NA,
             # we do not differntiate between leq and lesser, because it doesn't 
             # really change analytical procedures we have in mind
             z_operator = case_when(
@@ -367,20 +450,7 @@ dt_list[["Head"]] <- head %>%
 
 # Chavalarias -----
 
-# https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/6FMTT3
-
-chava <- rbind(
-  read_csv("data/Chavalarias/medline_full_txt_pv.csv", 
-           col_names = c("studyid", "journal", "operator", "p", "year", "p_format", "flag")) %>% 
-    mutate(source = "PMC full text"),
-  read_csv("data/Chavalarias/medline_pt.csv", 
-           col_names = c("operator", "p", "p_format", "year", "journal", "studyid", "flag")) %>% 
-    mutate(source = "MEDLINE")
-) 
-
-# chava %>% group_by(operator, p_format, flag, source) %>% tally %>% View
-
-dt_list[["Chavalarias"]] <- chava %>% 
+dt_list[["Chavalarias"]] <- readRDS("data/Chavalarias/chavalarias.rds") %>% 
   # p_format coding is explained on Harvard Dataverse, but 99.3% of the values are "plain", 
   # so we stick to that
   filter(p_format == "plain") %>% 
@@ -393,12 +463,15 @@ dt_list[["Chavalarias"]] <- chava %>%
   filter(!is.na(operator)) %>% 
   transmute(metaid = NA,
             studyid = studyid,
+            source = source,
             method = NA,
+            measure = NA,
             year = year,
             p = p,
             z = qnorm(1 - p/2),
             b = NA,
             se = NA,
+            ss = NA,
             z_operator = case_when(
               operator == "=" ~ "=",
               operator == "<" ~ ">",

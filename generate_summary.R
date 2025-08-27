@@ -37,3 +37,9 @@ df_tex %>%
   kable_styling(latex_options = c("hold_position")) %>%
   writeLines("results/table1.tex")
 
+# Count PMID overlaps
+dfs <- list("A" = bear_list$JagerLeek, 
+            "B" = bear_list$Chavalarias, 
+            "C" = bear_list$BarnettWren)
+match_matrix(lst)
+

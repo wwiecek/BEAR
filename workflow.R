@@ -1,42 +1,55 @@
 # analytical workflow for each dataset
 library(tidyverse)
+library(ggplot2)
 
+source("R/settings.R")
 source("R/exaggeration.R")
 source("R/gap.R")
 source("R/helpers.R")
 source("R/mix.R")
-source("R/posterior.R")
 
 
-mfl <- list()
-nms <- gsub(".rds", "", list.files("results/mixtures/"))
-for(nm in nms) {
-  fnm <- paste0("results/mixtures/", nm, ".rds")
-  mfl[[nm]] <- readRDS(fnm)
+mfl <- load_all_mixtures()
+
+# Calculate the derived quantities -----
+
+N <- 1e05 #will take a while to calculate for 100,000 rows per dataset without vectorising gap()
+
+psr_foo <- function(fit, ss_multiplier = 1) {
+  snr <- sqrt(ss_multiplier)*rmix(N, p = fit$p, m = fit$m, s = fit$sigma_SNR)
+  z   <- snr + rnorm(N)
+  power    <- (1 - pnorm(1.96, snr, 1)) + pnorm(-1.96, snr, 1)
+  pr <- gap_vec(z, p = fit$p, m = fit$m, s_snr = fit$sigma_SNR)
+  # Faster vectorised version
+  data.frame(snr, z, power, row.names = NULL) %>%
+    mutate(sgn = pr$sgn, rep = pr$rep)
 }
 
+df_psr <- lapply(mfl, psr_foo) %>% bind_rows(.id = "dataset")
+df_psr_169 <- lapply(mfl, psr_foo, 1.69) %>% bind_rows(.id = "dataset")
 
-N <- 1e04
-# power, sign, replication: all in a single data frame
-df_psr <- lapply(mfl, function(fit) 
-  data.frame(snr = rmix(N,p=fit$p,m=fit$m,s=fit$sigma_SNR)) %>% 
-  mutate(z = snr + rnorm(N)) %>% 
-  rowwise() %>% 
-  mutate(power = pnorm(-1.96, snr, 1) + 1 - pnorm(1.96, snr, 1),
-         prob  = gap(z = z, p = fit$p, m = fit$m, s = fit$sigma_SNR)) %>%
-  unnest_wider(prob)
-)  
+# saveRDS(df_psr, file = "results/power_sign_replication.rds")
 
-# Table with study summaries
-tab2 <- bind_rows(df_psr, .id = "dataset") %>% group_by(dataset) %>% 
+
+# Table with study summaries ------
+summ_foo <- function(df) 
+  df %>% 
+  group_by(dataset) %>% 
   summarise(
-    mean(power),
-    sum(power > .8)/n(),
-    # sum(sgn > .8)/n(),
-    mean(sgn),
-    # sum(rep > .8)/n(),
-    mean(rep)) %>% 
+    p = mean(power),
+    p80 = sum(power > .8)/n(),
+    s = mean(sgn),
+    r = mean(rep)) %>% 
   mutate(dataset = bear_names[dataset]) 
+
+tab2 <- summ_foo(df_psr)
+
+left_join(summ_foo(df_psr),
+          summ_foo(df_psr_169), 
+          by = "dataset") %>% 
+  mutate(diff_p = p.x - p.y,
+         diff_r = r.x - r.y) %>% 
+  mutate_if(is.numeric, function(x) scales::percent(as.numeric(x), accuracy = 1))
 
 tab2 %>% 
   mutate_if(is.numeric, function(x) format(round(x, 2), nsmall = 2)) %>% 
@@ -48,10 +61,23 @@ tab2 %>%
   writeLines("results/table2.tex")
 
 
-bind_rows(df_psr, .id = "dataset") %>% 
-  ggplot(aes(power, color = dataset)) + geom_density()
-bind_rows(df_psr, .id = "dataset") %>% 
-  ggplot(aes(sgn, color = dataset)) + geom_density()
 
-gap_plot(mfl[[5]])
+
+
+# Power plots -----
+
+library(ggridges)
+library(forcats)
+
+ggplot(df_psr,
+       aes(x = rep,
+           y = fct_reorder(dataset, rep, .fun = median, .desc = FALSE),
+           fill = after_stat(x))) +
+  ggridges::geom_density_ridges_gradient(
+    scale = 2.1, rel_min_height = 0.01, size = 0.25, jittered_points = FALSE
+  ) +
+  scale_x_continuous(limits = c(0, 1), expand = c(0, 0)) +
+  guides(fill = "none") +
+  labs(x = "Power", y = NULL) +
+  theme_ridges(center_axis_labels = TRUE)
 

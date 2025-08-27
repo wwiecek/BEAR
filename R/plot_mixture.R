@@ -27,7 +27,7 @@ plot_mixture_v3 <- function(fit, dt, nm = "", col = "black", xmax = 10, nbreaks 
           axis.text  = element_text(size = 7),
           legend.position = "none") + 
     annotate("text", 
-             x = 7, y = 0.55,   
+             x = 7, y = ymax - 0.05,   
              label = paste("omega ==", round(fit$omega[1], 2)),
              parse = TRUE,
              size = 3.5)

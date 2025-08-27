@@ -15,22 +15,22 @@ replication, exchangeability, meta-analysis etc. etc.
 Current version of the dataset includes:
 
     ## # A tibble: 14 × 7
-    ##    dataset                      n_z n_meta n_study mean_k pct_signif type                                       
-    ##    <chr>                      <int>  <int>   <int>  <dbl>      <dbl> <chr>                                      
-    ##  1 Adda et al                 12273      1    4940   2.48      0.550 RCT: 12273                                 
-    ##  2 Arel-Bundock et al         16649     46    2252   7.39      0.467 NA: 16649                                  
-    ##  3 Askarov et al              21408    352    1913  11.2       0.520 mixed: 1297, observational: 19446, RCT: 665
-    ##  4 Barnett and Wren         1306551      1  416027   3.14      0.808 NA: 1306551                                
-    ##  5 Brodeur et al               8424      1     176  47.9       0.374 DID: 50, IV: 133, RCT: 8241                
-    ##  6 Chavalarias et al        7935864      1 1887178   4.21      0.627 NA: 7935864                                
-    ##  7 Cochrane                   31594   5452   25593   1.23      0.328 observational: 15878, RCT: 15716           
-    ##  8 Costello and Fox           88218    466   12927   6.82      0.419 NA: 88218                                  
-    ##  9 Head et al               2010875      1  219867   9.15      0.622 NA: 2010875                                
-    ## 10 Jager and Leek             15653      1    5322   2.94      0.777 RCT: 4771, NA: 10882                       
-    ## 11 Metapsy                     3544     16    1276   2.78      0.491 RCT: 3544                                  
-    ## 12 Sladekova et al            11540    406    3471   3.32      0.590 NA: 11540                                  
-    ## 13 What Works Clearinghouse    1431      1     246   5.82      0.372 NA: 1431                                   
-    ## 14 Yang et al                 17748      1    3807   4.66      0.403 NA: 17748
+    ##    dataset                  n_z n_meta n_study mean_k pct_signif type                                       
+    ##    <chr>                  <int>  <int>   <int>  <dbl>      <dbl> <chr>                                      
+    ##  1 Arel-Bundock et al     16649     46    2252   7.39      0.467 NA: 16649                                  
+    ##  2 Askarov et al          21408    352    1913  11.2       0.520 mixed: 1297, observational: 19446, RCT: 665
+    ##  3 Barnett and Wren     1306551      1  416027   3.14      0.808 NA: 1306551                                
+    ##  4 Brodeur et al           8424      1     176  47.9       0.374 DID: 50, IV: 133, RCT: 8241                
+    ##  5 Chavalarias et al    7935864      1 1887178   4.21      0.627 NA: 7935864                                
+    ##  6 Cochrane               31594   5452   25593   1.23      0.328 observational: 15878, RCT: 15716           
+    ##  7 Costello and Fox       88218    466   12927   6.82      0.419 NA: 88218                                  
+    ##  8 Head et al           2010875      1  219220   9.17      0.622 NA: 2010875                                
+    ##  9 Jager and Leek         15653      1    5322   2.94      0.777 RCT: 4771, NA: 10882                       
+    ## 10 Metapsy                 3544     16    1276   2.78      0.491 RCT: 3544                                  
+    ## 11 Sladekova et al        11540    406   11540   1         0.590 NA: 11540                                  
+    ## 12 What Works Clearing.    1431      1     246   5.82      0.372 NA: 1431                                   
+    ## 13 Yang et al             17638     87    3796   4.65      0.417 NA: 17638                                  
+    ## 14 clinicaltrials.gov     27943      1   11186   2.50      0.526 RCT: 27943
 
 References and short descriptions of datasets we included are [available
 as a Google
@@ -60,14 +60,19 @@ follows:
     estimates from Brodeur et al
   - all other datasets mix various types of effects and are therefore
     `NA`
+- Characterise `measure` of the outcome:
+  - Where known, we most often have standardised mean difference, but
+    also RR/probit/ratio estimates and correlations.
+  - Econ and political datasets and studies of p-values do not provide
+    any information on this.
 - In columns `z` (z value), `b` (effect size), `se` (standard error),
   `p` (p-value). Our main aim is to extract or calculate `z`:
   - We calculate `z = b/se` in most datasets
   - if no SE is avaialble, but we have p-value, we do `-qnorm(p/2)` (or
     `sign(b)*qnorm(1-p/2)` to retrieve sign of z)
-  - for Barnett and Wren there are no SE but we have 95% intervals; we
-    switch to log scale, calculate `se` by dividing by 3.96 and `b` as
-    midpoint
+  - for Barnett and Wren we have confidence intervals for ratio
+    estimates; we switch to log scale, calculate `se` by dividing by
+    3.96 and define `b` as interval midpoint on the log scale
   - for Sladekova et al we use Fisher’s z transformation of correlation
     coefficients, `b = 0.5*log((1 + yi)/(1 - yi))`
   - for MetaPsy database it is standardised to Hedges’ $g$
@@ -78,6 +83,10 @@ follows:
   not, year of study;
   - in one case (Yang et al) I retrieve year of study from study titles,
     since half of them have dates available
+- `ss` denotes sample size summed across both study arms
+  - Several datasets (CDSR, Sladekova, Metapsy) include sample sizes
+    broken down across arms, but we do not include them here.
+  - In Adda et al this is simply enrollment
 - Remove studies where z’s are NA before saving (to reduce size of data)
 
 ## Optional post-processing

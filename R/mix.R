@@ -41,7 +41,7 @@ dmixabs = function(x,p,m,s) # density of normal mixture (vector x)
   drop(p %*% sapply(x, function(x) (dnorm(-x,mean=m,sd=s) + dnorm(x,mean=m,sd=s))))
 
 pmixabs = function(x,p,m,s) # cumulative distr of |x|
-
+  
   drop(p %*% sapply(x, function(x) pnorm(x,mean=m,sd=s) - pnorm(-x,mean=m,sd=s)))
 
 qfunabs = function(q,p,m,s) # quantile function scalar q
@@ -50,7 +50,8 @@ qfunabs = function(q,p,m,s) # quantile function scalar q
 qmixabs = function(q,p,m,s) # quantile function vector q
   sapply(q, function(q) qfunabs(q,p=p,m=m,s=s))
 
-# WW addition to speed up calculations in newer versions
+# Some faster alternatives to speed up calculations in newer versions -----
+
 pmixabs_fast <- function(x, p, s, m = rep(0, length(p))) {
   ## x : numeric vector of evaluation points (|x|)
   ## p : mixture weights, length k, must sum to 1
@@ -120,6 +121,8 @@ loglik_op <- function(theta, z, operator,
   log_d      <- log_dmixabs(abs_z, p, s)
   F_abs      <- pmixabs_fast(abs_z, p, s)
   log_F      <- log(F_abs)
+  # log_F      <- log_pmixabs_fast(abs_z, p, s)
+  # F_abs      <- exp(log_F)
   log_omega  <- log(omega)
   
   ## constants at the publication frontier c* = 1.96 
@@ -175,41 +178,6 @@ loglik_op <- function(theta, z, operator,
   -sum(weights * (log_lik - log_norm))
 }
 
-# old version, for posterity
-loglik <- function(theta, z, truncated, k=4, weights) {
-  # all of these functions are designed to work with |z|
-  abs_z <- abs(z)
-  
-  # theta is composed of: 
-  # p = probabilities of mixture vector (k-1)
-  # s = scales of each mixture components (k)
-  # omega = relative probability of reporting
-  
-  p     <- c(theta[1:(k-1)], 1-sum(theta[1:(k-1)]))
-  s     <- theta[k:(2*k-1)]
-  omega <- theta[2*k]
-  
-  # means of mixtures are set to zeroes by default
-  m     <- rep(0,k)
-  
-  B1 <- 1-pmixabs(1.96,p,m,s)    # prob. |z|>1.96
-  B2 <- 1-B1                     # prob. |z|<1.96
-  
-  # For minimally faster operation, evaluate these once
-  p_mix_eval <- pmixabs(abs_z,p,m=m,s=s)
-  d_mix_eval <- dmixabs(abs_z,p,m=m,s=s)
-  
-  # it's common to have truncated == 1 and abs_z == 1.959964,
-  # so setting the inequality at 1.96 would "flip" the truncation
-  lik1 <- (abs_z <  1.9599)*( truncated)*omega*p_mix_eval
-  lik2 <- (abs_z <  1.9599)*(!truncated)*omega*d_mix_eval
-  lik3 <- (abs_z >= 1.9599)*(!truncated)*d_mix_eval
-  lik4 <- (abs_z >= 1.9599)*( truncated)*(1-p_mix_eval)
-  
-  lik <- (lik1+lik2+lik3+lik4)/(B1 + omega*B2)
-  
-  return(-sum(weights*log(lik)))   # *minus* the weighted log lik
-}
 
 # Mixture optimisation function -----
 # Erik's old code makes use of constrOptim() and Nelder-Mead;
@@ -217,85 +185,83 @@ loglik <- function(theta, z, truncated, k=4, weights) {
 # allows for use of BFGS optimiser and faster loglik code,
 # as well as new truncation behaviour
 
-optimise_mixture_v2 <- function(z, z_operator, weights, k = 4, 
-                                optimiser = c("Nelder-Mead", "L-BFGS")) {
-  
-  optimiser <- match.arg(optimiser)
+optimise_mixture <- function(z, z_operator, weights, k = 4,
+                             legacy_mode = FALSE) {
   z <- abs(z)
   
-  ## starting values
-  theta0 <- c(rep(1 / k, k - 1), c(1.2, 2:k),  1)
+  ## starting values (WW added large sigma as last entry, sigma = k too inflexible)
+  theta0 <- c(rep(1 / k, k - 1), 
+              c(1.2, if (k > 2) 2:(k-1), max(z)),
+              .5)
+  ui <- c(rep(-1, k - 1), rep(0, k), 0)
+  ui <- rbind(ui, cbind(diag(2 * k)))
+  ci <- c(-1, rep(0, k - 1), rep(1, k), 0) #sigma > 1!
   
-  if (optimiser == "Nelder-Mead") {
-    ui <- c(rep(-1, k - 1), rep(0, k), 0)
-    ui <- rbind(ui, cbind(diag(2 * k)))
-    ci <- c(-1, rep(0, k - 1), rep(1, k), 0)
-    
-    opt <- constrOptim(theta0, f = loglik_op,
-                       ui = ui, ci = ci,
+  # Use this instead for omega < 1
+  ui <- c(rep(-1, k - 1), rep(0, k), 0)
+  ui <- rbind(ui, cbind(diag(2 * k)))
+  ui <- rbind(ui, c(rep(0, 2*k-1), -1))  
+  ci <- c(-1, rep(0, k - 1), rep(1, k), 0, -1) 
+  
+  if(!legacy_mode){
+    opt <- constrOptim(theta0, f = loglik_op, ui = ui, ci = ci,
                        method = "Nelder-Mead",
                        z = z, operator = z_operator, 
                        k = k, weights = weights,
                        control = list(maxit = 1e4))
-    
-    par <- opt$par
-    
-  } else { # ---- L-BFGS path ----
-    
-    # experimental choice for large datasets, I think it will often give a wrong answer
-    
-    ## simple box bounds;   p_k = 1 − Σ p_i  enforced via penalty inside loglik
-    lower <- c(rep(0, k - 1),  rep(1, k),  0)         # p_i ≥ 0, σ ≥ 1, ω ≥ 0
-    upper <- c(rep(1, k - 1),  rep(Inf, k + 1))
-    
-    opt <- optim(theta0, fn = loglik_op,
-                 z = z, operator = z_operator, 
-                 k = k, weights = weights,
-                 lower = lower, upper = upper,
-                 method = "L-BFGS-B",
-                 control = list(maxit = 1e4))
-    
-    par <- opt$par
+  }else{
+    print("Using old log-likelihood function from EVZ")
+    opt <- constrOptim(theta0, f = loglik_orig, ui = ui, ci = ci,
+                       method = "Nelder-Mead",
+                       z = z, truncated = (z_operator != "="), 
+                       k = k, weights = weights,
+                       control = list(maxit = 1e4))
   }
-  
-  print(opt$value)
+  cat("Objective function (divided by n): ", opt$value/length(z), "\n")
+  par <- opt$par
   
   ## unpack
   p     <- c(par[1:(k - 1)], 1 - sum(par[1:(k - 1)]))
   sigma <- par[k:(2 * k - 1)]
   omega <- par[2 * k]
   
-  data.frame(p = p, m = 0, sigma = sigma, omega = omega)
+  data.frame(p = p, m = 0, sigma = sigma, omega = omega, 
+             AIC = 2*k + 2*(opt$value),
+             BIC = 2*log(sum(weights)) + 2*(opt$value))
 }
 
 
 # Functions for fitting and plotting of mixtures -----
 
 # shorthand for df's
-fit_mixture_df <- function(df) fit_mixture(z = df$z, 
-                                           operator = df$z_operator,
-                                           weight = df$weight)
-  
-# Wrapper around optimise_mixture_v2 which does some pre-processing of z's
-fit_mixture <- function(z, operator, ...){
+fit_mixture_df <- function(df, ...) fit_mixture(z = df$z, 
+                                                operator = df$z_operator,
+                                                weight = df$weights,
+                                                ...)
+
+# Wrapper around optimise_mixture which does some pre-processing of z's
+fit_mixture <- function(z, 
+                        operator, 
+                        z_star = 25, 
+                        ...){
   if(is.null(operator))
     operator <- rep("=", length(z))
   
   z <- abs(z)
-
+  
   ind <- which(z==0)
   z[ind] <- 0.5
   operator[ind] <- "<"
   if(length(ind) > 0)
     message(paste("Changed", length(ind), "'z = 0' cases to 'z < 0.5' to avoid zero likelihood"))
   
-  ind <- which(z > 20)
-  z[ind] <- 20
+  ind <- which(z > z_star)
+  z[ind] <- z_star
   operator[ind] <- ">"
   if(length(ind) > 0)
-    message(paste("Truncated", length(ind), "'z > 20' cases to avoid numerical overflows"))
+    message(paste("Truncated", length(ind), "'z > ", z_star, "' cases to avoid numerical overflows"))
   
-  fit <- optimise_mixture_v2(z = z, z_operator = operator, ...)
+  fit <- optimise_mixture(z = z, z_operator = operator, ...)
   fit$sigma_SNR <- sqrt(fit$sigma^2 - 1)          # stdev van SNR
   
   return(fit)

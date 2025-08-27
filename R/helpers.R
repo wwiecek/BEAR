@@ -16,3 +16,14 @@ collect_results = function(fit,db="CDSR",studies,zstats,signif,power,sgn){
   result$sgn=gap(1.96,p=fit$p,m=fit$m,s=fit$sigma_SNR)$sgn
   return(result)
 }
+
+load_all_mixtures <- function() {
+  mfl <- list()
+  nms <- gsub(".rds", "", list.files("results/mixtures/"))
+  for(nm in nms) {
+    fnm <- paste0("results/mixtures/", nm, ".rds")
+    mfl[[nm]] <- readRDS(fnm)
+  }
+  mfl
+}
+

@@ -12,7 +12,8 @@ set.seed(1990)
 
 bear_processed <- 
   bear %>% 
-  mutate(z_operator = ifelse(is.na(z_operator), "=", z_operator))# %>% 
+  mutate(z_operator = ifelse(is.na(z_operator), "=", z_operator)) %>% 
+  calc_study_weights() # Calculate the weights = 1/n rows per study
   # large values make no sense in experimental research 
   # and are likely entry errors or rounding artefacts
   # mutate(z_operator = ifelse(abs(z) > 30, ">", z_operator)) %>% 
@@ -40,12 +41,8 @@ thin_df <- function(df) {
   if(nrow(df) > 50000)
     df <- df %>% slice_sample(n = 50000)
   
-  # Calculate weights after this procedure
-  df %>%   
-    group_by(metaid, studyid) %>% 
-    mutate(k = n()) %>% 
-    ungroup() %>% 
-    mutate(weights = 1/k) 
+  # Re-calculate weights after this procedure
+  calc_study_weights(df)
 }
 
 bear_list_thin <- bear_list %>% lapply(thin_df)

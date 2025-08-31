@@ -34,7 +34,7 @@ mk_small <- function(ds) {
   d   <- filter(lines_all, dataset == ds)
   grp <- as.character(d$group[1])
   col <- cols_grp[grp]
-  dh  <- bear_list_thin[[ds]] |> transmute(x = abs(z), weights = weight)
+  dh  <- bear_list_thin[[ds]] |> transmute(x = abs(z), weights = weights)
   
   ggplot() +
     geom_histogram(

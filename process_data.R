@@ -6,6 +6,17 @@ library(stringi) #for cleaning up some study names
 
 dt_list <- list()
 
+# This mini function tries to deal with very, very small p values and 
+# also performs a bit of truncation by default
+z_from_p <- function(p, truncate = 100) {
+  z <- qnorm(1 - p/2)
+  small_p <- !is.na(p) & p < 1e-15
+  z[small_p] <- sqrt(-2 * log(p[small_p]/2))
+  z[!is.na(p) & p <= 0] <- truncate
+  z[!is.na(p) & p >= 1] <- 0
+  z
+}
+
 # Brodeur et al ------
 
 dt_list[["Brodeur"]] <- read_dta("data/Brodeur/merged.dta") %>% 
@@ -99,7 +110,7 @@ dt_list[["WWC"]] <- read_csv("data/WWC/Kraft_wwc_merge.csv", show_col_types = FA
     studyid = cite_trunc,
     method = NA,
     measure = NA,
-    z = sign(b)*qnorm(1 - pval/2),
+    z = sign(b)*z_from_p(pval),
     b = b,
     se = NA,
     ss = Sample.size,
@@ -164,15 +175,15 @@ dt_list[["Yang"]] <- rbind(
 ) %>% 
   mutate(year_pub = ifelse(year_pub < 1900, NA, year_pub)) %>% # 1 typo
   transmute(
-      metaid = meta_id,
-      studyid = study_ID,
-      year = year_pub,
-      measure = measure,
-      method = NA,
-      z = es/sei,
-      b = es,
-      se = sei,
-      ss = NA)
+    metaid = meta_id,
+    studyid = study_ID,
+    year = year_pub,
+    measure = measure,
+    method = NA,
+    z = es/sei,
+    b = es,
+    se = sei,
+    ss = NA)
 
 
 # Costello and Fox -----
@@ -216,10 +227,13 @@ dt_list[["JagerLeek"]] <-
     method = method,
     measure = NA,
     p = pvalue,
-    z = -qnorm(pvalue/2),
+    z = z_from_p(pvalue),
     b = NA, se = NA, ss=NA,
     # about 1/3 truncated, almost always .0001, .001, .01, or .05, so it's "p <"
-    z_operator = ifelse(pvalueTruncated == "1", ">", "="),
+    z_operator = case_when(
+      pvalue == 0 ~ ">", 
+      pvalueTruncated == "1" ~ ">", 
+      TRUE ~ "="),
     year = year) 
 
 
@@ -380,6 +394,7 @@ dt_list[["Cochrane"]] <- rbind(
     b = yi,
     se = sqrt(vi),
     year = study.year,
+    group = as.character(specialty),
     ss = total1 + total2)
 
 rm(data, data_filtered)
@@ -432,13 +447,14 @@ dt_list[["Head"]] <- readRDS("data/Head/head.rds") %>%
             measure = NA,
             year = year,
             p = p.value,
-            z = qnorm(1 - p.value/2),
+            z = z_from_p(p.value),
             b = NA,
             se = NA,
             ss = NA,
             # we do not differntiate between leq and lesser, because it doesn't 
             # really change analytical procedures we have in mind
             z_operator = case_when(
+              p.value == 0 ~ ">",
               operator == "=" ~ "=",
               operator == "<" ~ ">",
               operator == ">" ~ "<",
@@ -468,11 +484,12 @@ dt_list[["Chavalarias"]] <- readRDS("data/Chavalarias/chavalarias.rds") %>%
             measure = NA,
             year = year,
             p = p,
-            z = qnorm(1 - p/2),
+            z = z_from_p(p),
             b = NA,
             se = NA,
             ss = NA,
             z_operator = case_when(
+              p == 0 ~ ">",
               operator == "=" ~ "=",
               operator == "<" ~ ">",
               operator == ">" ~ "<"

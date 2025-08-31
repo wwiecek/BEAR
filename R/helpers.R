@@ -27,3 +27,10 @@ load_all_mixtures <- function() {
   mfl
 }
 
+calc_study_weights <- function(df){
+  df %>% 
+  group_by(metaid, studyid) %>% 
+  mutate(k = n()) %>% 
+  ungroup() %>% 
+  mutate(weights = 1/k) 
+}

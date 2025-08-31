@@ -13,17 +13,7 @@ mfl <- load_all_mixtures()
 
 # Calculate the derived quantities -----
 
-N <- 1e05 #will take a while to calculate for 100,000 rows per dataset without vectorising gap()
-
-psr_foo <- function(fit, ss_multiplier = 1) {
-  snr <- sqrt(ss_multiplier)*rmix(N, p = fit$p, m = fit$m, s = fit$sigma_SNR)
-  z   <- snr + rnorm(N)
-  power    <- (1 - pnorm(1.96, snr, 1)) + pnorm(-1.96, snr, 1)
-  pr <- gap_vec(z, p = fit$p, m = fit$m, s_snr = fit$sigma_SNR)
-  # Faster vectorised version
-  data.frame(snr, z, power, row.names = NULL) %>%
-    mutate(sgn = pr$sgn, rep = pr$rep)
-}
+#will take a while to calculate for 100,000 rows per dataset without vectorising gap()
 
 df_psr <- lapply(mfl, psr_foo) %>% bind_rows(.id = "dataset")
 df_psr_169 <- lapply(mfl, psr_foo, 1.69) %>% bind_rows(.id = "dataset")
@@ -32,7 +22,7 @@ df_psr_169 <- lapply(mfl, psr_foo, 1.69) %>% bind_rows(.id = "dataset")
 
 
 # Table with study summaries ------
-summ_foo <- function(df) 
+summarise_psr <- function(df) 
   df %>% 
   group_by(dataset) %>% 
   summarise(
@@ -40,12 +30,12 @@ summ_foo <- function(df)
     p80 = sum(power > .8)/n(),
     s = mean(sgn),
     r = mean(rep)) %>% 
-  mutate(dataset = bear_names[dataset]) 
+  mutate(dataset = bear_names[dataset])
 
-tab2 <- summ_foo(df_psr)
+tab2 <- summarise_psr(df_psr)
 
-left_join(summ_foo(df_psr),
-          summ_foo(df_psr_169), 
+left_join(summarise_psr(df_psr),
+          summarise_psr(df_psr_169), 
           by = "dataset") %>% 
   mutate(diff_p = p.x - p.y,
          diff_r = r.x - r.y) %>% 

@@ -14,7 +14,7 @@ replication, exchangeability, meta-analysis etc. etc.
 
 Current version of the dataset includes:
 
-    ## # A tibble: 14 × 7
+    ## # A tibble: 15 × 7
     ##    dataset                  n_z n_meta n_study mean_k pct_signif type                                       
     ##    <chr>                  <int>  <int>   <int>  <dbl>      <dbl> <chr>                                      
     ##  1 Arel-Bundock et al     16649     46    2252   7.39      0.467 NA: 16649                                  
@@ -27,10 +27,11 @@ Current version of the dataset includes:
     ##  8 Head et al           2010875      1  219220   9.17      0.622 NA: 2010875                                
     ##  9 Jager and Leek         15653      1    5322   2.94      0.777 RCT: 4771, NA: 10882                       
     ## 10 Metapsy                 3544     16    1276   2.78      0.491 RCT: 3544                                  
-    ## 11 Sladekova et al        11540    406   11540   1         0.590 NA: 11540                                  
-    ## 12 What Works Clearing.    1431      1     246   5.82      0.372 NA: 1431                                   
-    ## 13 Yang et al             17638     87    3796   4.65      0.417 NA: 17638                                  
-    ## 14 clinicaltrials.gov     27943      1   11186   2.50      0.526 RCT: 27943
+    ## 11 <NA>                      99      1      99   1         0.354 RCT: 99                                    
+    ## 12 Sladekova et al        11540    406   11540   1         0.590 NA: 11540                                  
+    ## 13 What Works Clearing.    1431      1     246   5.82      0.372 NA: 1431                                   
+    ## 14 Yang et al             17638     87    3796   4.65      0.417 NA: 17638                                  
+    ## 15 clinicaltrials.gov     27943      1   11186   2.50      0.526 RCT: 27943
 
 References and short descriptions of datasets we included are [available
 as a Google

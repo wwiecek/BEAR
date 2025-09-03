@@ -8,7 +8,7 @@ source("R/mix.R")
 
 # bear <- readRDS("data/BEAR.rds")
 
-load("data/bear_lists.Rdata")
+load("transformed_data/bear_lists.Rdata")
 
 # previous_hash <- readRDS("results/mixtures_hash.rds")
 # for(nm in names(bear_hash)){
@@ -18,6 +18,7 @@ load("data/bear_lists.Rdata")
 
 # Nelder-Mead optimisation we use here will take minutes per dataset
 mtofit <- names(bear_list_thin)
+
 for(nm in mtofit) {
   fnm <- paste0("results/mixtures/", nm, ".rds")
   # if(!file.exists(fnm) || !(nm %in% names(previous_hash)) || previous_hash[[nm]] != bear_hash[[nm]]) {

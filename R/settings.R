@@ -10,6 +10,7 @@ bear_names <- c(
    "CostelloFox" = "Costello and Fox",
    "Head" = "Head et al",
    "JagerLeek" = "Jager and Leek",
+   "OSC" = "OpenSciCollab",
    "Metapsy" = "Metapsy",
    "Sladekova" = "Sladekova et al",
    "WWC" = "What Works Clearing.",
@@ -29,6 +30,7 @@ bear_classification <- c(
    "Head" = "scrape",
    "JagerLeek" = "scrape",
    "Metapsy" = "meta",
+   "OSC" = "curated",
    "Sladekova" = "meta",
    "WWC" = "curated",
    "Yang" = "meta"   

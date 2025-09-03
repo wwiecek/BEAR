@@ -496,6 +496,33 @@ dt_list[["Chavalarias"]] <- readRDS("data/Chavalarias/chavalarias.rds") %>%
             )) 
 
 
+# Open Science Collab replication project -----
+
+osc_raw <- read.csv("data/OSC/rpp_data.csv",header=TRUE)
+# dt_osc <-  osc_raw %>% 
+#   transmute(p_orig = T_pval_USE..O., 
+#             p_repl = T_pval_USE..R.) %>% 
+#   mutate(z_orig = qnorm(1 - p_orig/2),
+#          z_repl = qnorm(1 - p_repl/2))
+
+dt_list[["OSC"]] <- osc_raw %>% 
+  rename(p_value = T_pval_USE..R.) %>% 
+  transmute(
+    metaid = NA,
+    studyid = Study.Num,
+    method = "RCT",
+    measure = NA,
+    z = z_from_p(p_value),
+    z_operator = ifelse(p_value > 0, "=", ">"),
+    b = NA,
+    se = NA,
+    year = NA,
+    group = NA,
+    ss = as.numeric(N..R.)
+  ) 
+
+
+
 
 # Bogdan -----
 

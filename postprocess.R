@@ -48,4 +48,5 @@ thin_df <- function(df) {
 bear_list_thin <- bear_list %>% lapply(thin_df)
 
 # This is not part of the repo, but useful to save it as it takes a moment to derive
-save(bear_list, bear_list_thin, bear_hash, file = "data/bear_lists.Rdata")
+# save(bear_list, bear_list_thin, bear_hash, file = "transformed_data/bear_lists.Rdata")
+save(bear_list_thin, bear_hash, file = "paper/bear_lists.Rdata")

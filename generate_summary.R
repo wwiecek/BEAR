@@ -8,10 +8,10 @@ df_info <- df_info_raw %>% filter(!is.na(Year)) %>% select(1:4)
 bear_summary <- bear %>% 
   group_by(dataset) %>% 
   summarise(n_z = n(), 
-          n_meta = n_distinct(metaid), 
-          n_study = n_distinct(studyid), 
-          mean_k  = n()/n_distinct(studyid), 
-          pct_signif = sum(abs(z)>1.96)/n()
+            n_meta = n_distinct(metaid), 
+            n_study = n_distinct(studyid), 
+            mean_k  = n()/n_distinct(studyid), 
+            pct_signif = sum(abs(z)>1.96)/n()
   )
 
 

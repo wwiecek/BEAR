@@ -58,5 +58,5 @@ df_ecdf_smooth %>%
   theme(legend.position = "bottom", 
         axis.text.x = element_text(angle = 45, hjust = 1))
 
-ggsave("results/psr_ecdf.pdf", units = "cm", height = 8, width = 14)
+ggsave("paper/figures/psr_ecdf.pdf", units = "cm", height = 8, width = 14)
 

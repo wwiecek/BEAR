@@ -12,10 +12,12 @@ bear <- readRDS("data/BEAR.rds")
 cdsr_sub <- bear %>% filter(dataset == "Cochrane") %>% 
   mutate(z_operator = ifelse(is.na(z_operator), "=", z_operator)) %>%  
   calc_study_weights() %>% split(.$group)
+
 cdsr_fits <- lapply(cdsr_sub, fit_mixture_df)  
 
 save(cdsr_sub, cdsr_fits, file = "paper/results/cdsr_subset_fits.Rdata")
 
+load("paper/results/cdsr_subset_fits.Rdata")
 # What if we only look at RCTs
 cdsr_rct_sub <- cdsr_sub[pl_choose[c(3, 4)]]
 cdsr_rct_fits <-  cdsr_rct_sub %>% 
@@ -34,7 +36,7 @@ ezvec <- cdsr_sub %>% lapply(function(x) mean(abs(x$z))) %>% unlist %>% sort
 pl_choose <- names(ezvec)[c(1,2,length(ezvec)-1, length(ezvec))]
 # wrap_plots(cdsr_pl[pl_choose], ncol = 4)
 
-save(cdsr_sub, cdsr_fits, cdsr_pl, pl_choose, file = "paper/results/cdsr_subset_fits.Rdata")
+save(cdsr_sub, cdsr_fits, cdsr_rct_fits, cdsr_pl, pl_choose, file = "paper/results/cdsr_subset_fits.Rdata")
 
 cdsr_rct_pl <- list()
 for(nm in names(cdsr_rct_fits)) 

@@ -41,7 +41,7 @@ small_gap_plot <- function(fit, single = FALSE){
 
 small_gap_plot(mfl$clinicaltrials, single = T)
 
-ggsave("results/gap_plot_one.pdf", height = 9, width = 12, units = "cm")
+ggsave("paper/figures/gap_plot_one.pdf", height = 9, width = 12, units = "cm")
 
 
 
@@ -61,10 +61,10 @@ cur <- ds_tbl %>% filter(group == "curated") %>% pull(dataset)
 met <- ds_tbl %>% filter(group == "meta")    %>% pull(dataset)
 scr <- ds_tbl %>% filter(group == "scrape")  %>% pull(dataset)
 
-row1  <- c(lapply(cur, mk_small_gap), list(plot_spacer()))
+row1  <- c(lapply(cur, mk_small_gap))
 row23 <- { p <- lapply(met, mk_small_gap)
 c(p, replicate(max(0, 8 - length(p)), plot_spacer(), simplify = FALSE)) }
 row4  <- c(lapply(scr, mk_small_gap))
 wrap_plots(c(row1, row23, row4), ncol = 4)
 
-ggsave("results/gap_plot_all.pdf", height = 16, width = 14, units = "cm")
+ggsave("paper/figures/gap_plot_all.pdf", height = 16.5, width = 14, units = "cm")

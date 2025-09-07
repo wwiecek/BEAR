@@ -18,6 +18,7 @@ load("transformed_data/bear_lists.Rdata")
 
 # Nelder-Mead optimisation we use here will take minutes per dataset
 mtofit <- names(bear_list_thin)
+mtofit <- names(bear_list_thin)[c(1:6, 8:11,13:15)]
 
 for(nm in mtofit) {
   fnm <- paste0("results/mixtures/", nm, ".rds")
@@ -34,41 +35,4 @@ for(nm in mtofit) {
   }
 }
 
-
 saveRDS(bear_hash, file="results/mixtures_hash.rds")
-
-
-
-
-# Plot some figures of mixtures -----
-
-# Years of studies (after thinning)
-
-bind_rows(bear_list_thin) %>% 
-  ggplot(aes(year)) +
-  geom_histogram(binwidth = 1, fill = "white", color = "black") + 
-  coord_cartesian(xlim = c(1980, 2025)) +
-  ylab("N studies (after thinning)") + xlab("year (of study/publication)")
-
-ggsave(width = 5, height = 5, file = "results/years_thinned.pdf")
-
-
-# Look at all the plots
-pl <- list()
-# read mixtures
-nms <- gsub(".rds", "", list.files("results/mixtures/"))
-mfl <- load_all_mixtures()
-
-for(nm in names(bear_list_thin)) {
-  pl[[nm]] <- plot_mixture(mfl[[nm]],
-                           bear_list_thin[[nm]]$z,
-                           bear_list_thin[[nm]]$weight)
-}
-library(gridExtra)
-combined_plot <- arrangeGrob(grobs = Map(function(p, name) {
-  p + ggtitle(bear_names[[name]])
-}, pl, names(pl)), ncol = 5)
-
-# ggsave("results/mixtures_plot.pdf", combined_plot, width = 16, height = 9)
-ggsave("results/mixtures_plot.pdf", combined_plot, width = 11.69 - 2, height = 8.27 - 1,  # A4 landscape in inches
-       units = "in", dpi = 300, device = cairo_pdf)

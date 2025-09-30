@@ -3,6 +3,8 @@ library(patchwork)
 source("R/settings.R")
 source("R/helpers.R")
 source("R/mix.R")
+source("R/plot_mixture.R")
+source("R/fit_density_calc.R")
 mfl <- load_all_mixtures()
 load("transformed_data/bear_lists.Rdata")
 
@@ -29,4 +31,4 @@ row4  <- lapply(scr, mk_small)
 
 wrap_plots(c(row1, row23, row4), ncol = 4)
 
-ggsave("paper/figures/mixtures_plot_pmixonly.pdf", height = 16.5, width = 14, units = "cm")
+ggsave("paper/figures/mixtures_plot.pdf", height = 16.5, width = 14, units = "cm")

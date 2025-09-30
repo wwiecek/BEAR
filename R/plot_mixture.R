@@ -28,7 +28,9 @@ plot_mixture_v3 <- function(fit, dt, nm = "", col = "black", xmax = 10, nbreaks 
 
 
 plot_mixture_v4 <- function(fit, dt, nm = "", col = "black", color_map = NULL, 
-                            xmax = 10, nbreaks = 25, ymax = 0.6, show_corrected = FALSE) {
+                            xmax = 10, nbreaks = 25, ymax = 0.6, 
+                            annotate = "psr", 
+                            show_corrected = FALSE) {
   
   # Use color_map if provided and col is default
   if (!is.null(color_map) && col == "black" && "group" %in% names(dt)) {
@@ -43,6 +45,13 @@ plot_mixture_v4 <- function(fit, dt, nm = "", col = "black", color_map = NULL,
   br <- c(seq(0, xmax, length = nbreaks), max(abs(dt$z)))
   omega_val <- round(fit$omega[1], 2)
   e_abs_z_val <- round(den_calc_result$E_abs_z, 1)
+  
+  if(annotate == "psr"){
+    snr     <- rmix(N, p = fit$p, m = fit$m, s = fit$sigma_SNR)
+    z       <- snr + rnorm(N)
+    power   <- (1 - pnorm(1.96, snr, 1)) + pnorm(-1.96, snr, 1)
+    meanpwr <- round(mean(power), 2)
+  }
   # lab <- sprintf("atop(omega==%s, E(group('|',z,'|'))==%s)", omega_val, e_abs_z_val)
   # lab <- sprintf("atop(omega==%s, scriptstyle(E(group('|',z,'|'))==%s))", omega_val, e_abs_z_val)
   # lab <- sprintf("omega==%s~~E(group('|',z,'|'))==%s", omega_val, e_abs_z_val)
@@ -61,9 +70,13 @@ plot_mixture_v4 <- function(fit, dt, nm = "", col = "black", color_map = NULL,
     theme(plot.title = element_text(size = 8),
           axis.text  = element_text(size = 7),
           legend.position = "none") + 
-    annotate("text", x = 7, y = ymax - 0.055, 
-             label = paste("omega ==", omega_val), parse = TRUE, size = 2.5) +
-    annotate("text", x = 7, y = ymax - 0.15, 
-             label = paste("E(group('|',z,'|')) ==", e_abs_z_val), parse = TRUE, size = 2.5)
+    {if(annotate != "psr") annotate("text", x = 7, y = ymax - 0.055, 
+             label = paste("omega ==", omega_val), parse = TRUE, size = 2.5) } +
+    {if(annotate != "psr") annotate("text", x = 7, y = ymax - 0.15, 
+             label = paste("E(group('|',z,'|')) ==", e_abs_z_val), parse = TRUE, size = 2.5) } +
+    {if(annotate == "psr") annotate("text", x = 7, y = ymax - 0.055, 
+                                    label = paste("bar(PoS) ==", meanpwr), 
+                                    parse = TRUE, size = 2.5) }
+  
     # annotate("text", x = 5, y = ymax - 0.075, label = lab, parse = TRUE, size = 2.5)
 }

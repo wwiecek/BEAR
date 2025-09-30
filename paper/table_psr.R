@@ -1,18 +1,58 @@
 source("calculate_psr.R")
 library(kableExtra)
 
+
+# I’d like to put the following in Table 2
+# 
+# - name of the dataset
+# - omega (risk ratio of publication)
+# - raw proportion of significant
+# - assurance
+# - predictive power when |z|=1.96
+# - P(|SNR|>2.8) = P(PoS>0.8)  (PoS stands for the probability of significance)
+# - probability of the correct sign
+# - probability of the correct sign when |z|=1.96
+
+bear <- readRDS("data/BEAR.rds")
+bear_summary <- bear %>% 
+  group_by(dataset) %>% 
+  mutate(z_operator = ifelse(is.na(z_operator), "=", z_operator)) %>% 
+  # if we used 1.96 here, we'd lose a big chunk of scraping studies that reported p of 0.05
+  summarise(prop_signif = sum((abs(z) > 1.959) & (z_operator != "<"))/n())
+
 # Table with study summaries ------
 summarise_psr <- function(df) 
   df %>% 
-  group_by(dataset) %>% 
-  summarise(
-    p = mean(power),
-    p80 = sum(power > .8)/n(),
-    s = mean(sgn),
-    r = mean(rep)) %>% 
-  mutate(dataset = bear_names[dataset])
+    group_by(dataset) %>% 
+    summarise(
+      assurance = mean(power),
+      pos_80pct = sum(power > .8)/n(),
+      sign = mean(sgn),
+      replication = mean(rep)) 
 
-tab2 <- summarise_psr(df_psr)
+tab2 <- summarise_psr(df_psr) %>% 
+  left_join(bear_summary, by = "dataset") %>% 
+  rowwise() %>%
+  mutate(omega = mfl[[dataset]]$omega[1],
+         sign_196 = gap_fit(1.96, mfl[[dataset]])$sgn,
+         repl_196 = gap_fit(1.96, mfl[[dataset]])$rep) %>%
+  ungroup() %>% 
+  mutate(gr = bear_classification[dataset]) %>% 
+  arrange(gr, dataset) %>% 
+  mutate(dataset = bear_names[dataset]) %>% 
+  select(dataset, prop_signif, omega, assurance, pos_80pct, replication, repl_196, sign, sign_196)
+
+tab2 
+tab2 %>%
+  mutate_if(is.numeric, function(x) format(round(x, 2), nsmall = 2)) %>% 
+  kable(format = "latex", booktabs = TRUE, escape = FALSE) %>% 
+        # col.names = c("Dataset", "Assurance", "Pr(power > 0.8)", "Correct sign", 
+                      # "Replication")) %>% 
+        # align = c("p{2.5cm}", "p{2.5cm}", "p{2.5cm}", "p{2.5cm}")) %>%
+  kable_styling(latex_options = c("hold_position")) %>%
+  writeLines("paper/tables/table2.tex")
+
+# What if studies were larger?
 
 left_join(summarise_psr(df_psr),
           summarise_psr(df_psr_169), 
@@ -20,34 +60,3 @@ left_join(summarise_psr(df_psr),
   mutate(diff_p = p.x - p.y,
          diff_r = r.x - r.y) %>% 
   mutate_if(is.numeric, function(x) scales::percent(as.numeric(x), accuracy = 1))
-
-tab2 %>%
-  mutate_if(is.numeric, function(x) format(round(x, 2), nsmall = 2)) %>% 
-  kable(format = "latex", booktabs = TRUE, escape = FALSE,
-        col.names = c("Dataset", "Assurance", "Pr(power > 0.8)", "Correct sign", 
-                      "Replication"),
-        align = c("p{2.5cm}", "p{2.5cm}", "p{2.5cm}", "p{2.5cm}")) %>%
-  kable_styling(latex_options = c("hold_position")) %>%
-  writeLines("paper/table2.tex")
-
-
-
-
-
-# Power plots -----
-
-library(ggridges)
-library(forcats)
-
-ggplot(df_psr,
-       aes(x = rep,
-           y = fct_reorder(dataset, rep, .fun = median, .desc = FALSE),
-           fill = after_stat(x))) +
-  ggridges::geom_density_ridges_gradient(
-    scale = 2.1, rel_min_height = 0.01, size = 0.25, jittered_points = FALSE
-  ) +
-  scale_x_continuous(limits = c(0, 1), expand = c(0, 0)) +
-  guides(fill = "none") +
-  labs(x = "Power", y = NULL) +
-  theme_ridges(center_axis_labels = TRUE)
-

@@ -65,7 +65,7 @@ ct_names <- c(
 
 ct_pl <- list()
 for(nm in names(ct_fits)) {
-  ct_pl[[nm]] <- plot_mixture_v3(ct_fits[[nm]], ct_subsets[[nm]], 
+  ct_pl[[nm]] <- plot_mixture_v4(ct_fits[[nm]], ct_subsets[[nm]], 
                                  nbreaks = 40,
                                  ymax = 0.4) + ggtitle(ct_names[[nm]])}
 wrap_plots(ct_pl)

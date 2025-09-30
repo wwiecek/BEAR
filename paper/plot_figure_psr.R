@@ -10,7 +10,7 @@ source("R/mix.R")
 
 
 mfl <- load_all_mixtures()
-N <- 1e04
+N <- 1e05
 
 df_psr_small <- lapply(mfl, function(fit) {
   snr <- rmix(N, p = fit$p, m = fit$m, s = fit$sigma_SNR)

@@ -16,6 +16,12 @@ gap = function(z,
   data.frame(sgn,rep)
 }
 
+gap_fit = function(z, fit){
+  post=posterior(abs(z), fit$p, fit$m, fit$sigma_SNR)
+  sgn=1-pmix(0,p=post$p,m=post$pm,s=post$ps)
+  rep=1-pmix(1.96,p=post$p,m=post$pm,s=sqrt(post$pv+1))
+  data.frame(sgn,rep)
+}
 
 # Conditional distribution of SNR given z, when SNR ~ dmix(p,m,s)
 

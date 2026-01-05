@@ -46,6 +46,7 @@ plot_mixture_v4 <- function(fit, dt, nm = "", col = "black", color_map = NULL,
   omega_val <- round(fit$omega[1], 2)
   e_abs_z_val <- round(den_calc_result$E_abs_z, 1)
   
+  N <- 1e04
   if(annotate == "psr"){
     snr     <- rmix(N, p = fit$p, m = fit$m, s = fit$sigma_SNR)
     z       <- snr + rnorm(N)

@@ -1,5 +1,5 @@
 
-# Benchmarks of Experimental Accuracy in Research
+# Benchmarks of Empirical Accuracy in Research
 
 BEAR is a "meta"-database containing z values, effect sizes and standard errors 
 from existing databases in various scientific disciplines. 

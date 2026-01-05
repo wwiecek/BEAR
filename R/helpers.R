@@ -19,9 +19,9 @@ collect_results = function(fit,db="CDSR",studies,zstats,signif,power,sgn){
 
 load_all_mixtures <- function() {
   mfl <- list()
-  nms <- gsub(".rds", "", list.files("results/mixtures/"))
+  nms <- gsub(".rds", "", list.files("mixtures/"))
   for(nm in nms) {
-    fnm <- paste0("results/mixtures/", nm, ".rds")
+    fnm <- paste0("mixtures/", nm, ".rds")
     mfl[[nm]] <- readRDS(fnm)
   }
   mfl

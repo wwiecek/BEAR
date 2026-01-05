@@ -1,5 +1,5 @@
 
-# Benchmarks of Experimental Accuracy in Research
+# Benchmarks of Empirical Accuracy in Research
 
 BEAR is a “meta”-database containing z values, effect sizes and standard
 errors from existing databases in various scientific disciplines. It
@@ -14,24 +14,26 @@ replication, exchangeability, meta-analysis etc. etc.
 
 Current version of the dataset includes:
 
-    ## # A tibble: 15 × 7
+    ## # A tibble: 17 × 7
     ##    dataset                  n_z n_meta n_study mean_k pct_signif type                                       
     ##    <chr>                  <int>  <int>   <int>  <dbl>      <dbl> <chr>                                      
     ##  1 Arel-Bundock et al     16649     46    2252   7.39      0.467 NA: 16649                                  
     ##  2 Askarov et al          21408    352    1913  11.2       0.520 mixed: 1297, observational: 19446, RCT: 665
     ##  3 Barnett and Wren     1306551      1  416027   3.14      0.808 NA: 1306551                                
-    ##  4 Brodeur et al           8424      1     176  47.9       0.374 DID: 50, IV: 133, RCT: 8241                
-    ##  5 Chavalarias et al    7935864      1 1887178   4.21      0.627 NA: 7935864                                
-    ##  6 Cochrane               31594   5452   25593   1.23      0.328 observational: 15878, RCT: 15716           
-    ##  7 Costello and Fox       88218    466   12927   6.82      0.419 NA: 88218                                  
-    ##  8 Head et al           2010875      1  219220   9.17      0.622 NA: 2010875                                
-    ##  9 Jager and Leek         15653      1    5322   2.94      0.777 RCT: 4771, NA: 10882                       
-    ## 10 Metapsy                 3544     16    1276   2.78      0.491 RCT: 3544                                  
-    ## 11 <NA>                      99      1      99   1         0.354 RCT: 99                                    
-    ## 12 Sladekova et al        11540    406   11540   1         0.590 NA: 11540                                  
-    ## 13 What Works Clearing.    1431      1     246   5.82      0.372 NA: 1431                                   
-    ## 14 Yang et al             17638     87    3796   4.65      0.417 NA: 17638                                  
-    ## 15 clinicaltrials.gov     27943      1   11186   2.50      0.526 RCT: 27943
+    ##  4 Bartoš et al            2239    215    2239   1         0.263 NA: 2239                                   
+    ##  5 Brodeur et al           8424      1     176  47.9       0.374 DID: 50, IV: 133, RCT: 8241                
+    ##  6 Chavalarias et al    7935864      1 1887178   4.21      0.627 NA: 7935864                                
+    ##  7 Cochrane               39768   6050   30306   1.31      0.306 RCT: 27616, unknown: 12152                 
+    ##  8 Costello and Fox       88218    466   12927   6.82      0.419 NA: 88218                                  
+    ##  9 Head et al           2010875      1  219220   9.17      0.622 NA: 2010875                                
+    ## 10 Jager and Leek         15653      1    5322   2.94      0.777 RCT: 4771, NA: 10882                       
+    ## 11 Metapsy                 3544     16    1276   2.78      0.491 RCT: 3544                                  
+    ## 12 OpenSciCollab             99      1      99   1         0.354 RCT: 99                                    
+    ## 13 Sladekova et al        11540    406   11540   1         0.590 NA: 11540                                  
+    ## 14 What Works Clearing.    1431      1     246   5.82      0.372 NA: 1431                                   
+    ## 15 Yang et al             17638     87    3796   4.65      0.417 NA: 17638                                  
+    ## 16 clinicaltrials.gov     41338      1   16636   2.48      0.488 RCT: 41338                                 
+    ## 17 EUDRA                   7832      1    7832   1         0.409 NA: 7832
 
 References and short descriptions of datasets we included are [available
 as a Google

@@ -1,3 +1,7 @@
+# This is the post-processing done to fit mixture distributions to BEAR datasets
+# which we present and discuss in detail in the accompanying paper
+# The steps here are really minimal
+
 library(tidyverse)
 library(tictoc)
 library(digest)
@@ -14,24 +18,16 @@ bear_processed <-
   bear %>% 
   mutate(z_operator = ifelse(is.na(z_operator), "=", z_operator)) %>% 
   calc_study_weights() # Calculate the weights = 1/n rows per study
-  # large values make no sense in experimental research 
-  # and are likely entry errors or rounding artefacts
-  # mutate(z_operator = ifelse(abs(z) > 30, ">", z_operator)) %>% 
-  # mutate(z = ifelse(abs(z) > 30, sign(z)*30, z))
-# mutate(truncated  = ifelse(z_operator != "=", 1, 0))
-# in some datasets some fraction of a % of studies have truncation going in the 
-# opposite of "expected" direction,  think e.g. "p > 0.1"; easiest to remove them
-# since in analysis we will assume that meaning of "truncated" flips as we cross ~1.96
-# filter(!((z_operator == "<" & z > 1.96) | (z_operator == ">" & z <= 1.959)))
 
 bear_list <- split(bear_processed, bear_processed$dataset)
 
+# For BEAR modelling paper we merge EUDRA CT and clinicaltrials.gov into a single database of trials
+bear_list[["ctgov_euctr"]] <- rbind(bear_list[["clinicaltrials"]], bear_list[["euctr"]])
+bear_list[["clinicaltrials"]] <- bear_list[["euctr"]] <- NULL
+
 bear_hash <- lapply(bear_list, digest)
 
-# For test purposes, if there are too many rows
-# first try to pick only one estimate per study
-# then "thin it out"
-
+# If there are too many rows, first try to pick only one estimate per study then "thin it out"
 thin_df <- function(df) {
   if(nrow(df) > 50000){
     # single observation per study; done in base R for speed

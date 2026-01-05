@@ -358,28 +358,31 @@ dt_list[["BarnettWren"]] <- complete %>%
             ss = NA)
 
 
-# Cochrane -----
 
-load("data/Cochrane/CDSR.RData")  # reads in dataframe "data"
-data_filtered <- data %>% 
-  select(-char.interventions) %>% 
-  filter(
-    # non-RCT data comprise more than half of all data
-    # RCT=="yes",
-    # small minority of data is IPD or IV ("results with effects and standard errors 
-    # but without the data necessary for their computation") and we exclude these
-    outcome.flag %in% c("CONT","DICH"),
-    outcome.group=="efficacy",
-    outcome.nr==1,
-    comparison.nr==1)
+# Cochrane 2025 -----
+
+cdsr_all_studies <- readRDS("data/Cochrane/cdsr_study_results.rds")
+
+cdsr_filtered <- cdsr_all_studies %>% 
+  # Remove studies with sample size of zero 
+  filter(total1 > 0, total2 > 0, 
+         # Even though we make our own calculation, it's better to 
+         !is.na(measure_group),
+         # Remove small minority of studies that would require more complicated calculations
+         # small minority of data is IPD or IV ("results with effects and standard errors 
+         # but without the data necessary for their computation") and we exclude these
+         outcome.flag %in% c("CONT","DICH"),
+         # First comparison and first outcome is most likely to be the primary outcome of interest in a given review
+         # THIS REMOVES 95% OF DATA! YOu may want to construct it differently for future analyses
+         comparison.nr == 1, outcome.nr == 1)
 
 dt_list[["Cochrane"]] <- rbind(
-  dplyr::filter(data_filtered, outcome.flag=="CONT") %>% 
+  dplyr::filter(cdsr_filtered, outcome.flag=="CONT") %>% 
     escalc(m1i=mean1,sd1i=sd1,n1i=total1,
            m2i=mean2,sd2i=sd2,n2i=total2,measure="SMD",
            data=., append=TRUE) %>% 
     as_tibble() %>% mutate(measure = "SMD"),
-  dplyr::filter(data_filtered, outcome.flag=="DICH") %>% 
+  dplyr::filter(cdsr_filtered, outcome.flag=="DICH") %>% 
     escalc(ai=events1,n1i=total1,
            ci=events2,n2i=total2,measure="PBIT",
            data=.,append=TRUE) %>% 
@@ -388,20 +391,97 @@ dt_list[["Cochrane"]] <- rbind(
   transmute(
     metaid = id,
     studyid = study.name,
-    method = ifelse(RCT == "yes", "RCT", "observational"),
+    year = study.year,
+    # Still working on this one:
+    method = ifelse(rct, "RCT", "unknown"),
     measure = measure,
     z = yi/sqrt(vi),
     b = yi,
     se = sqrt(vi),
-    year = study.year,
     group = as.character(specialty),
-    ss = total1 + total2)
+    ss = total1 + total2) %>% 
+  filter(!is.na(b))
 
-rm(data, data_filtered)
+rm(cdsr_all_studies)
 
 
 
-# Adda -----
+# Cochrane 2019 -----
+
+# load("data/Cochrane2019/CDSR.RData")  # reads in dataframe "data"
+# data_filtered <- data %>%
+#   select(-char.interventions) %>%
+#   filter(
+#     # non-RCT data comprise more than half of all data
+#     # RCT=="yes",
+#     # small minority of data is IPD or IV ("results with effects and standard errors
+#     # but without the data necessary for their computation") and we exclude these
+#     outcome.flag %in% c("CONT","DICH"),
+#     outcome.group=="efficacy",
+#     # This will pare it down from 410,000 rows to 31,000:
+#     outcome.nr==1,
+#     comparison.nr==1)
+# 
+# dt_list[["Cochrane2019"]] <- rbind(
+#   dplyr::filter(data_filtered, outcome.flag=="CONT") %>%
+#     escalc(m1i=mean1,sd1i=sd1,n1i=total1,
+#            m2i=mean2,sd2i=sd2,n2i=total2,measure="SMD",
+#            data=., append=TRUE) %>%
+#     as_tibble() %>% mutate(measure = "SMD"),
+#   dplyr::filter(data_filtered, outcome.flag=="DICH") %>%
+#     escalc(ai=events1,n1i=total1,
+#            ci=events2,n2i=total2,measure="PBIT",
+#            data=.,append=TRUE) %>%
+#     as_tibble() %>% mutate(measure = "probit")
+# ) %>%
+#   transmute(
+#     metaid = id,
+#     studyid = study.name,
+#     method = ifelse(RCT == "yes", "RCT", "observational"),
+#     measure = measure,
+#     z = yi/sqrt(vi),
+#     b = yi,
+#     se = sqrt(vi),
+#     year = study.year,
+#     group = as.character(specialty),
+#     ss = total1 + total2)
+# 
+# rm(data, data_filtered)
+
+
+
+# EUCTR -----
+euctr_clean <- readRDS("data/eutrials/data_euctr_ctgov_clean.rds")
+
+dt_list[["euctr"]] <- euctr_clean %>%
+  filter(collection == "EUCTR") %>%
+  transmute(
+    metaid  = NA,
+    studyid = id,
+    year    = year,
+    measure = measure_class,
+    method  = NA_character_,
+    z       = z,
+    b       = b,
+    se      = se,
+    ss      = n
+  )
+
+# dt_list[["ctgov"]] <- euctr_clean %>%
+#   filter(collection == "CTGOV") %>%
+#   transmute(
+#     metaid  = NA,
+#     studyid = id,
+#     year    = year,
+#     measure = measure_class,
+#     method  = NA_character_,
+#     z       = z,
+#     b       = b,
+#     se      = se,
+#     ss      = n
+#   )
+
+# clinicaltrials.gov -----
 
 # dt_list[["Adda"]] <- read_dta("data/Adda/data_counterfactual_analysis.dta") %>% 
 #   # 15 cases of trials that will finish in the future, so set to NA just in case
@@ -496,6 +576,7 @@ dt_list[["Chavalarias"]] <- readRDS("data/Chavalarias/chavalarias.rds") %>%
             )) 
 
 
+
 # Open Science Collab replication project -----
 
 osc_raw <- read.csv("data/OSC/rpp_data.csv",header=TRUE)
@@ -519,8 +600,29 @@ dt_list[["OSC"]] <- osc_raw %>%
     year = NA,
     group = NA,
     ss = as.numeric(N..R.)
-  ) 
+  ) %>% as_tibble()
 
+
+
+# Bartos -----
+
+# Very nicely organised dataset on exercise which requires no extra work from us
+dt_list[["Bartos"]] <- read_csv("data/Bartos/data_processed.csv",
+                                show_col_types = FALSE) %>% 
+  transmute(
+    metaid = as.character(meta_id),
+    studyid = as.character(id), #these are unique (=same number of IDs as rows in the dataset)
+    method = NA,
+    measure = effect_size_type,
+    z = effect_size/standard_error,
+    z_operator = "=",
+    b = effect_size,
+    se = standard_error,
+    year = year,
+    group = category, # why not!
+    # There is also total m-a size: samples_size; ignoring
+    ss = sample_size
+  ) 
 
 
 
@@ -537,12 +639,7 @@ dt_list[["OSC"]] <- osc_raw %>%
 bear <- dt_list %>% 
   lapply(function(x) {x$studyid <- as.character(x$studyid); x}) %>% 
   lapply(filter, !is.na(z)) %>% 
-  bind_rows(.id = "dataset") %>% 
-  group_by(dataset, metaid, studyid) %>% 
-  # mutate(k = n()) %>% 
-  ungroup() %>% 
-  group_by(dataset, metaid) %>% 
-  ungroup()
+  bind_rows(.id = "dataset")
 
 saveRDS(bear, "data/BEAR.rds")
 

@@ -6,11 +6,12 @@ source("R/mix.R")
 source("R/plot_mixture.R")
 source("R/fit_density_calc.R")
 mfl <- load_all_mixtures()
-load("transformed_data/bear_lists.Rdata")
+load("paper/bear_lists.Rdata")
 
 c_star <- 1.96
 ds_tbl <- tibble(dataset = names(mfl),
-                 group = bear_classification[dataset])
+                 group = bear_classification[dataset]) %>% 
+  filter(!(dataset %in% paper_do_not_include))
 cols_grp <- c(curated = "#E41A1C", meta = "#377EB8", scrape = "#4DAF4A")
 
 mk_small <- function(ds) {
@@ -25,8 +26,7 @@ met <- ds_tbl %>% filter(group == "meta")    %>% pull(dataset)
 scr <- ds_tbl %>% filter(group == "scrape")  %>% pull(dataset)
 
 row1  <- lapply(cur, mk_small)
-row23 <- { p <- lapply(met, mk_small)
-c(p, replicate(max(0, 8 - length(p)), plot_spacer(), simplify = FALSE)) }
+row23 <- lapply(met, mk_small)
 row4  <- lapply(scr, mk_small)
 
 wrap_plots(c(row1, row23, row4), ncol = 4)

@@ -10,9 +10,9 @@ issues of replication, exchangeability, meta-analysis etc. etc.
 
 ![](doc/bear_banner.png)
 
-# Contents of the dataset and this repo
+# Datasets included in BEAR
 
-Current version of the dataset includes:
+Here is a short summary of what's included in BEAR:
 
 ```{r echo=FALSE, messages=FALSE}
 library(dplyr)
@@ -34,6 +34,7 @@ bear %>%
             }
   ) %>% mutate(dataset = bear_names[dataset])
 ```
+
 
 References and short descriptions of datasets we included are 
 [available as a Google Doc](https://docs.google.com/document/d/1ZZAEwfHS0aAELN1w1lqEO6-eeu31_WdL/edit?usp=sharing&ouid=114240127695432531696&rtpof=true&sd=true). Summaries and details about contents of each dataset (e.g. how study IDs are coded) are in the [summary spreadsheet](https://docs.google.com/spreadsheets/d/1x2A4pgNDfrXRTdzI_LX219twXDXPPPiS7DRw1s6dHyo/edit?gid=0#gid=0)

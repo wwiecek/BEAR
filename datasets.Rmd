@@ -1,3 +1,16 @@
+---
+title: "Datasets included in BEAR"
+subtitle: "Appendix"
+date: "`r format(Sys.Date(), '%Y-%m-%d')`"
+output:
+  pdf_document:
+    toc: false
+    number_sections: false
+geometry: margin=1in
+fontsize: 11pt
+---
+
+
 
 # Benchmarks of Empirical Accuracy in Research
 
@@ -11,7 +24,7 @@ Data collection: Authors searched for (and emailed authors of) meta-analysis art
 
 Notes: There is possibly a considerable overlap with Askarov et al dataset, but these two datasets are worth analysing separately given their different focus.
 
-Data availability: replication package can be found at [dataset from https://osf.io/fgdet]() (_ps_power_replication_20241010.zip_). All data are in public domain. We contacted Ryan Briggs who was not aware of any licensing issues.
+Data availability: replication package can be found at <https://osf.io/fgdet>  (_ps_power_replication_20241010.zip_). All data are in public domain. We contacted Ryan Briggs who was not aware of any licensing issues.
 
 Data file: using the same code as original authors (replication package runs on makefiles), but skipping some additional processing that they've done, we write a single `estimates.csv` file (3.3 MB).
 
@@ -28,7 +41,7 @@ Research question: Impact of mandatory data sharing on (excessive) statistical s
 Data collection: 64,000 economic estimates surveyed by Ioannidis et al. (2017) + "searching through numerous databases, journal websites, and also an email survey of 109 authors known to have produced meta-analyses of economic topics. We cast the widest net possible to capture empirical economic estimates. Thus, some of the papers included in these meta-analyses were originally published in political science and psychology journals. Nevertheless, these meta-studies deal with economics topics." Later: "we collect 166,924 parameter estimates from 345 distinct research areas, of which
 20,121 were published in 24 of the leading general interest and field journals" The paper mentions 12,521 observations before and 2,537 after data sharing policies in 24 journals; reproducibility dataset has 32 journals (authors removed some smaller ones) and 22,172 rows
 
-Data availability: file `Mandatory data-sharing 30 Aug 2022.dta` may be downloaded from [https://github.com/anthonydouc/Datasharing/blob/master/Stata/](); reproducibility package at [https://dataverse.harvard.edu/file.xhtml?fileId=7884702&version=1.0]()
+Data availability: file `Mandatory data-sharing 30 Aug 2022.dta` may be downloaded from <https://github.com/anthonydouc/Datasharing/blob/master/Stata/>; reproducibility package at <https://dataverse.harvard.edu/file.xhtml?fileId=7884702&version=1.0>
 
 Data file: same unprocessed `Mandatory data-sharing 30 Aug 2022.dta` file (11.6 MB)
 
@@ -46,29 +59,161 @@ Research question: Bias for statistical significance in health and medical journ
 
 Data collection: authors scraped (regular expression followed by an independent check using another data mining algorithm, manual checks for 10,000 intervals) 968,000 CIs from abstracts and 350,000 from full text
 
-Data availability: The dataset Georgescu.Wren.RData may be downloaded from https://github.com/agbarnett/intervals/tree/master/data and also https://github.com/jdwren/ASEC Availability: no clear licence given in the repo but the article is CC BY 4.0 in BMJ Open. 
+Data availability: The dataset Georgescu.Wren.RData may be downloaded from <https://github.com/agbarnett/intervals/tree/master/data> and also <https://github.com/jdwren/ASEC>. Data file is `Georgescu.Wren.RData`. Availability: no clear licence given in the repo but the article is CC BY 4.0 in BMJ Open. 
 
 Notes: these are “ratio estimates” like odds ratios, hazard ratios and risk ratios. Note that binary outcomes tend to have (much) lower information than continuous outcomes.
 
-Data file: Georgescu.Wren.RData
+Data processing: we excluded a small fraction of data. First we restricted to 95% confidence intervals only: where `ci.level` was missing we assumed it was 0.95; among intervals with a known `ci.level`, about 0.3% were not 95% and were dropped. We dropped intervals with non-positive width (i.e. `lower >= upper`). We used log scale (we replaced zero or negative lower bounds with a small positive constant; this affected about 0.1% of the sample) and backed out an approximate standard error and point estimate under the usual normal approximation for a 95% CI, setting point estimate to half-point of the interval.
 
-Data processing: (explain these steps):
 
-```
-  # 0.3% of available values have CI widths other than 95%, let's remove these
-  # but if ci.level is unknown, assume that it's actually 95% 
-  mutate(ci.level = ifelse(is.na(ci.level), 0.95, ci.level)) %>% 
-  filter(ci.level == 0.95) %>% 
-  # Remove cases where CI is zero
-  filter(lower < upper) %>% 
-  # To allow for log(lower), add a tiny value to zeroes (~0.1% of the sample)
-  mutate(lower = ifelse(lower > 0, lower, 1e-05)) %>%
-  mutate(se = (log(upper) - log(lower))/(2*1.96)) %>% 
-  mutate(b = (log(upper) + log(lower))/2) %>% 
-```
 
-=======
-20,121 were published in 24 of the leading general interest and field journals" The paper mentions 12,521 observations before and 2,537 afte rdata sharing policies in 24 journals; reproducibility dataset has 32 journals (authors removed some smaller ones), 22,172 rows
+## Bartoš et al. 2025 (exercise)
 
-Data availability: file `Mandatory data-sharing 30 Aug 2022.dta` may be downloaded from [https://github.com/anthonydouc/Datasharing/blob/master/Stata/]().
->>>>>>> 86a4ad68d98217090ea0c42382ef20c4fd038b80
+Bartoš, F., Lušková, M., Bortnikova, K., Hozová, K., Kantova, K., Irsova, Z., & Havranek, T. (2025). Effect of Exercise on Cognition, Memory, and Executive Function: A Study-Level Meta-Meta-Analysis Across Populations and Exercise Categories. PsyArXiv. https://doi.org/10.31234/osf.io/qr8e2_v1
+
+This paper builds on another analysis:
+
+Singh, B., Bennett, H., Miatke, A., Dumuid, D., Curtis, R., Ferguson, T., Brinsley, J., Szeto, K., Petersen, J. M., Gough, C., Eglitis, E., Simpson, C. E., Ekegren, C. L., Smith, A. E., Erickson, K. I., & Maher, C. (2025). Effectiveness of exercise for improving cognition, memory and executive function: A systematic umbrella review and meta-meta-analysis. British Journal of Sports Medicine, 59(12), 866–876. https://doi.org/10.1136/bjsports-2024-108589
+
+Research question: what is the effect of physical exercise on cognition, memory, and executive function; with extra focus on selective reporting and heterogeneity.
+
+Data collection: "2,239 effect-size estimates from 215 meta-analyses of randomized controlled trials" was done by Bartoš et al (2025) based on extension of work by Singh et al (2025)
+
+Data availability: replication data are publicly available via PsyArXiv  <https://osf.io/preprints/psyarxiv/qr8e2_v1> under Creative Commons By Attribution 4.0 license.
+
+Data processing: z-values were computed as effect size divided by its reported standard error. No filtering or recoding beyond variable renaming was required.
+
+Additional variables used: 
+
+
+## Brodeur et al. 2024 (economics)
+
+Brodeur, A., Cook, N. M., Hartley, J. S., & Heyes, A. (2024). Do preregistration and preanalysis plans reduce p-hacking and publication bias? Evidence from 15,992 test statistics and suggestions for improvement. Journal of Political Economy Microeconomics, 2(3), 527–561.
+
+Research question: are preregistration and pre-analysis plans associated with reduced p-hacking and publication bias in economics?
+
+Data collection: manually extracted test statistics from RCTs in leading economics journals published 2018-2021. Extraction was performed table by table. Each row corresponds to a single reported test statistic, linked to a paper-level identifier. Unlike most other sources in BEAR, this means we have dozens of estimates per paper: 314 articles with 16,390 estimates
+
+Data availability: replication data file `merged.dta` may be downloaded from <https://dataverse.harvard.edu/file.xhtml?fileId=7884702&version=1.0>
+
+Data processing: the authors’ reported z-statistics were used directly and the reported coefficients and standard errors were retained. No transformation of test statistics or data was required.
+
+
+
+## Chavalarias et al. 2016 (MEDLINE/PubMed)
+
+Chavalarias, D., Wallach, J. D., Li, A. H. T., & Ioannidis, J. P. A. (2016). Evolution of reporting p values in the biomedical literature, 1990–2015. JAMA, 315(11), 1141–1148.
+
+Research question: reporting of p-values in the biomedical literature
+
+Data collection: the authors used large-scale text mining of MEDLINE abstracts and PubMed full texts: 4.5mln p-values in 1.6mln MEDLINE abstracts; 3.4mln p-values in 385k PubMed full-text articles.
+
+Data availability: the extracted p-value dataset is publicly available <https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/6FMTT3> (about 6BG of data)
+As per the hosting platform: this dataset is released under the Creative Commons Attribution-NonCommercial 4.0 International License. We extracted the relevant columns into `chavalarias.rds` dataset (25 MB).
+
+Data processing: z-values were derived from p-values assuming two-sided tests. P-value truncation operators were processed by collapsing variants such as `<<`, `<<<`, `<=`, `less than`, and `=<` into `<`. We dropped 0.7% of rows where p-values did not have a “plain” format and 0.08% of rows where truncation could not be unambiguously classified.
+
+Additional variables used: source indicator (abstract versus full text).
+
+
+
+
+## clinicaltrials.gov snapshot
+
+Trials which reported results at clinicaltrials.gov
+
+Snapshot date: 12 August 2025
+
+Data source: 
+This is a set of flat file of studies obtained via <https://aact.ctti-clinicaltrials.org/> (over 2GBs of data for relevant tables) with relevant columns extracted and joined by us to produce a single table `clinicaltrials.gov_aug2025.rds` (12 MB of data). 
+
+Data availability: terms and conditions for ClinicalTrials.gov are at <https://clinicaltrials.gov/about-site/terms-conditions>. We make distrbituions of derived effect sizes available in accordance with ToC's. We only use publicly available data and do not imply any endorsement of this work by National Library of Medicine, ClinicalTrials.gov or AACT.
+
+Data processing: 
+extensive. We kept only studies where status was "Completed" and only rows of data where outcome type was "Primary". We set year to the year of `completion_date`.
+
+Both p-values and confidence intervals were reported. See _Standard procedure for dealing with p-values and confidence intervals_ below for how we created and chose the z-values. Briefly, we calculated z-values using two separate procedures (based on p-values and confidence intervals) and, if both were available, we made a judgement on which one was more appropriate using a pre-defined rule. We dropped rows only when `z` was missing. Notably, infinite z-values can arise when `p_value` is recorded as exactly 0, and these are retained because they are not missing.
+
+The result of our data processing is `data_cut_with_z.rds`, 2.1MB file.
+
+
+
+
+## Cochrane Database of Systematic Reviews
+
+Snapshot: 20 November 2025
+
+Schwab S (2024). “cochrane: Import Data from the Cochrane Database of Systematic Reviews (CDSR).” <https://github.com/schw4b/cochrane>.
+  
+Data collection: using R package `cochrane` we merged data from 8,726 records of reviews in CDSR and merged them into a single file `cdsr_interventions_19nov2025.csv` (63 MB). 
+
+Data processing: 
+
+Additional variables used: 
+
+
+
+
+
+## EU Clinical Trials Repository
+
+Trials which reported results at the EU Clinical Trials Register (EUCTR)
+
+Herold R (2025). “Aggregating and analysing clinical trials data from multiple public registers using R package ctrdata.” Research Synthesis Methods, 1–33. doi:10.1017/rsm.2025.10061
+
+Snapshot date: October 2025
+
+Data collection: we used R package `ctrdata` to create a snapshot of EU CTR; we downloaded trial records with results only. We stored the downloaded records in a local SQLite database and extracted a fixed set of protocol and results fields plus several fields computed by `ctrdata` (trial phase, sample size, and a “first primary endpoint” p-value/size derived by the package). We saved the extracted flat dataset as `data_euctr_ctgov.rds`, but we only use the EUCTR portion of this combined dataset in BEAR.
+
+Data availability: EUCTR is publicly accessible. The EUCTR legal notice notes that publication on EUCTR does not constitute an endorsement of the information reported. 
+
+Data processing: extensive. We use only “first primary endpoint”. We defaulted missing CI levels to 95%. Rest of the derivation of z-values followed the  _Standard procedure for dealing with p-values and confidence intervals_ described below. We derived `year` from the record date, dropped rows only when z was not finite, and harmonised phase labels to the same naming convention as used for ClinicalTrials.gov.
+
+Additional variables used: we retained phase labels, a measure class (derived from the estimand label), primary endpoint sample size 
+
+
+
+## Template
+
+Research question: 
+
+Data collection: 
+
+Data availability: 
+
+Data processing: 
+
+Additional variables used: 
+
+
+
+## Standard procedure for dealing with p-values and confidence intervals
+
+This procedure is mainly used for preparing data from clinical trials.
+
+### Cleaning up data
+
+For confidence interval levels, we clean them up by setting values above 100 or below 0 to missing, and treating values below 1 as proportions rather than percentages by multiplying by 100. This means that, for example, 0.95 is treated as a 95% confidence interval.
+
+In clinical trial datasets we classify the effect measure using text matching to a small set of classes (Mean Difference, Odds Ratio, Risk Ratio, Hazard Ratio, Geometric Ratio, Risk Difference, Difference in Percentages, Ratio/Other Ratio, and Other). This string-based mapping is an arbitrary choice. Unstandardised data have many hundreds of values.
+
+Where possible, we chose the analysis scale based on the measure class. Any ratio measures were analysed on the log scale (if and only if lower bound, upper bound, and point estimate were all strictly positive). Non-ratio measures were always kept on the raw scale.
+
+### Confidence intervals
+
+For z-statistics, we computed the critical value using stated CI percent and the reported number of sides (if missing, we defaulted to a two-sided interval). To avoid undefined critical values (e.g. when at 100% or extremely close to it), we bounded the implied $\alpha$ at a small value. We then computed two one-sided standard error estimates from the upper and lower bounds and used their average when both were finite. 
+
+We computed a simple symmetry diagnostic for the confidence interval on the chosen scale, defined as the smaller of the two half-widths divided by the larger. We treated intervals as “symmetric enough” only if this ratio exceeded 0.8. This threshold is arbitrary and affects when we trust the CI-derived z-statistic.
+
+We also flagged potentially non-Wald intervals using text matching on type of parameter column, if available, searching for keywords such as median, Hodges, posterior/Bayes, exact, Fieller, bootstrap, and permutation. Any row flagged this way was treated as unreliable for CI-based inference, regardless of its numeric properties.
+
+### p-values
+
+Separately, we derived a z-statistic from the reported p-value, but allowed for ambiguity in how p-values were recorded. For numeric p-values between 0 and 1, we created two candidates: (i) treating `p_value` as a two-sided tail probability, and (ii) treating `p_value` as a CDF value and converting it to a two-sided p-value via `2 * min(p, 1 - p)`. We converted both candidates to z-statistics and, when a CI-derived z-statistic was available, chose whichever p-based candidate was closest in absolute value to the CI-derived z. 
+
+We retained unsigned z-statistics when the sign could not be determined. We treated the sign as known only when the transformed effect (`effect` on the chosen scale) was finite and non-zero. If the sign was known, we applied it to the p-derived z; otherwise we kept the p-derived z as an absolute value. This choice was explicitly introduced to avoid dropping rows where p-values are available but the sign is unclear.
+
+### Choice of a single z-value
+
+We then chose a single “best” z-statistic per row. We preferred the CI-derived z when it looked like a plausible Wald interval on the chosen scale, meaning: finite z and standard error, positive standard error, not flagged as non-Wald by keyword search, and either missing symmetry information or symmetry above 0.8. Otherwise we fell back to the p-derived z. This decision rule determines which information source dominates and will affect the distribution of z in the final dataset.
+

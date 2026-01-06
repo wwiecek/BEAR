@@ -67,3 +67,8 @@ Data processing: (explain these steps):
   mutate(b = (log(upper) + log(lower))/2) %>% 
 ```
 
+=======
+20,121 were published in 24 of the leading general interest and field journals" The paper mentions 12,521 observations before and 2,537 afte rdata sharing policies in 24 journals; reproducibility dataset has 32 journals (authors removed some smaller ones), 22,172 rows
+
+Data availability: file `Mandatory data-sharing 30 Aug 2022.dta` may be downloaded from [https://github.com/anthonydouc/Datasharing/blob/master/Stata/]().
+>>>>>>> 86a4ad68d98217090ea0c42382ef20c4fd038b80

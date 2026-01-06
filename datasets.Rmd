@@ -1,0 +1,29 @@
+
+# Benchmarks of Empirical Accuracy in Research
+
+## Arel-Bundock et al 2022 (political science)
+
+Arel-Bundock, V., Briggs, R.C., Doucouliagos, H., Mendoza Aviña, M. and Stanley, T.D., 2022. Quantitative political science research is greatly underpowered. I4R Discussion Paper Series.
+
+Research question: assess statistical power in political science research
+
+Data collection: Authors searched for (and emailed authors of) meta-analysis articles across 141 journals in political science; this led to "a dataset of 16,649 hypothesis tests, grouped in 351 meta-analyses, reported in 46 peer-reviewed meta-analytic articles"
+
+Notes: There is possibly a considerable overlap with Askarov et al dataset, but these two datasets are worth analysing separately given their different focus.
+
+Data availability: replication package can be found at [dataset from https://osf.io/fgdet]() (_ps_power_replication_20241010.zip_). All data are in public domain. We contacted Ryan Briggs who was not aware of any licensing issues.
+
+Data file: using the same code as original authors (replication package runs on makefiles), but skipping some additional processing that they've done, we write a single `estimates.csv` file (3.3 MB).
+
+Data processing: no additional manipulation of data done when creating BEAR dataset.
+
+## Askarov et al 2023 (economics)
+
+Askarov, Z., Doucouliagos, A., Doucouliagos, H. and Stanley, T.D., 2023. The significance of data-sharing policy. Journal of the European Economic Association, 21(3), pp.1191-1226.
+
+Research question: Impact of mandatory data sharing on (excessive) statistical significance in economics papers
+
+Data collection: 64,000 economic estimates surveyed by Ioannidis et al. (2017) + "searching through numerous databases, journal websites, and also an email survey of 109 authors known to have produced meta-analyses of economic topics. We cast the widest net possible to capture empirical economic estimates. Thus, some of the papers included in these meta-analyses were originally published in political science and psychology journals. Nevertheless, these meta-studies deal with economics topics." Later: "we collect 166,924 parameter estimates from 345 distinct research areas, of which
+20,121 were published in 24 of the leading general interest and field journals" The paper mentions 12,521 observations before and 2,537 afte rdata sharing policies in 24 journals; reproducibility dataset has 32 journals (authors removed some smaller ones), 22,172 rows
+
+Data availability: file `Mandatory data-sharing 30 Aug 2022.dta` may be downloaded from [https://github.com/anthonydouc/Datasharing/blob/master/Stata/]().

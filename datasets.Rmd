@@ -14,6 +14,7 @@ fontsize: 11pt
 
 # Benchmarks of Empirical Accuracy in Research
 
+
 ## Arel-Bundock et al 2022 (political science)
 
 Arel-Bundock, V., Briggs, R.C., Doucouliagos, H., Mendoza Aviña, M. and Stanley, T.D., 2022. Quantitative political science research is greatly underpowered. I4R Discussion Paper Series.
@@ -117,7 +118,6 @@ Additional variables used: source indicator (abstract versus full text).
 
 
 
-
 ## clinicaltrials.gov snapshot
 
 Trials which reported results at clinicaltrials.gov
@@ -138,7 +138,6 @@ The result of our data processing is `data_cut_with_z.rds`, 2.1MB file.
 
 
 
-
 ## Cochrane Database of Systematic Reviews
 
 Snapshot: 20 November 2025
@@ -148,16 +147,17 @@ Schwab S (2024). “cochrane: Import Data from the Cochrane Database of Systemat
 Data collection: using R package `cochrane` we merged data from 8,726 records of reviews in CDSR and merged them into a single file `cdsr_interventions_19nov2025.csv` (63 MB). 
 
 Data processing: 
+minimal processing with extensive filtering. Our processed dataset has 39,768 rows, compared to over 800,000 rows of data in the unprocessed dataset. 
 
-Additional variables used: 
+On processing side, we cleaned up study years, categorised measures (risk ratio, odds ratio, mean difference etc.) and experimental designs, especially an "RCT" flag (based on scanning of abstracts of each review for inclusion criteria). Most studies in CDSR are RCTs but some reviews also allowed quasi-experimental studies, which prevented us from categorising many studies.
 
-
+Unlike in most of the other datasets in BEAR, we filter CDSR data heavily. First, we only use the outcome and comparison of each review that are coded as "1", as that is most likely the primary outcome and most relevant comparison. This removes over 90% of all rows of data. Secondly, we only use studies with continuous and dichotomous outcomes, removing about 10% of data where effect estimates are based on instrumental variables or based on individual patient data. Lastly, we remove about 5% of data where measure of effect is unknown (retaining: OR, RR, Peto OR, mean difference, standardised mean difference, and risk difference). We also remove some rows where there are zero subjects.
 
 
 
 ## EU Clinical Trials Repository
 
-Trials which reported results at the EU Clinical Trials Register (EUCTR)
+Trials which reported results at the EU Clinical Trials Register (EUCTR), <https://www.clinicaltrialsregister.eu/>.
 
 Herold R (2025). “Aggregating and analysing clinical trials data from multiple public registers using R package ctrdata.” Research Synthesis Methods, 1–33. doi:10.1017/rsm.2025.10061
 
@@ -173,17 +173,109 @@ Additional variables used: we retained phase labels, a measure class (derived fr
 
 
 
-## Template
+## Head et al 2015 (PubMed papers)
+
+Head, Megan L., Luke Holman, Rob Lanfear, Andrew T. Kahn, and Michael D. Jennions. “The Extent and Consequences of P-Hacking in Science”, 2015. https://doi.org/10.1371/journal.pbio.1002106.
+
+Research question: 
+extent of p-hacking and its impact on meta-analyses.
+
+Data collection: 
+PubMed papers that are open access, up to 2014. Authors used regular expressions to extract p-values from text of Abstract and Results, but not tables. Downloaded data has about 220,000 studies and about 2mln rows.
+
+Data availability: 
+dataset available at <https://datadryad.org/dataset/doi:10.5061/dryad.79d43> under CC0 1.0 Universal licence.
+
+Data file: `head.rds` (derived from the Dryad files `p.values.csv` and `journal.categories.csv`, with an additional DOI-to-PMID matching table created by us).
+
+Data processing: we followed the same minimal clean-up steps (e.g. removing values found in large supplementary sections) as the original paper and also attached PubMed IDs to the dataset using DOI look-up. We saved a reduced analysis file `head.rds` (9 MB).
+
+When constructing the BEAR dataset, we treated p-values recorded as exactly 0 as truncated and set the z-operator to `>`. We recoded all inequalities to sharp inequalities.
+
+Additional variables used: we use the "Abstract vs Results" variable for grouping
+
+
+
+## Jager and Leek
+
+Jager, L. R., & Leek, J. T. (2014). An estimate of the science-wise false discovery rate and application to the top medical literature. Biostatistics (Oxford, England), 15(1), 1–12. https://doi.org/10.1093/biostatistics/kxt007
+
+Research question: estimating science-wise false discovery rate.
+
+Data collection: authors used a custom program to extract p-values from scraped PubMed abstracts for papers published in 5 main medical journals 2000-2010. 15,653 p-values are available in 5,322 articles.
+
+Data availability: the data file `pvalueData.rda` is available <https://github.com/jtleek/swfdr>  License for the programs in that repository is GNU GPL, although a license for the dataset is not stated, as far as we are aware.
+
+Data processing: there was only minimal processing. We derived z values from p-values assuming they were two-sided. 
+
+Notably, large proportion of p-values is truncated, almost always at 0.0001, 0.001, 0.01, or 0.05. As in all datasets, we retained information on truncation. We also treated p-values recorded as exactly 0 as truncated (z-operator `>`). We created a crude flag for RCTs by searching the paper titles for “randomized", "randomised" and "controlled”.
+
+
+
+## Open Science Collaboration 2015
+
+Open Science Collaboration. 2015. “Estimating the Reproducibility of Psychological Science.” Science 349(6251): aac4716. https://doi.org/10.1126/science.aac4716
+
+Research question: 
+replications of a quasi-random sample of 100 experiments in psychology.
+
+Data collection: authors of the paper make a comprehensive dataset of results available with their paper. In BEAR we did not use the original studies (since all studies in that set have p < 0.05), only replications.
+
+Data availability: 
+the data file `rpp_data.csv` is available as part of repository for the paper <https://osf.io/ytpuq/overview> under CC0 1.0 Universal license. 
+
+Data processing: 
+we derived z values from the replication p-values assuming two-sided p-values (we use the replication p-value column, not the original-study p-value). Because the replication dataset does not carry direction in a way we use here, z values are unsigned. We treated p-values recorded as exactly 0 as truncated and recorded this as a lower bound on z (z-operator `>`); otherwise we treated p-values as exact (z-operator `=`). We retained the replication sample size as `ss`.
+
+
+
+## Costello and Fox 2022; Yang et al 2023, 2024 (ecology and evolution)
+
+These two datasets come from the same replication package and shared data processing pipeline in:
+
+Yang, Yefeng, Erik van Zwet, Nikolaos Ignatiadis, and Shinichi Nakagawa. 2024. “A Large-Scale in Silico Replication of Ecological and Evolutionary Studies.” Nature Ecology & Evolution, 1–5.
+
+Original references are:
+
+Yang, Yefeng, Alfredo Sánchez-Tójar, Rose E O’Dea, Daniel WA Noble, Julia Koricheva, Michael D Jennions, Timothy H Parker, Malgorzata Lagisz, and Shinichi Nakagawa. 2023. “Publication Bias Impacts on Effect Size, Statistical Power, and Magnitude (Type M) and Sign (Type S) Errors in Ecology and Evolutionary Biology.” BMC Biology 21 (1): 71.
+
+Costello, Laura, and Jeremy W Fox. 2022. “Decline Effects Are Rare in Ecology.” Ecology 103 (6): e3680. <https://doi.org/10.1002/ecy.3680>.
+
+
+Research question: decline effects in ecology (Costello and Fox) and publication bias and performance of empirical research (Yang et al)
+
+Data collection: Costello and Fox look at 466 meta-analyses obtained through searching Web of Science. Reproducibility dataset includes 88,000 rows among 466 analyses in 232 papers. Subsequently, Yang et al removed duplicated studies and zeroes, which meant discarding about 20% of rows. Yang et al collect 102 meta-analyses published 2010-2019 in relevant journals, de-duplicated against Costello and Fox dataset.
+
+Data availability: two datasets may be downloaded from <https://github.com/Yefeng0920/replication_EcoEvo_git/>. Available under CC BY 4.0 licence. 
+
+Data processing: no additional data processing other than cleaning up study years. Note that the replication package for Yang et al does not include meta-analysis indicators.
+
+Additional variables used: we retained a measure variable ("lnRR", "SMD", "Zr" or "uncommon")
+
+
+
+## What Works Clearinghouse (education)
 
 Research question: 
 
-Data collection: 
 
 Data availability: 
+flat files were obtained from Institute of Education Sciences at <https://ies.ed.gov/ncee/wwc/studyfindings>; snapshot date: 17 May 2025. Per permissions and disclaimers section on that website: "Unless stated otherwise, all information on the U.S. Department of Education’s IES website … is in the public domain and may be reproduced, published, linked to, or otherwise used without permission from IES.”
+
+Data collection: 
+WWC datasets have 13,054 findings (data-rows) across 1,908 reviews. The dataset includes effect sizes, but not standard errors, as well as p-values reported by the studies and p-values re-calculated by the WWC reviewers.
+
 
 Data processing: 
+We retained only RCTs and quasi-experimental studies (98% of data altogether). Where available, we preferred effect sizes and p-values calculated by WWC to the ones reported by the studies. We replaced p-values that were equal to zero (this occurred in 3% of the dataset) with truncated p-value (i.e. assumed $p < 10^{-16}$). We calculated z-values from these p-values under assumption of two-sided tests.
 
-Additional variables used: 
+Additional grouping variable: 
+"outcome domain" variable (e.g. "academic achievement", "alphabetics")
+
+
+
+
+## Converting p-values to z-values
 
 
 
@@ -193,7 +285,7 @@ This procedure is mainly used for preparing data from clinical trials.
 
 ### Cleaning up data
 
-For confidence interval levels, we clean them up by setting values above 100 or below 0 to missing, and treating values below 1 as proportions rather than percentages by multiplying by 100. This means that, for example, 0.95 is treated as a 95% confidence interval.
+For confidence interval levels, we clean them up by setting values above 100 or below 0 to missing, and treating values below 1 as proportions rather than percentages by multiplying by 100. This means that, for example, 0.95 is treated as a 95% confidence interval. For missing values, we assume 95% (for clinical trials, this matters for EU CTR, but not for clinicaltrials.gov).
 
 In clinical trial datasets we classify the effect measure using text matching to a small set of classes (Mean Difference, Odds Ratio, Risk Ratio, Hazard Ratio, Geometric Ratio, Risk Difference, Difference in Percentages, Ratio/Other Ratio, and Other). This string-based mapping is an arbitrary choice. Unstandardised data have many hundreds of values.
 
@@ -209,9 +301,11 @@ We also flagged potentially non-Wald intervals using text matching on type of pa
 
 ### p-values
 
-Separately, we derived a z-statistic from the reported p-value, but allowed for ambiguity in how p-values were recorded. For numeric p-values between 0 and 1, we created two candidates: (i) treating `p_value` as a two-sided tail probability, and (ii) treating `p_value` as a CDF value and converting it to a two-sided p-value via `2 * min(p, 1 - p)`. We converted both candidates to z-statistics and, when a CI-derived z-statistic was available, chose whichever p-based candidate was closest in absolute value to the CI-derived z. 
+The default approach, used for several datasets which report p-values, especially those scraping data from PubMed/Medline, is to treat p-values as two-sided (`z <- qnorm(1 - p/2)`). 
 
-We retained unsigned z-statistics when the sign could not be determined. We treated the sign as known only when the transformed effect (`effect` on the chosen scale) was finite and non-zero. If the sign was known, we applied it to the p-derived z; otherwise we kept the p-derived z as an absolute value. This choice was explicitly introduced to avoid dropping rows where p-values are available but the sign is unclear.
+For clinicaltrials databases we find some ambiguity in how p-values were recorded. Sometimes significant results report p-values close to 1, suggesting that authors reported cumunlative distribution, $\Phi(z)$. Therefore for each row we also calculated $2\cdot\min\{p,1-p\}$. When a CI-derived z-statistic was available, we chose whichever p-value led to a z-value that was closest to the CI-derived z. 
+
+We retained unsigned z-statistics when the sign could not be determined. We treated the sign as known only when the transformed effect was finite and non-zero. If the sign was known, we applied it to the p-derived z; otherwise we kept the p-derived z as an absolute value. This choice was explicitly introduced to avoid dropping rows where p-values are available but the sign is unclear.
 
 ### Choice of a single z-value
 

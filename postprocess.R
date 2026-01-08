@@ -17,13 +17,17 @@ set.seed(1990)
 bear_processed <- 
   bear %>% 
   mutate(z_operator = ifelse(is.na(z_operator), "=", z_operator)) %>% 
-  calc_study_weights() # Calculate the weights = 1/n rows per study
+  calc_study_weights() %>% # Calculate the weights = 1/n rows per study
+  # Choice of subsets, merging of datasets etc. for BEAR modelling paper 
+  # (1) disaggregate a large meta-analyses of intelligence and Many Labs replications
+  mutate(dataset = ifelse(dataset == "psymetadata" & group == "manylabs2018", "manylabs",     dataset)) %>% 
+  mutate(dataset = ifelse(dataset == "psymetadata" & group == "nuijten2020",  "intelligence", dataset)) %>% 
+  # (2) We merge EUDRA CT and clinicaltrials.gov into a single database of trials
+  mutate(dataset = ifelse(dataset == "clinicaltrials" | dataset == "euctr",  "ctgov_euctr", dataset)) 
 
+# Divide into the relevant datasets (which may be processed futher indidivually)
 bear_list <- split(bear_processed, bear_processed$dataset)
-
-# For BEAR modelling paper we merge EUDRA CT and clinicaltrials.gov into a single database of trials
-bear_list[["ctgov_euctr"]] <- rbind(bear_list[["clinicaltrials"]], bear_list[["euctr"]])
-bear_list[["clinicaltrials"]] <- bear_list[["euctr"]] <- NULL
+rm(bear_processed)
 
 bear_hash <- lapply(bear_list, digest)
 

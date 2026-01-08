@@ -5,6 +5,7 @@ source("R/helpers.R")
 source("R/mix.R")
 source("R/plot_mixture.R")
 source("R/fit_density_calc.R")
+
 mfl <- load_all_mixtures()
 load("paper/bear_lists.Rdata")
 

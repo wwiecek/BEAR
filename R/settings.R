@@ -12,6 +12,7 @@ bear_names <- c(
    "CostelloFox" = "Costello and Fox",
    "Head" = "Head et al",
    "JagerLeek" = "Jager and Leek",
+   "psymetadata" = "psychology",
    "OSC" = "OpenSciCollab",
    "Metapsy" = "Metapsy",
    "Sladekova" = "Sladekova et al",

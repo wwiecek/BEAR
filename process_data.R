@@ -4,12 +4,13 @@ library(tidyverse)
 library(metafor) #for CDSR calculations of effect sizes (binary data)
 library(stringi) #for cleaning up some study names
 
-dt_list <- list()
+dtlist <- list()
 
 # This mini function tries to deal with very, very small p values and 
 # also performs a bit of truncation by default
 z_from_p <- function(p, truncate = 100) {
   z <- qnorm(1 - p/2)
+  # extra precision recommended by chatGPT
   small_p <- !is.na(p) & p < 1e-15
   z[small_p] <- sqrt(-2 * log(p[small_p]/2))
   z[!is.na(p) & p <= 0] <- truncate
@@ -19,7 +20,7 @@ z_from_p <- function(p, truncate = 100) {
 
 # Brodeur et al ------
 
-dt_list[["Brodeur"]] <- read_dta("data/Brodeur/merged.dta") %>% 
+dtlist[["Brodeur"]] <- read_dta("data/Brodeur/merged.dta") %>% 
   # filter(method=="RCT") %>%
   transmute(
     metaid = NA,
@@ -42,7 +43,7 @@ dt_list[["Brodeur"]] <- read_dta("data/Brodeur/merged.dta") %>%
 
 # data from https://github.com/anthonydouc/Datasharing/blob/master/Stata/Mandatory%20data-sharing%2030%20Aug%202022.dta
 
-dt_list[["Askarov"]] <- read_dta("data/Askarov/Mandatory data-sharing 30 Aug 2022.dta") %>% 
+dtlist[["Askarov"]] <- read_dta("data/Askarov/Mandatory data-sharing 30 Aug 2022.dta") %>% 
   mutate(z = effectsize/standarderror) %>% 
   dplyr:: filter(Excludegroup==0) %>% 
   transmute(
@@ -70,7 +71,7 @@ dt_list[["Askarov"]] <- read_dta("data/Askarov/Mandatory data-sharing 30 Aug 202
 # hypothesis tests, grouped in 351 meta-analyses, reported in 46 peer-reviewed
 # meta-analytic articles"
 
-dt_list[["ArelBundock"]] <- 
+dtlist[["ArelBundock"]] <- 
   read_csv("data/ArelBundock/estimates.csv", 
            show_col_types = FALSE) %>% 
   # There may be problems printing and encoding some characters down the line
@@ -93,31 +94,41 @@ dt_list[["ArelBundock"]] <-
 
 # What Works Clearinghouse -----
 
-# Erik:
-# The data about educational studies were downloaded by Chris Mead from the 
-# “What Works Clearinghouse” on December 29, 2023. The website is 
-# https://ies.ed.gov/ncee/WWC/StudyFindings 
+# We previously used a data cut that was processed by Kraft/Mead (2023)
+# dtlist[["WWC"]] <- read_csv("data/WWC/Kraft_wwc_merge.csv", show_col_types = FALSE) %>% 
+#   mutate(pval = as.numeric(f_p_Value_WWC),
+#          b = as.numeric(Effect.size)) %>% 
+#   # For some p-values the database records p = 0, so z = Inf, but we can "rescue"
+#   # some information by setting it to the smallest value in WWC dataset:
+#   mutate(pval = ifelse(pval == 0, 2e-16, pval)) %>%
+#   mutate(pval = ifelse(is.na(pval), f_p_Value_Any, pval)) %>% 
+#   transmute(
+#     metaid = NA, 
+#     studyid = cite_trunc,
+#     method = NA,
+#     measure = NA,
+#     z = sign(b)*z_from_p(pval),
+#     b = b,
+#     se = NA,
+#     ss = Sample.size,
+#     year = Publication.year) 
 
-dt_list[["WWC"]] <- read_csv("data/WWC/Kraft_wwc_merge.csv", show_col_types = FALSE) %>% 
-  mutate(pval = as.numeric(f_p_Value_WWC),
-         b = as.numeric(Effect.size)) %>% 
-  # For some p-values the database records p = 0, so z = Inf, but we can "rescue"
-  # some information by setting it to the smallest value in WWC dataset:
-  mutate(pval = ifelse(pval == 0, 2e-16, pval)) %>%
-  mutate(pval = ifelse(is.na(pval), f_p_Value_Any, pval)) %>% 
+# using data from WWC website directly
+dtlist[["WWC"]] <- readRDS("data/WWC.rds") %>%
+  filter(method %in% c("RCT", "quasi")) %>% 
   transmute(
-    metaid = NA, 
-    studyid = cite_trunc,
-    method = NA,
+    metaid = NA_integer_,
+    studyid = study_id,
+    method = method,
     measure = NA,
-    z = sign(b)*z_from_p(pval),
+    group = Outcome_Domain,         
+    z = sign(b) * z_from_p(pval),
+    z_operator = ifelse(pval == 1e-16, ">", "="),
     b = b,
-    se = NA,
-    ss = Sample.size,
-    year = Publication.year) 
-
-# potentially also of interest:
-# read_csv("data/WWC/Kraft_wwc_merge.csv") %>% pull(Academic.subject) %>% table
+    se = NA_real_,
+    ss = ss,
+    year = year
+  )
 
 
 
@@ -142,7 +153,7 @@ extract_year_yang <- function(x) {
 # that I'd like to use, therefore I do minimal data processing in data/Yang/
 # to get data from Yang 2023 paper
 
-# dt_list[["Yang"]] <- read.csv("data/Yang/dat_processed_rob.csv") %>% 
+# dtlist[["Yang"]] <- read.csv("data/Yang/dat_processed_rob.csv") %>% 
 #   transmute(
 #     metaid = NA, 
 #     studyid = study,
@@ -154,7 +165,7 @@ extract_year_yang <- function(x) {
 
 load("data/Yang/EcoEvo_PB_datasets.Rdata")
 
-dt_list[["Yang"]] <- rbind(
+dtlist[["Yang"]] <- rbind(
   lnRR %>% 
     lapply(function(x) select(x, study_ID, year_pub, es, sei) %>% 
              mutate(study_ID = as.character(study_ID))) %>% 
@@ -192,7 +203,7 @@ dt_list[["Yang"]] <- rbind(
 # and made available at 
 # [Github](https://github.com/Yefeng0920/replication_EcoEvo_git/blob/main/data/main/main_dat_processed.csv)
 
-dt_list[["CostelloFox"]] <- 
+dtlist[["CostelloFox"]] <- 
   read.csv("data/Yang/main_dat_processed.csv") %>% 
   transmute(
     metaid = as.character(meta.analysis.id), #meta.analysis.paper has only 232 unique values, this has 466
@@ -215,7 +226,7 @@ dt_list[["CostelloFox"]] <-
 
 load("data/JagerLeek/pvalueData.rda")
 
-dt_list[["JagerLeek"]] <-  
+dtlist[["JagerLeek"]] <-  
   pvalueData %>% 
   data.frame() %>% 
   select(-abstract) %>% 
@@ -240,14 +251,14 @@ dt_list[["JagerLeek"]] <-
 
 # Sladekova -----
 
-dfs <- lapply(list.files("data/Sladekova/", full.names = TRUE), read.csv)
-names(dfs) <- list.files("data/Sladekova/")
+dfs <- lapply(list.files("data_raw/Sladekova/", full.names = TRUE), read.csv)
+names(dfs) <- list.files("data_raw/Sladekova/")
 
 
 
 # sort(table(unlist(lapply(dfs, function(f) names(f)))), decreasing = TRUE)
 
-dt_list[["Sladekova"]] <- lapply(dfs, function(df){
+dtlist[["Sladekova"]] <- lapply(dfs, function(df){
   
   if(all(c("n_treatment", "n_control") %in% colnames(df))) df$n <- df$n_treatment + df$n_control
   
@@ -289,7 +300,7 @@ dt_list[["Sladekova"]] <- lapply(dfs, function(df){
 
 sort(table(unlist(lapply(readRDS("data/Metapsy/metapsy_dt.rds"), function(f) names(f)))), decreasing = TRUE)
 
-dt_list[["Metapsy"]] <- readRDS("data/Metapsy/metapsy_dt.rds") %>% 
+dtlist[["Metapsy"]] <- readRDS("data/Metapsy/metapsy_dt.rds") %>% 
   lapply(function(df) {
     if(is.null(df$.g)) {
       # for total-response dataset, I calculate log(OR) and convert to SMD
@@ -334,7 +345,7 @@ dt_list[["Metapsy"]] <- readRDS("data/Metapsy/metapsy_dt.rds") %>%
 
 load("data/BarnettWren/Georgescu.Wren.RData")
 
-dt_list[["BarnettWren"]] <- complete %>% 
+dtlist[["BarnettWren"]] <- complete %>% 
   filter(!mistake) %>% 
   # 0.3% of available values have CI widths other than 95%, let's remove these
   # but if ci.level is unknown, assume that it's actually 95% 
@@ -366,8 +377,8 @@ cdsr_all_studies <- readRDS("data/Cochrane/cdsr_study_results.rds")
 cdsr_filtered <- cdsr_all_studies %>% 
   # Remove studies with sample size of zero 
   filter(total1 > 0, total2 > 0, 
-         # Even though we make our own calculation, it's better to 
          !is.na(measure_group),
+         # Even though we make our own calculation, it's better to 
          # Remove small minority of studies that would require more complicated calculations
          # small minority of data is IPD or IV ("results with effects and standard errors 
          # but without the data necessary for their computation") and we exclude these
@@ -376,7 +387,7 @@ cdsr_filtered <- cdsr_all_studies %>%
          # THIS REMOVES 95% OF DATA! YOu may want to construct it differently for future analyses
          comparison.nr == 1, outcome.nr == 1)
 
-dt_list[["Cochrane"]] <- rbind(
+dtlist[["Cochrane"]] <- rbind(
   dplyr::filter(cdsr_filtered, outcome.flag=="CONT") %>% 
     escalc(m1i=mean1,sd1i=sd1,n1i=total1,
            m2i=mean2,sd2i=sd2,n2i=total2,measure="SMD",
@@ -422,7 +433,7 @@ rm(cdsr_all_studies)
 #     outcome.nr==1,
 #     comparison.nr==1)
 # 
-# dt_list[["Cochrane2019"]] <- rbind(
+# dtlist[["Cochrane2019"]] <- rbind(
 #   dplyr::filter(data_filtered, outcome.flag=="CONT") %>%
 #     escalc(m1i=mean1,sd1i=sd1,n1i=total1,
 #            m2i=mean2,sd2i=sd2,n2i=total2,measure="SMD",
@@ -453,7 +464,7 @@ rm(cdsr_all_studies)
 # EUCTR -----
 euctr_clean <- readRDS("data/eutrials/data_euctr_ctgov_clean.rds")
 
-dt_list[["euctr"]] <- euctr_clean %>%
+dtlist[["euctr"]] <- euctr_clean %>%
   filter(collection == "EUCTR") %>%
   transmute(
     metaid  = NA,
@@ -467,7 +478,7 @@ dt_list[["euctr"]] <- euctr_clean %>%
     ss      = n
   )
 
-# dt_list[["ctgov"]] <- euctr_clean %>%
+# dtlist[["ctgov"]] <- euctr_clean %>%
 #   filter(collection == "CTGOV") %>%
 #   transmute(
 #     metaid  = NA,
@@ -483,7 +494,7 @@ dt_list[["euctr"]] <- euctr_clean %>%
 
 # clinicaltrials.gov -----
 
-# dt_list[["Adda"]] <- read_dta("data/Adda/data_counterfactual_analysis.dta") %>% 
+# dtlist[["Adda"]] <- read_dta("data/Adda/data_counterfactual_analysis.dta") %>% 
 #   # 15 cases of trials that will finish in the future, so set to NA just in case
 #   mutate(ifelse(completion_year >= 2025, NA, completion_year)) %>% 
 #   filter(phase %in% c("Phase 2","Phase 3")) %>% 
@@ -501,7 +512,7 @@ dt_list[["euctr"]] <- euctr_clean %>%
 #                                    .default = "=")
 #   )
 
-dt_list[["clinicaltrials"]] <- readRDS("data/clinicaltrials.gov/data_cut_with_z.rds") %>% 
+dtlist[["clinicaltrials"]] <- readRDS("data/clinicaltrials.gov/data_cut_with_z.rds") %>% 
   filter(study_type == "INTERVENTIONAL" & allocation == "RANDOMIZED") %>% 
   # Remove some studies with huge numbers of arms; they are typically phase 1 or 2 studies
   # that are just throwing darts at many outcomes, so let's keep more ideal outcomes
@@ -519,7 +530,7 @@ dt_list[["clinicaltrials"]] <- readRDS("data/clinicaltrials.gov/data_cut_with_z.
 
 # Head -----
 
-dt_list[["Head"]] <- readRDS("data/Head/head.rds") %>% 
+dtlist[["Head"]] <- readRDS("data/Head/head.rds") %>% 
   transmute(metaid = NA,
             studyid = pmid,
             source = section,
@@ -546,7 +557,7 @@ dt_list[["Head"]] <- readRDS("data/Head/head.rds") %>%
 
 # Chavalarias -----
 
-dt_list[["Chavalarias"]] <- readRDS("data/Chavalarias/chavalarias.rds") %>% 
+dtlist[["Chavalarias"]] <- readRDS("data/Chavalarias/chavalarias.rds") %>% 
   # p_format coding is explained on Harvard Dataverse, but 99.3% of the values are "plain", 
   # so we stick to that
   filter(p_format == "plain") %>% 
@@ -586,7 +597,7 @@ osc_raw <- read.csv("data/OSC/rpp_data.csv",header=TRUE)
 #   mutate(z_orig = qnorm(1 - p_orig/2),
 #          z_repl = qnorm(1 - p_repl/2))
 
-dt_list[["OSC"]] <- osc_raw %>% 
+dtlist[["OSC"]] <- osc_raw %>% 
   rename(p_value = T_pval_USE..R.) %>% 
   transmute(
     metaid = NA,
@@ -607,7 +618,7 @@ dt_list[["OSC"]] <- osc_raw %>%
 # Bartos -----
 
 # Very nicely organised dataset on exercise which requires no extra work from us
-dt_list[["Bartos"]] <- read_csv("data/Bartos/data_processed.csv",
+dtlist[["Bartos"]] <- read_csv("data/Bartos/data_processed.csv",
                                 show_col_types = FALSE) %>% 
   transmute(
     metaid = as.character(meta_id),
@@ -626,6 +637,12 @@ dt_list[["Bartos"]] <- read_csv("data/Bartos/data_processed.csv",
 
 
 
+# psymetadata -----
+
+dtlist[["psymetadata"]] <- readRDS("data/psymetadata.rds")
+
+
+
 # Bogdan -----
 
 # x <- read_csv("data/Bogdan/df_combined_pruned_Jan21.csv")
@@ -633,10 +650,10 @@ dt_list[["Bartos"]] <- read_csv("data/Bartos/data_processed.csv",
 # x <- read_csv("data/Bogdan/Youyou_etal_replications.csv")
 # View(x)
 # 
-# dt_list[["Bogdan"]] <- x
+# dtlist[["Bogdan"]] <- x
 
 # Processing of individual datasets and binding into a single large dataset ----
-bear <- dt_list %>% 
+bear <- dtlist %>% 
   lapply(function(x) {x$studyid <- as.character(x$studyid); x}) %>% 
   lapply(filter, !is.na(z)) %>% 
   bind_rows(.id = "dataset")

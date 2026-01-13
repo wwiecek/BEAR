@@ -12,7 +12,7 @@ fontsize: 11pt
 
 ## Arel-Bundock et al 2022 (political science)
 
-Arel-Bundock, V., Briggs, R.C., Doucouliagos, H., Mendoza Aviña, M. and Stanley, T.D., 2022. Quantitative political science research is greatly underpowered. I4R Discussion Paper Series.
+Reference: Arel-Bundock et al 2022
 
 Research question: assess statistical power in political science research
 
@@ -29,7 +29,7 @@ Data processing: using the same code as original authors (replication package ru
 
 ## Askarov et al 2023 (economics)
 
-Askarov, Z., Doucouliagos, A., Doucouliagos, H. and Stanley, T.D., 2023. The significance of data-sharing policy. Journal of the European Economic Association, 21(3), pp.1191-1226.
+Reference: Askarov et al 2023
 
 Research question: 
 Impact of mandatory data sharing on (excessive) statistical significance in economics papers
@@ -49,9 +49,7 @@ We use the same file `Mandatory data-sharing 30 Aug 2022.dta` (11.6 MB) as in th
 
 ## Barnett and Wren 
 
-Barnett, A.G. and Wren, J.D., 2019. Examination of CIs in health and medical journals from 1976 to 2019: an observational study. BMJ open, 9(11), p.e032506.
-
-
+Reference: Barnett and Wren 2019
 
 Research question: Bias for statistical significance in health and medical journals
 
@@ -72,11 +70,11 @@ We excluded a small fraction of data. First we restricted to 95% confidence inte
 
 ## Bartoš et al. 2025 (exercise)
 
-Bartoš, F., Lušková, M., Bortnikova, K., Hozová, K., Kantova, K., Irsova, Z., & Havranek, T. (2025). Effect of Exercise on Cognition, Memory, and Executive Function: A Study-Level Meta-Meta-Analysis Across Populations and Exercise Categories. PsyArXiv. https://doi.org/10.31234/osf.io/qr8e2_v1
+Reference: Bartoš et al 2025
 
 This paper builds on another analysis:
 
-Singh, B., Bennett, H., Miatke, A., Dumuid, D., Curtis, R., Ferguson, T., Brinsley, J., Szeto, K., Petersen, J. M., Gough, C., Eglitis, E., Simpson, C. E., Ekegren, C. L., Smith, A. E., Erickson, K. I., & Maher, C. (2025). Effectiveness of exercise for improving cognition, memory and executive function: A systematic umbrella review and meta-meta-analysis. British Journal of Sports Medicine, 59(12), 866–876. https://doi.org/10.1136/bjsports-2024-108589
+Reference: Singh et al 2025
 
 Research question: 
 What is the effect of physical exercise on cognition, memory, and executive function; with extra focus on selective reporting and heterogeneity.
@@ -96,7 +94,7 @@ Additional variables used:
 
 ## Brodeur et al. 2024 (economics)
 
-Brodeur, A., Cook, N. M., Hartley, J. S., & Heyes, A. (2024). Do preregistration and preanalysis plans reduce p-hacking and publication bias? Evidence from 15,992 test statistics and suggestions for improvement. Journal of Political Economy Microeconomics, 2(3), 527–561.
+Reference: Brodeur et al 2024
 
 Research question: are preregistration and pre-analysis plans associated with reduced p-hacking and publication bias in economics?
 
@@ -110,7 +108,7 @@ Data processing: the authors’ reported z-statistics were used directly and the
 
 ## Chavalarias et al. 2016 (MEDLINE/PubMed)
 
-Chavalarias, D., Wallach, J. D., Li, A. H. T., & Ioannidis, J. P. A. (2016). Evolution of reporting p values in the biomedical literature, 1990–2015. JAMA, 315(11), 1141–1148.
+Reference: Chavalarias et al 2016
 
 Research question: reporting of p-values in the biomedical literature
 
@@ -149,7 +147,7 @@ The result of our data processing is `data_cut_with_z.rds`, 2.1MB file.
 
 Snapshot: 20 November 2025
 
-Schwab S (2024). “cochrane: Import Data from the Cochrane Database of Systematic Reviews (CDSR).” <https://github.com/schw4b/cochrane>.
+Reference: Schwab 2024
   
 Data collection: using R package `cochrane` we merged data from 8,726 records of reviews in CDSR and merged them into a single file `cdsr_interventions_19nov2025.csv` (63 MB). 
 
@@ -166,7 +164,7 @@ Unlike in most of the other datasets in BEAR, we filter CDSR data heavily. First
 
 Trials which reported results at the EU Clinical Trials Register (EUCTR), <https://www.clinicaltrialsregister.eu/>.
 
-Herold R (2025). “Aggregating and analysing clinical trials data from multiple public registers using R package ctrdata.” Research Synthesis Methods, 1–33. doi:10.1017/rsm.2025.10061
+Reference: Herold 2025
 
 Snapshot date: October 2025
 
@@ -182,7 +180,7 @@ Additional variables used: we retained phase labels, a measure class (derived fr
 
 ## Head et al 2015 (PubMed papers)
 
-Head, Megan L., Luke Holman, Rob Lanfear, Andrew T. Kahn, and Michael D. Jennions. “The Extent and Consequences of P-Hacking in Science”, 2015. https://doi.org/10.1371/journal.pbio.1002106.
+Reference: Head et al 2015
 
 Research question: 
 extent of p-hacking and its impact on meta-analyses.
@@ -205,7 +203,7 @@ Additional variables used: we use the "Abstract vs Results" variable for groupin
 
 ## Jager and Leek
 
-Jager, L. R., & Leek, J. T. (2014). An estimate of the science-wise false discovery rate and application to the top medical literature. Biostatistics (Oxford, England), 15(1), 1–12. https://doi.org/10.1093/biostatistics/kxt007
+Reference: Jager and Leek 2014
 
 Research question: estimating science-wise false discovery rate.
 
@@ -221,7 +219,7 @@ Notably, large proportion of p-values is truncated, almost always at 0.0001, 0.0
 
 ## Open Science Collaboration 2015
 
-Open Science Collaboration. 2015. “Estimating the Reproducibility of Psychological Science.” Science 349(6251): aac4716. https://doi.org/10.1126/science.aac4716
+Reference: Open Science Collaboration 2015
 
 Research question: 
 replications of a quasi-random sample of 100 experiments in psychology.
@@ -240,13 +238,13 @@ we derived z values from the replication p-values assuming two-sided p-values (w
 
 These two datasets come from the same replication package and shared data processing pipeline in:
 
-Yang, Yefeng, Erik van Zwet, Nikolaos Ignatiadis, and Shinichi Nakagawa. 2024. “A Large-Scale in Silico Replication of Ecological and Evolutionary Studies.” Nature Ecology & Evolution, 1–5.
+Reference: Yang et al 2024
 
 Original references are:
 
-Yang, Yefeng, Alfredo Sánchez-Tójar, Rose E O’Dea, Daniel WA Noble, Julia Koricheva, Michael D Jennions, Timothy H Parker, Malgorzata Lagisz, and Shinichi Nakagawa. 2023. “Publication Bias Impacts on Effect Size, Statistical Power, and Magnitude (Type M) and Sign (Type S) Errors in Ecology and Evolutionary Biology.” BMC Biology 21 (1): 71.
+Reference: Yang et al 2023
 
-Costello, Laura, and Jeremy W Fox. 2022. “Decline Effects Are Rare in Ecology.” Ecology 103 (6): e3680. <https://doi.org/10.1002/ecy.3680>.
+Reference: Costello and Fox 2022
 
 
 Research question: decline effects in ecology (Costello and Fox) and publication bias and performance of empirical research (Yang et al)
@@ -318,3 +316,34 @@ We retained unsigned z-statistics when the sign could not be determined. We trea
 
 We then chose a single “best” z-statistic per row. We preferred the CI-derived z when it looked like a plausible Wald interval on the chosen scale, meaning: finite z and standard error, positive standard error, not flagged as non-Wald by keyword search, and either missing symmetry information or symmetry above 0.8. Otherwise we fell back to the p-derived z. This decision rule determines which information source dominates and will affect the distribution of z in the final dataset.
 
+## References
+
+Arel-Bundock, V., Briggs, R. C., Doucouliagos, H., Mendoza Aviña, M., & Stanley, T. D. (2022). Quantitative political science research is greatly underpowered. I4R Discussion Paper Series.
+
+Askarov, Z., Doucouliagos, A., Doucouliagos, H., & Stanley, T. D. (2023). The significance of data-sharing policy. Journal of the European Economic Association, 21(3), 1191–1226.
+
+Barnett, A. G., & Wren, J. D. (2019). Examination of CIs in health and medical journals from 1976 to 2019: An observational study. BMJ Open, 9(11), e032506.
+
+Bartoš, F., Lušková, M., Bortnikova, K., Hozová, K., Kantova, K., Irsova, Z., & Havranek, T. (2025). Effect of Exercise on Cognition, Memory, and Executive Function: A Study-Level Meta-Meta-Analysis Across Populations and Exercise Categories. PsyArXiv. https://doi.org/10.31234/osf.io/qr8e2_v1
+
+Brodeur, A., Cook, N. M., Hartley, J. S., & Heyes, A. (2024). Do preregistration and preanalysis plans reduce p-hacking and publication bias? Evidence from 15,992 test statistics and suggestions for improvement. Journal of Political Economy Microeconomics, 2(3), 527–561.
+
+Chavalarias, D., Wallach, J. D., Li, A. H. T., & Ioannidis, J. P. A. (2016). Evolution of reporting p values in the biomedical literature, 1990–2015. JAMA, 315(11), 1141–1148.
+
+Costello, L., & Fox, J. W. (2022). Decline effects are rare in ecology. Ecology, 103(6), e3680. https://doi.org/10.1002/ecy.3680
+
+Head, M. L., Holman, L., Lanfear, R., Kahn, A. T., & Jennions, M. D. (2015). The extent and consequences of p-hacking in science. PLOS Biology. https://doi.org/10.1371/journal.pbio.1002106
+
+Herold, R. (2025). Aggregating and analysing clinical trials data from multiple public registers using R package ctrdata. Research Synthesis Methods, 1–33. https://doi.org/10.1017/rsm.2025.10061
+
+Jager, L. R., & Leek, J. T. (2014). An estimate of the science-wise false discovery rate and application to the top medical literature. Biostatistics, 15(1), 1–12. https://doi.org/10.1093/biostatistics/kxt007
+
+Open Science Collaboration. (2015). Estimating the reproducibility of psychological science. Science, 349(6251), aac4716. https://doi.org/10.1126/science.aac4716
+
+Schwab, S. (2024). cochrane: Import Data from the Cochrane Database of Systematic Reviews (CDSR). https://github.com/schw4b/cochrane
+
+Singh, B., Bennett, H., Miatke, A., Dumuid, D., Curtis, R., Ferguson, T., Brinsley, J., Szeto, K., Petersen, J. M., Gough, C., Eglitis, E., Simpson, C. E., Ekegren, C. L., Smith, A. E., Erickson, K. I., & Maher, C. (2025). Effectiveness of exercise for improving cognition, memory and executive function: A systematic umbrella review and meta-meta-analysis. British Journal of Sports Medicine, 59(12), 866–876. https://doi.org/10.1136/bjsports-2024-108589
+
+Yang, Y., Sánchez-Tójar, A., O’Dea, R. E., Noble, D. W. A., Koricheva, J., Jennions, M. D., Parker, T. H., Lagisz, M., & Nakagawa, S. (2023). Publication bias impacts on effect size, statistical power, and magnitude (Type M) and sign (Type S) errors in ecology and evolutionary biology. BMC Biology, 21(1), 71.
+
+Yang, Y., van Zwet, E., Ignatiadis, N., & Nakagawa, S. (2024). A large-scale in silico replication of ecological and evolutionary studies. Nature Ecology & Evolution, 1–5.

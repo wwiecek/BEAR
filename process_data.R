@@ -5,18 +5,8 @@ library(metafor) #for CDSR calculations of effect sizes (binary data)
 library(stringi) #for cleaning up some study names
 
 dtlist <- list()
+source("R/z_from_p.R")
 
-# This mini function tries to deal with very, very small p values and 
-# also performs a bit of truncation by default
-z_from_p <- function(p, truncate = 100) {
-  z <- qnorm(1 - p/2)
-  # extra precision recommended by chatGPT
-  small_p <- !is.na(p) & p < 1e-15
-  z[small_p] <- sqrt(-2 * log(p[small_p]/2))
-  z[!is.na(p) & p <= 0] <- truncate
-  z[!is.na(p) & p >= 1] <- 0
-  z
-}
 
 # Brodeur et al ------
 
@@ -126,7 +116,7 @@ dtlist[["Yang"]] <- readRDS("data/Yang.rds") %>%
 # Costello and Fox -----
 
 dtlist[["CostelloFox"]] <- 
-  read.csv("data/Yang/main_dat_processed.csv") %>% 
+  readRDS("data/CostelloFox.rds") %>% 
   transmute(
     metaid = as.character(meta.analysis.id), #meta.analysis.paper has only 232 unique values, this has 466
     studyid = study2,
@@ -184,33 +174,6 @@ dtlist[["Sladekova"]] <-
 # sort(table(unlist(lapply(readRDS("data/Metapsy.rds"), function(f) names(f)))), decreasing = TRUE)
 
 dtlist[["Metapsy"]] <- readRDS("data/Metapsy.rds") %>% 
-  lapply(function(df) {
-    if(is.null(df$.g)) {
-      # for total-response dataset, I calculate log(OR) and convert to SMD
-      # (there is a shorter way to do it, but I didn't notice initially that
-      #  there are raw counts in this dataset)
-      df <- df %>% 
-        mutate(logor =     plogit.ig - plogit.cg,
-               se.logor =  se.plogit.ig^2 + se.plogit.cg^2) %>% 
-        mutate(.g  = logor/(pi/sqrt(3)),
-               .g_se = se.logor/(pi/sqrt(3)))
-    }
-    
-    if(all(c("n_arm1", "n_arm2") %in% colnames(df))) df$ss <- df$n_arm1 + df$n_arm2
-    else df$ss <- NA
-    
-    if (all(c("study", ".g", ".g_se") %in% colnames(df))) {
-      ret <- df[, c("study", ".g", ".g_se", "ss"), drop = FALSE]
-      if(!is.null(df$year))
-        ret$year <- df$year
-      else #this happens in suicide-psyctr
-        ret$year <- as.numeric(sub(".*?(\\d{4}).*?$", "\\1", df$study))
-      return(ret)
-    } else {
-      return(data.frame())
-    }
-  }) %>% 
-  bind_rows(.id = "metaid") %>% 
   transmute(
     metaid = metaid,
     studyid = study,

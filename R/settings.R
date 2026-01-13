@@ -12,12 +12,14 @@ bear_names <- c(
    "CostelloFox" = "Costello and Fox",
    "Head" = "Head et al",
    "JagerLeek" = "Jager and Leek",
-   "psymetadata" = "psychology",
    "OSC" = "OpenSciCollab",
    "Metapsy" = "Metapsy",
    "Sladekova" = "Sladekova et al",
    "WWC" = "What Works Clearing.",
-   "Yang" = "Yang et al"   
+   "Yang" = "Yang et al",   
+   "psymetadata" = "psychology",
+   "intelligence" = "Nuijten et al",
+   "manylabs" = "Many Labs"
    # "Adda" = "Adda et al",
    # "ctgov" = "clinicaltrials (v2 cut)",
    # "Cochrane2019" = "Cochrane (2019 cut)",
@@ -41,14 +43,19 @@ bear_classification <- c(
    "OSC" = "curated",
    "Sladekova" = "meta",
    "WWC" = "curated",
-   "Yang" = "meta"   
+   "Yang" = "meta",
+   "psymetadata" = "curated",
+   "intelligence" = "meta",
+   "manylabs" = "curated"
    # "Adda" = "curated",
    # "ctgov" = "curated",
    # "Cochrane2019" = "meta",
 )
 
-# This is a vector to remove some fitted mixtures which we will not use in the paper
-paper_do_not_include <- c("ctgov", "Cochrane2019", "euctr", "clinicaltrials")
+# This is a vector to remove some fitted mixtures 
+# which we will not use in the BEAR paper
+paper_do_not_include <- c("ctgov", "Cochrane2019", "euctr", "clinicaltrials",
+                          "Sladekova", "Head", "JagerLeek")
 
 cols_grp <- c("curated" = "#E41A1C", 
               "meta" = "#377EB8", 

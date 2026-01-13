@@ -2,6 +2,6 @@
 # and made available at 
 # [Github](https://github.com/Yefeng0920/replication_EcoEvo_git/blob/main/data/main/main_dat_processed.csv)
 
-df <- read.csv("data/Yang/main_dat_processed.csv") 
+df <- read.csv("data_raw/Yang/main_dat_processed.csv") 
 saveRDS(df, "data/CostelloFox.rds")
 rm(df)

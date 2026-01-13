@@ -27,7 +27,7 @@ Here is a short summary of what’s included in BEAR:
     ##  8 Costello and Fox       88218    466   12927   6.82      0.419 NA: 88218                                  
     ##  9 Head et al           2010875      1  219220   9.17      0.622 NA: 2010875                                
     ## 10 Jager and Leek         15653      1    5322   2.94      0.777 RCT: 4771, NA: 10882                       
-    ## 11 Metapsy                 3544     16    1276   2.78      0.491 RCT: 3544                                  
+    ## 11 Metapsy                 4395     20    1494   2.94      0.487 RCT: 4395                                  
     ## 12 OpenSciCollab             99      1      99   1         0.354 RCT: 99                                    
     ## 13 Sladekova et al        11540    406   11540   1         0.590 NA: 11540                                  
     ## 14 What Works Clearing.   12045      1    1408   8.55      0.334 quasi: 1948, RCT: 10097                    

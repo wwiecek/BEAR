@@ -1,6 +1,6 @@
 # Fitting mixture distribution to a large set of z-values
 # original code by Erik Zwet that has been largely rewritten by Witold
-# but is still very close to the ideas that Erik had
+# but is still almost 100% the idea by Erik 
 
 # We fit a 4-part zero-mean normal mixture distribution to the z-statistics. 
 # Or rather, we fit a mixture of half-normals to the absolute z-statistics.
@@ -13,9 +13,12 @@
 # * We weight each z-statistic by the inverse of the number of z-statistics 
 #   in the same study.
 
+
+
+
 ## Helper functions for mixture of normals -----
 
-# there are faster alternatives in dev/ folder, but this is fast enough for 
+# there are faster alternatives in explore/loglik/ folder, but this is fast enough for 
 # the datasets that we are fitting
 
 dmix = function(x,p,m,s) # density of normal mixture (vector x)
@@ -180,10 +183,6 @@ loglik_op <- function(theta, z, operator,
 
 
 # Mixture optimisation function -----
-# Erik's old code makes use of constrOptim() and Nelder-Mead;
-# v2 (rewritten by WW with chatGPT's help, validated by me)
-# allows for use of BFGS optimiser and faster loglik code,
-# as well as new truncation behaviour
 
 optimise_mixture <- function(z, z_operator, weights, k = 4,
                              legacy_mode = FALSE) {
@@ -210,7 +209,6 @@ optimise_mixture <- function(z, z_operator, weights, k = 4,
                        k = k, weights = weights,
                        control = list(maxit = 1e4))
   }else{
-    print("Using old log-likelihood function from EVZ")
     opt <- constrOptim(theta0, f = loglik_orig, ui = ui, ci = ci,
                        method = "Nelder-Mead",
                        z = z, truncated = (z_operator != "="), 
@@ -266,37 +264,3 @@ fit_mixture <- function(z,
   
   return(fit)
 }
-
-plot_mixture <- function(fit, z, weights) {
-  
-  omega=fit$omega[1]
-  B1=2*pmix(-1.96,p=fit$p,m=fit$m,s=fit$sigma) # prob. |z|>1.96
-  B2=1-B1
-  
-  df <- data.frame(z=abs(z),weights)
-  
-  df$fz <- 2*(omega*(df$z<1.96) + (df$z>=1.96))*
-    dmix(z, p=fit$p, m=fit$m, s=fit$sigma)/(B1 + omega*B2)
-  
-  df$fz2=2*dmix(df$z, p=fit$p, m=fit$m, s=fit$sigma)
-  
-  ggplot(df, aes(x = z)) +
-    geom_histogram(aes(y = after_stat(density),
-                       weight=weights), 
-                   color="black",
-                   fill="white", breaks=seq(0,10,0.2)) +
-    geom_line(aes(x=z,y=fz)) +
-    geom_line(aes(x=z,y=fz2),color="red") +
-    xlab("absolute z-statistic") + ylab('') + 
-    xlim(0,10) + theme_bw()
-}
-
-# Erik's function that used to do analysis within Rmd, I am now suggesting we
-# precalculate this before running Rmd reports
-fit_and_plot = function(z,truncated,k=4,weights){
-  fit <- fit_mixture(z,truncated,k=4,weights)
-  ggp <- plot_mixture(fit, z, weights)
-  print(ggp)
-  return(fit)
-}
-

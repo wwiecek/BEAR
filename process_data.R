@@ -5,7 +5,7 @@ library(metafor) #for CDSR calculations of effect sizes (binary data)
 library(stringi) #for cleaning up some study names
 
 dtlist <- list()
-source("R/z_from_p.R")
+source("R/helpers.R")
 
 
 # Brodeur et al ------

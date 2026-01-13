@@ -1,22 +1,4 @@
 
-collect_results = function(fit,db="CDSR",studies,zstats,signif,power,sgn){
-  result=data.frame(db,studies,zstats,signif)
-  A=as.vector(as.matrix(fit))
-  names(A)=paste0(rep(colnames(fit),each=4),1:4)
-  result=cbind(result,t(A))
-  result$mean_pow=mean(power)
-  result$median_pow=median(power)
-  result$pow80=mean(power >= 0.8)
-  result$pow90=mean(power >= 0.9)
-  result$repl=gap(1.96,p=fit$p,m=fit$m,s=fit$sigma_SNR)$rep
-  result$mean_sgn=mean(df$sgn)
-  result$median_sgn=median(df$sgn)
-  result$sgn80=mean(df$sgn >= 0.8)
-  result$sgnl90=mean(df$sgn >= 0.9)
-  result$sgn=gap(1.96,p=fit$p,m=fit$m,s=fit$sigma_SNR)$sgn
-  return(result)
-}
-
 load_all_mixtures <- function() {
   mfl <- list()
   nms <- gsub(".rds", "", list.files("mixtures/"))
@@ -33,4 +15,16 @@ calc_study_weights <- function(df){
   mutate(k = n()) %>% 
   ungroup() %>% 
   mutate(weights = 1/k) 
+}
+
+# This mini function tries to deal with very, very small p values and 
+# also performs a bit of truncation by default
+z_from_p <- function(p, truncate = 100) {
+  z <- qnorm(1 - p/2)
+  # extra precision recommended by chatGPT
+  small_p <- !is.na(p) & p < 1e-15
+  z[small_p] <- sqrt(-2 * log(p[small_p]/2))
+  z[!is.na(p) & p <= 0] <- truncate
+  z[!is.na(p) & p >= 1] <- 0
+  z
 }

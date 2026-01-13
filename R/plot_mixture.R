@@ -81,3 +81,40 @@ plot_mixture_v4 <- function(fit, dt, nm = "", col = "black", color_map = NULL,
   
     # annotate("text", x = 5, y = ymax - 0.075, label = lab, parse = TRUE, size = 2.5)
 }
+
+
+
+# Legacy functions from Erik (edited by WW), no longer in use
+
+plot_mixture <- function(fit, z, weights) {
+  
+  omega=fit$omega[1]
+  B1=2*pmix(-1.96,p=fit$p,m=fit$m,s=fit$sigma) # prob. |z|>1.96
+  B2=1-B1
+  
+  df <- data.frame(z=abs(z),weights)
+  
+  df$fz <- 2*(omega*(df$z<1.96) + (df$z>=1.96))*
+    dmix(z, p=fit$p, m=fit$m, s=fit$sigma)/(B1 + omega*B2)
+  
+  df$fz2=2*dmix(df$z, p=fit$p, m=fit$m, s=fit$sigma)
+  
+  ggplot(df, aes(x = z)) +
+    geom_histogram(aes(y = after_stat(density),
+                       weight=weights), 
+                   color="black",
+                   fill="white", breaks=seq(0,10,0.2)) +
+    geom_line(aes(x=z,y=fz)) +
+    geom_line(aes(x=z,y=fz2),color="red") +
+    xlab("absolute z-statistic") + ylab('') + 
+    xlim(0,10) + theme_bw()
+}
+
+# Erik's function that used to do analysis within Rmd, I am now suggesting we
+# precalculate this before running Rmd reports
+fit_and_plot = function(z,truncated,k=4,weights){
+  fit <- fit_mixture(z,truncated,k=4,weights)
+  ggp <- plot_mixture(fit, z, weights)
+  print(ggp)
+  return(fit)
+}

@@ -10,26 +10,20 @@ geometry: margin=1in
 fontsize: 11pt
 ---
 
-
-
-# Benchmarks of Empirical Accuracy in Research
-
-
 ## Arel-Bundock et al 2022 (political science)
 
 Arel-Bundock, V., Briggs, R.C., Doucouliagos, H., Mendoza Aviña, M. and Stanley, T.D., 2022. Quantitative political science research is greatly underpowered. I4R Discussion Paper Series.
 
 Research question: assess statistical power in political science research
 
-Data collection: Authors searched for (and emailed authors of) meta-analysis articles across 141 journals in political science; this led to "a dataset of 16,649 hypothesis tests, grouped in 351 meta-analyses, reported in 46 peer-reviewed meta-analytic articles"
+Data availability: replication package (zip file with date 20241010) can be found at <https://osf.io/fgdet>. All data are in public domain. We notified one of the authors, Ryan Briggs, who was not aware of any licensing issues.
+
+Data description and source: 
+Authors searched for (and emailed authors of) meta-analysis articles across 141 journals in political science; this led to "a dataset of 16,649 hypothesis tests, grouped in 351 meta-analyses, reported in 46 peer-reviewed meta-analytic articles"
 
 Notes: There is possibly a considerable overlap with Askarov et al dataset, but these two datasets are worth analysing separately given their different focus.
 
-Data availability: replication package can be found at <https://osf.io/fgdet>  (_ps_power_replication_20241010.zip_). All data are in public domain. We contacted Ryan Briggs who was not aware of any licensing issues.
-
-Data file: using the same code as original authors (replication package runs on makefiles), but skipping some additional processing that they've done, we write a single `estimates.csv` file (3.3 MB).
-
-Data processing: no additional manipulation of data done when creating BEAR dataset.
+Data processing: using the same code as original authors (replication package runs on makefiles), but skipping some additional processing that they've done, we write a single `estimates.csv` file (3.3 MB). No manipulation of data was done when creating BEAR dataset.
 
 
 
@@ -37,16 +31,19 @@ Data processing: no additional manipulation of data done when creating BEAR data
 
 Askarov, Z., Doucouliagos, A., Doucouliagos, H. and Stanley, T.D., 2023. The significance of data-sharing policy. Journal of the European Economic Association, 21(3), pp.1191-1226.
 
-Research question: Impact of mandatory data sharing on (excessive) statistical significance in economics papers
+Research question: 
+Impact of mandatory data sharing on (excessive) statistical significance in economics papers
 
-Data collection: 64,000 economic estimates surveyed by Ioannidis et al. (2017) + "searching through numerous databases, journal websites, and also an email survey of 109 authors known to have produced meta-analyses of economic topics. We cast the widest net possible to capture empirical economic estimates. Thus, some of the papers included in these meta-analyses were originally published in political science and psychology journals. Nevertheless, these meta-studies deal with economics topics." Later: "we collect 166,924 parameter estimates from 345 distinct research areas, of which
-20,121 were published in 24 of the leading general interest and field journals" The paper mentions 12,521 observations before and 2,537 after data sharing policies in 24 journals; reproducibility dataset has 32 journals (authors removed some smaller ones) and 22,172 rows
+Data availability: 
+file `Mandatory data-sharing 30 Aug 2022.dta` may be downloaded from <https://github.com/anthonydouc/Datasharing/blob/master/Stata/>; reproducibility package at <https://dataverse.harvard.edu/file.xhtml?fileId=7884702&version=1.0>
 
-Data availability: file `Mandatory data-sharing 30 Aug 2022.dta` may be downloaded from <https://github.com/anthonydouc/Datasharing/blob/master/Stata/>; reproducibility package at <https://dataverse.harvard.edu/file.xhtml?fileId=7884702&version=1.0>
+Data description and source: 
+The paper includes 64,000 economic estimates surveyed by Ioannidis et al. (2017) plus results of "searching through numerous databases, journal websites, and also an email survey of 109 authors known to have produced meta-analyses of economic topics. We cast the widest net possible to capture empirical economic estimates. Thus, some of the papers included in these meta-analyses were originally published in political science and psychology journals. Nevertheless, these meta-studies deal with economics topics." Later they note: "we collect 166,924 parameter estimates from 345 distinct research areas, of which
+20,121 were published in 24 of the leading general interest and field journals" The paper mentions 12,521 observations before and 2,537 after data sharing policies in 24 journals; reproducibility dataset has 32 journals (authors removed some smaller ones) and 22,172 rows.
 
-Data file: same unprocessed `Mandatory data-sharing 30 Aug 2022.dta` file (11.6 MB)
 
-Data processing: no additional manipulation of data done when creating BEAR dataset.
+Data processing: 
+We use the same file `Mandatory data-sharing 30 Aug 2022.dta` (11.6 MB) as in the reproducibility package. No additional manipulation of data was done when creating BEAR dataset.
 
 
 
@@ -54,17 +51,22 @@ Data processing: no additional manipulation of data done when creating BEAR data
 
 Barnett, A.G. and Wren, J.D., 2019. Examination of CIs in health and medical journals from 1976 to 2019: an observational study. BMJ open, 9(11), p.e032506.
 
-A collection of confidence intervals for ratio estimates from Medline papers from 1976-2019
+
 
 Research question: Bias for statistical significance in health and medical journals
 
-Data collection: authors scraped (regular expression followed by an independent check using another data mining algorithm, manual checks for 10,000 intervals) 968,000 CIs from abstracts and 350,000 from full text
+Data availability: 
+The dataset Georgescu.Wren.RData may be downloaded from <https://github.com/agbarnett/intervals/tree/master/data> and also <https://github.com/jdwren/ASEC>. Data file is `Georgescu.Wren.RData`. Availability: no clear licence given in the repo but the article is CC BY 4.0 in BMJ Open. 
 
-Data availability: The dataset Georgescu.Wren.RData may be downloaded from <https://github.com/agbarnett/intervals/tree/master/data> and also <https://github.com/jdwren/ASEC>. Data file is `Georgescu.Wren.RData`. Availability: no clear licence given in the repo but the article is CC BY 4.0 in BMJ Open. 
+Data description and source: 
+The dataset is a collection of confidence intervals for ratio estimates from Medline papers from 1976-2019.
+Authors scraped (via regular expressions, followed by an independent check using another data mining algorithm, manual checks for 10,000 intervals) 968,000 CIs from abstracts and 350,000 from full texts.
 
-Notes: these are “ratio estimates” like odds ratios, hazard ratios and risk ratios. Note that binary outcomes tend to have (much) lower information than continuous outcomes.
+Notes: 
+These are “ratio estimates” like odds ratios, hazard ratios and risk ratios. Note that binary outcomes tend to have (much) lower information than continuous outcomes.
 
-Data processing: we excluded a small fraction of data. First we restricted to 95% confidence intervals only: where `ci.level` was missing we assumed it was 0.95; among intervals with a known `ci.level`, about 0.3% were not 95% and were dropped. We dropped intervals with non-positive width (i.e. `lower >= upper`). We used log scale (we replaced zero or negative lower bounds with a small positive constant; this affected about 0.1% of the sample) and backed out an approximate standard error and point estimate under the usual normal approximation for a 95% CI, setting point estimate to half-point of the interval.
+Data processing: 
+We excluded a small fraction of data. First we restricted to 95% confidence intervals only: where `ci.level` was missing we assumed it was 0.95; among intervals with a known `ci.level`, about 0.3% were not 95% and were dropped. We dropped intervals with non-positive width (i.e. `lower >= upper`). We used log scale (we replaced zero or negative lower bounds with a small positive constant; this affected about 0.1% of the sample) and backed out an approximate standard error and point estimate under the usual normal approximation for a 95% CI, setting point estimate to half-point of the interval.
 
 
 
@@ -76,15 +78,20 @@ This paper builds on another analysis:
 
 Singh, B., Bennett, H., Miatke, A., Dumuid, D., Curtis, R., Ferguson, T., Brinsley, J., Szeto, K., Petersen, J. M., Gough, C., Eglitis, E., Simpson, C. E., Ekegren, C. L., Smith, A. E., Erickson, K. I., & Maher, C. (2025). Effectiveness of exercise for improving cognition, memory and executive function: A systematic umbrella review and meta-meta-analysis. British Journal of Sports Medicine, 59(12), 866–876. https://doi.org/10.1136/bjsports-2024-108589
 
-Research question: what is the effect of physical exercise on cognition, memory, and executive function; with extra focus on selective reporting and heterogeneity.
+Research question: 
+What is the effect of physical exercise on cognition, memory, and executive function; with extra focus on selective reporting and heterogeneity.
 
-Data collection: "2,239 effect-size estimates from 215 meta-analyses of randomized controlled trials" was done by Bartoš et al (2025) based on extension of work by Singh et al (2025)
+Data availability: 
+Replication data are publicly available via PsyArXiv  <https://osf.io/preprints/psyarxiv/qr8e2_v1> under Creative Commons By Attribution 4.0 license.
 
-Data availability: replication data are publicly available via PsyArXiv  <https://osf.io/preprints/psyarxiv/qr8e2_v1> under Creative Commons By Attribution 4.0 license.
+Data description and source: 
+"2,239 effect-size estimates from 215 meta-analyses of randomized controlled trials" was done by Bartoš et al (2025) based on extension of work by Singh et al (2025)
 
-Data processing: z-values were computed as effect size divided by its reported standard error. No filtering or recoding beyond variable renaming was required.
+Data processing: 
+z-values were computed as effect size divided by its reported standard error. No filtering or recoding beyond variable renaming was required.
 
 Additional variables used: 
+
 
 
 ## Brodeur et al. 2024 (economics)

@@ -117,7 +117,7 @@ dtlist[["ArelBundock"]] <-
 dtlist[["WWC"]] <- readRDS("data/WWC.rds") %>%
   filter(method %in% c("RCT", "quasi")) %>% 
   transmute(
-    metaid = NA_integer_,
+    metaid = NA,
     studyid = study_id,
     method = method,
     measure = NA,
@@ -469,12 +469,11 @@ dtlist[["euctr"]] <- euctr_clean %>%
   transmute(
     metaid  = NA,
     studyid = id,
-    year    = year,
+    year,
     measure = measure_class,
     method  = NA_character_,
-    z       = z,
-    b       = b,
-    se      = se,
+    z, z_operator,
+    b, se,
     ss      = n
   )
 
@@ -651,6 +650,8 @@ dtlist[["psymetadata"]] <- readRDS("data/psymetadata.rds")
 # View(x)
 # 
 # dtlist[["Bogdan"]] <- x
+
+
 
 # Processing of individual datasets and binding into a single large dataset ----
 bear <- dtlist %>% 

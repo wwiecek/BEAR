@@ -20,7 +20,7 @@ z_from_p <- function(p, truncate = 100) {
 
 # Brodeur et al ------
 
-dtlist[["Brodeur"]] <- read_dta("data/Brodeur/merged.dta") %>% 
+dtlist[["Brodeur"]] <- readRDS("data/Brodeur.rds") %>% 
   # filter(method=="RCT") %>%
   transmute(
     metaid = NA,
@@ -43,7 +43,7 @@ dtlist[["Brodeur"]] <- read_dta("data/Brodeur/merged.dta") %>%
 
 # data from https://github.com/anthonydouc/Datasharing/blob/master/Stata/Mandatory%20data-sharing%2030%20Aug%202022.dta
 
-dtlist[["Askarov"]] <- read_dta("data/Askarov/Mandatory data-sharing 30 Aug 2022.dta") %>% 
+dtlist[["Askarov"]] <- readRDS("data/Askarov.rds") %>% 
   mutate(z = effectsize/standarderror) %>% 
   dplyr:: filter(Excludegroup==0) %>% 
   transmute(
@@ -63,17 +63,10 @@ dtlist[["Askarov"]] <- read_dta("data/Askarov/Mandatory data-sharing 30 Aug 2022
 
 # Arel-Bundock -----
 
-# dataset from https://osf.io/fgdet
-# requires running make to obtain one of the datasets estimates_rb_vab_mma.csv
-# and them get_data.R to replicate the approach of authors to creating a single estimates.csv
-
-# "We examine statistical power in political science by assembling a dataset of 16,649
-# hypothesis tests, grouped in 351 meta-analyses, reported in 46 peer-reviewed
-# meta-analytic articles"
-
 dtlist[["ArelBundock"]] <- 
-  read_csv("data/ArelBundock/estimates.csv", 
-           show_col_types = FALSE) %>% 
+  # read_csv("data/ArelBundock/estimates.csv", 
+  #          show_col_types = FALSE) %>% 
+  readRDS("data/ArelBundock.rds") %>% 
   # There may be problems printing and encoding some characters down the line
   # e.g. "unable to translate 'Garc<cd>a Bedolla and Michelson' to a wide string"
   # so best to normalise them
@@ -93,25 +86,6 @@ dtlist[["ArelBundock"]] <-
 
 
 # What Works Clearinghouse -----
-
-# We previously used a data cut that was processed by Kraft/Mead (2023)
-# dtlist[["WWC"]] <- read_csv("data/WWC/Kraft_wwc_merge.csv", show_col_types = FALSE) %>% 
-#   mutate(pval = as.numeric(f_p_Value_WWC),
-#          b = as.numeric(Effect.size)) %>% 
-#   # For some p-values the database records p = 0, so z = Inf, but we can "rescue"
-#   # some information by setting it to the smallest value in WWC dataset:
-#   mutate(pval = ifelse(pval == 0, 2e-16, pval)) %>%
-#   mutate(pval = ifelse(is.na(pval), f_p_Value_Any, pval)) %>% 
-#   transmute(
-#     metaid = NA, 
-#     studyid = cite_trunc,
-#     method = NA,
-#     measure = NA,
-#     z = sign(b)*z_from_p(pval),
-#     b = b,
-#     se = NA,
-#     ss = Sample.size,
-#     year = Publication.year) 
 
 # using data from WWC website directly
 dtlist[["WWC"]] <- readRDS("data/WWC.rds") %>%
@@ -134,56 +108,7 @@ dtlist[["WWC"]] <- readRDS("data/WWC.rds") %>%
 
 # Yang et al -----
 
-# Datafile dat_processed_rob.csv may be downloaded from 
-# https://github.com/Yefeng0920/replication_EcoEvo_git/blob/main/data/sensitivity/dat_processed_rob.csv
-
-extract_year_yang <- function(x) {
-  # Find the last 4 consecutive digits in the string
-  year_match <- regexpr("\\d{4}[^0-9]*$", x)
-  if (year_match > 0) {
-    potential_year <- as.numeric(substr(x, year_match, year_match + 3))
-    if (potential_year >= 1950 && potential_year <= 2025) {
-      return(potential_year)
-    }
-  }
-  return(NA)
-}
-
-# this derived dataset is OK, but it does not have year, method, and meta_id
-# that I'd like to use, therefore I do minimal data processing in data/Yang/
-# to get data from Yang 2023 paper
-
-# dtlist[["Yang"]] <- read.csv("data/Yang/dat_processed_rob.csv") %>% 
-#   transmute(
-#     metaid = NA, 
-#     studyid = study,
-#     method = NA,
-#     z = z,
-#     b = es,
-#     se = se) %>%
-#   mutate(year = sapply(studyid, extract_year_yang))
-
-load("data/Yang/EcoEvo_PB_datasets.Rdata")
-
-dtlist[["Yang"]] <- rbind(
-  lnRR %>% 
-    lapply(function(x) select(x, study_ID, year_pub, es, sei) %>% 
-             mutate(study_ID = as.character(study_ID))) %>% 
-    bind_rows(.id = "meta_id") %>% 
-    mutate(measure = "lnRR"),
-  
-  Zr %>% 
-    lapply(function(x) select(x, study_ID, year_pub, es, sei) %>% 
-             mutate(study_ID = as.character(study_ID))) %>% 
-    bind_rows(.id = "meta_id") %>% 
-    mutate(measure = "Zr"),
-  
-  SMD %>% 
-    lapply(function(x) select(x, study_ID, year_pub, es, sei) %>% 
-             mutate(study_ID = as.character(study_ID))) %>% 
-    bind_rows(.id = "meta_id") %>% 
-    mutate(measure = "SMD")
-) %>% 
+dtlist[["Yang"]] <- readRDS("data/Yang.rds") %>% 
   mutate(year_pub = ifelse(year_pub < 1900, NA, year_pub)) %>% # 1 typo
   transmute(
     metaid = meta_id,
@@ -197,11 +122,8 @@ dtlist[["Yang"]] <- rbind(
     ss = NA)
 
 
-# Costello and Fox -----
 
-# Data from @costello2022decline which were further processed by @yang2024large 
-# and made available at 
-# [Github](https://github.com/Yefeng0920/replication_EcoEvo_git/blob/main/data/main/main_dat_processed.csv)
+# Costello and Fox -----
 
 dtlist[["CostelloFox"]] <- 
   read.csv("data/Yang/main_dat_processed.csv") %>% 
@@ -216,21 +138,12 @@ dtlist[["CostelloFox"]] <-
     ss = NA,
     year = study.year) 
 
-# # group_by(key) %>% 
-# # # Erik chose one 
-# # slice_sample(n = 1) 
-
 
 
 # Jager and Leek -----
 
-load("data/JagerLeek/pvalueData.rda")
-
 dtlist[["JagerLeek"]] <-  
-  pvalueData %>% 
-  data.frame() %>% 
-  select(-abstract) %>% 
-  mutate_at(c('pvalue','year'), as.numeric) %>%
+  readRDS("data/JagerLeek.rds") %>%
   mutate(method = ifelse(grepl("randomized|randomised|controlled", title), "RCT", NA)) %>% 
   transmute(
     metaid = NA,
@@ -251,38 +164,8 @@ dtlist[["JagerLeek"]] <-
 
 # Sladekova -----
 
-dfs <- lapply(list.files("data_raw/Sladekova/", full.names = TRUE), read.csv)
-names(dfs) <- list.files("data_raw/Sladekova/")
-
-
-
-# sort(table(unlist(lapply(dfs, function(f) names(f)))), decreasing = TRUE)
-
-dtlist[["Sladekova"]] <- lapply(dfs, function(df){
-  
-  if(all(c("n_treatment", "n_control") %in% colnames(df))) df$n <- df$n_treatment + df$n_control
-  
-  ret <- df %>% 
-    filter(!is.na(yi) & !is.na(vi)) %>% 
-    # Fisher's z won't work otherwise; this affects less than 0.5% of observations
-    filter((1 + yi)/(1 - yi) > 0) %>% 
-    mutate(
-      b = 0.5*log((1 + yi)/(1 - yi)),
-      se = sqrt(vi)) 
-  
-  # Trying to count sample sizes where possible
-  
-  if(nrow(ret) == 0)
-    return(data.frame())
-  # Study column is broken, as a temporary fix I need to assign new numerical study IDs
-  # if(!is.null(ret$author)) ret$studyid <- as.character(ret$author) else ret$studyid <- as.character(1:nrow(ret))
-  if(is.null(ret$year)) ret$year <- as.numeric(NA) else ret$year <- as.numeric(ret$year)
-  if(is.null(ret$n)) ret$ss <- as.numeric(NA) else ret$ss <- as.numeric(ret$n)
-  
-  ret %>% 
-    select(b, se, year, ss)
-}) %>% 
-  bind_rows(.id = "metaid") %>% 
+dtlist[["Sladekova"]] <- 
+  readRDS("data/Sladekova.rds") %>% 
   filter(!is.na(b) & !is.infinite(b)) %>% 
   mutate(studyid = 1:nrow(.)) %>% 
   mutate(method = NA,
@@ -298,9 +181,9 @@ dtlist[["Sladekova"]] <- lapply(dfs, function(df){
 
 # Metapsy -----
 
-sort(table(unlist(lapply(readRDS("data/Metapsy/metapsy_dt.rds"), function(f) names(f)))), decreasing = TRUE)
+# sort(table(unlist(lapply(readRDS("data/Metapsy.rds"), function(f) names(f)))), decreasing = TRUE)
 
-dtlist[["Metapsy"]] <- readRDS("data/Metapsy/metapsy_dt.rds") %>% 
+dtlist[["Metapsy"]] <- readRDS("data/Metapsy.rds") %>% 
   lapply(function(df) {
     if(is.null(df$.g)) {
       # for total-response dataset, I calculate log(OR) and convert to SMD
@@ -343,9 +226,7 @@ dtlist[["Metapsy"]] <- readRDS("data/Metapsy/metapsy_dt.rds") %>%
 
 # Barnett and Wren -----
 
-load("data/BarnettWren/Georgescu.Wren.RData")
-
-dtlist[["BarnettWren"]] <- complete %>% 
+dtlist[["BarnettWren"]] <- readRDS("data/BarnettWren.rds") %>% 
   filter(!mistake) %>% 
   # 0.3% of available values have CI widths other than 95%, let's remove these
   # but if ci.level is unknown, assume that it's actually 95% 
@@ -372,9 +253,7 @@ dtlist[["BarnettWren"]] <- complete %>%
 
 # Cochrane 2025 -----
 
-cdsr_all_studies <- readRDS("data/Cochrane/cdsr_study_results.rds")
-
-cdsr_filtered <- cdsr_all_studies %>% 
+cdsr_filtered <- readRDS("data/Cochrane.rds") %>% 
   # Remove studies with sample size of zero 
   filter(total1 > 0, total2 > 0, 
          !is.na(measure_group),
@@ -413,7 +292,7 @@ dtlist[["Cochrane"]] <- rbind(
     ss = total1 + total2) %>% 
   filter(!is.na(b))
 
-rm(cdsr_all_studies)
+rm(cdsr_filtered)
 
 
 
@@ -462,9 +341,8 @@ rm(cdsr_all_studies)
 
 
 # EUCTR -----
-euctr_clean <- readRDS("data/eutrials/data_euctr_ctgov_clean.rds")
 
-dtlist[["euctr"]] <- euctr_clean %>%
+dtlist[["euctr"]] <- readRDS("data/euctr.rds") %>%
   filter(collection == "EUCTR") %>%
   transmute(
     metaid  = NA,
@@ -477,19 +355,7 @@ dtlist[["euctr"]] <- euctr_clean %>%
     ss      = n
   )
 
-# dtlist[["ctgov"]] <- euctr_clean %>%
-#   filter(collection == "CTGOV") %>%
-#   transmute(
-#     metaid  = NA,
-#     studyid = id,
-#     year    = year,
-#     measure = measure_class,
-#     method  = NA_character_,
-#     z       = z,
-#     b       = b,
-#     se      = se,
-#     ss      = n
-#   )
+
 
 # clinicaltrials.gov -----
 
@@ -511,7 +377,7 @@ dtlist[["euctr"]] <- euctr_clean %>%
 #                                    .default = "=")
 #   )
 
-dtlist[["clinicaltrials"]] <- readRDS("data/clinicaltrials.gov/data_cut_with_z.rds") %>% 
+dtlist[["clinicaltrials"]] <- readRDS("data/clinicaltrialsgov.rds") %>% 
   filter(study_type == "INTERVENTIONAL" & allocation == "RANDOMIZED") %>% 
   # Remove some studies with huge numbers of arms; they are typically phase 1 or 2 studies
   # that are just throwing darts at many outcomes, so let's keep more ideal outcomes
@@ -527,9 +393,11 @@ dtlist[["clinicaltrials"]] <- readRDS("data/clinicaltrials.gov/data_cut_with_z.r
             ss = enrollment,
             z_operator = "=")
 
+
+
 # Head -----
 
-dtlist[["Head"]] <- readRDS("data/Head/head.rds") %>% 
+dtlist[["Head"]] <- readRDS("data/Head.rds") %>% 
   transmute(metaid = NA,
             studyid = pmid,
             source = section,
@@ -556,7 +424,7 @@ dtlist[["Head"]] <- readRDS("data/Head/head.rds") %>%
 
 # Chavalarias -----
 
-dtlist[["Chavalarias"]] <- readRDS("data/Chavalarias/chavalarias.rds") %>% 
+dtlist[["Chavalarias"]] <- readRDS("data/Chavalarias.rds") %>% 
   # p_format coding is explained on Harvard Dataverse, but 99.3% of the values are "plain", 
   # so we stick to that
   filter(p_format == "plain") %>% 
@@ -589,14 +457,7 @@ dtlist[["Chavalarias"]] <- readRDS("data/Chavalarias/chavalarias.rds") %>%
 
 # Open Science Collab replication project -----
 
-osc_raw <- read.csv("data/OSC/rpp_data.csv",header=TRUE)
-# dt_osc <-  osc_raw %>% 
-#   transmute(p_orig = T_pval_USE..O., 
-#             p_repl = T_pval_USE..R.) %>% 
-#   mutate(z_orig = qnorm(1 - p_orig/2),
-#          z_repl = qnorm(1 - p_repl/2))
-
-dtlist[["OSC"]] <- osc_raw %>% 
+dtlist[["OSC"]] <- readRDS("data/OSC.rds") %>% 
   rename(p_value = T_pval_USE..R.) %>% 
   transmute(
     metaid = NA,
@@ -617,8 +478,7 @@ dtlist[["OSC"]] <- osc_raw %>%
 # Bartos -----
 
 # Very nicely organised dataset on exercise which requires no extra work from us
-dtlist[["Bartos"]] <- read_csv("data/Bartos/data_processed.csv",
-                                show_col_types = FALSE) %>% 
+dtlist[["Bartos"]] <- readRDS("data/Bartos.rds") %>% 
   transmute(
     metaid = as.character(meta_id),
     studyid = as.character(id), #these are unique (=same number of IDs as rows in the dataset)

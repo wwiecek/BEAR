@@ -1,5 +1,20 @@
-source("calculate_psr.R")
 library(kableExtra)
+library(tidyverse)
+library(ggplot2)
+
+source("R/settings.R")
+source("R/helpers.R")
+source("R/mix.R")
+source("R/psr.R")
+
+# Calcualte performance of datasets 
+
+mfl <- load_all_mixtures()
+df_psr <- lapply(mfl, powsignrep) %>% bind_rows(.id = "dataset")
+df_psr_169 <- lapply(mfl, powsignrep, 1.69) %>% bind_rows(.id = "dataset")
+
+
+
 
 
 # I’d like to put the following in Table 2
@@ -54,9 +69,9 @@ tab2 %>%
 
 # What if studies were larger?
 
-left_join(summarise_psr(df_psr),
-          summarise_psr(df_psr_169), 
-          by = "dataset") %>% 
-  mutate(diff_p = p.x - p.y,
-         diff_r = r.x - r.y) %>% 
-  mutate_if(is.numeric, function(x) scales::percent(as.numeric(x), accuracy = 1))
+# left_join(summarise_psr(df_psr),
+#           summarise_psr(df_psr_169), 
+#           by = "dataset") %>% 
+#   mutate(diff_p = p.x - p.y,
+#          diff_r = r.x - r.y) %>% 
+#   mutate_if(is.numeric, function(x) scales::percent(as.numeric(x), accuracy = 1))

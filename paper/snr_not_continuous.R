@@ -1,4 +1,4 @@
-df_psr_v2 <- lapply(mfl, psr_foo, N = 1e04) %>% bind_rows(.id = "dataset")
+df_psr_v2 <- lapply(mfl, powsignrep, N = 1e04) %>% bind_rows(.id = "dataset")
 
 df_psr_v2 %>% 
   mutate(snr = abs(snr)) %>% 

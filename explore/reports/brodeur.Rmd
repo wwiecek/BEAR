@@ -1,0 +1,160 @@
+---
+title: "The Signal and the Noise in Empirical Research"
+author: "Erik van Zwet"
+header-includes:
+  - \usepackage{amsmath}
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output:
+  pdf_document:
+    toc: true
+    toc_depth: 3
+    number_sections: true
+urlcolor: blue
+bibliography: references.bib
+---
+
+
+\newpage
+# Packages and functions
+
+
+## Packages
+
+```{r, echo=TRUE, warning=FALSE}
+suppressPackageStartupMessages({
+  library(haven)
+  library(readxl)
+  library(dplyr)
+  library(tidyr)
+  library(ggplot2)
+  library(geomtextpath)
+})
+
+source("R/exaggeration.R")
+source("R/gap.R")
+source("R/helpers.R")
+source("R/mix.R")
+source("R/posterior.R")
+
+```
+
+
+## Brodeur et al.
+
+We use the dataset [merged.dta](https://dataverse.harvard.edu/file.xhtml?fileId=7884702&version=1.0) from [Do Preregistration and Preanalysis Plans Reduce p-Hacking and Publication Bias? Evidence from 15,992 Test Statistics and Suggestions for Improvement](https://www.journals.uchicago.edu/doi/full/10.1086/730455) by @brodeur2024preregistration. The authors write:
+
+> Reflecting this, since the American Economic
+Association (AEA) launched the AEA RCT Registry in 2013, Banerjee
+et al. (2020) report that over 2,165 trials have been registered (as of January 2020) and, of those, 1,153 were preregistered.Registration on the AEA RCT Registry is required for all RCTs submitted to AEA journals, and the Abdul Latif Jameel Poverty Action Lab
+(J-PAL) is among the funders that encourage preregistration for trials.
+However, the content of such preregistration can vary substantially.
+Though the option exists for researchers to provide a high level of detail
+on how they plan to proceed, the elements that are required by the platform
+are skeletal. The final field in the submission window invites the inclusion
+of a preanalysis plan (PAP).
+
+The data has fields `prereg` and `papregistry` but it does not seem to make a very large difference.
+
+### Read data
+
+```{r warning=FALSE}
+
+n1=length(unique(d$title)); n1  # papers
+n2=nrow(d); n2                  # z-stats
+
+ggplot(d,aes(x=abs(z))) + geom_histogram(aes(y=after_stat(density)),
+                                         colour = 1, 
+                                         fill = "white", 
+                                         breaks=seq(0,10,0.2)) +
+  xlab("|z-statistic|") + 
+  facet_grid(cols = vars(papregistry)) + theme_bw()
+```
+
+\newpage
+### Fit mixture distribution
+We show the weighted histogram, together with the distribution of the absolute $z$-statistics conditional (black) and unconditional (red) on observation.
+
+
+```{r warning=FALSE, echo=TRUE}
+d$truncated="not truncated"
+fit=fit_and_plot(z=d$z,truncated=d$truncated,k=4,weight=1/d$k)
+fit
+```
+
+\newpage
+### Power distribution
+
+We transform the distribution of the SNRs into the distribution of the power against the _true_ effect.
+
+```{r}
+snr=rmix(10^5,p=fit$p,m=fit$m,s=fit$sigma_SNR)
+z=snr + rnorm(10^5)
+power=pnorm(-1.96,snr,1) + 1 - pnorm(1.96,snr,1)
+summary(power)
+mean(power>0.8)
+mean(power>0.9)
+```
+
+In the absence of publication bias, the mean of the power distribution should be approximately equal to the proportion of significant effects which is `mean(abs(z)>1.96)` = `r mean(abs(d$z)>1.96)`.
+
+```{r, echo=FALSE}
+df=data.frame(snr=snr,z=z,power=power)
+ggplot(df, aes(x = power)) +
+  geom_histogram(aes(y = after_stat(density)), color="black",
+                 fill="white", bins=40) +
+  xlab("") + ylab('') + theme_bw()
+```
+
+\newpage
+### The gap
+We compute the conditional probability of the correct sign and of successful replication (i.e $p<0.05$ in the same direction as the original study) given the absolute $z$-statistic.
+
+```{r, echo=TRUE}
+gap_plot(p=fit$p,m=fit$m,s=fit$sigma_SNR)
+```
+
+Note, the grey lines are the results when we use the mixture distribution from @van2021statistical.
+
+\newpage
+### Correct sign
+
+The distribution of the probability of the correct sign.
+
+```{r}
+df=df %>% rowwise() %>% 
+  mutate(prob=gap(z=z,p=fit$p,m=fit$m,s=fit$sigma_SNR)) %>% 
+  unnest_wider(prob)
+
+ggplot(df, aes(x = sgn)) +
+  geom_histogram(aes(y = after_stat(density)), color="black",
+                 fill="white", bins=40) +
+  xlab("") + ylab('') + theme_bw()
+summary(df$sgn)
+mean(df$sgn>0.8)
+mean(df$sgn>0.9)
+```
+
+\newpage
+### Exaggeration
+We compute the conditional quartiles of the exaggeration ratio $|z/SNR|$ given the absolute $z$-statistic.
+
+```{r, echo=TRUE}
+exaggeration_plot(p=fit$p,m=fit$m,s=fit$sigma_SNR)
+```
+
+```{r echo=FALSE, eval=FALSE}
+# This is for a separate Rmd that collects all outputs
+
+tmp=collect_results(fit,db="Brodeur et al.",studies=n1,zstats=n2,
+                    signif=mean(abs(d$z)>=1.96),power=df$power,sgn=df$sgn)
+result=rbind(result,tmp)
+
+zstats=rbind(zstats,data.frame(db="Brodeur et al.",z=d$z,weight=1/d$k))
+```
+
+
+\newpage
+# References
+
+<div id="refs"></div>
+

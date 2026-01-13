@@ -1,0 +1,155 @@
+---
+title: "The Signal and the Noise in Empirical Research"
+author: "Erik van Zwet"
+header-includes:
+  - \usepackage{amsmath}
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output:
+  pdf_document:
+    toc: true
+    toc_depth: 3
+    number_sections: true
+urlcolor: blue
+bibliography: references.bib
+---
+
+
+\newpage
+# Packages and functions
+
+
+## Packages
+
+```{r, echo=TRUE, warning=FALSE}
+set.seed(42)
+
+suppressPackageStartupMessages({
+  library(haven)
+  library(readxl)
+  library(dplyr)
+  library(tidyr)
+  library(ggplot2)
+  library(geomtextpath)
+})
+
+source("R/exaggeration.R")
+source("R/gap.R")
+source("R/helpers.R")
+source("R/mix.R")
+source("R/posterior.R")
+
+```
+
+
+### Read data
+
+```{r warning=FALSE}
+
+n1=length(unique(d$studyid)); n1  # papers
+n2=nrow(d); n2                    # z-stats
+
+ggplot(d,aes(x=abs(z))) + geom_histogram(aes(y=after_stat(density)),
+                                         colour = 1, 
+                                         fill = "white", 
+                                         breaks=seq(0,10,0.2)) +
+  xlab("|z-statistic|") + 
+  theme_bw()
+```
+
+\newpage
+
+### Fit mixture distribution
+
+We show the weighted histogram, together with the distribution of the absolute $z$-statistics conditional (black) and unconditional (red) on observation.
+
+
+```{r warning=FALSE, echo=TRUE}
+# fit=fit_and_plot(z=d$z,truncated=d$truncated,k=4,weight=1/d$k)
+plot_mixture(fit, d$z, 1/d$k)
+fit
+```
+
+\newpage
+
+### Power distribution
+
+We transform the distribution of the SNRs into the distribution of the power against the _true_ effect.
+
+```{r}
+# Generate large number of SNR and z values
+df <- data.frame(snr = rmix(10^4,p=fit$p,m=fit$m,s=fit$sigma_SNR)) %>%
+  mutate(z = snr + rnorm(10^4)) %>% 
+  rowwise() %>% 
+  mutate(power = pnorm(-1.96, snr, 1) + 1 - pnorm(1.96, snr, 1)) %>% 
+  mutate(prob  = gap(z = z, p = fit$p, m = fit$m, s = fit$sigma_SNR)) %>% 
+  unnest_wider(prob)
+```
+
+```{r}
+summary(df$power)
+mean(df$power>0.8)
+mean(df$power>0.9)
+```
+
+In the absence of publication bias, the mean of the power distribution should be approximately equal to the proportion of significant effects which is `mean(abs(z)>1.96)` = `r mean(abs(d$z)>1.96)`.
+
+```{r, echo=FALSE}
+ggplot(df, aes(x = power)) +
+  geom_histogram(aes(y = after_stat(density)), color="black",
+                 fill="white", bins=40) +
+  xlab("") + ylab('') + theme_bw()
+```
+
+\newpage
+
+### The gap
+We compute the conditional probability of the correct sign and of successful replication (i.e $p<0.05$ in the same direction as the original study) given the absolute $z$-statistic.
+
+```{r, echo=TRUE}
+gap_plot(p=fit$p,m=fit$m,s=fit$sigma_SNR)
+```
+
+Note, the grey lines are the results when we use the mixture distribution from @vanzwetStatisticalPropertiesRCTs2021.
+
+\newpage
+
+### Correct sign
+
+The distribution of the probability of the correct sign.
+
+```{r}
+ggplot(df, aes(x = sgn)) +
+  geom_histogram(aes(y = after_stat(density)), color="black",
+                 fill="white", bins=40) +
+  xlab("") + ylab('') + theme_bw()
+summary(df$sgn)
+mean(df$sgn>0.8)
+mean(df$sgn>0.9)
+```
+
+\newpage
+
+### Exaggeration
+
+We compute the conditional quartiles of the exaggeration ratio $|z/SNR|$ given the absolute $z$-statistic.
+
+```{r, echo=TRUE}
+exaggeration_plot(p=fit$p,m=fit$m,s=fit$sigma_SNR)
+```
+
+```{r echo=FALSE, eval=FALSE}
+# This is for a separate Rmd that collects all outputs
+
+# tmp=collect_results(fit,db="Brodeur et al.",studies=n1,zstats=n2,
+#                     signif=mean(abs(d$z)>=1.96),power=df$power,sgn=df$sgn)
+# result=rbind(result,tmp)
+# 
+# zstats=rbind(zstats,data.frame(db="Brodeur et al.",z=d$z,weight=1/d$k))
+```
+
+
+\newpage
+# References
+
+<div id="refs"></div>
+

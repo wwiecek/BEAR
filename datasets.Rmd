@@ -162,6 +162,22 @@ Unlike in most of the other datasets in BEAR, we filter CDSR data heavily. First
 
 
 
+## Costello and Fox 2022; Yang et al 2023, 2024 (ecology and evolution)
+
+Reference: these two datasets come from the same replication package and shared data processing pipeline in Yang et al 2024. Original references for the datasets are Yang et al 2023 and Costello and Fox 2022
+
+Research question: decline effects in ecology (Costello and Fox) and publication bias and performance of empirical research (Yang et al)
+
+Data collection: Costello and Fox look at 466 meta-analyses obtained through searching Web of Science. Reproducibility dataset includes 88,000 rows among 466 analyses in 232 papers. Subsequently, Yang et al removed duplicated studies and zeroes, which meant discarding about 20% of rows. Yang et al collect 102 meta-analyses published 2010-2019 in relevant journals, de-duplicated against Costello and Fox dataset.
+
+Data availability: two datasets may be downloaded from <https://github.com/Yefeng0920/replication_EcoEvo_git/>. Available under CC BY 4.0 licence. 
+
+Data processing: no additional data processing other than cleaning up study years. Note that the replication package for Yang et al does not include meta-analysis indicators.
+
+Additional variables used: we retained a measure variable ("lnRR", "SMD", "Zr" or "uncommon")
+
+
+
 ## EU Clinical Trials Repository (EUCTR)
 
 Trials which reported results at the EU Clinical Trials Register, <https://www.clinicaltrialsregister.eu/>.
@@ -170,7 +186,7 @@ Reference: for R package, see Herold 2025
 
 Snapshot date: October 2025
 
-Data collection: we used R package `ctrdata` to create a snapshot of EU CTR; we downloaded trial records with results only. We stored the downloaded records in a local SQLite database and extracted a fixed set of protocol and results fields plus several fields computed by `ctrdata` (trial phase, sample size, and a “first primary endpoint” p-value/size derived by the package). We saved the extracted flat dataset as `data_euctr_ctgov.rds`, but we only use the EUCTR portion of this combined dataset in BEAR.
+Data collection: we used R package `ctrdata` to create a snapshot of EU CTR (`collection = "euctr"`); we downloaded trial records with results only. We stored the downloaded records in a local SQLite database and extracted a fixed set of protocol and results fields plus several fields computed by `ctrdata` (trial phase, sample size, and a “first primary endpoint” p-value/size derived by the package). We saved the extracted flat dataset as `data_euctr_ctgov.rds`, but we only use the EUCTR portion of this combined dataset in BEAR.
 
 Data availability: EUCTR is publicly accessible. The EUCTR legal notice notes that publication on EUCTR does not constitute an endorsement of the information reported. 
 
@@ -219,6 +235,22 @@ Notably, large proportion of p-values is truncated, almost always at 0.0001, 0.0
 
 
 
+## Metapsy (psychotherapy)
+
+Studies included in _Metapsy_, a set of living meta-analytic databases of randomised trials of psychotherapeutic interventions.
+
+Snapshot date: Jan 2026
+
+Reference: R package `metapsyData`: Harrer, Karyotaki, and Cuijpers 2022.
+
+Data availability:
+Metapsy is maintained by an international collaboration led by Vrije Universiteit Amsterdam. Databases are available at <https://www.metapsy.org/> and via R package `metapsyData`. Metapsy FAQ states that all data provided as part of the project are open-access and requires attribution.
+
+Data processing:
+we merged 20 individual datasets in Metapsy with some cleaning (e.g. to extract study dates from titles). Almost all estimates are Hedges' g, but for one of the databases (`total-response`) we converted log-odds ratios to SMD (dividing by $\Pi/\sqrt{3}$ to scale SD of logistic regression).
+
+
+
 ## Open Science Collaboration 2015
 
 Reference: Open Science Collaboration 2015
@@ -236,19 +268,28 @@ we derived z values from the replication p-values assuming two-sided p-values (w
 
 
 
-## Costello and Fox 2022; Yang et al 2023, 2024 (ecology and evolution)
 
-Reference: these two datasets come from the same replication package and shared data processing pipeline in Yang et al 2024. Original references for the datasets are Yang et al 2023 and Costello and Fox 2022
+## psymetadata (psychology datasets)
 
-Research question: decline effects in ecology (Costello and Fox) and publication bias and performance of empirical research (Yang et al)
+Reference: Rodriguez and Williams 2022 for R package `psymetadata` 
 
-Data collection: Costello and Fox look at 466 meta-analyses obtained through searching Web of Science. Reproducibility dataset includes 88,000 rows among 466 analyses in 232 papers. Subsequently, Yang et al removed duplicated studies and zeroes, which meant discarding about 20% of rows. Yang et al collect 102 meta-analyses published 2010-2019 in relevant journals, de-duplicated against Costello and Fox dataset.
+Snapshot date: Jan 2026
 
-Data availability: two datasets may be downloaded from <https://github.com/Yefeng0920/replication_EcoEvo_git/>. Available under CC BY 4.0 licence. 
+Research question:
+psymetadata is an R package that curates multiple open datasets from published meta-analyses in psychology. In BEAR we use it as a convenient source of many small-to-medium meta-analytic datasets, standardised into a single schema.
 
-Data processing: no additional data processing other than cleaning up study years. Note that the replication package for Yang et al does not include meta-analysis indicators.
+Data availability:
+22 datasets are distributed with the `psymetadata` R package (CRAN). The package is GPL-3; individual datasets originate from the cited source papers. 
 
-Additional variables used: we retained a measure variable ("lnRR", "SMD", "Zr" or "uncommon")
+Notes: 
+In the paper we disaggregate two datasets: Many Labs 2 project (Klein et al. 2018), which studied how replication results vary across labs and settings for a set of classic and contemporary effects in psychology, and a large meta-meta-analysis intelligence research (Nuijten et al. 2020). Remaining 20 datasets vary from 65 rows of data to over 1,000.
+
+Data processing:
+minimal. We used regular expressions to extract year labels from titles. We dropped some invalid rows (missing, non-finite, or non-positive standard errors). For "sala2019" ("on whether skills learned from cognitive training generalize to other situations") we can group by meta-analysis and for Many Labs we can group by experiment---we use these as `metaid` column.
+
+Additional grouping variable: original psymetadata dataset.
+
+
 
 
 
@@ -336,6 +377,7 @@ Jager, L. R., & Leek, J. T. (2014). An estimate of the science-wise false discov
 
 Open Science Collaboration. (2015). Estimating the reproducibility of psychological science. Science, 349(6251), aac4716. https://doi.org/10.1126/science.aac4716
 
+Rodriguez, Josue E., and Donald R. Williams. 2022. “psymetadata: An R Package Containing Open Datasets from Meta-Analyses in Psychology.” Journal of Open Psychology Data. doi:10.5334/jopd.61
 Schwab, S. (2024). cochrane: Import Data from the Cochrane Database of Systematic Reviews (CDSR). https://github.com/schw4b/cochrane
 
 Singh, B., Bennett, H., Miatke, A., Dumuid, D., Curtis, R., Ferguson, T., Brinsley, J., Szeto, K., Petersen, J. M., Gough, C., Eglitis, E., Simpson, C. E., Ekegren, C. L., Smith, A. E., Erickson, K. I., & Maher, C. (2025). Effectiveness of exercise for improving cognition, memory and executive function: A systematic umbrella review and meta-meta-analysis. British Journal of Sports Medicine, 59(12), 866–876. https://doi.org/10.1136/bjsports-2024-108589

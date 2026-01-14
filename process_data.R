@@ -85,7 +85,7 @@ dtlist[["WWC"]] <- readRDS("data/WWC.rds") %>%
     studyid = study_id,
     method = method,
     measure = NA,
-    group = Outcome_Domain,         
+    subset = Outcome_Domain,         
     z = sign(b) * z_from_p(pval),
     z_operator = ifelse(pval == 1e-16, ">", "="),
     b = b,
@@ -177,10 +177,10 @@ dtlist[["Metapsy"]] <- readRDS("data/Metapsy.rds") %>%
   transmute(
     metaid = metaid,
     studyid = study,
-    method = "RCT",
-    measure = "g",
+    method = "RCT", #Metapsy only includes RCTs
+    measure = measure, #usually Hedges' g
     year = year,
-    z = .g/.g_se,
+    z = .g/.g_se, #I lazily used .g for effect sizes, in one case they're SMD
     b = .g,
     se = .g_se,
     ss = ss)
@@ -251,9 +251,15 @@ dtlist[["Cochrane"]] <- rbind(
     z = yi/sqrt(vi),
     b = yi,
     se = sqrt(vi),
-    group = as.character(specialty),
+    subset = as.character(specialty),
     ss = total1 + total2) %>% 
+  # There are some very small subcategories, I set them to NA instead
+  group_by(subset) %>% 
+  mutate(n = n()) %>% 
+  ungroup() %>% 
+  mutate(subset = if_else(n < 50, NA_character_, subset)) %>% 
   filter(!is.na(b))
+
 
 rm(cdsr_filtered)
 
@@ -347,7 +353,7 @@ dtlist[["clinicaltrials"]] <- readRDS("data/clinicaltrialsgov.rds") %>%
   group_by(nct_id) %>% filter(n() < 20) %>% ungroup %>% 
   transmute(studyid = nct_id,
             year = year,
-            group = tolower(phase),
+            subset = tolower(phase),
             method = "RCT",
             measure = measure_class,
             z = z,
@@ -432,7 +438,6 @@ dtlist[["OSC"]] <- readRDS("data/OSC.rds") %>%
     b = NA,
     se = NA,
     year = NA,
-    group = NA,
     ss = as.numeric(N..R.)
   ) %>% as_tibble()
 
@@ -452,7 +457,7 @@ dtlist[["Bartos"]] <- readRDS("data/Bartos.rds") %>%
     b = effect_size,
     se = standard_error,
     year = year,
-    group = category, # why not!
+    subset = category, # why not!
     # There is also total m-a size: samples_size; ignoring
     ss = sample_size
   ) 

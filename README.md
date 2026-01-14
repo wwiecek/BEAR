@@ -12,6 +12,11 @@ replication, exchangeability, meta-analysis etc. etc.
 
 # Datasets included in BEAR
 
+References, details of data processing, and short descriptions of each
+dataset included are in [a separate PDF in the main
+folder](datasets.pdf). Main data processing script is
+[process_data.md](process_data.md) and
+
 Here is a short summary of what’s included in BEAR:
 
     ## # A tibble: 18 × 7
@@ -27,7 +32,7 @@ Here is a short summary of what’s included in BEAR:
     ##  8 Costello and Fox       88218    466   12927   6.82      0.419 NA: 88218                                  
     ##  9 Head et al           2010875      1  219220   9.17      0.622 NA: 2010875                                
     ## 10 Jager and Leek         15653      1    5322   2.94      0.777 RCT: 4771, NA: 10882                       
-    ## 11 Metapsy                 4395     20    1494   2.94      0.487 RCT: 4395                                  
+    ## 11 Metapsy                 4395     20    1494   2.94      0.484 RCT: 4395                                  
     ## 12 OpenSciCollab             99      1      99   1         0.354 RCT: 99                                    
     ## 13 Sladekova et al        11540    406   11540   1         0.590 NA: 11540                                  
     ## 14 What Works Clearing.   12045      1    1408   8.55      0.334 quasi: 1948, RCT: 10097                    
@@ -36,71 +41,22 @@ Here is a short summary of what’s included in BEAR:
     ## 17 EUDRA                   7832      1    7832   1         0.409 NA: 7832                                   
     ## 18 psychology             13781      3    2835   4.86      0.404 NA: 13781
 
-References and short descriptions of datasets we included are [available
-as a Google
-Doc](https://docs.google.com/document/d/1ZZAEwfHS0aAELN1w1lqEO6-eeu31_WdL/edit?usp=sharing&ouid=114240127695432531696&rtpof=true&sd=true).
-Summaries and details about contents of each dataset (e.g. how study IDs
-are coded) are in the [summary
-spreadsheet](https://docs.google.com/spreadsheets/d/1x2A4pgNDfrXRTdzI_LX219twXDXPPPiS7DRw1s6dHyo/edit?gid=0#gid=0)
-
-The dataset is created in `process_data.R`. Brief data dictionary is as
-follows:
-
-- `studyid` is study indicator
-  - each dataset has different naming convention (which we retain from
-    original authors) but for many we have access to DOIs or PMIDs and
-    they can be cross-referenced
-- For sets of meta-analyses, also retain `metaid` indicator
-- Characterise the method used to obtain the estimates:
-  - `RCT` is the main category we care about (available in Adda et al,
-    Cochrane database, Askarov, Brodeur)
-  - in Jager and Leek there is no classification done by the authors,
-    but we can look for keywords “randomised”, “randomized” and
-    “controlled” in study titles to categorise them as RCTs
-  - `mixed` category in Askarov et al means “experimental and
-    observational”
-  - `observational` means non-RCT in Cochrane
-  - we have a few instrumental variable and differences-in-differences
-    estimates from Brodeur et al
-  - all other datasets mix various types of effects and are therefore
-    `NA`
-- Characterise `measure` of the outcome:
-  - Where known, we most often have standardised mean difference, but
-    also RR/probit/ratio estimates and correlations.
-  - Econ and political datasets and studies of p-values do not provide
-    any information on this.
-- In columns `z` (z value), `b` (effect size), `se` (standard error),
-  `p` (p-value). Our main aim is to extract or calculate `z`:
-  - We calculate `z = b/se` in most datasets
-  - if no SE is avaialble, but we have p-value, we do `-qnorm(p/2)` (or
-    `sign(b)*qnorm(1-p/2)` to retrieve sign of z)
-  - for Barnett and Wren we have confidence intervals for ratio
-    estimates; we switch to log scale, calculate `se` by dividing by
-    3.96 and define `b` as interval midpoint on the log scale
-  - for Sladekova et al we use Fisher’s z transformation of correlation
-    coefficients, `b = 0.5*log((1 + yi)/(1 - yi))`
-  - for MetaPsy database it is standardised to Hedges’ $g$
-- `z_operator` column denotes if `z` values were truncated in some way
-  (usually because they were extracted as statements about p values such
-  as “p \< 0.05”, “p \< 0.001”, “p \> 0.5”), we retain that information
-- `year` denotes, if available, year of intervention (Askarov et al); if
-  not, year of study;
-  - in one case (Yang et al) I retrieve year of study from study titles,
-    since half of them have dates available
-- `ss` denotes sample size summed across both study arms
-  - Several datasets (CDSR, Sladekova, Metapsy) include sample sizes
-    broken down across arms, but we do not include them here.
-  - In Adda et al this is simply enrollment
-- Remove studies where z’s are NA before saving (to reduce size of data)
+# Modelling datasets using mixture models
 
 ## Optional post-processing
 
-We fit mixtures of half-normals to each dataset in `fit_mixtures.R`. To
-do that, we do some additional post-processing
+To fit mixture models described in the accompanying paper, we do minimal
+postprocess (`postprocess.R`):
 
 - Add number of observations in each study and number of studies in each
   meta-analysis
 - Add study weights as 1 / (N values reported in that study)
-- For large datasets, choose one z-value per study
+- For large datasets (\>50,000 rows), choose one z-value per study
 - Truncate very large z values (z \> 20) and replace “z = 0” statements
-  with “z \< 0.5”
+  with “z \< 0.5” (z=0 would not work when fitting mixtures)
+
+In `fit_mixtures.R` we create a fit for each of the datasets, saved in
+`mixtures/`. This can take a few minutes per dataset.
+
+We calculate summaries for each dataset (e.g. probablity of
+significance, replication, correct sign) in `calculate_psr.R`

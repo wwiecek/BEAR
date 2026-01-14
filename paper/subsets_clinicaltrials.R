@@ -7,7 +7,7 @@ source("R/helpers.R")
 source("R/settings.R")
 source("R/mix.R")
 
-df_ct_raw <- readRDS("data/clinicaltrials.gov/data_cut_with_z.rds")
+df_ct_raw <- readRDS("data/clinicaltrialsgov.rds")
 df_ct <- df_ct_raw %>% 
   group_by(nct_id) %>% filter(n() < 20) %>% ungroup %>% 
   transmute(studyid = nct_id,

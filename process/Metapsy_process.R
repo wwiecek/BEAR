@@ -1,13 +1,17 @@
 library(tidyverse)
 readRDS("data_raw/Metapsy/Metapsy_Jan2026.rds") %>% 
   lapply(function(df) {
+    
+    measure <- "Hedges' g"
+    
     if(is.null(df$.g)) {
+      measure <- "SMD"
       # for total-response dataset, I calculate log(OR) and convert to SMD
       # (there is a shorter way to do it, but I didn't notice initially that
       #  there are raw counts in this dataset)
       df <- df %>% 
         mutate(logor =     plogit.ig - plogit.cg,
-               se.logor =  se.plogit.ig^2 + se.plogit.cg^2) %>% 
+               se.logor =  sqrt(se.plogit.ig^2 + se.plogit.cg^2)) %>% 
         mutate(.g  = logor/(pi/sqrt(3)),
                .g_se = se.logor/(pi/sqrt(3)))
     }
@@ -17,6 +21,7 @@ readRDS("data_raw/Metapsy/Metapsy_Jan2026.rds") %>%
     
     if (all(c("study", ".g", ".g_se") %in% colnames(df))) {
       ret <- df[, c("study", ".g", ".g_se", "ss"), drop = FALSE]
+      ret$measure <- measure
       if(!is.null(df$year))
         ret$year <- df$year
       else #this happens in suicide-psyctr

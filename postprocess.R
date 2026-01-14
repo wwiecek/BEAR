@@ -20,8 +20,8 @@ bear_processed <-
   calc_study_weights() %>% # Calculate the weights = 1/n rows per study
   # Choice of subsets, merging of datasets etc. for BEAR modelling paper 
   # (1) disaggregate a large meta-analyses of intelligence and Many Labs replications
-  mutate(dataset = ifelse(dataset == "psymetadata" & group == "manylabs2018", "manylabs",     dataset)) %>% 
-  mutate(dataset = ifelse(dataset == "psymetadata" & group == "nuijten2020",  "intelligence", dataset)) %>% 
+  mutate(dataset = ifelse(dataset == "psymetadata" & subset == "manylabs2018", "manylabs",     dataset)) %>% 
+  mutate(dataset = ifelse(dataset == "psymetadata" & subset == "nuijten2020",  "intelligence", dataset)) %>% 
   # (2) We merge EUDRA CT and clinicaltrials.gov into a single database of trials
   mutate(dataset = ifelse(dataset == "clinicaltrials" | dataset == "euctr",  "ctgov_euctr", dataset)) 
 

@@ -13,7 +13,8 @@ bear <- readRDS("data/BEAR.rds")
 
 cdsr_sub <- bear %>% filter(dataset == "Cochrane") %>% 
   mutate(z_operator = ifelse(is.na(z_operator), "=", z_operator)) %>%  
-  calc_study_weights() %>% split(.$group)
+  calc_study_weights() %>% 
+  split(.$subset)
 
 cdsr_fits <- lapply(cdsr_sub, fit_mixture_df)  
 

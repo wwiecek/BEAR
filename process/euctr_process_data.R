@@ -165,8 +165,9 @@ d_clean <- d_raw %>%
       trunc == ">" ~ "<",
       TRUE ~ "="
     ),
-    
-    year = year(as.Date(date))
+
+    completion_date = as.Date(completion_date),
+    year = year(as.Date(coalesce(completion_date, date)))
   ) %>%
   mutate(
     key0 = str_c(id, endpoint, estimand_raw, purpose, intervention, sep = "|"),

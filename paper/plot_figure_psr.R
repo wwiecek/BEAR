@@ -3,13 +3,14 @@ library(tidyverse)
 library(ggplot2)
 
 source("R/settings.R")
-source("R/exaggeration.R")
-source("R/gap.R")
+# source("R/exaggeration.R")
+# source("R/gap.R")
+source("R/psr.R")
 source("R/helpers.R")
 source("R/mix.R")
 
 
-mfl <- load_all_mixtures()
+mfl <- load_all_mixtures(exclude = paper_do_not_include)
 N <- 1e05
 
 df_psr_small <- lapply(mfl, function(fit) {
@@ -49,8 +50,8 @@ df_ecdf_smooth %>%
   ggplot(aes(x = value, y = 1 - ecdf, group = dataset, color = group)) +
   geom_vline(xintercept = 0.8, lty = "dashed", alpha = .5) +
   geom_line(linewidth = 0.5, alpha = 0.7) +
-  scale_color_manual(values = cols_grp, 
-                     labels = c("Curated", "Meta-analysis", "Scraped")) +
+  scale_color_manual(values = bear_colors, 
+                     labels = c("Curated", "Meta-analysis", "Scraped", "Replications")) +
   facet_grid(~metric, scales = "free_x") +
   scale_x_continuous(breaks = custom_breaks) +
   labs(x = NULL, y = "Proportion achieving") +

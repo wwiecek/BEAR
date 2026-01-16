@@ -160,6 +160,9 @@ On processing side, we cleaned up study years, categorised measures (risk ratio,
 
 Unlike in most of the other datasets in BEAR, we filter CDSR data heavily. First, we only use the outcome and comparison of each review that are coded as "1", as that is most likely the primary outcome and most relevant comparison. This removes over 90% of all rows of data. Secondly, we only use studies with continuous and dichotomous outcomes, removing about 10% of data where effect estimates are based on instrumental variables or based on individual patient data. Lastly, we remove about 5% of data where measure of effect is unknown (retaining: OR, RR, Peto OR, mean difference, standardised mean difference, and risk difference). We also remove some rows where there are zero subjects.
 
+Additional grouping variable: 
+we retained a "source data type" variable to distinguish estimates from published, unpublished, "sought", and mixed data sources.
+
 
 
 ## Costello and Fox 2022; Yang et al 2023, 2024 (ecology and evolution)
@@ -285,7 +288,7 @@ Notes:
 In the paper we disaggregate two datasets: Many Labs 2 project (Klein et al. 2018), which studied how replication results vary across labs and settings for a set of classic and contemporary effects in psychology, and a large meta-meta-analysis intelligence research (Nuijten et al. 2020). Remaining 20 datasets vary from 65 rows of data to over 1,000.
 
 Data processing:
-minimal. We used regular expressions to extract year labels from titles. We dropped some invalid rows (missing, non-finite, or non-positive standard errors). For "sala2019" ("on whether skills learned from cognitive training generalize to other situations") we can group by meta-analysis and for Many Labs we can group by experiment---we use these as `metaid` column.
+minimal. We used regular expressions to extract year labels from titles. We dropped some invalid rows (missing, non-finite, or non-positive standard errors). For Many Labs we can group by experiment---we use these as `metaid` column.
 
 Additional grouping variable: original psymetadata dataset.
 

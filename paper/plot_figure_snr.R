@@ -39,4 +39,4 @@ library(patchwork)
 gg2 | gg1
 
 
-ggsave("paper/figures//snr_vs_z.pdf", units = "cm", width = 14, height = 9)
+ggsave("paper/figures/snr_vs_z.pdf", units = "cm", width = 14, height = 9)

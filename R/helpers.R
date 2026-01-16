@@ -1,11 +1,14 @@
 
-load_all_mixtures <- function() {
+load_all_mixtures <- function(exclude = NULL) {
   mfl <- list()
   nms <- gsub(".rds", "", list.files("mixtures/"))
+  if(!is.null(exclude))
+    nms <- nms[!(nms %in% exclude)]
   for(nm in nms) {
     fnm <- paste0("mixtures/", nm, ".rds")
     mfl[[nm]] <- readRDS(fnm)
   }
+    
   mfl
 }
 

@@ -252,7 +252,13 @@ dtlist[["Cochrane"]] <- rbind(
     b = yi,
     se = sqrt(vi),
     subset = as.character(specialty),
-    ss = total1 + total2) %>% 
+    ss = total1 + total2,
+    group = case_when(
+      study.data_source == "PUB" ~ "published",
+      study.data_source == "UNPUB" ~ "unpublished",
+      study.data_source == "SOUGHT" ~ "sought",
+      study.data_source == "MIX" ~ "mixed"
+    )) %>% 
   # There are some very small subcategories, I set them to NA instead
   group_by(subset) %>% 
   mutate(n = n()) %>% 
@@ -466,7 +472,15 @@ dtlist[["Bartos"]] <- readRDS("data/Bartos.rds") %>%
 
 # psymetadata -----
 
-dtlist[["psymetadata"]] <- readRDS("data/psymetadata.rds")
+psymetadata <- readRDS("data/psymetadata.rds")
+  
+# disaggregate a large meta-analyses of intelligence and Many Labs replications
+dtlist[["psymetadata"]]   <- dplyr::filter(psymetadata, !(subset %in% c("manylabs2018", "nuijten2020")))
+dtlist[["ManyLabs2"]]     <- dplyr::filter(psymetadata, subset == "manylabs2018") %>% 
+  mutate(subset = NA_character_)
+dtlist[["Nuijten"]]       <- dplyr::filter(psymetadata, subset == "nuijten2020") %>% 
+  mutate(subset = NA_character_)
+  
 
 
 

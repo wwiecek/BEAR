@@ -29,7 +29,7 @@ plot_mixture_v3 <- function(fit, dt, nm = "", col = "black", xmax = 10, nbreaks 
 
 plot_mixture_v4 <- function(fit, dt, nm = "", col = "black", color_map = NULL, 
                             xmax = 10, nbreaks = 25, ymax = 0.6, 
-                            annotate = "psr", 
+                            annotate = "psr", meanpwr = NULL,
                             show_corrected = FALSE) {
   
   # Use color_map if provided and col is default
@@ -47,7 +47,7 @@ plot_mixture_v4 <- function(fit, dt, nm = "", col = "black", color_map = NULL,
   e_abs_z_val <- round(den_calc_result$E_abs_z, 1)
   
   N <- 1e04
-  if(annotate == "psr"){
+  if(annotate == "psr" & is.null(meanpwr)){
     snr     <- rmix(N, p = fit$p, m = fit$m, s = fit$sigma_SNR)
     z       <- snr + rnorm(N)
     power   <- (1 - pnorm(1.96, snr, 1)) + pnorm(-1.96, snr, 1)

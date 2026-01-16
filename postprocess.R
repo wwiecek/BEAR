@@ -19,10 +19,8 @@ bear_processed <-
   mutate(z_operator = ifelse(is.na(z_operator), "=", z_operator)) %>% 
   calc_study_weights() %>% # Calculate the weights = 1/n rows per study
   # Choice of subsets, merging of datasets etc. for BEAR modelling paper 
-  # (1) disaggregate a large meta-analyses of intelligence and Many Labs replications
-  mutate(dataset = ifelse(dataset == "psymetadata" & subset == "manylabs2018", "manylabs",     dataset)) %>% 
-  mutate(dataset = ifelse(dataset == "psymetadata" & subset == "nuijten2020",  "intelligence", dataset)) %>% 
-  # (2) We merge EUDRA CT and clinicaltrials.gov into a single database of trials
+  # for now only...
+  # (1) We merge EUDRA CT and clinicaltrials.gov into a single database of trials
   mutate(dataset = ifelse(dataset == "clinicaltrials" | dataset == "euctr",  "ctgov_euctr", dataset)) 
 
 # Divide into the relevant datasets (which may be processed futher indidivually)

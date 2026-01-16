@@ -55,8 +55,6 @@ standardise_psy <- function(df, group) {
   # metaid
   if(group == "manylabs2018")
     metaid <- df$analysis
-  if(group == "sala2019")
-    metaid <- df$study_id
   else
     metaid <- NA_character_
   

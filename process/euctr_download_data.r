@@ -62,6 +62,7 @@ if (!file.exists("euctr_trials.sqlite")){
 result <- dbGetFieldsIntoDf(
   fields = c("eudractNumber",
              "x6_date_on_which_this_record_was_first_entered_in_the_eudract_database",
+             "x7_date_of_the_end_of_the_trial",
              "a3_full_title_of_the_trial", 
              "b1_sponsor.b11_name_of_sponsor", 
              "e51_primary_end_points", 
@@ -115,7 +116,9 @@ process_string <- function(txt,to_numeric=TRUE) {
 d1=data.frame(id=result$"_id",
              phase=result$.trialPhase,
              date=result$x6_date_on_which_this_record_was_first_entered_in_the_eudract_database,
+             completion_date=result$x7_date_of_the_end_of_the_trial,
              endpoint=result$endPoints.endPoint.type.value,
+             endpoint_title=result$endPoints.endPoint.title,
              efficacy=result$e65_efficacy,
              n=result$.primaryEndpointFirstPsize,
              pval.calc=result$.primaryEndpointFirstPvalue,
@@ -196,7 +199,9 @@ result <- dbGetFieldsIntoDf(
 d2=data.frame(id=result$"_id",
              phase=result$.trialPhase,
              date=result$protocolSection.statusModule.studyFirstSubmitDate,
+             completion_date=as.Date(NA),
              endpoint=result$resultsSection.outcomeMeasuresModule.outcomeMeasures.type,
+             endpoint_title=result$resultsSection.outcomeMeasuresModule.outcomeMeasures.title,
              purpose=result$protocolSection.designModule.designInfo.primaryPurpose,
              intervention=result$protocolSection.designModule.studyType,
              n=result$.primaryEndpointFirstPsize,
@@ -231,4 +236,3 @@ saveRDS(d, file = "data_raw/eutrials/data_euctr_ctgov.rds")
 
 # Disconnect when done
 DBI::dbDisconnect(db$con, shutdown = TRUE)
-

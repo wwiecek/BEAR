@@ -23,7 +23,7 @@ bear_processed <-
   # (1) We merge EUDRA CT and clinicaltrials.gov into a single database of trials
   mutate(dataset = ifelse(dataset == "clinicaltrials" | dataset == "euctr",  "ctgov_euctr", dataset)) 
 
-# Divide into the relevant datasets (which may be processed futher indidivually)
+# Divide into the relevant datasets (which may be processed further individually)
 bear_list <- split(bear_processed, bear_processed$dataset)
 rm(bear_processed)
 

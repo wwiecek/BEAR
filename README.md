@@ -12,36 +12,51 @@ replication, exchangeability, meta-analysis etc. etc.
 
 # Datasets included in BEAR
 
-References, details of data processing, and short descriptions of each
-dataset included are in [a separate PDF in the main
-folder](datasets.pdf). Main data processing script is
+References, details of data availability and processing, links to raw
+data, and short descriptions of each dataset are in [a separate PDF in
+the main folder](datasets.pdf). Main data processing script is
 [process_data.md](process_data.md) and
 
 Here is a short summary of what’s included in BEAR:
 
     ## # A tibble: 20 × 7
-    ##    dataset                  n_z n_meta n_study mean_k pct_signif type                     
-    ##    <chr>                  <int>  <int>   <int>  <dbl>      <dbl> <chr>                    
-    ##  1 Arel-Bundock et al     16649     46    2252   7.39      0.467 NA: 16649                
-    ##  2 Askarov et al          21408    352    1913  11.2       0.520 mixed: 1297, observation…
-    ##  3 Barnett and Wren     1306551      1  416027   3.14      0.808 NA: 1306551              
-    ##  4 Bartoš et al            2239    215    2239   1         0.263 NA: 2239                 
-    ##  5 Brodeur et al           8424      1     176  47.9       0.374 DID: 50, IV: 133, RCT: 8…
-    ##  6 Chavalarias et al    7935864      1 1887178   4.21      0.627 NA: 7935864              
-    ##  7 Cochrane               39768   6050   30306   1.31      0.306 RCT: 27616, unknown: 121…
-    ##  8 Costello and Fox       88218    466   12927   6.82      0.419 NA: 88218                
-    ##  9 Head et al           2010875      1  219220   9.17      0.622 NA: 2010875              
-    ## 10 Jager and Leek         15653      1    5322   2.94      0.777 RCT: 4771, NA: 10882     
-    ## 11 Many Labs 2             1414     25    1414   1         0.443 NA: 1414                 
-    ## 12 Metapsy                 4395     20    1494   2.94      0.484 RCT: 4395                
-    ## 13 Nuijten et al           2439      1    1913   1.27      0.529 NA: 2439                 
-    ## 14 OpenSciCollab             99      1      99   1         0.354 RCT: 99                  
-    ## 15 Sladekova et al        11540    406   11540   1         0.590 NA: 11540                
-    ## 16 What Works Clearing.   12045      1    1408   8.55      0.334 quasi: 1948, RCT: 10097  
-    ## 17 Yang et al             17638     87    3796   4.65      0.417 NA: 17638                
-    ## 18 clinicaltrials.gov     41338      1   16636   2.48      0.488 RCT: 41338               
-    ## 19 EUDRA                   7832      1    7832   1         0.409 NA: 7832                 
-    ## 20 psychology              8514      1     721  11.8       0.358 NA: 8514
+    ##    dataset                domain              n_values n_meta n_study mean_k pct_signif
+    ##    <chr>                  <chr>                  <int>  <int>   <int>  <dbl>      <dbl>
+    ##  1 "Arel-Bundock et al"   political science      16649     46    2252   7.39      0.467
+    ##  2 "Askarov et al"        economics              21408    352    1913  11.2       0.520
+    ##  3 "Barnett and Wren"     biomedicine          1306551      1  416027   3.14      0.808
+    ##  4 "Barto\u0161 et al"    exercise                2239    215    2239   1         0.263
+    ##  5 "Brodeur et al"        economics               8424      1     176  47.9       0.374
+    ##  6 "Chavalarias et al"    biomedicine          7935864      1 1887178   4.21      0.627
+    ##  7 "Cochrane"             medicine               39768   6050   30306   1.31      0.306
+    ##  8 "Costello and Fox"     ecology & evolution    88218    466   12927   6.82      0.419
+    ##  9 "Head et al"           biomedicine          2010875      1  219220   9.17      0.622
+    ## 10 "Jager and Leek"       biomedicine            15653      1    5322   2.94      0.777
+    ## 11 "Many Labs 2"          psychology              1414     25    1414   1         0.443
+    ## 12 "Metapsy"              psychotherapy           4395     20    1494   2.94      0.484
+    ## 13 "Nuijten et al"        intelligence            2439      1    1913   1.27      0.529
+    ## 14 "OpenSciCollab"        psychology                99      1      99   1         0.354
+    ## 15 "Sladekova et al"      psychology             11540    406   11540   1         0.590
+    ## 16 "What Works Clearing." education              12045      1    1408   8.55      0.334
+    ## 17 "Yang et al"           ecology & evolution    17638     87    3796   4.65      0.417
+    ## 18 "clinicaltrials.gov"   clinical trials        41338      1   16636   2.48      0.488
+    ## 19 "EUDRA"                clinical trials         7832      1    7832   1         0.409
+    ## 20 "psychology"           psychology              8514      1     721  11.8       0.358
+
+Datasets fall into four main categories that will be useful for
+different types of metascientific investigations: curated datasets of
+single studies, curated sets of meta-analyses (i.e. with additional
+`metaid` grouping column), large-scale scraped datasets from
+PubMed/Medline, and replication datasets. Additional groupings are
+available in some datasets.
+
+    ## # A tibble: 4 × 6
+    ##   gr           n_datasets n_study n_meta n_values pct_signif
+    ##   <chr>             <int>   <int>  <int>    <int>      <dbl>
+    ## 1 curated               6   28686     NA    80592      0.433
+    ## 2 meta                  8   66467   7642   201855      0.421
+    ## 3 replications          2    1513     26     1513      0.437
+    ## 4 scrape                4 2527747     NA 11268943      0.648
 
 # Modelling datasets using mixture models
 

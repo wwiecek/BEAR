@@ -12,8 +12,7 @@ issues of replication, exchangeability, meta-analysis etc. etc.
 
 # Datasets included in BEAR
 
-References, details of data processing, and short descriptions of each dataset 
-included are in [a separate PDF in the main folder](datasets.pdf). Main data processing script is [process_data.md](process_data.md) and 
+References, details of data availability and processing, links to raw data, and short descriptions of each dataset are in [a separate PDF in the main folder](datasets.pdf). Main data processing script is [process_data.md](process_data.md) and 
 
 Here is a short summary of what's included in BEAR:
 
@@ -21,21 +20,42 @@ Here is a short summary of what's included in BEAR:
 library(dplyr)
 source("R/settings.R")
 bear <- readRDS("data/BEAR.rds")
-bear %>% 
+bear_summary <- bear %>% 
   group_by(dataset) %>% 
   summarise(n_z = n(), 
             n_meta = n_distinct(metaid), 
             n_study = n_distinct(studyid), 
             mean_k  = n()/n_distinct(studyid), 
-            pct_signif = sum(abs(z)>1.96)/n(),
-            type = {
-              tab <- table(method)
-              counts <- c(tab)
-              na_count <- sum(is.na(method))
-              if (na_count > 0) counts <- c(counts, `NA` = na_count)
-              paste(paste0(names(counts), ": ", counts), collapse = ", ")
-            }
-  ) %>% mutate(dataset = bear_names[dataset])
+            pct_signif = sum(abs(z)>1.96)/n()
+            # type = {
+            #   tab <- table(method)
+            #   counts <- c(tab)
+            #   na_count <- sum(is.na(method))
+            #   if (na_count > 0) counts <- c(counts, `NA` = na_count)
+            #   paste(paste0(names(counts), ": ", counts), collapse = ", ")
+            # }
+  ) %>% 
+  mutate(domain = bear_domain[dataset])
+
+bear_summary %>% 
+  arrange(dataset) %>% 
+  relocate(domain, .after = dataset) %>% 
+  mutate(dataset = bear_names[dataset]) %>% 
+  rename(n_values = n_z)
+```
+
+Datasets fall into four main categories that will be useful for different types of metascientific investigations: curated datasets of single studies, curated sets of meta-analyses (i.e. with additional `metaid` grouping column), large-scale scraped datasets from PubMed/Medline, and replication datasets. Additional groupings are available in some datasets.
+
+```{r echo=FALSE, messages=FALSE}
+bear_summary %>% 
+  mutate(gr = bear_classification[dataset]) %>% 
+  # mutate(gr = ifelse(gr == "meta", "curated", gr)) %>% 
+  group_by(gr) %>% 
+  summarise(n_datasets = n(),
+            n_study = sum(n_study),
+            n_meta = ifelse(sum(n_meta) == n_datasets, NA, sum(n_meta)),
+            n_values = sum(n_z),
+            pct_signif = sum(pct_signif*n_z) / sum(n_z))
 ```
 
 

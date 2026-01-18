@@ -17,7 +17,7 @@ bear_names <- c(
    "Sladekova" = "Sladekova et al",
    "WWC" = "What Works Clearing.",
    "Yang" = "Yang et al",   
-   "psymetadata" = "psychology",
+   "psymetadata" = "psymetadata",
    "Nuijten" = "Nuijten et al",
    "ManyLabs2" = "Many Labs 2"
    # "Adda" = "Adda et al",
@@ -77,6 +77,30 @@ bear_classification <- c(
    # "Adda" = "curated",
    # "ctgov" = "curated",
    # "Cochrane2019" = "meta",
+)
+
+bear_domain <- c(
+  "ArelBundock"   = "political science",
+  "Askarov"       = "economics",
+  "Bartos"        = "exercise",
+  "BarnettWren"   = "biomedicine",
+  "Brodeur"       = "economics",
+  "ctgov_euctr"   = "clinical trials",
+  "clinicaltrials"= "clinical trials",
+  "euctr"         = "clinical trials",
+  "Chavalarias"   = "biomedicine",
+  "Cochrane"      = "medicine & health",
+  "CostelloFox"   = "ecology & evolution",
+  "Head"          = "biomedicine",
+  "JagerLeek"     = "biomedicine",
+  "ManyLabs2"     = "psychology",
+  "Metapsy"       = "psychotherapy",
+  "Nuijten"       = "intelligence",
+  "OSC"           = "psychology",
+  "psymetadata"   = "psychology",
+  "Sladekova"     = "psychology",
+  "WWC"           = "education",
+  "Yang"          = "ecology & evolution"
 )
 
 # This is a vector to remove some fitted mixtures 

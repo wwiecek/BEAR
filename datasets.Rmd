@@ -3,16 +3,17 @@ title: "Datasets included in BEAR"
 subtitle: "Appendix"
 date: "`r format(Sys.Date(), '%Y-%m-%d')`"
 output:
-  pdf_document:
+  bookdown::pdf_document2:
     toc: false
     number_sections: false
 geometry: margin=1in
 fontsize: 11pt
+bibliography: references.bib
 ---
 
 ## Arel-Bundock et al 2022 (political science)
 
-Reference: Arel-Bundock et al 2022
+Reference: @arel2022quantitative.
 
 Research question: assess statistical power in political science research
 
@@ -29,7 +30,7 @@ Data processing: using the same code as original authors (replication package ru
 
 ## Askarov et al 2023 (economics)
 
-Reference: Askarov et al 2023
+Reference: @askarov2023significance.
 
 Research question: 
 Impact of mandatory data sharing on (excessive) statistical significance in economics papers
@@ -49,7 +50,7 @@ We use the same file `Mandatory data-sharing 30 Aug 2022.dta` (11.6 MB) as in th
 
 ## Barnett and Wren 
 
-Reference: Barnett and Wren 2019
+Reference: @barnett2019examination.
 
 Research question: Bias for statistical significance in health and medical journals
 
@@ -70,11 +71,11 @@ We excluded a small fraction of data. First we restricted to 95% confidence inte
 
 ## Bartoš et al. 2025 (exercise)
 
-Reference: Bartoš et al 2025
+Reference: @bartos2025exercise.
 
 This paper builds on another analysis:
 
-Reference: Singh et al 2025
+Reference: @singh2025exercise.
 
 Research question: 
 What is the effect of physical exercise on cognition, memory, and executive function; with extra focus on selective reporting and heterogeneity.
@@ -94,7 +95,7 @@ Additional variables used:
 
 ## Brodeur et al. 2024 (economics)
 
-Reference: Brodeur et al 2024
+Reference: @brodeur2024preregistration.
 
 Research question: are preregistration and pre-analysis plans associated with reduced p-hacking and publication bias in economics?
 
@@ -108,7 +109,7 @@ Data processing: the authors’ reported z-statistics were used directly and the
 
 ## Chavalarias et al. 2016 (MEDLINE/PubMed)
 
-Reference: Chavalarias et al 2016
+Reference: @chavalarias2016evolution.
 
 Research question: reporting of p-values in the biomedical literature
 
@@ -128,6 +129,8 @@ Additional variables used: source indicator (abstract versus full text).
 Trials which reported results at clinicaltrials.gov
 
 Snapshot date: 12 August 2025
+
+Reference: @clinicaltrials2025.
 
 Data source: 
 This is a set of flat file of studies obtained via <https://aact.ctti-clinicaltrials.org/> (over 2GBs of data for relevant tables) with relevant columns extracted and joined by us to produce a single table `clinicaltrials.gov_aug2025.rds` (12 MB of data). 
@@ -149,7 +152,7 @@ Trials with data available at CDSR, <https://www.cochranelibrary.com/>
 
 Snapshot date: 20 November 2025
 
-Reference: for extraction package, see Schwab 2024
+Reference: @schwab2024cochrane; @cochrane2025cdsr.
   
 Data collection: using R package `cochrane` we merged data from 8,726 records of reviews in CDSR and merged them into a single file `cdsr_interventions_19nov2025.csv` (63 MB). 
 
@@ -167,7 +170,7 @@ we retained a "source data type" variable to distinguish estimates from publishe
 
 ## Costello and Fox 2022; Yang et al 2023, 2024 (ecology and evolution)
 
-Reference: these two datasets come from the same replication package and shared data processing pipeline in Yang et al 2024. Original references for the datasets are Yang et al 2023 and Costello and Fox 2022
+Reference: these two datasets come from the same replication package and shared data processing pipeline in Yang et al. 2024 [@yang2024large]. Original references for the datasets are Yang et al. 2023 and Costello and Fox 2022 [@yang2023publication; @costello2022decline].
 
 Research question: decline effects in ecology (Costello and Fox) and publication bias and performance of empirical research (Yang et al)
 
@@ -185,7 +188,7 @@ Additional variables used: we retained a measure variable ("lnRR", "SMD", "Zr" o
 
 Trials which reported results at the EU Clinical Trials Register, <https://www.clinicaltrialsregister.eu/>.
 
-Reference: for R package, see Herold 2025
+Reference: @herold2025ctrdata; @euctr2025.
 
 Snapshot date: October 2025
 
@@ -201,7 +204,7 @@ Additional variables used: we retained phase labels, a measure class (derived fr
 
 ## Head et al 2015 (PubMed papers)
 
-Reference: Head et al 2015
+Reference: @head2015extent.
 
 Research question: 
 extent of p-hacking and its impact on meta-analyses.
@@ -224,7 +227,7 @@ Additional variables used: we use the "Abstract vs Results" variable for groupin
 
 ## Jager and Leek
 
-Reference: Jager and Leek 2014
+Reference: @jager2014estimate.
 
 Research question: estimating science-wise false discovery rate.
 
@@ -244,7 +247,7 @@ Studies included in _Metapsy_, a set of living meta-analytic databases of random
 
 Snapshot date: Jan 2026
 
-Reference: R package `metapsyData`: Harrer, Karyotaki, and Cuijpers 2022.
+Reference: R package `metapsyData`: @harrer2022metapsydata.
 
 Data availability:
 Metapsy is maintained by an international collaboration led by Vrije Universiteit Amsterdam. Databases are available at <https://www.metapsy.org/> and via R package `metapsyData`. Metapsy FAQ states that all data provided as part of the project are open-access and requires attribution.
@@ -256,7 +259,7 @@ we merged 20 individual datasets in Metapsy with some cleaning (e.g. to extract 
 
 ## Open Science Collaboration 2015
 
-Reference: Open Science Collaboration 2015
+Reference: @opensciencecollaborationEstimatingReproducibilityPsychological2015a.
 
 Research question: 
 replications of a quasi-random sample of 100 experiments in psychology.
@@ -274,7 +277,7 @@ we derived z values from the replication p-values assuming two-sided p-values (w
 
 ## psymetadata (psychology datasets)
 
-Reference: Rodriguez and Williams 2022 for R package `psymetadata` 
+Reference: @rodriguez2022psymetadata for R package `psymetadata`.
 
 Snapshot date: Jan 2026
 
@@ -285,7 +288,7 @@ Data availability:
 22 datasets are distributed with the `psymetadata` R package (CRAN). The package is GPL-3; individual datasets originate from the cited source papers. 
 
 Notes: 
-In the paper we disaggregate two datasets: Many Labs 2 project (Klein et al. 2018), which studied how replication results vary across labs and settings for a set of classic and contemporary effects in psychology, and a large meta-meta-analysis intelligence research (Nuijten et al. 2020). Remaining 20 datasets vary from 65 rows of data to over 1,000.
+In the paper we disaggregate two datasets: Many Labs 2 project [@klein2018manylabs], which studied how replication results vary across labs and settings for a set of classic and contemporary effects in psychology, and a large meta-meta-analysis of intelligence research [@nuijten2020intelligence]. Remaining 20 datasets vary from 65 rows of data to over 1,000.
 
 Data processing:
 minimal. We used regular expressions to extract year labels from titles. We dropped some invalid rows (missing, non-finite, or non-positive standard errors). For Many Labs we can group by experiment---we use these as `metaid` column.
@@ -301,6 +304,8 @@ Additional grouping variable: original psymetadata dataset.
 Large database of education effect sizes created by Institute of Education Sciences.
 
 Snapshot date: 17 May 2025
+
+Reference: @wwc2025studyfindings.
 
 Data availability: 
 flat files are available at <https://ies.ed.gov/ncee/wwc/studyfindings>. Per permissions and disclaimers section on that website: "Unless stated otherwise, all information on the U.S. Department of Education’s IES website … is in the public domain and may be reproduced, published, linked to, or otherwise used without permission from IES.”
@@ -354,37 +359,3 @@ We then chose a single “best” z-statistic per row. We preferred the CI-deriv
 
 
 
-
-
-## References
-
-Arel-Bundock, V., Briggs, R. C., Doucouliagos, H., Mendoza Aviña, M., & Stanley, T. D. (2022). Quantitative political science research is greatly underpowered. I4R Discussion Paper Series.
-
-Askarov, Z., Doucouliagos, A., Doucouliagos, H., & Stanley, T. D. (2023). The significance of data-sharing policy. Journal of the European Economic Association, 21(3), 1191–1226.
-
-Barnett, A. G., & Wren, J. D. (2019). Examination of CIs in health and medical journals from 1976 to 2019: An observational study. BMJ Open, 9(11), e032506.
-
-Bartoš, F., Lušková, M., Bortnikova, K., Hozová, K., Kantova, K., Irsova, Z., & Havranek, T. (2025). Effect of Exercise on Cognition, Memory, and Executive Function: A Study-Level Meta-Meta-Analysis Across Populations and Exercise Categories. PsyArXiv. https://doi.org/10.31234/osf.io/qr8e2_v1
-
-Brodeur, A., Cook, N. M., Hartley, J. S., & Heyes, A. (2024). Do preregistration and preanalysis plans reduce p-hacking and publication bias? Evidence from 15,992 test statistics and suggestions for improvement. Journal of Political Economy Microeconomics, 2(3), 527–561.
-
-Chavalarias, D., Wallach, J. D., Li, A. H. T., & Ioannidis, J. P. A. (2016). Evolution of reporting p values in the biomedical literature, 1990–2015. JAMA, 315(11), 1141–1148.
-
-Costello, L., & Fox, J. W. (2022). Decline effects are rare in ecology. Ecology, 103(6), e3680. https://doi.org/10.1002/ecy.3680
-
-Head, M. L., Holman, L., Lanfear, R., Kahn, A. T., & Jennions, M. D. (2015). The extent and consequences of p-hacking in science. PLOS Biology. https://doi.org/10.1371/journal.pbio.1002106
-
-Herold, R. (2025). Aggregating and analysing clinical trials data from multiple public registers using R package ctrdata. Research Synthesis Methods, 1–33. https://doi.org/10.1017/rsm.2025.10061
-
-Jager, L. R., & Leek, J. T. (2014). An estimate of the science-wise false discovery rate and application to the top medical literature. Biostatistics, 15(1), 1–12. https://doi.org/10.1093/biostatistics/kxt007
-
-Open Science Collaboration. (2015). Estimating the reproducibility of psychological science. Science, 349(6251), aac4716. https://doi.org/10.1126/science.aac4716
-
-Rodriguez, Josue E., and Donald R. Williams. 2022. “psymetadata: An R Package Containing Open Datasets from Meta-Analyses in Psychology.” Journal of Open Psychology Data. doi:10.5334/jopd.61
-Schwab, S. (2024). cochrane: Import Data from the Cochrane Database of Systematic Reviews (CDSR). https://github.com/schw4b/cochrane
-
-Singh, B., Bennett, H., Miatke, A., Dumuid, D., Curtis, R., Ferguson, T., Brinsley, J., Szeto, K., Petersen, J. M., Gough, C., Eglitis, E., Simpson, C. E., Ekegren, C. L., Smith, A. E., Erickson, K. I., & Maher, C. (2025). Effectiveness of exercise for improving cognition, memory and executive function: A systematic umbrella review and meta-meta-analysis. British Journal of Sports Medicine, 59(12), 866–876. https://doi.org/10.1136/bjsports-2024-108589
-
-Yang, Y., Sánchez-Tójar, A., O’Dea, R. E., Noble, D. W. A., Koricheva, J., Jennions, M. D., Parker, T. H., Lagisz, M., & Nakagawa, S. (2023). Publication bias impacts on effect size, statistical power, and magnitude (Type M) and sign (Type S) errors in ecology and evolutionary biology. BMC Biology, 21(1), 71.
-
-Yang, Y., van Zwet, E., Ignatiadis, N., & Nakagawa, S. (2024). A large-scale in silico replication of ecological and evolutionary studies. Nature Ecology & Evolution, 1–5.

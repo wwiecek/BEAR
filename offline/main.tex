@@ -1,5 +1,6 @@
 \documentclass[11pt]{article}
 \usepackage{booktabs}
+\usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
 \usepackage{amsfonts,url,epsfig,float,xcolor}
 %%% Document layout, margins
@@ -112,7 +113,7 @@
 \author{
 Erik van Zwet\thanks{Department of Biomedical Data Sciences, Leiden University Medical Center.}
 \and Andrew Gelman\thanks{Department of Statistics and Department of Political Sciences, Columbia University, New York.}
-\and Witold Wiecek\thanks{Development Innovation Lab, University of Chicago.}
+\and Witold Wi\k{e}cek\thanks{Development Innovation Lab, University of Chicago.}
 \vspace{.1in}
 }
 
@@ -191,18 +192,18 @@ a subset of 30,000 trials from the Cochrane Database of Systematic Reviews (CDSR
 
 Other datasets (each including from hundreds to about 2,000 studies) are 
 education research from the What Works Clearinghouse \parencite{wwc2025studyfindings}, 
-psychotherapy (the MetaPsy project; \parencite{cuijpers2024effects}), 
+psychotherapy \parencite{cuijpers2024effects}, 
 psychology \parencite{rodriguez2022psymetadata},
 exercise \parencite{bartos2025exercise,singh2025exercise},
 intelligence \parencite{nuijten2020intelligence},
 economics \parencite{askarov2023significance, brodeur2024preregistration}, 
 and political science \parencite{arel2022quantitative}. 
 
-Eight of these 14 are sets of meta-analyses, but in this paper we treat them as collections of individual studies. This meta-analytic structure is available in BEAR and may be useful for other metascientific research, for example characterizing heterogeneity in treatment effects \parencite{single_meta}. 
+Six datasets are curated databases of interventions used for systematic reviews or teaching. The rests are usually metascientific investigations, for example of pre-registration, publication bias, statistical power. More than half of datasets are themselves sets of meta-analyses, but in this paper we treat them as collections of individual studies. However, the meta-analytic structure is available in BEAR and may be useful for other metascientific research, for example characterizing heterogeneity in treatment effects \parencite{single_meta}. 
 
 For comparison we also include two replication projects in psychology \parencite{opensciencecollaborationEstimatingReproducibilityPsychological2015a, klein2018manylabs} and two large-scale data-scraping papers which used abstracts or full texts of biomedical literature available via Medline and PubMed. \textcite{chavalarias2016evolution} provide 8 mln $p$-values across 1.8 mln studies, while \textcite{barnett2019examination} collected effect estimates of binary outcomes (odds ratios, risk ratios and such) and their confidence intervals in over 400,000 studies. 
 
-While we do some data processing of our own, all of data collection and vast majority of data processing is done by the creators of the datasets we reference. Most of them already include z-values or effect sizes and standard errors, but in some cases we make calculations ourselves (for example, from p-values or counts for binary data); calculation details are in Appendix B. The average number of estimates per study for each dataset is given in Table 1; it can be as high as 50 estimates per study in \textcite{arel2022quantitative}, which aimed to collect all tests reported by economics papers, but in most cases we have either one or several estimates per study.
+While we do some data processing of our own, all of data collection and vast majority of data processing is done by the creators of the datasets we reference. Most of them already include z-values or effect sizes and standard errors, but in some cases we make calculations ourselves (for example, from p-values or counts for binary data); calculation details are in Appendix B. The average number of estimates per study for each dataset is given in Table 1; it can be as high as 50 z-values per study in \textcite{arel2022quantitative}, which aimed to collect all tests reported by economics papers, but in most cases we have either one or several estimates per study.
 
 % Our consolidated database has, for each published estimate, the data source, $z$-statistic, $p$-value, effect size estimate, standard error, sample sizes, year of publication, study type (e.g., randomized trial, observational study), measure type (e.g., difference of means, log risk ratio), and some categorization into fields of study and subgroups (e.g., medical field, clinical study phase). The current version of BEAR is a single table with xx rows. 
 

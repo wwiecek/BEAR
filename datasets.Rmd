@@ -309,7 +309,7 @@ we derived z values from the replication p-values assuming two-sided p-values (w
 
 
 
-## psymetadata (psychology datasets)
+## psymetadata, Many Labs 2018 and Nuijten et al (psychology datasets)
 
 **Reference:**
 @rodriguez2022psymetadata
@@ -318,7 +318,7 @@ we derived z values from the replication p-values assuming two-sided p-values (w
 Jan 2026
 
 **Research question:**
-psymetadata is an R package that curates multiple open datasets from published meta-analyses in psychology. In BEAR we use it as a convenient source of many small-to-medium meta-analytic datasets, standardised into a single schema.
+psymetadata is an R package that curates multiple open datasets from published meta-analyses in psychology for teaching and demonstrations. In BEAR we use it as a convenient source of many small-to-medium meta-analytic datasets, standardised into a single schema.
 
 **Data availability:**
 22 datasets are distributed with the `psymetadata` R package (CRAN). The package is GPL-3; individual datasets originate from the cited source papers.
@@ -393,3 +393,7 @@ To avoid dropping rows, we retained unsigned z-statistics when the sign could no
 ## Choice of a single z-value when multiple candidates available
 
 In situations where $z$ can be derived from both CIs and p-values. We choose a single “best” z-statistic per row as follows. We prefer the CI-derived $z$ when it looked like a plausible Wald interval on the chosen scale, meaning: (1) finite $z$ and standard error, (2) positive standard error, (3) not flagged as non-Wald by keyword search in measure label, and (4) either missing symmetry information or symmetry above 0.8. Otherwise we used the p-derived z.
+
+
+# References for datasets used in BEAR
+

@@ -4,10 +4,16 @@ library(dplyr)
 library(stringr)
 library(lubridate)
 
-in_path  <- "data_raw/eutrials/data_euctr_ctgov.rds"
+# This works on merged EUCTR and clinicaltrials.gov datasets from euctr package
+# but as of Jan 2026 I am only loading in the euctr subset of data
+
+# in_path  <- "data_raw/eutrials/data_euctr_ctgov.rds"
+in_path  <- "data_raw/eutrials/data_euctr.rds"
 out_path <- "data/euctr.rds"
 
 # --- helpers ---------------------------------------------------------------
+
+# WW asked chatGPT to write these to mirror clinicaltrials.gov code
 
 norm_txt <- function(x) str_squish(tolower(ifelse(is.na(x), "", x)))
 
@@ -44,9 +50,9 @@ classify_estimand <- function(x) {
     str_detect(x0, "rate\\s*ratio") ~ "Rate Ratio",
     str_detect(x0, "geometric.*mean.*ratio|\\bgmr\\b|\\bgmt\\b") ~ "Geometric Ratio",
     str_detect(x0, "(^|\\W)ratio(\\W|$)") ~ "Other Ratio",
-    str_detect(x0, "mean.*difference|ls.*mean.*difference|least.*square.*mean|lsm") ~ "Mean Difference",
+    str_detect(x0, "mean.*difference|mean\\s*diff|meandiff|meanDiff|ls.*mean.*difference|least.*square.*mean|lsm") ~ "Mean Difference",
     str_detect(x0, "risk.*difference|(^|\\W)rd(\\W|$)|difference.*proportion") ~ "Risk Difference",
-    str_detect(x0, "median.*difference") ~ "Median Difference",
+    str_detect(x0, "median.*difference|median\\s*diff|mediandiff|medianDiff") ~ "Median Difference",
     str_detect(x0, "slope") ~ "Slope",
     TRUE ~ "Other"
   )
@@ -71,17 +77,17 @@ bad_ci_type <- function(x) {
 d_raw <- readRDS(in_path)
 
 d_clean <- d_raw %>%
+  dplyr::filter(endpoint == "primary") %>% #most are primary; few are secondary; when this is NA, there are no estimates, so OK
   mutate(
-    collection = toupper(collection),
-    
     level_num  = clean_level(level),
-    sides_num  = clean_side(side),
+    sides_num  = clean_side(side), #I think this was to make clnicaltrials.gov work nice too
     zcrit      = zcrit_from_level(level_num, sides_num),
     
     p_raw      = coalesce(pval.calc, pval),
     p_num      = suppressWarnings(as.numeric(p_raw)),
     p_num      = ifelse(!is.na(p_num), pmin(pmax(p_num, .Machine$double.xmin), 1), NA_real_),
     
+    # Assume unknown truncation is "="
     trunc      = ifelse(is.na(trunc), "=", trunc),
     
     estimand_raw  = estimand,
@@ -104,7 +110,7 @@ d_clean <- d_raw %>%
       estimate > 0 & lower > 0 & upper > 0
   ) %>%
   
-  # IMPORTANT: do log() only on the valid subset, outside mutate()
+  # do log() only on the valid subset, outside mutate()
   { df <- .
   df$est_x <- ifelse(df$scale == "raw", df$estimate,
                      ifelse(df$already_log, df$estimate, NA_real_))
@@ -169,13 +175,7 @@ d_clean <- d_raw %>%
     completion_date = as.Date(completion_date),
     year = year(as.Date(coalesce(completion_date, date)))
   ) %>%
-  mutate(
-    key0 = str_c(id, endpoint, endpoint_title, estimand_raw, purpose, intervention, sep = "|"),
-    key_n = ave(seq_along(key0), key0, FUN = seq_along),
-    record_id = str_c(key0, key_n, sep = "|")
-  ) %>%
-  select(-key0, -key_n) %>%
-  filter(is.finite(z)) %>% 
+  dplyr::filter(is.finite(z)) %>% 
   # Make phase vector conform to the same naming convention as clinicaltrials.gov dataset
   mutate(
     phase = as.character(phase),
@@ -186,8 +186,6 @@ d_clean <- d_raw %>%
       phase == "phase 2+3"     ~ "phase2/phase3",
       phase == "phase 3"       ~ "phase3",
       phase == "phase 4"       ~ "phase4",
-      
-      # these are rare/zero in your table; map to the closest available labels
       phase == "phase 1+2+3"   ~ "phase2/phase3",
       phase == "phase 3+4"     ~ "phase4",
       phase == "phase 2+4"     ~ "phase4",
@@ -199,5 +197,5 @@ d_clean <- d_raw %>%
 
 # For now I only use EUCTR, so clinicaltrials.gov is not even saved with clean data
 d_clean  %>%
-  filter(collection == "EUCTR") %>%
+  # filter(collection == "EUCTR") %>%
   saveRDS(out_path)

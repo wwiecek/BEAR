@@ -16,24 +16,33 @@ powsignrep <- function(fit, ss_multiplier = 1, N = 1e05) {
 gap_vec <- function(z, p, m, s_snr) {
   z <- abs(as.numeric(z)); k <- length(p); p <- p / sum(p)
   s2 <- if (length(s_snr) == 1) rep(s_snr^2, k) else s_snr^2
-  sp <- sqrt(s2 + 1)                      # SD(Z | comp)
-  a  <- s2 / (s2 + 1); b <- m / (s2 + 1)  # mu_i(z) = a_i z + b_i
+  sp <- sqrt(s2 + 1)
+  a  <- s2 / (s2 + 1); b <- m / (s2 + 1)
   tau2 <- s2 / (s2 + 1); tau <- sqrt(tau2)
-  sd_rep <- sqrt(tau2 + 1)                # SD(Z_rep | z, comp)
+  sd_rep <- sqrt(tau2 + 1)
   
   N <- length(z)
-  loglike <- vapply(seq_len(k), function(j) dnorm(z, m[j], sp[j], log=TRUE), numeric(N))
+  
+  loglike <- vapply(seq_len(k), function(j) dnorm(z, m[j], sp[j], log = TRUE), numeric(N))
+  # to work with scalar z
+  if (is.null(dim(loglike))) loglike <- matrix(loglike, nrow = N, ncol = k)  
+  
   logw <- sweep(loglike, 2, log(p), `+`)
-  w <- exp(logw - matrixStats::rowLogSumExps(logw))       # N×k
+  w <- exp(logw - matrixStats::rowLogSumExps(logw))
   
-  mu <- outer(z, a) + matrix(b, N, k, byrow=TRUE)
-  SD <- matrix(sd_rep, N, k, byrow=TRUE)
+  mu <- outer(z, a) + matrix(b, N, k, byrow = TRUE)
+  SD_rep <- matrix(sd_rep, N, k, byrow = TRUE)
+  SD_sgn <- matrix(tau, N, k, byrow = TRUE)
   
-  # one-sided replication prob to match gap(): P(Z_rep > 1.96)
-  comp_rep <- pnorm(1.96, mean=mu, sd=SD, lower.tail=FALSE)
+  comp_rep <- pnorm(1.96, mean = mu, sd = SD_rep, lower.tail = FALSE)
   
   list(
-    sgn = rowSums(w * pnorm(0, mean=mu, sd=matrix(tau, N, k, byrow=TRUE), lower.tail=FALSE)),
+    sgn = rowSums(w * pnorm(0, mean = mu, sd = SD_sgn, lower.tail = FALSE)),
     rep = rowSums(w * comp_rep)
   )
+}
+
+gap_vec_fit <- function(z, fit) {
+  out <- gap_vec(z, p = fit$p, m = fit$m, s_snr = fit$sigma_SNR)
+  data.frame(sgn = out$sgn, rep = out$rep)
 }

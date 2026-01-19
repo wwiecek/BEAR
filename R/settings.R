@@ -1,7 +1,7 @@
 bear_names <- c(
    "ArelBundock" = "Arel-Bundock et al",
    "Askarov" = "Askarov et al",
-   "Bartos" = "Bartoš et al",
+   "Bartos" = "Bartos et al",
    "BarnettWren" = "Barnett and Wren",
    "Brodeur" = "Brodeur et al",
    "ctgov_euctr" = "ctgov / EU CTR",

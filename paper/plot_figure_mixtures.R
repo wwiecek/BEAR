@@ -4,6 +4,7 @@ source("R/settings.R")
 source("R/helpers.R")
 source("R/mix.R")
 source("R/plot_mixture.R")
+source("R/psr.R") # for powsignrep()
 source("R/fit_density_calc.R")
 
 mfl <- load_all_mixtures()

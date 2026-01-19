@@ -312,25 +312,22 @@ we derived z values from the replication p-values assuming two-sided p-values (w
 ## psymetadata, Many Labs 2018 and Nuijten et al (psychology datasets)
 
 **Reference:**
-@rodriguez2022psymetadata
+Set of psychology datasets compiled by @rodriguez2022psymetadata. We also disaggregate two datasets: Many Labs 2 project [@klein2018manylabs] a large meta-meta-analysis of intelligence research [@nuijten2020intelligence]. 
 
 **Snapshot date:**
 Jan 2026
 
 **Research question:**
-psymetadata is an R package that curates multiple open datasets from published meta-analyses in psychology for teaching and demonstrations. In BEAR we use it as a convenient source of many small-to-medium meta-analytic datasets, standardised into a single schema.
+_psymetadata_ is an R package that curates multiple open datasets from published meta-analyses in psychology for teaching and demonstrations. @klein2018manylabs study how replication results vary across labs and settings for a set of classic and contemporary effects in psychology. @nuijten2020intelligence is a large meta-meta-analysis of intelligence research, which focused on power and small study effects.
 
 **Data availability:**
-22 datasets are distributed with the `psymetadata` R package (CRAN). The package is GPL-3; individual datasets originate from the cited source papers.
-
-**Notes:**
-In the paper we disaggregate two datasets: Many Labs 2 project [@klein2018manylabs], which studied how replication results vary across labs and settings for a set of classic and contemporary effects in psychology, and a large meta-meta-analysis of intelligence research [@nuijten2020intelligence]. Remaining 20 datasets vary from 65 rows of data to over 1,000.
+22 datasets are distributed with the `psymetadata` R package (CRAN); after disaggregating Many Labs 2 and intelligence meta-meta-analysis, remaining 20 datasets vary from 65 rows of data to over 1,000. The package is GPL-3; individual datasets originate from the cited source papers.
 
 **Data processing:**
 minimal. We used regular expressions to extract year labels from titles. We dropped some invalid rows (missing, non-finite, or non-positive standard errors). For Many Labs we can group by experiment---we use these as `metaid` column.
 
 **Additional grouping variable:**
-original psymetadata dataset.
+name of the original psymetadata dataset.
 
 
 

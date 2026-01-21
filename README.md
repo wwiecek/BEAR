@@ -14,34 +14,33 @@ replication, exchangeability, meta-analysis etc. etc.
 
 References, details of data availability and processing, links to raw
 data, and short descriptions of each dataset are in [a separate PDF in
-the main folder](datasets.pdf). Main data processing script is
-[process_data.md](process_data.md) and
+the doc folder](doc/datasets.pdf).
 
 Here is a short summary of what’s included in BEAR:
 
     ## # A tibble: 20 × 7
-    ##    dataset                domain              n_values n_meta n_study mean_k pct_signif
-    ##    <chr>                  <chr>                  <int>  <int>   <int>  <dbl>      <dbl>
-    ##  1 "Arel-Bundock et al"   political science      16649     46    2252   7.39      0.467
-    ##  2 "Askarov et al"        economics              21408    352    1913  11.2       0.520
-    ##  3 "Barnett and Wren"     biomedicine          1306551      1  416027   3.14      0.808
-    ##  4 "Barto\u0161 et al"    exercise                2239    215    2239   1         0.263
-    ##  5 "Brodeur et al"        economics               8424      1     176  47.9       0.374
-    ##  6 "Chavalarias et al"    biomedicine          7935864      1 1887178   4.21      0.627
-    ##  7 "Cochrane"             medicine & health      39768   6050   30306   1.31      0.306
-    ##  8 "Costello and Fox"     ecology & evolution    88218    466   12927   6.82      0.419
-    ##  9 "Head et al"           biomedicine          2010875      1  219220   9.17      0.622
-    ## 10 "Jager and Leek"       biomedicine            15653      1    5322   2.94      0.777
-    ## 11 "Many Labs 2"          psychology              1414     25    1414   1         0.443
-    ## 12 "Metapsy"              psychotherapy           4395     20    1494   2.94      0.484
-    ## 13 "Nuijten et al"        intelligence            2439      1    1913   1.27      0.529
-    ## 14 "OpenSciCollab"        psychology                99      1      99   1         0.354
-    ## 15 "Sladekova et al"      psychology             11540    406   11540   1         0.590
-    ## 16 "What Works Clearing." education              12045      1    1408   8.55      0.334
-    ## 17 "Yang et al"           ecology & evolution    17638     87    3796   4.65      0.417
-    ## 18 "clinicaltrials.gov"   clinical trials        41338      1   16636   2.48      0.488
-    ## 19 "EUDRA"                clinical trials         8651      1    8651   1         0.408
-    ## 20 "psymetadata"          psychology              8514      1     721  11.8       0.358
+    ##    dataset              domain              n_values n_meta n_study mean_k pct_signif
+    ##    <chr>                <chr>                  <int>  <int>   <int>  <dbl>      <dbl>
+    ##  1 Arel-Bundock et al   political science      16649     46    2252   7.39      0.467
+    ##  2 Askarov et al        economics              21408    352    1913  11.2       0.520
+    ##  3 Barnett and Wren     biomedicine          1306551      1  416027   3.14      0.808
+    ##  4 Bartos et al         exercise                2239    215    2239   1         0.263
+    ##  5 Brodeur et al        economics               8424      1     176  47.9       0.374
+    ##  6 Chavalarias et al    biomedicine          7935864      1 1887178   4.21      0.627
+    ##  7 Cochrane             medicine & health      39768   6050   30306   1.31      0.306
+    ##  8 Costello and Fox     ecology & evolution    88218    466   12927   6.82      0.419
+    ##  9 Head et al           biomedicine          2010875      1  219220   9.17      0.622
+    ## 10 Jager and Leek       biomedicine            15653      1    5322   2.94      0.777
+    ## 11 Many Labs 2          psychology              1414     25    1414   1         0.443
+    ## 12 Metapsy              psychotherapy           4395     20    1494   2.94      0.484
+    ## 13 Nuijten et al        intelligence            2439      1    1913   1.27      0.529
+    ## 14 OpenSciCollab        psychology                99      1      99   1         0.354
+    ## 15 Sladekova et al      psychology             11540    406   11540   1         0.590
+    ## 16 What Works Clearing. education              12045      1    1408   8.55      0.334
+    ## 17 Yang et al           ecology & evolution    17638     87    3796   4.65      0.417
+    ## 18 clinicaltrials.gov   clinical trials        41338      1   16636   2.48      0.488
+    ## 19 EUDRA                clinical trials         8651      1    8651   1         0.408
+    ## 20 psymetadata          psychology              8514      1     721  11.8       0.358
 
 Datasets fall into four main categories that will be useful for
 different types of metascientific investigations: curated datasets of
@@ -77,3 +76,20 @@ In `fit_mixtures.R` we create a fit for each of the datasets, saved in
 
 We calculate summaries for each dataset (e.g. probablity of
 significance, replication, correct sign) in `calculate_psr.R`
+
+# Results of mixture modelling
+
+    ## Rows: 15 Columns: 9
+    ## ── Column specification ─────────────────────────────────────────────────────────────────────────────
+    ## Delimiter: ","
+    ## chr (1): dataset
+    ## dbl (8): prop_signif, omega, assurance, pos_80pct, replication, repl_196, sign, sign_196
+    ## 
+    ## ℹ Use `spec()` to retrieve the full column specification for this data.
+    ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+
+`omega` is relative publication probability based on crossing of the
+\|z\|=1.96 threshold; `PoS` is probability of significance (assurance)
+and `PoS_80` is proportion of studies that reach 80% power;
+`replication` and `sign` probabilities are described in accompanying
+paper.

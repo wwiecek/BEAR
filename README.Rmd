@@ -8,18 +8,23 @@ repackages and merges what's publicly available in a manner which we hope
 is maximally user-friendly. Our intention is to help researchers interested in 
 issues of replication, exchangeability, meta-analysis etc. etc.
 
+**If you only want to grab data, head to the GitHub Releases page and grab `BEAR.rds` [at this link](https://github.com/wwiecek/BEAR/releases).**
+
+To work with individual datasets or to do more manipulation of inputs, we include a "submodule" repo in `data/`. See below for instructions on how to download them. Our entire workflow is in `main.R`.
+
 ![](doc/bear_banner.png)
 
 # Datasets included in BEAR
 
-References, details of data availability and processing, links to raw data, and short descriptions of each dataset are in [a separate PDF in the main folder](datasets.pdf). Main data processing script is [process_data.md](process_data.md) and 
+References, details of data availability and processing, links to raw data, and short descriptions of each dataset are in [a separate PDF in the doc folder](doc/datasets.pdf).
 
 Here is a short summary of what's included in BEAR:
 
 ```{r echo=FALSE, messages=FALSE}
 library(dplyr)
+library(readr)
 source("R/settings.R")
-bear <- readRDS("data/BEAR.rds")
+bear <- readRDS("BEAR.rds")
 bear_summary <- bear %>% 
   group_by(dataset) %>% 
   summarise(n_z = n(), 
@@ -27,13 +32,6 @@ bear_summary <- bear %>%
             n_study = n_distinct(studyid), 
             mean_k  = n()/n_distinct(studyid), 
             pct_signif = sum(abs(z)>1.96)/n()
-            # type = {
-            #   tab <- table(method)
-            #   counts <- c(tab)
-            #   na_count <- sum(is.na(method))
-            #   if (na_count > 0) counts <- c(counts, `NA` = na_count)
-            #   paste(paste0(names(counts), ": ", counts), collapse = ", ")
-            # }
   ) %>% 
   mutate(domain = bear_domain[dataset])
 
@@ -59,6 +57,21 @@ bear_summary %>%
 ```
 
 
+
+# Downloading BEAR data
+
+If you only want to grab data, head to the GitHub Releases page and grab `BEAR.rds` [at this link](https://github.com/wwiecek/BEAR/releases).
+
+To work with individual datasets or to do more manipulation of inputs, they are included as a "submodule" repo in `data/`. After cloning this repository, you need the following command
+
+```
+git submodule update --init --recursive
+```
+
+In other words, downloading all of the input data is opt-in rather than part of this repo, to keep the repo size minimal.
+
+
+
 # Modelling datasets using mixture models
 
 ## Optional post-processing 
@@ -74,5 +87,19 @@ In `fit_mixtures.R` we create a fit for each of the datasets, saved in `mixtures
 
 We calculate summaries for each dataset (e.g. probablity of significance, replication, correct sign) in `calculate_psr.R`
 
+
+# Results of mixture modelling
+
+```{r echo=FALSE, messages=FALSE}
+tab_psr <- read_csv("paper/power_sign_rep.csv") %>% 
+  mutate(gr = bear_classification[dataset]) %>% 
+  mutate(gr = ifelse(gr %in% c("curated", "meta"), "curated+meta", gr)) %>% 
+  arrange(gr, desc(assurance)) %>% 
+  mutate(dataset = bear_names[dataset]) %>% 
+  transmute(dataset, omega, PoS=assurance, PoS_80=pos_80pct, replication, sign)
+
+```
+
+`omega` is relative publication probability based on crossing of the |z|=1.96 threshold; `PoS` is probability of significance (assurance) and `PoS_80` is proportion of studies that reach 80% power; `replication` and `sign` probabilities are described in accompanying paper.
 
 

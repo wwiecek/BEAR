@@ -7,7 +7,7 @@ source("R/helpers.R")
 source("R/mix.R")
 source("R/psr.R")
 
-tab_psr <- read_csv("power_sign_rep.csv") %>% 
+tab_psr <- read_csv("paper/power_sign_rep.csv") %>% 
   mutate(gr = bear_classification[dataset]) %>% 
   mutate(gr = ifelse(gr %in% c("curated", "meta"), "curated+meta", gr)) %>% 
   arrange(gr, desc(assurance)) %>% 

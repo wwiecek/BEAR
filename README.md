@@ -83,6 +83,9 @@ following command
 In other words, downloading all of the input data is opt-in rather than
 part of this repo, to keep the repo size minimal.
 
+You can see all of data processing done for individual datasets in
+`process/`.
+
 # Modelling datasets using mixture models
 
 Once `BEAR.rds` exists, you may choose to fit our preferred mixture

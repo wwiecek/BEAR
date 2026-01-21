@@ -54,8 +54,8 @@ Datasets fall into four main categories that will be useful for
 different types of metascientific investigations: curated datasets of
 single studies, curated sets of meta-analyses (i.e. with additional
 `metaid` grouping column), large-scale scraped datasets from
-PubMed/Medline, and replication datasets. Additional groupings are
-available in some datasets.
+PubMed/Medline, and replication datasets. Additional groupings
+(e.g. clinical trial phases) are available within some datasets.
 
     ## # A tibble: 4 × 6
     ##   gr           n_datasets n_study n_meta n_values pct_signif

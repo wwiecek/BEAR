@@ -13,11 +13,14 @@ load("paper/bear_lists.Rdata")
 set.seed(42)
 
 c_star <- 1.96
-ds_tbl <- tibble(dataset = names(mfl),
-                 group = bear_classification[dataset]) %>% 
-  filter(!(dataset %in% paper_do_not_include)) %>%
-  mutate(PoS = map_dbl(dataset, ~ mean(powsignrep(mfl[[.x]])$power))) 
-  # mutate(annotate_text = paste0("bar(PoS) ==", round(PoS,2)))
+
+ds_tbl <- read_csv("power_sign_rep.csv") %>% 
+  mutate(group = bear_classification[dataset]) %>%
+  transmute(dataset, group, PoS = assurance) 
+
+read_csv("power_sign_rep.csv") %>% 
+  mutate(group = bear_classification[dataset]) %>%
+  transmute(dataset, group, PoS = assurance) 
 
 mk_small <- function(ds) {
   # print(ds)

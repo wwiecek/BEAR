@@ -84,7 +84,9 @@ In other words, downloading all of the input data is opt-in rather than
 part of this repo, to keep the repo size minimal.
 
 You can see all of data processing done for individual datasets in
-`process/`.
+`process/`. `BEAR.rds` is stiched together in `workflow/build_bear.R`
+which does some of the processing described in [datasets
+documentation](doc/datasets.pdf).
 
 # Modelling datasets using mixture models
 
@@ -112,21 +114,21 @@ significance, replication, correct sign) in `workflow/calculate_psr.R`
     ## # A tibble: 15 × 6
     ##    dataset              omega   PoS PoS_80 replication  sign
     ##    <chr>                <dbl> <dbl>  <dbl>       <dbl> <dbl>
-    ##  1 Askarov et al        0.714 0.482  0.293       0.467 0.879
-    ##  2 Nuijten et al        0.848 0.481  0.289       0.467 0.88 
-    ##  3 ctgov / EU CTR       0.946 0.468  0.282       0.453 0.873
-    ##  4 Metapsy              0.831 0.463  0.264       0.447 0.875
-    ##  5 Arel-Bundock et al   0.652 0.401  0.202       0.384 0.853
-    ##  6 Costello and Fox     0.794 0.387  0.235       0.37  0.791
-    ##  7 Brodeur et al        0.786 0.358  0.17        0.339 0.833
-    ##  8 psymetadata          0.666 0.329  0.211       0.31  0.722
-    ##  9 What Works Clearing. 0.879 0.319  0.17        0.301 0.756
-    ## 10 Cochrane             0.705 0.231  0.096       0.21  0.689
-    ## 11 Bartos et al         0.822 0.226  0.083       0.204 0.756
-    ## 12 Many Labs 2          0.992 0.435  0.346       0.421 0.755
-    ## 13 OpenSciCollab        1     0.355  0.222       0.337 0.784
-    ## 14 Chavalarias et al    0.197 0.512  0.32        0.499 0.891
-    ## 15 Barnett and Wren     0.083 0.319  0.127       0.299 0.821
+    ##  1 Askarov et al         0.71  0.48   0.29        0.47  0.88
+    ##  2 Nuijten et al         0.85  0.48   0.29        0.47  0.88
+    ##  3 ctgov / EU CTR        0.95  0.47   0.28        0.45  0.87
+    ##  4 Metapsy               0.83  0.46   0.26        0.45  0.88
+    ##  5 Arel-Bundock et al    0.65  0.4    0.2         0.38  0.85
+    ##  6 Costello and Fox      0.79  0.39   0.23        0.37  0.79
+    ##  7 Brodeur et al         0.79  0.36   0.17        0.34  0.83
+    ##  8 psymetadata           0.67  0.33   0.21        0.31  0.72
+    ##  9 What Works Clearing.  0.88  0.32   0.17        0.3   0.76
+    ## 10 Cochrane              0.7   0.23   0.1         0.21  0.69
+    ## 11 Bartos et al          0.82  0.23   0.08        0.2   0.76
+    ## 12 Many Labs 2           0.99  0.44   0.35        0.42  0.76
+    ## 13 OpenSciCollab         1     0.36   0.22        0.34  0.78
+    ## 14 Chavalarias et al     0.2   0.51   0.32        0.5   0.89
+    ## 15 Barnett and Wren      0.08  0.32   0.13        0.3   0.82
 
 `omega` is relative publication probability based on crossing of the
 \|z\|=1.96 threshold; `PoS` is probability of significance (assurance)

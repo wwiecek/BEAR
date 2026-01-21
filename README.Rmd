@@ -76,7 +76,7 @@ git submodule update --init --recursive
 
 In other words, downloading all of the input data is opt-in rather than part of this repo, to keep the repo size minimal.
 
-You can see all of data processing done for individual datasets in `process/`. 
+You can see all of data processing done for individual datasets in `process/`. `BEAR.rds` is stiched together in `workflow/build_bear.R` which does some of the processing described in [datasets documentation](doc/datasets.pdf).
 
 
 
@@ -102,7 +102,8 @@ tab_psr %>%
   mutate(gr = ifelse(gr %in% c("curated", "meta"), "curated+meta", gr)) %>% 
   arrange(gr, desc(assurance)) %>% 
   mutate(dataset = bear_names[dataset]) %>% 
-  transmute(dataset, omega, PoS=assurance, PoS_80=pos_80pct, replication, sign)
+  transmute(dataset, omega, PoS=assurance, PoS_80=pos_80pct, replication, sign) %>% 
+  mutate_if(is.numeric, function(x) round(x, 2))
 
 ```
 

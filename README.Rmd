@@ -8,7 +8,7 @@ repackages and merges what's publicly available in a manner which we hope
 is maximally user-friendly. Our intention is to help researchers interested in 
 issues of replication, exchangeability, meta-analysis etc. etc. The current release includes millions of z-values, including about 100,000 studies from curated datasets across a diverse range of fields.
 
-**If you only want to grab data, head to the GitHub Releases page and grab `BEAR.rds` [at this link](https://github.com/wwiecek/BEAR/releases).** If you want to do more data work yourself, see _Downloading BEAR data_ below. To re-run everyting, see `main.R`.
+This package includes our entire workflow (in R), documentation, and results. **If you only want to grab data, head to the GitHub Releases page and grab `BEAR.rds` [at this link](https://github.com/wwiecek/BEAR/releases).** If you want to do more data work yourself, see _Downloading BEAR data_ below. To re-run everyting, see `main.R`.
 
 
 ![](doc/bear_banner.png)
@@ -68,15 +68,17 @@ If you only want to grab data, head to the GitHub Releases page and grab `BEAR.r
 curl -L -o BEAR.rds https://github.com/wwiecek/BEAR/releases/download/v1/BEAR.rds
 ```
 
-You can also re-generate that file yourself. To work with individual datasets or to do more manipulation of inputs, they are included as a "submodule" repo in `data/`. After cloning this repository, you need the following command
+You can also re-generate that file yourself. To work with individual datasets or to do more manipulation of inputs, you need to take an additional step. After cloning this repo (which only includes code and outputs), you need to grab a "submodule" repo that has contents of `data/` folder. In command line of this repository, do
 
 ```
 git submodule update --init --recursive
 ```
 
-In other words, downloading all of the input data is opt-in rather than part of this repo, to keep the repo size minimal.
+That will download about 100 MB of individual datasets. In other words, downloading all of the input data files is opt-in rather than part of this repo, to keep the repo size minimal.
 
-You can see all of data processing done for individual datasets in `process/`. `BEAR.rds` is stiched together in `workflow/build_bear.R` which does some of the processing described in [datasets documentation](doc/datasets.pdf).
+If you want to re-derive each of the datasets yourself, you can see all of data processing done for individual datasets in `process/`. For many datasets there is nil processing done by us, but for some there are extensive scripts to download and clean up data. 
+
+Once datasets are present in `data/`, `BEAR.rds` is stiched together in script `workflow/build_bear.R` which does some of the processing described in [datasets documentation](doc/datasets.pdf).
 
 
 

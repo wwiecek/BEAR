@@ -8,6 +8,14 @@ publicly available in a manner which we hope is maximally user-friendly.
 Our intention is to help researchers interested in issues of
 replication, exchangeability, meta-analysis etc. etc.
 
+**If you only want to grab data, head to the GitHub Releases page and
+grab `BEAR.rds` [at this
+link](https://github.com/wwiecek/BEAR/releases).**
+
+To work with individual datasets or to do more manipulation of inputs,
+we include a “submodule” repo in `data/`. See below for instructions on
+how to download them. Our entire workflow is in `main.R`.
+
 ![](doc/bear_banner.png)
 
 # Datasets included in BEAR
@@ -57,6 +65,20 @@ available in some datasets.
     ## 3 replications          2    1513     26     1513      0.437
     ## 4 scrape                4 2527747     NA 11268943      0.648
 
+# Downloading BEAR data
+
+If you only want to grab data, head to the GitHub Releases page and grab
+`BEAR.rds` [at this link](https://github.com/wwiecek/BEAR/releases).
+
+To work with individual datasets or to do more manipulation of inputs,
+they are included as a “submodule” repo in `data/`. After cloning this
+repository, you need the following command
+
+    git submodule update --init --recursive
+
+In other words, downloading all of the input data is opt-in rather than
+part of this repo, to keep the repo size minimal.
+
 # Modelling datasets using mixture models
 
 ## Optional post-processing
@@ -79,14 +101,24 @@ significance, replication, correct sign) in `calculate_psr.R`
 
 # Results of mixture modelling
 
-    ## Rows: 15 Columns: 9
-    ## ── Column specification ─────────────────────────────────────────────────────────────────────────────
-    ## Delimiter: ","
-    ## chr (1): dataset
-    ## dbl (8): prop_signif, omega, assurance, pos_80pct, replication, repl_196, sign, sign_196
-    ## 
-    ## ℹ Use `spec()` to retrieve the full column specification for this data.
-    ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+    ## # A tibble: 15 × 6
+    ##    dataset              omega   PoS PoS_80 replication  sign
+    ##    <chr>                <dbl> <dbl>  <dbl>       <dbl> <dbl>
+    ##  1 Askarov et al        0.714 0.482  0.293       0.467 0.879
+    ##  2 Nuijten et al        0.848 0.481  0.289       0.467 0.88 
+    ##  3 ctgov / EU CTR       0.946 0.468  0.282       0.453 0.873
+    ##  4 Metapsy              0.831 0.463  0.264       0.447 0.875
+    ##  5 Arel-Bundock et al   0.652 0.401  0.202       0.384 0.853
+    ##  6 Costello and Fox     0.794 0.387  0.235       0.37  0.791
+    ##  7 Brodeur et al        0.786 0.358  0.17        0.339 0.833
+    ##  8 psymetadata          0.666 0.329  0.211       0.31  0.722
+    ##  9 What Works Clearing. 0.879 0.319  0.17        0.301 0.756
+    ## 10 Cochrane             0.705 0.231  0.096       0.21  0.689
+    ## 11 Bartos et al         0.822 0.226  0.083       0.204 0.756
+    ## 12 Many Labs 2          0.992 0.435  0.346       0.421 0.755
+    ## 13 OpenSciCollab        1     0.355  0.222       0.337 0.784
+    ## 14 Chavalarias et al    0.197 0.512  0.32        0.499 0.891
+    ## 15 Barnett and Wren     0.083 0.319  0.127       0.299 0.821
 
 `omega` is relative publication probability based on crossing of the
 \|z\|=1.96 threshold; `PoS` is probability of significance (assurance)

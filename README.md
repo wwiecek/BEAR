@@ -6,15 +6,15 @@ errors from existing databases in various scientific disciplines. It
 doesn’t contribute any new data, but repackages and merges what’s
 publicly available in a manner which we hope is maximally user-friendly.
 Our intention is to help researchers interested in issues of
-replication, exchangeability, meta-analysis etc. etc.
+replication, exchangeability, meta-analysis etc. etc. The current
+release includes millions of z-values, including about 100,000 studies
+from curated datasets across a diverse range of fields.
 
 **If you only want to grab data, head to the GitHub Releases page and
 grab `BEAR.rds` [at this
-link](https://github.com/wwiecek/BEAR/releases).**
-
-To work with individual datasets or to do more manipulation of inputs,
-we include a “submodule” repo in `data/`. See below for instructions on
-how to download them. Our entire workflow is in `main.R`.
+link](https://github.com/wwiecek/BEAR/releases).** If you want to do
+more data work yourself, see *Downloading BEAR data* below. To re-run
+everyting, see `main.R`.
 
 ![](doc/bear_banner.png)
 
@@ -69,10 +69,14 @@ available in some datasets.
 
 If you only want to grab data, head to the GitHub Releases page and grab
 `BEAR.rds` [at this link](https://github.com/wwiecek/BEAR/releases).
+Alternatively, in command line do
 
-To work with individual datasets or to do more manipulation of inputs,
-they are included as a “submodule” repo in `data/`. After cloning this
-repository, you need the following command
+    curl -L -o BEAR.rds https://github.com/wwiecek/BEAR/releases/download/v1/BEAR.rds
+
+You can also re-generate that file yourself. To work with individual
+datasets or to do more manipulation of inputs, they are included as a
+“submodule” repo in `data/`. After cloning this repository, you need the
+following command
 
     git submodule update --init --recursive
 
@@ -81,10 +85,10 @@ part of this repo, to keep the repo size minimal.
 
 # Modelling datasets using mixture models
 
-## Optional post-processing
-
-To fit mixture models described in the accompanying paper, we do minimal
-postprocess (`postprocess.R`):
+Once `BEAR.rds` exists, you may choose to fit our preferred mixture
+models to the sets of z-values. To fit models described in the
+accompanying paper, we first do minimal postprocess
+(`workflow/postprocess.R`):
 
 - Add number of observations in each study and number of studies in each
   meta-analysis
@@ -93,11 +97,12 @@ postprocess (`postprocess.R`):
 - Truncate very large z values (z \> 20) and replace “z = 0” statements
   with “z \< 0.5” (z=0 would not work when fitting mixtures)
 
-In `fit_mixtures.R` we create a fit for each of the datasets, saved in
-`mixtures/`. This can take a few minutes per dataset.
+In `workflow/fit_mixtures.R` we create a fit for each of the datasets,
+saved in `mixtures/`. This can take a few minutes per dataset. We
+include the up-to-date results in the repo.
 
 We calculate summaries for each dataset (e.g. probablity of
-significance, replication, correct sign) in `calculate_psr.R`
+significance, replication, correct sign) in `workflow/calculate_psr.R`
 
 # Results of mixture modelling
 

@@ -21,13 +21,27 @@ small_gap_plot <- function(fit, single = FALSE){
                                "rep" = "successful replication",
                                "sgn" = "correct sign"))
 
-
+  z_hit <- 1.96
+  pr_hit <- gap_vec(z_hit, p = fit$p, m = fit$m, s_snr = fit$sigma_SNR)
+  hit_df <- tibble(
+    z = z_hit,
+    sgn = pr_hit$sgn,
+    rep = pr_hit$rep
+  ) %>%
+    pivot_longer(cols=c('sgn', 'rep'),
+                 names_to='label',
+                 values_to='prob') %>%
+    mutate(label=recode_factor(label,
+                               "rep" = "successful replication",
+                               "sgn" = "correct sign"))
+  
   snr <- rmix(1e05, p = fit$p, m = fit$m, s = fit$sigma_SNR)
   pow <- mean((1 - pnorm(1.96, snr, 1)) + pnorm(-1.96, snr, 1))
 
   ggplot(df,aes(x=z,y=prob,group=label, color = label)) +
     geom_abline(intercept=pow,slope=0,linetype="dashed",alpha=0.5) +
     geom_line() +
+    geom_point(data = hit_df, size = 1) +
     {if(single) geom_textline(aes(label = label),vjust=1.5,size=3.5)} +
     # scale_y_continuous(minor_breaks = seq(0,1,0.05), breaks = seq(0,1,0.1),lim=c(0,1)) +
     scale_y_continuous(breaks = seq(0,1,0.25),lim=c(0,1)) +

@@ -10,6 +10,9 @@ source("R/psr.R")
 # Calcualte performance of datasets 
 mfl <- load_all_mixtures(exclude = paper_do_not_include)
 df_psr <- lapply(mfl, powsignrep) %>% bind_rows(.id = "dataset")
+# now only keeping significant results 
+# (power columns won't make sense/won't change!----but I do not use them)
+df_psr196 <- lapply(mfl, powsignrep, z_star = 1.959) %>% bind_rows(.id = "dataset")
 
 # Erik: I’d like to put the following in Table 2
 # 
@@ -22,7 +25,7 @@ df_psr <- lapply(mfl, powsignrep) %>% bind_rows(.id = "dataset")
 # - probability of the correct sign
 # - probability of the correct sign when |z|=1.96
 
-bear <- readRDS("data/BEAR.rds")
+bear <- readRDS("BEAR.rds")
 bear_summary_psr <- bear %>% 
   mutate(dataset = ifelse(dataset == "clinicaltrials" | dataset == "euctr", "ctgov_euctr", dataset)) %>% 
   group_by(dataset) %>% 
@@ -41,13 +44,20 @@ summarise_psr <- function(df)
     replication = mean(rep)) 
 
 tab2 <- summarise_psr(df_psr) %>% 
+  left_join(summarise_psr(df_psr196) %>% 
+              transmute(dataset, 
+                        sign_signif = sign, 
+                        repl_signif = replication), 
+            by = "dataset") %>% 
   left_join(bear_summary_psr, by = "dataset") %>% 
   rowwise() %>%
   mutate(omega = mfl[[dataset]]$omega[1],
          sign_196 = gap_vec_fit(1.96, mfl[[dataset]])$sgn,
          repl_196 = gap_vec_fit(1.96, mfl[[dataset]])$rep) %>%
   ungroup() %>% 
-  select(dataset, prop_signif, omega, assurance, pos_80pct, replication, repl_196, sign, sign_196) %>% 
+  select(dataset, prop_signif, omega, assurance, pos_80pct, 
+         replication, repl_196, repl_signif,
+         sign, sign_196, sign_signif) %>% 
   mutate_if(is.numeric, function(x) round(x, 3)) #to make csv readable
 
 rm(bear)

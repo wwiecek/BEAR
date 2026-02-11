@@ -1,8 +1,24 @@
 # Given a fitted mixture, calculate things such as power, significance, replication
 
-powsignrep <- function(fit, ss_multiplier = 1, N = 1e05) {
+powsignrep <- function(fit, 
+                       ss_multiplier = 1, #for checking scaled 
+                       z_star = 0, #only keep z values greater than ...
+                       N = 1e05) {
+  
   snr <- sqrt(ss_multiplier)*rmix(N, p = fit$p, m = fit$m, s = fit$sigma_SNR)
   z   <- snr + rnorm(N)
+  
+  # I can use this to create a subset of z-values > 1,96 etc
+  if(z_star > 0) {
+    z <- z[abs(z) > z_star]
+    while(length(z) < N) {
+      snr <- sqrt(ss_multiplier)*rmix(N, p = fit$p, m = fit$m, s = fit$sigma_SNR)
+      z_new   <- snr + rnorm(N)
+      z <- c(z, z_new[abs(z_new) > z_star])
+    }
+    z <- z[1:N]
+  }
+    
   power    <- (1 - pnorm(1.96, snr, 1)) + pnorm(-1.96, snr, 1)
   pr <- gap_vec(z, p = fit$p, m = fit$m, s_snr = fit$sigma_SNR)
   # Faster vectorised version

@@ -27,6 +27,21 @@ tab_psr %>%
   row_spec(13, hline_after = TRUE) %>%
   writeLines("paper/tables/table2.tex")
 
+# results with |z| = 1.96
+read_csv("paper/power_sign_rep.csv") %>% 
+  mutate(gr = bear_classification[dataset]) %>% 
+  mutate(gr = ifelse(gr %in% c("curated", "meta"), "curated+meta", gr)) %>% 
+  arrange(gr, desc(assurance)) %>% 
+  mutate(dataset = bear_names[dataset]) %>%
+  select(dataset, prop_signif, omega, replication, repl_196, sign, sign_196) %>% 
+  mutate_if(is.numeric, function(x) format(round(x, 2), nsmall = 2)) %>% 
+  kable(format = "latex", booktabs = TRUE, escape = FALSE) %>% 
+  kable_styling(latex_options = c("hold_position")) %>%
+  row_spec(11, hline_after = TRUE) %>%
+  row_spec(13, hline_after = TRUE) %>%
+  writeLines("paper/tables/table3.tex")
+
+
 # What if studies were larger?
 
 # left_join(summarise_psr(df_psr),

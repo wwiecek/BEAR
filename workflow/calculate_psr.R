@@ -61,4 +61,4 @@ tab2 <- summarise_psr(df_psr) %>%
   mutate_if(is.numeric, function(x) round(x, 3)) #to make csv readable
 
 rm(bear)
-write_csv(tab2, file = "power_sign_rep.csv")
+write_csv(tab2, file = "paper/power_sign_rep.csv")

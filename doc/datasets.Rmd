@@ -6,6 +6,7 @@ output:
   bookdown::pdf_document2:
     toc: true
     number_sections: false
+    keep_tex: true
 geometry: margin=1in
 fontsize: 11pt
 bibliography: references.bib

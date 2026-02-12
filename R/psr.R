@@ -20,8 +20,8 @@ powsignrep <- function(fit,
   }
     
   power    <- (1 - pnorm(1.96, snr, 1)) + pnorm(-1.96, snr, 1)
+  # Faster vectorised version of gap():
   pr <- gap_vec(z, p = fit$p, m = fit$m, s_snr = fit$sigma_SNR)
-  # Faster vectorised version
   data.frame(snr, z, power, row.names = NULL) %>%
     mutate(sgn = pr$sgn, rep = pr$rep)
 }
@@ -30,7 +30,9 @@ powsignrep <- function(fit,
 # Vectorised version of gap() function written by chatGPT-5 to speed up
 # computation and verified by WW to produce the same results as old code
 gap_vec <- function(z, p, m, s_snr) {
-  z <- abs(as.numeric(z)); k <- length(p); p <- p / sum(p)
+  z <- abs(as.numeric(z))
+  k <- length(p)
+  p <- p / sum(p)
   s2 <- if (length(s_snr) == 1) rep(s_snr^2, k) else s_snr^2
   sp <- sqrt(s2 + 1)
   a  <- s2 / (s2 + 1); b <- m / (s2 + 1)
@@ -39,7 +41,9 @@ gap_vec <- function(z, p, m, s_snr) {
   
   N <- length(z)
   
-  loglike <- vapply(seq_len(k), function(j) dnorm(z, m[j], sp[j], log = TRUE), numeric(N))
+  loglike <- vapply(seq_len(k), 
+                    function(j) dnorm(z, m[j], sp[j], log = TRUE), 
+                    numeric(N))
   # to work with scalar z
   if (is.null(dim(loglike))) loglike <- matrix(loglike, nrow = N, ncol = k)  
   

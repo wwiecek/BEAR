@@ -16,7 +16,8 @@ c_star <- 1.96
 
 ds_tbl <- read_csv("paper/power_sign_rep.csv") %>% 
   mutate(group = bear_classification[dataset]) %>%
-  transmute(dataset, group, PoS = assurance) 
+  transmute(dataset, group, PoS = assurance) %>% 
+  arrange(desc(PoS))
 
 mk_small <- function(ds) {
   # print(ds)
@@ -32,7 +33,7 @@ mk_small <- function(ds) {
 curmet <- ds_tbl %>% 
   filter(group %in% c("curated", "meta")) %>% 
   arrange(desc(PoS)) %>% pull(dataset)
-rep <- ds_tbl %>% filter(group == "replications")  %>% pull(dataset)
+rep <- ds_tbl %>% filter(group == "replications") %>% pull(dataset)
 scr <- ds_tbl %>% filter(group == "scrape")  %>% pull(dataset)
 
 # plotlist <- lapply(c(cur, met, rep, scr), mk_small)

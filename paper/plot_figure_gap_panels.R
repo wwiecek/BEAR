@@ -61,7 +61,8 @@ small_gap_plot <- function(fit, single = FALSE){
 # Arranging all of the plots on a single page
 ds_tbl <- read_csv("paper/power_sign_rep.csv") %>% 
   mutate(group = bear_classification[dataset]) %>%
-  transmute(dataset, group, PoS = assurance) 
+  transmute(dataset, group, PoS = assurance)  %>% 
+  arrange(desc(PoS))
 
 mk_small_gap <- function(ds)
   small_gap_plot(mfl[[ds]]) +

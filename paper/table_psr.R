@@ -7,16 +7,13 @@ source("R/helpers.R")
 source("R/mix.R")
 source("R/psr.R")
 
-tab_psr <- read_csv("paper/power_sign_rep.csv") %>% 
+read_csv("paper/power_sign_rep.csv") %>% 
   mutate(gr = bear_classification[dataset]) %>% 
   mutate(gr = ifelse(gr %in% c("curated", "meta"), "curated+meta", gr)) %>% 
   arrange(gr, desc(assurance)) %>% 
   mutate(dataset = bear_names[dataset]) %>%
   # select(dataset, prop_signif, omega, assurance, pos_80pct, replication, repl_196, sign, sign_196)
-  select(dataset, omega, assurance, pos_80pct, replication, repl_signif, sign, sign_signif)
-
-tab_psr 
-tab_psr %>%
+  select(dataset, omega, assurance, pos_80pct, replication, repl_signif, repl_196, sign, sign_signif, sign_196) %>%
   mutate_if(is.numeric, function(x) format(round(x, 2), nsmall = 2)) %>% 
   kable(format = "latex", booktabs = TRUE, escape = FALSE) %>% 
         # col.names = c("Dataset", "Assurance", "Pr(power > 0.8)", "Correct sign", 

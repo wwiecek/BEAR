@@ -111,7 +111,8 @@ paper_do_not_include <- c("ctgov", "Cochrane2019",
                           "Yang")
 
 bear_colors <- c(
-  "curated"      = "#E41A1C",
+  # "curated"      = "#E41A1C",
+  "curated"      = "#377EB8",
   "meta"         = "#377EB8",
   "scrape"       = "#4DAF4A",
   "replications" = "#B8860B"

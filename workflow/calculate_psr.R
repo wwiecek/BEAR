@@ -40,22 +40,25 @@ summarise_psr <- function(df)
   summarise(
     assurance = mean(power),
     pos_80pct = sum(power > .8)/n(),
+    pos_80pct_signif = mean(abs(snr[abs(z) > 1.96]) > 2.8),
     sign = mean(sgn),
     replication = mean(rep)) 
 
 tab2 <- summarise_psr(df_psr) %>% 
-  left_join(summarise_psr(df_psr196) %>% 
+  left_join(summarise_psr(df_psr196) %>%   
+              # There are PoS columns in there too, but they would be nonsense
               transmute(dataset, 
                         sign_signif = sign, 
-                        repl_signif = replication), 
-            by = "dataset") %>% 
+                        repl_signif = replication)
+            , by = "dataset") %>% 
   left_join(bear_summary_psr, by = "dataset") %>% 
   rowwise() %>%
   mutate(omega = mfl[[dataset]]$omega[1],
          sign_196 = gap_vec_fit(1.96, mfl[[dataset]])$sgn,
          repl_196 = gap_vec_fit(1.96, mfl[[dataset]])$rep) %>%
   ungroup() %>% 
-  select(dataset, prop_signif, omega, assurance, pos_80pct, 
+  select(dataset, prop_signif, omega, assurance, 
+         pos_80pct, pos_80pct_signif,
          replication, repl_196, repl_signif,
          sign, sign_196, sign_signif) %>% 
   mutate_if(is.numeric, function(x) round(x, 3)) #to make csv readable

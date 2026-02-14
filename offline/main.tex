@@ -124,7 +124,7 @@ Erik van Zwet\thanks{Department of Biomedical Data Sciences, Leiden University M
 
 \begin{abstract}
 
-We create an open-source database from nearly 100,000 studies, combining 11~publicly available curated collections of empirical research in medicine, economics, psychology, psychotherapy, ecology, evolution, political science, education, and more, and make it available at \url{https://github.com/wwiecek/BEAR}. Each result is represented by a $z$-value: an estimated effect divided by its standard error.
+We create an open-source database from about 80,000 studies, combining 11~publicly available curated collections of empirical research in medicine, economics, psychology, psychotherapy, ecology, evolution, political science, education, and more, and make it available at \url{https://github.com/wwiecek/BEAR}. Each result is represented by a $z$-value: an estimated effect divided by its standard error.
 
 We then provide a modeling framework that allows us to move away from the usual attempts to classify effects as exactly zero or not, and instead focus on identifying the direction of effects and their replicability. 
 
@@ -142,7 +142,7 @@ A key turning point in the replication crisis was the recognition and refutation
 
 The message of the present paper is that the difficulty of assessing the signal-to-noise ratio for any given study should not be taken as a negative verdict on statistically-based science as a whole.
 
-To study this, we have created an extensive open-source database of empirical research results, composed of 15 publicly available datasets of studies in diverse fields.  Our optimistic finding is that, in these corpora, most results seem to be correct in sign.  Our remaining pessimism is that you can't learn so much from any individual study, which points toward the need for real replication---not in the hope of confirming significance but to understand effects, and to minimize selection in all phases of the process.
+To study this, we have created an extensive open-source database of empirical research results, composed of 15 publicly available datasets of studies in diverse fields.  Our optimistic finding is that, in these corpora, most results seem to be correct in sign.  Our remaining pessimism is that any single study is limited in what it can teach us, which points toward the need for real replication---not in the hope of confirming significance but to understand effects, and to minimize selection in all phases of the process.
 
 \subsection{Going beyond the characterization of scientific claims as true or false}
 
@@ -155,7 +155,7 @@ We understand that the $2 \times 2$ model was always intended as an instructive 
 
 We have two main criticisms of the $2 \times 2$ model. First, we disagree with the notion that the primary goal of scientific study is to separate ``no relationships'' or nulls from ``true relationships.''  Effects of interest are rarely exactly zero, and even if they are, they will no longer be zero if one takes leakage, expectation effects, dropout, etc. into account. But apart from that, with finite data, it is simply not possible to distinguish effects that are zero from those that are small.
 
-Our second criticism is that the $2 \times 2$ model does not comport with data we have collected on published research. We have compiled a database of 15 corpora, each containing thousands of studies from medicine, economics, psychology, psychotherapy, ecology, evolution, political science, education, and more. We have used these data to build more realistic models of research areas.
+Our second criticism is that the $2 \times 2$ model does not comport with data we have collected on published research. We have compiled a database of 15 corpora, many containing thousands of studies from medicine, economics, psychology, psychotherapy, ecology, evolution, political science, education, and more. We have used these data to build more realistic models of research areas.
 
 % Our second criticism is that the $2 \times 2$ model is not empirical, i.e. it is not based on data---and because we cannot statistically distinguish small and zero effects, it could not be well-identified from data anyway.
 % %WW: I think currently we say what we do twice ("we have compiled" and then "contribution is two-fold"), so I tried to reorganise and add this bit of context:
@@ -185,7 +185,7 @@ The challenge is internalizing the juxtaposition of two ideas.  On one hand, the
 
 \section{Data}
 
-We have compiled a large number of empirical results from a variety of sources in a new database which we call Benchmarks of Empirical Accuracy in Research (BEAR). The online version of BEAR includes 20 datasets and 11.5 million $z$-values from empirical research, but for this paper we focus on $z$-values found in nearly 100,000 studies across 11~curated datasets. For comparison, we also show two sets of replications and two large-scale reviews which scraped $p$-values from abstracts. Characteristics of the presented datasets are given in Table~\ref{tab:dataset_summary}. We will refer to the datasets by their names from that table. 
+We have compiled a large number of empirical results from a variety of sources in a new database which we call Benchmarks of Empirical Accuracy in Research (BEAR). The online version of BEAR includes 20 datasets and 11.5 million $z$-values from empirical research, but for this paper we focus on $z$-values found in about 80,000 studies across 11~curated datasets. For comparison, we also show two sets of replications and two large-scale reviews which scraped $p$-values from abstracts. Characteristics of the presented datasets are given in Table~\ref{tab:dataset_summary}. We will refer to the datasets by their names from that table. 
 
 Among the 11~curated, domain-specific collections that are our focus here, we include: 
 a large collection of mainly clinical trials which posted results on \texttt{clinicaltrials.gov} or the EU Clinical Trials Repository \parencite{clinicaltrials2025,euctr2025}, 
@@ -206,7 +206,7 @@ For comparison, we also include two replication projects in psychology \parencit
 
 \input{table1.tex}
 
-While we do some data processing of our own, all of data collection and the vast majority of data processing was already done by the creators of the datasets we reference. Most of them already include $z$-values or effect sizes and standard errors, but in some cases we make calculations ourselves (for example, from $p$-values or counts for binary data); calculation details are in \textit{Appendix: Datasets included in BEAR}. The average number of estimates per study for each dataset is given in Table \ref{tab:dataset_summary}; it can be as high as 50 $z$-values per study in the case of \textcite{arel2022quantitative}, which aimed to collect all tests reported by economics papers, but in most cases we have either one or several estimates per study.
+While we do some data processing of our own, all of the data collection and the vast majority of data processing was already done by the creators of the datasets we reference. Most of them already include $z$-values or effect sizes and standard errors, but in some cases we make calculations ourselves (for example, from $p$-values or counts for binary data); calculation details are in \textit{Appendix: Datasets included in BEAR}. The average number of estimates per study for each dataset is given in Table \ref{tab:dataset_summary}; it can be as high as about 48 $z$-values per study in the case of \textcite{brodeur2024preregistration}, but in most cases we have either one or several estimates per study.
 
 % Our consolidated database has, for each published estimate, the data source, $z$-value, $p$-value, effect size estimate, standard error, sample sizes, year of publication, study type (e.g., randomized trial, observational study), measure type (e.g., difference of means, log risk ratio), and some categorization into fields of study and subgroups (e.g., medical field, clinical study phase). The current version of BEAR is a single table with xx rows. 
 
@@ -305,7 +305,7 @@ We can derive many important quantities from the distribution of the SNRs. For e
 \Pr(\text{PoS} \geq 0.8) = \Pr(|\text{SNR}| \geq 2.8).
 \end{equation}
 The marginal density of the SNRs, together with the conditional density of the $z$-values given the SNRs, determines the joint distribution. And from the joint  distribution we can derive the conditional distribution of the SNR given the $z$-value.
-We provide the formulas in the Appendix A. In turn, this allows us to derive the conditional probability of the correct sign,
+We provide the formulas in Appendix A. In turn, this allows us to derive the conditional probability of the correct sign,
 \begin{equation}\label{eq:sign}
 \text{Probability of the correct sign} = \Pr(z \cdot \text{SNR} > 0 \,\big|\, |z|),
 \end{equation}
@@ -330,7 +330,7 @@ By transforming the distribution of the signal-to-noise ratios, we obtain the fu
 
 Since the great majority of studies are targeted at reaching 80\% power, the proportion of studies that reach 80\% PoS may be tentatively interpreted as the proportions of studies where the assumptions of the sample size calculation were true. In general, this proportion is low. However, sample size calculations are not supposed to be aimed at the true effect (which is never known) but at the effect one would not want to miss \parencite{senn2002cross}. In that sense, a low proportion of studies with 80\% PoS just means that it is hard to come up with interventions that have large effects. Pressures of time, money, and logistics also can drive down sample sizes.  
 
-Columns 5--8 of Table~\ref{tab:results_summary} report the estimated proportion of studies which would yield a significant result if replicated (``successful replication''), and the estimated proportion of studies where the observed effect has the correct direction (sign), as defined in equations (\ref{eq:sign}) and (\ref{eq:repl}). There is a large gap between these proportions. Depending on the dataset, the estimated probability of replication ranges from 21\% to 47\% while the estimated probability of correct sign ranges from 69\% to 88\%. 
+Columns 5--10 of Table~\ref{tab:results_summary} report the estimated proportion of studies which would yield a significant result if replicated (``successful replication''), and the estimated proportion of studies where the observed effect has the correct direction (sign), as defined in equations (\ref{eq:sign}) and (\ref{eq:repl}). There is a large gap between these proportions. Depending on the dataset, the estimated probability of replication ranges from 21\% to 47\% while the estimated probability of correct sign ranges from 69\% to 88\%. 
 
 \begin{figure}
 \centering
@@ -351,7 +351,7 @@ If we restrict only to studies that reach statistical significance (columns ``if
 
 The right panel of Figure~\ref{fig:pos_gap} shows the probabilities of these two quantities conditional on $|z|$. 
 %, with $|z| = 1.96$ reported in Table~\ref{tab:results_summary}. When the $z$-value reaches 1.96, the probability of the correct sign is 81\% to 96\% . At the same time, the probability of ``successful replication'' is very small, 23\% to 41\% at $|z|=1.96$ and reaching 80\% or 90\% only for extremely large values of $|z|$.
-If a result is marginally statistically significant at the 5\% level, the probability of ``successful replication'' is not increased compared to the base rate. We show this more clearly in Supplementary Figure~\ref{fig:gap_plot_all} where we also plot the average replication probability and find that it tends to be higher than the conditional probability at $|z|=1.96$ (also see Table~\ref{tab:results_summary_supplement} for exact values). This will be surprise to those who think of statistical significance as a stand-in for replication. This phenomenon is {\em not} a consequence of many studies having low SNRs (low PoS). If all the studies had higher SNRs, then the assurance would be higher, but observing $|z|=1.96$ would be even less impressive.
+If a result is marginally statistically significant at the 5\% level, the probability of ``successful replication'' is often not increased compared to the base rate. We show this more clearly in Supplementary Figure~\ref{fig:gap_plot_all} where we also plot the average replication probability and find that it tends to be higher than the conditional probability at $|z|=1.96$ (also see Table~\ref{tab:results_summary_supplement} for exact values). This will be a surprise to those who think of statistical significance as a stand-in for replication. This phenomenon is {\em not} a consequence of many studies having low SNRs (low PoS). If all the studies had higher SNRs, then the assurance would be higher, but observing $|z|=1.96$ would be even less impressive.
 
 The bottom row of Figure~\ref{fig:zmixtures} shows the two replication datasets (yellow) and the two data scrapes (green). We find that for the replication studies the estimated relative risk of publication is equal to one, which means that---as expected---there is no evidence of publication bias among the replications. The two data scrapes, on the other hand, show signs of massive selection on statistical significance: while for the 11~curated datasets $\omega$ ranges from 0.65 to 0.95, the two scraped datasets read out $\omega=0.08$ and $\omega=0.20$. However, we must be careful not to over-interpret this result. The dataset of \textcite{barnett2019examination} is based on confidence intervals and it is possible that non-significant results were actually reported, just not with the associated confidence intervals. The noticeable spikes in the histogram of the data from \textcite{chavalarias2016evolution} are due to severe truncation. We do not consider our results based on these two datasets to be very reliable, but it does seem clear that the significance filter has left a mark on the scientific literature.
 
@@ -378,7 +378,7 @@ Fourth, statistical significance {\em does} imply that the sign of the effect is
 
 \subsection{Reasons for qualified optimism about empirical research}
 
-Instead of focusing on the paradigm of ``no relationships'' versus ``true relationships'' and associated type I and type II errors, our model allows us to examine replication and identifying the direction of effects which are both insensitive to whether effects are zero or merely small. 
+Instead of focusing on the paradigm of ``no relationships'' versus ``true relationships'' and associated type I and type II errors, our model allows us to examine replication and direction identification, both of which are insensitive to whether effects are zero or merely small. 
 
 We find that statistical significance usually implies a high probability that the direction of the observed effect is correct, but that it does not imply a high probability that an exact replication study will be significant again.
 In other words, empirical research often leads to true findings---in the sense of correctly identifying the direction of an effect---that do not replicate. Therefore, failure to replicate should not be taken to mean that the original result was a fluke or a fake.
@@ -394,7 +394,7 @@ Why do these different corpora, coming from many different experiments in differ
 
 %second half of this para is implications for practice?
 That said, these incentives do not apply in all areas, and there are subfields of science that are plagued by questionable research practices and increasingly influenced by paper mills and fraudulent research. 
-If we have good prior reasons to doubt the study design or integrity of the analysis, we should use that information. In other words, not every result should be treated as an typical draw from the broad reference class. Our qualified optimism extends only to research for which we do not have decisive reasons to distrust.
+If we have good prior reasons to doubt the study design or integrity of the analysis, we should use that information. In other words, not every result should be treated as a typical draw from the broad reference class. Our qualified optimism extends only to research for which we do not have decisive reasons to distrust.
 
 
 \subsection{Relevance to statistical practice}
@@ -404,7 +404,7 @@ We conclude by comparing to standard practice, which is that if a result reaches
 Along with our qualified optimism about the direction of effects, our analysis suggests that a low observed rate of statistically significant replications should not be taken as evidence that most published claims are false.  
 The bad news is that most studies have less than 80\% probability of significance (i.e., power relative to the true effect size); the good news is that, even though average probabilities of significance range from 20\% to 50\%, replications are likely to go in the right direction, with estimated average type S error rates in our corpora in the range of 1\%--3\%. 
 
-\section{Acknowledgement}
+\section{Acknowledgments}
 We thank the authors of the datasets for their great effort.
 
 % This is now leading into the follow-up paper---thinking at the level of individual studies?
@@ -446,7 +446,7 @@ We thank the authors of the datasets for their great effort.
 
 \appendix
 \renewcommand{\thefigure}{S\arabic{figure}}
-\renewcommand{\thetable}{S\arabic{figure}}
+\renewcommand{\thetable}{S\arabic{table}}
 \setcounter{figure}{0}
 \section{Details of calculations}
 

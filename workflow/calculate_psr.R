@@ -54,11 +54,12 @@ tab2 <- summarise_psr(df_psr) %>%
   left_join(bear_summary_psr, by = "dataset") %>% 
   rowwise() %>%
   mutate(omega = mfl[[dataset]]$omega[1],
+         pos_80pct_196 = pos_thresh_vec_fit(1.96, mfl[[dataset]], pos_thresh = .8),
          sign_196 = gap_vec_fit(1.96, mfl[[dataset]])$sgn,
          repl_196 = gap_vec_fit(1.96, mfl[[dataset]])$rep) %>%
   ungroup() %>% 
   select(dataset, prop_signif, omega, assurance, 
-         pos_80pct, pos_80pct_signif,
+         pos_80pct, pos_80pct_signif, pos_80pct_196,
          replication, repl_196, repl_signif,
          sign, sign_196, sign_signif) %>% 
   mutate_if(is.numeric, function(x) round(x, 3)) #to make csv readable

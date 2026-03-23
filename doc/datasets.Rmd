@@ -173,14 +173,14 @@ Trials with data available at CDSR, <https://www.cochranelibrary.com/> [@@cochra
 using R package `cochrane` [@schwab2024cochrane] we merged data from 8,726 records of reviews in CDSR and merged them into a single file `cdsr_interventions_19nov2025.csv` (63 MB).
 
 **Data processing:**
-minimal processing with extensive filtering. Our processed dataset has 39,768 rows, compared to over 800,000 rows of data in the unprocessed dataset.
+minimal processing with extensive filtering. The broad processed Cochrane extract retains all extracted rows with cleaned study metadata and outcome labels; the efficacy-only CDSR contribution to `BEAR.rds` currently has 38,058 rows, compared to over 800,000 rows in the original extract.
 
-On processing side, we cleaned up study years, categorised measures (risk ratio, odds ratio, mean difference etc.) and experimental designs, especially an "RCT" flag (based on scanning of abstracts of each review for inclusion criteria). Most studies in CDSR are RCTs but some reviews also allowed quasi-experimental studies, which prevented us from categorising many studies.
+On processing side, we cleaned up study years, categorised measures (risk ratio, odds ratio, mean difference etc.) and experimental designs, especially an "RCT" flag (based on scanning of abstracts of each review for inclusion criteria). Most studies in CDSR are RCTs but some reviews also allowed quasi-experimental studies, which prevented us from categorising many studies. We also classify outcome rows into `efficacy`, `safety`, `dropouts`, and `bias` based on the comparison, outcome, and subgroup labels.
 
-Unlike in most of the other datasets in BEAR, we filter CDSR data heavily. First, we only use the outcome and comparison of each review that are coded as "1", as that is most likely the primary outcome and most relevant comparison. This removes over 90% of all rows of data. Secondly, we only use studies with continuous and dichotomous outcomes, removing about 10% of data where effect estimates are based on instrumental variables or based on individual patient data. Lastly, we remove about 5% of data where measure of effect is unknown (retaining: OR, RR, Peto OR, mean difference, standardised mean difference, and risk difference). We also remove some rows where there are zero subjects.
+Unlike in most of the other datasets in BEAR, we filter CDSR data heavily. First, we only use the outcome and comparison of each review that are coded as "1", as that is most likely the primary outcome and most relevant comparison. Secondly, we keep only rows classified as `efficacy`, excluding likely safety, dropout, and bias-related outcomes based on comparison, outcome, and subgroup labels. Thirdly, we only use studies with continuous and dichotomous outcomes, removing rows where effect estimates are based on instrumental variables or based on individual patient data. Lastly, we remove rows where measure of effect is unknown (retaining: OR, RR, Peto OR, mean difference, standardised mean difference, and risk difference) and rows where there are zero subjects.
 
 **Additional grouping variable:**
-we retained a "source data type" variable to distinguish estimates from published, unpublished, "sought", and mixed data sources.
+we retained a "source data type" variable to distinguish estimates from published, unpublished, "sought", and mixed data sources. We also retain an `outcome_group` variable in the processed Cochrane data.
 
 
 

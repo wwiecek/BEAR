@@ -24,8 +24,10 @@ mk_small <- function(ds) {
   dt <- bear_list_thin[[ds]] %>% mutate(group = bear_classification[ds])
   plot_mixture_v4(mfl[[ds]], dt, nm = bear_labels[ds], 
                   color_map = bear_colors, nbreaks = 25,
+                  ymax = 0.7,
                   meanpwr = round(ds_tbl$PoS[ds_tbl$dataset == ds], 2),
-                  show_corrected = T)
+                  show_corrected = TRUE,
+                  align_corrected_above_threshold = TRUE)
 }
 
 # cur <- ds_tbl %>% filter(group == "curated") %>% arrange(desc(PoS)) %>% pull(dataset)

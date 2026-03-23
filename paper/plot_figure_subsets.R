@@ -16,7 +16,9 @@ for (nm in names(cdsr_fits)) {
     cdsr_fits[[nm]],
     cdsr_sub[[nm]],
     nbreaks = 40,
-    ymax = 0.6
+    ymax = 0.6,
+    show_corrected = TRUE,
+    align_corrected_above_threshold = TRUE
   ) + ggtitle(paste0("CDSR\n", nm))
 }
 
@@ -42,7 +44,9 @@ for (nm in names(ct_fits)) {
     ct_fits[[nm]],
     ct_subsets[[nm]],
     nbreaks = 40,
-    ymax = 0.4
+    ymax = 0.4,
+    show_corrected = TRUE,
+    align_corrected_above_threshold = TRUE
   ) + ggtitle(paste0("clinicaltrials.gov\n", ct_names[[nm]]))
 }
 

@@ -1,9 +1,14 @@
+library(tidyverse)
+library(patchwork)
+source("R/settings.R")
+source("R/helpers.R")
+source("R/mix.R")
 source("R/fit_density_calc.R")
 source("R/plot_mixture.R")
-# source("calculate_psr.R")
 library(scales)
 
 mfl <- load_all_mixtures()
+load("paper/bear_lists.Rdata")
 
 nm <- names(bear_names)[1]
 
@@ -33,7 +38,12 @@ gg1 <- fit_density_calc(mfl[[nm]])$df %>%
         legend.position = "none")
 
 
-gg2 <- plot_mixture_v4(mfl[[nm]], bear_list_thin[[nm]], show_corrected = T)
+gg2 <- plot_mixture_v4(
+  mfl[[nm]],
+  bear_list_thin[[nm]],
+  show_corrected = TRUE,
+  align_corrected_above_threshold = TRUE
+)
 
 library(patchwork)
 gg2 | gg1

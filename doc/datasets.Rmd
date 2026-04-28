@@ -334,6 +334,40 @@ name of the original psymetadata dataset.
 
 
 
+## SCORE
+
+**Reference:**
+@tyner2026investigating.
+
+**Research question:**
+investigating the replicability of published claims in the social and
+behavioural sciences.
+
+**Data availability:**
+the SCORE replication package is available at https://osf.io/g5sny/. The package includes replication data as well as reviews of claims made in included papers.
+
+**Data description and source:**
+BEAR includes two SCORE outputs. Replications dataset has 548
+rows: 274 original claims and 274 matched replications. "All claims" dataset has a wider set with 3,066 claim-level rows from the set of replicated papers (but no replications of these claims), where we select one statistic per claim.
+
+**Data processing:**
+For the matched replication output, original and replication statistics
+we used the package's converted correlation scale where available.
+For the all-claims set, effects are heterogeneous across the source
+papers.
+
+When several inputs are available for z-value construction in the all-claims dataset, we prefer 
+coefficient divided by standard error, then reported z or t, then signed
+square-root F for numerator df 1, then a two-sided p-value conversion. For
+the all-claims text, it is typical to have multiple statistics backing u pa single claim, e.g. "F(1,38) = 3.73, p = .033, partial eta-squared = .16; F(1,39) = 7.28, p = .010, partial eta-squared = .16; F<1". We created a rule to pick one statistic per claim using agreement with the SCORE significant/nonsignificant coding, statistic provenance, exactness,
+available effect and standard error, and text order. 
+
+**Additional grouping variables:**
+discipline and SCORE source indicator.
+
+
+
+
 ## What Works Clearinghouse (education)
 
 Large database of education effect sizes created by Institute of Education Sciences <@wwc2025studyfindings>.

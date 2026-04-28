@@ -33,7 +33,7 @@ for(nm in mtofit) {
   cat(nm); cat("\n")
   tic()
   df <- bear_list_thin[[nm]]
-  cfit <- fit_mixture(z = df$z, operator = df$z_operator, weight = df$weights)
+  cfit <- fit_mixture(z = df$z, operator = df$z_operator, weights = df$weights)
   saveRDS(cfit, fnm)
   toc()
 }

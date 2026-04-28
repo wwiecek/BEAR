@@ -1,5 +1,59 @@
 # Functions for plotting densities of fitted mixtures
 
+load_bear_mixture_inputs <- function(exclude = NULL,
+                                     mixture_dir = "mixtures",
+                                     bear_lists_path = "paper/bear_lists.Rdata",
+                                     psr_path = "paper/power_sign_rep.csv") {
+  mixture_files <- list.files(mixture_dir, pattern = "\\.rds$", full.names = TRUE)
+  mixture_names <- sub("\\.rds$", "", basename(mixture_files))
+  keep <- if (is.null(exclude)) rep(TRUE, length(mixture_names)) else
+    !(mixture_names %in% exclude)
+
+  mixtures <- stats::setNames(
+    lapply(mixture_files[keep], readRDS),
+    mixture_names[keep]
+  )
+
+  bear_env <- new.env(parent = emptyenv())
+  load(bear_lists_path, envir = bear_env)
+
+  psr_table <- readr::read_csv(psr_path, show_col_types = FALSE) %>%
+    mutate(group = bear_classification[dataset]) %>%
+    transmute(dataset, group, PoS = assurance) %>%
+    arrange(desc(PoS))
+
+  list(
+    mixtures = mixtures,
+    bear_list_thin = bear_env$bear_list_thin,
+    psr_table = psr_table
+  )
+}
+
+plot_bear_mixture_panel <- function(dataset, inputs,
+                                    nm = bear_labels[dataset],
+                                    color_map = bear_colors,
+                                    nbreaks = 25,
+                                    ymax = 0.7,
+                                    show_corrected = TRUE,
+                                    align_corrected_above_threshold = TRUE,
+                                    ...) {
+  dt <- inputs$bear_list_thin[[dataset]] %>%
+    mutate(group = bear_classification[dataset])
+
+  plot_mixture_v4(
+    inputs$mixtures[[dataset]],
+    dt,
+    nm = nm,
+    color_map = color_map,
+    nbreaks = nbreaks,
+    ymax = ymax,
+    meanpwr = round(inputs$psr_table$PoS[inputs$psr_table$dataset == dataset], 2),
+    show_corrected = show_corrected,
+    align_corrected_above_threshold = align_corrected_above_threshold,
+    ...
+  )
+}
+
 plot_mixture_v3 <- function(fit, dt, nm = "", col = "black", xmax = 10, nbreaks = 25, ymax = 0.6) {
   # calculate the density
   den_calc  <- fit_density_calc_abs(fit, x = seq(0, min(500, max(abs(dt$z))), by=0.1))
@@ -87,41 +141,4 @@ plot_mixture_v4 <- function(fit, dt, nm = "", col = "black", color_map = NULL,
                                     parse = TRUE, size = 2.5) }
   
     # annotate("text", x = 5, y = ymax - 0.075, label = lab, parse = TRUE, size = 2.5)
-}
-
-
-
-# Legacy functions from Erik (edited by WW), no longer in use
-
-plot_mixture <- function(fit, z, weights) {
-  
-  omega=fit$omega[1]
-  B1=2*pmix(-1.96,p=fit$p,m=fit$m,s=fit$sigma) # prob. |z|>1.96
-  B2=1-B1
-  
-  df <- data.frame(z=abs(z),weights)
-  
-  df$fz <- 2*(omega*(df$z<1.96) + (df$z>=1.96))*
-    dmix(z, p=fit$p, m=fit$m, s=fit$sigma)/(B1 + omega*B2)
-  
-  df$fz2=2*dmix(df$z, p=fit$p, m=fit$m, s=fit$sigma)
-  
-  ggplot(df, aes(x = z)) +
-    geom_histogram(aes(y = after_stat(density),
-                       weight=weights), 
-                   color="black",
-                   fill="white", breaks=seq(0,10,0.2)) +
-    geom_line(aes(x=z,y=fz)) +
-    geom_line(aes(x=z,y=fz2),color="red") +
-    xlab("absolute z-statistic") + ylab('') + 
-    xlim(0,10) + theme_bw()
-}
-
-# Erik's function that used to do analysis within Rmd, I am now suggesting we
-# precalculate this before running Rmd reports
-fit_and_plot = function(z,truncated,k=4,weights){
-  fit <- fit_mixture(z,truncated,k=4,weights)
-  ggp <- plot_mixture(fit, z, weights)
-  print(ggp)
-  return(fit)
 }

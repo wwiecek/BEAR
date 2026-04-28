@@ -1,5 +1,4 @@
 library(tidyverse)
-library(cochrane)
 library(fs)
 library(purrr)
 library(stringr)
@@ -59,10 +58,52 @@ sanitize_study_year <- function(x, min_year = 1900, max_year = 2025) {
   out
 }
 
+classify_outcome_group <- function(comparison_name, outcome_name, subgroup_name) {
+  txt <- str_c(
+    coalesce(comparison_name, ""),
+    coalesce(outcome_name, ""),
+    coalesce(subgroup_name, ""),
+    sep = " "
+  ) %>% str_squish()
+  
+  bias <- str_detect(txt, regex(
+    "bias|risk of bias|sensitivity analys|sensitivity analisys",
+    ignore_case = TRUE
+  ))
+  drop_base <- str_detect(txt, regex(
+    paste(
+      "withdrawn|withdrawing|withdrew|withdrawal[s]*|withdrawl[s]*",
+      "leaving\\s*[the]*\\s*(study|studies|trial|treatment)",
+      "dropout[s]*|acceptability|tolerability",
+      sep = "|"
+    ),
+    ignore_case = TRUE
+  ))
+  drop_exc <- str_detect(
+    txt,
+    regex(
+      "alcohol withdrawal|withdrawal symptoms|steroid withdrawal",
+      ignore_case = TRUE
+    )
+  )
+  dropouts <- drop_base & !drop_exc
+  safety <- str_detect(txt, regex(
+    "toxicity|adverse|adverse effects|side effect|serious adverse|SAE",
+    ignore_case = TRUE
+  ))
+  
+  case_when(
+    safety ~ "safety",
+    dropouts ~ "dropouts",
+    bias ~ "bias",
+    TRUE ~ "efficacy"
+  )
+}
+
 
 # Add flags for Cochrane meta-analyses that likely contained only RCTs
 
-source("data_raw/Cochrane/cdsr_rct_score.R")
+source("process/Cochrane_rct_score.R")
 rct_flags <- classify_design_v2(coch_csv$Abstract)
 coch_join <- coch_csv %>% 
   transmute(doi       = DOI,
@@ -96,6 +137,10 @@ studies_long <- results_all_fixed %>%
     
     # Recreate effect.* style columns from new fields
     z  = effect.size / se,
+    outcome_group = factor(
+      classify_outcome_group(comparison.name, outcome.name, subgroup.name),
+      levels = c("efficacy", "safety", "dropouts", "bias")
+    ),
     
     # Create these later:
     phase              = NA

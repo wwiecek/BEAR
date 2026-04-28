@@ -227,7 +227,8 @@ cdsr_filtered <- readRDS("data/Cochrane.rds") %>%
          outcome.flag %in% c("CONT","DICH"),
          # First comparison and first outcome is most likely to be the primary outcome of interest in a given review
          # THIS REMOVES 95% OF DATA! YOu may want to construct it differently for future analyses
-         comparison.nr == 1, outcome.nr == 1)
+         comparison.nr == 1, outcome.nr == 1,
+         outcome_group == "efficacy")
 
 dtlist[["Cochrane"]] <- rbind(
   dplyr::filter(cdsr_filtered, outcome.flag=="CONT") %>% 
@@ -248,6 +249,7 @@ dtlist[["Cochrane"]] <- rbind(
     # Still working on this one:
     method = ifelse(rct, "RCT", "unknown"),
     measure = measure,
+    outcome_group = as.character(outcome_group),
     z = yi/sqrt(vi),
     b = yi,
     se = sqrt(vi),

@@ -159,5 +159,5 @@ package's conversion rules rather than a fresh BEAR-side harmonization.
 
 The old `nosek_replicate_bear/output` files were generated audit and staging
 artifacts, not required inputs. The durable processing record is now this file,
-the two `process/score_*.R` scripts, `R/score_helpers.R`, the raw SCORE package,
-and the two canonical `.rds` outputs under `data/`.
+the two `process/score_*.R` scripts, `process/score_helpers.R`, the raw SCORE
+package, and the two canonical `.rds` outputs under `data/`.

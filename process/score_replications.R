@@ -23,6 +23,7 @@ paper_metadata <- as_tibble(score_raw$paper_metadata)
 paper_lookup <- paper_metadata %>%
   transmute(
     paper_id,
+    doi = DOI,
     citation,
     journal = publication_standard,
     discipline = COS_pub_category,
@@ -74,9 +75,10 @@ original_long <- orig_outcomes %>%
   transmute(
     dataset = "SCORE",
     metaid = journal,
-    studyid = paper_id,
+    studyid = doi,
     estimate_id = paste0(claim_id, "_original"),
     paper_id,
+    doi,
     claim_id,
     report_id = NA_character_,
     citation,
@@ -85,7 +87,7 @@ original_long <- orig_outcomes %>%
     year,
     source,
     subset = "main",
-    measure = "conv_r",
+    measure = "r",
     z = truncate_score_z(z_preferred),
     abs_z = abs(z),
     z_operator,
@@ -144,9 +146,10 @@ replication_long <- main_replication_source %>%
   transmute(
     dataset = "SCORE",
     metaid = journal,
-    studyid = paper_id,
+    studyid = doi,
     estimate_id = paste0(claim_id, "_replication"),
     paper_id,
+    doi,
     claim_id,
     report_id,
     citation,
@@ -155,7 +158,7 @@ replication_long <- main_replication_source %>%
     year,
     source,
     subset = "main",
-    measure = "conv_r",
+    measure = "r",
     z = truncate_score_z(z_preferred),
     abs_z = abs(z),
     z_operator,
@@ -184,7 +187,7 @@ score_replications <- bind_rows(original_long, replication_long) %>%
   calc_study_weights() %>%
   arrange(paper_id, claim_id, source) %>%
   select(
-    dataset, metaid, studyid, estimate_id, paper_id, claim_id, report_id,
+    dataset, metaid, studyid, estimate_id, paper_id, doi, claim_id, report_id,
     citation, journal, discipline, year, source, subset, measure, z, abs_z,
     z_operator, p, b, se, ss, weights, significant,
     replication_type, type_internal, z_source, z_from_coef, z_from_stat,
@@ -221,6 +224,7 @@ score_replication_pairs_main <- main_replication_source %>%
   ) %>%
   transmute(
     paper_id,
+    doi,
     claim_id,
     report_id,
     citation,

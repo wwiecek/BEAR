@@ -24,6 +24,7 @@ paper_metadata <- as_tibble(score_raw$paper_metadata)
 paper_lookup <- paper_metadata %>%
   transmute(
     paper_id,
+    doi = DOI,
     citation,
     journal = publication_standard,
     discipline = COS_pub_category,
@@ -52,12 +53,13 @@ score_all_claims_fragments <- bind_cols(claim_fragments, parsed_fragments) %>%
   mutate(
     dataset = "SCORE",
     metaid = journal,
-    studyid = paper_id,
+    studyid = doi,
     estimate_id = paste0(claim4_id, "_frag", fragment_id),
     claim_id = claim4_id,
     report_id = NA_character_,
     source = "claim_text",
     subset = "all_claims",
+    measure = score_bear_measure(measure),
     ss = NA_real_,
     selected_significant = nonsig != "T",
     fragment_significant =
@@ -121,7 +123,7 @@ score_all_claims <- score_all_claims_fragments %>%
   ) %>%
   calc_study_weights() %>%
   select(
-    dataset, metaid, studyid, estimate_id, paper_id, claim_id, report_id,
+    dataset, metaid, studyid, estimate_id, paper_id, doi, claim_id, report_id,
     citation, journal, discipline, year, source, subset, measure, z, abs_z,
     z_operator, p, b, se, ss, weights, significant,
     claim4_id, p_operator, coded_stat_evidence, stat_fragment, fragment_id,

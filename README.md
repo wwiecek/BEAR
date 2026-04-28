@@ -27,7 +27,6 @@ the doc folder](doc/datasets.pdf).
 
 Here is a short summary of what’s included in BEAR:
 
-    ## # A tibble: 20 × 7
     ##    dataset              domain              n_values n_meta n_study mean_k pct_signif
     ##    <chr>                <chr>                  <int>  <int>   <int>  <dbl>      <dbl>
     ##  1 Arel-Bundock et al   political science      16649     46    2252   7.39      0.467
@@ -36,7 +35,7 @@ Here is a short summary of what’s included in BEAR:
     ##  4 Bartos et al         exercise                2239    215    2239   1         0.263
     ##  5 Brodeur et al        economics               8424      1     176  47.9       0.374
     ##  6 Chavalarias et al    biomedicine          7935864      1 1887178   4.21      0.627
-    ##  7 Cochrane             medicine & health      39768   6050   30306   1.31      0.306
+    ##  7 Cochrane             medicine & health      38058   5871   29327   1.30      0.311
     ##  8 Costello and Fox     ecology & evolution    88218    466   12927   6.82      0.419
     ##  9 Head et al           biomedicine          2010875      1  219220   9.17      0.622
     ## 10 Jager and Leek       biomedicine            15653      1    5322   2.94      0.777
@@ -62,7 +61,7 @@ PubMed/Medline, and replication datasets. Additional groupings
     ##   gr           n_datasets n_study n_meta n_values pct_signif
     ##   <chr>             <int>   <int>  <int>    <int>      <dbl>
     ## 1 curated               6   29505     NA    81411      0.432
-    ## 2 meta                  8   66467   7642   201855      0.421
+    ## 2 meta                  8   65488   7463   200145      0.422
     ## 3 replications          2    1513     26     1513      0.437
     ## 4 scrape                4 2527747     NA 11268943      0.648
 
@@ -121,9 +120,9 @@ significance, replication, correct sign) in `workflow/calculate_psr.R`
     ## # A tibble: 15 × 6
     ##    dataset              omega   PoS PoS_80 replication  sign
     ##    <chr>                <dbl> <dbl>  <dbl>       <dbl> <dbl>
-    ##  1 Askarov et al         0.71  0.48   0.29        0.47  0.88
+    ##  1 Askarov et al         0.71  0.48   0.3         0.47  0.88
     ##  2 Nuijten et al         0.85  0.48   0.29        0.47  0.88
-    ##  3 ctgov / EU CTR        0.95  0.47   0.28        0.45  0.87
+    ##  3 ctgov / EU CTR        0.95  0.47   0.28        0.46  0.87
     ##  4 Metapsy               0.83  0.46   0.26        0.45  0.88
     ##  5 Arel-Bundock et al    0.65  0.4    0.2         0.38  0.85
     ##  6 Costello and Fox      0.79  0.39   0.23        0.37  0.79
@@ -131,11 +130,11 @@ significance, replication, correct sign) in `workflow/calculate_psr.R`
     ##  8 psymetadata           0.67  0.33   0.21        0.31  0.72
     ##  9 What Works Clearing.  0.88  0.32   0.17        0.3   0.76
     ## 10 Cochrane              0.7   0.23   0.1         0.21  0.69
-    ## 11 Bartos et al          0.82  0.23   0.08        0.2   0.76
+    ## 11 Bartos et al          0.82  0.22   0.08        0.2   0.76
     ## 12 Many Labs 2           0.99  0.44   0.35        0.42  0.76
     ## 13 OpenSciCollab         1     0.36   0.22        0.34  0.78
     ## 14 Chavalarias et al     0.2   0.51   0.32        0.5   0.89
-    ## 15 Barnett and Wren      0.08  0.32   0.13        0.3   0.82
+    ## 15 Barnett and Wren      0.08  0.32   0.12        0.3   0.82
 
 `omega` is relative publication probability based on crossing of the
 \|z\|=1.96 threshold; `PoS` is probability of significance (assurance)

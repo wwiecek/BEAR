@@ -41,10 +41,12 @@ bear_summary %>%
   arrange(dataset) %>% 
   relocate(domain, .after = dataset) %>% 
   mutate(dataset = bear_names[dataset]) %>% 
-  rename(n_values = n_z)
+  rename(n_values = n_z) %>% 
+  print(n = Inf)
 ```
 
-Datasets fall into four main categories that will be useful for different types of metascientific investigations: curated datasets of single studies, curated sets of meta-analyses (i.e. with additional `metaid` grouping column), large-scale scraped datasets from PubMed/Medline, and replication datasets. Additional groupings (e.g. clinical trial phases) are available within some datasets.
+Datasets fall into four main categories that will be useful for different types of metascientific investigations: curated datasets of single studies, curated sets of meta-analyses (i.e. with additional `metaid` grouping column), large-scale scraped datasets from PubMed/Medline, and replication datasets. Additional groupings (e.g. clinical trial phases) are available within some datasets. Replication datasets
+also include additional columns that store values from original studies.
 
 ```{r echo=FALSE, messages=FALSE}
 bear_summary %>% 
@@ -55,7 +57,8 @@ bear_summary %>%
             n_study = sum(n_study),
             n_meta = ifelse(sum(n_meta) == n_datasets, NA, sum(n_meta)),
             n_values = sum(n_z),
-            pct_signif = sum(pct_signif*n_z) / sum(n_z))
+            pct_signif = sum(pct_signif*n_z) / sum(n_z)) %>% 
+  print(n = Inf)
 ```
 
 
@@ -105,10 +108,10 @@ tab_psr %>%
   arrange(gr, desc(assurance)) %>% 
   mutate(dataset = bear_names[dataset]) %>% 
   transmute(dataset, omega, PoS=assurance, PoS_80=pos_80pct, replication, sign) %>% 
-  mutate_if(is.numeric, function(x) round(x, 2))
+  mutate_if(is.numeric, function(x) round(x, 2)) %>% 
+  print(n = Inf)
 
 ```
 
 `omega` is relative publication probability based on crossing of the |z|=1.96 threshold; `PoS` is probability of significance (assurance) and `PoS_80` is proportion of studies that reach 80% power; `replication` and `sign` probabilities are described in accompanying paper.
-
 

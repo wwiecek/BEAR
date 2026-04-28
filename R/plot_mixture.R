@@ -30,7 +30,8 @@ plot_mixture_v3 <- function(fit, dt, nm = "", col = "black", xmax = 10, nbreaks 
 plot_mixture_v4 <- function(fit, dt, nm = "", col = "black", color_map = NULL, 
                             xmax = 10, nbreaks = 25, ymax = 0.6, 
                             annotate = "psr", meanpwr = NULL,
-                            show_corrected = FALSE) {
+                            show_corrected = FALSE,
+                            align_corrected_above_threshold = FALSE) {
   
   # Use color_map if provided and col is default
   if (!is.null(color_map) && col == "black" && "group" %in% names(dt)) {
@@ -42,6 +43,11 @@ plot_mixture_v4 <- function(fit, dt, nm = "", col = "black", color_map = NULL,
   if(grid_max < xmax) grid_max <- xmax #this makes sure the density gets plotted past max(z) if needed
   den_calc_result <- fit_density_calc_abs(fit, x = seq(0, grid_max, by=0.1))
   df <- den_calc_result$df
+  df$corrected_plot <- if (align_corrected_above_threshold) {
+    df$aligned_corrected_fz
+  } else {
+    df$corrected_fz
+  }
   br <- c(seq(0, xmax, length = nbreaks), max(abs(dt$z)))
   omega_val <- round(fit$omega[1], 2)
   e_abs_z_val <- round(den_calc_result$E_abs_z, 1)
@@ -62,9 +68,10 @@ plot_mixture_v4 <- function(fit, dt, nm = "", col = "black", color_map = NULL,
       aes(x = x, y = after_stat(density), weight = weights),
       breaks = br, fill = col, alpha = 0.25, colour = NA
     ) +
-    {if(show_corrected) geom_line(data = df, aes(x = x, y = corrected_fz), 
-                                  lty = "dashed", linewidth = 0.6, colour = "black")} +
     geom_line(data = df, aes(x = x, y = fz), linewidth = 0.8, colour = col) +
+    {if(show_corrected) geom_line(data = df, aes(x = x, y = corrected_plot), 
+                                  linetype = "22", linewidth = 0.6,
+                                  colour = "black")} +
     coord_cartesian(xlim = c(-0.1, xmax + 0.1), ylim = c(0, ymax)) +
     labs(x = NULL, y = NULL, title = nm) +
     theme_bw() +

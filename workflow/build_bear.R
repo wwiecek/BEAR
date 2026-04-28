@@ -433,18 +433,34 @@ dtlist[["Chavalarias"]] <- readRDS("data/Chavalarias.rds") %>%
 # Open Science Collab replication project -----
 
 dtlist[["OSC"]] <- readRDS("data/OSC.rds") %>% 
-  rename(p_value = T_pval_USE..R.) %>% 
+  mutate(
+    p = T_pval_USE..R.,
+    orig.p = T_pval_USE..O.,
+    z = sign(T_r..R.) * z_from_p(p),
+    orig.z = sign(T_r..O.) * z_from_p(orig.p)
+  ) %>%
   transmute(
     metaid = NA,
     studyid = Study.Num,
     method = "RCT",
     measure = NA,
-    z = z_from_p(p_value),
-    z_operator = ifelse(p_value > 0, "=", ">"),
-    b = NA,
-    se = NA,
+    z,
+    z_operator = ifelse(p > 0, "=", ">"),
+    p,
+    b = T_r..R.,
+    se = ifelse(!is.na(b) & !is.na(z) & z != 0, abs(b / z), NA_real_),
     year = NA,
-    ss = as.numeric(N..R.)
+    ss = as.numeric(N..R.),
+    orig.z,
+    orig.z_operator = ifelse(orig.p > 0, "=", ">"),
+    orig.p,
+    orig.b = T_r..O.,
+    orig.se = ifelse(
+      !is.na(orig.b) & !is.na(orig.z) & orig.z != 0,
+      abs(orig.b / orig.z),
+      NA_real_
+    ),
+    orig.ss = readr::parse_number(as.character(N..O.), na = c("", "NA", "X"))
   ) %>% as_tibble()
 
 
@@ -470,6 +486,40 @@ dtlist[["Bartos"]] <- readRDS("data/Bartos.rds") %>%
 
 
 
+# SCORE -----
+
+score_replications <- readRDS("data/SCORE_replications.rds")
+
+dtlist[["SCORE_replications"]] <- score_replications %>%
+  filter(source == "replication") %>%
+  left_join(
+    score_replications %>%
+      filter(source == "original") %>%
+      transmute(
+        claim_id,
+        orig.z = z,
+        orig.z_operator = z_operator,
+        orig.p = p,
+        orig.b = b,
+        orig.se = se,
+        orig.ss = ss
+      ),
+    by = "claim_id"
+  ) %>%
+  transmute(
+    metaid, studyid, method = NA_character_, measure,
+    z, z_operator, p, b, se, ss, year, source, subset,
+    orig.z, orig.z_operator, orig.p, orig.b, orig.se, orig.ss
+  )
+
+dtlist[["SCORE_claims"]] <- readRDS("data/SCORE_all_claims.rds") %>%
+  transmute(
+    metaid, studyid, method = NA_character_, measure,
+    z, z_operator, p, b, se, ss, year, source, subset
+  )
+
+
+
 # psymetadata -----
 
 psymetadata <- readRDS("data/psymetadata.rds")
@@ -477,7 +527,10 @@ psymetadata <- readRDS("data/psymetadata.rds")
 # disaggregate a large meta-analyses of intelligence and Many Labs replications
 dtlist[["psymetadata"]]   <- dplyr::filter(psymetadata, !(subset %in% c("manylabs2018", "nuijten2020")))
 dtlist[["ManyLabs2"]]     <- dplyr::filter(psymetadata, subset == "manylabs2018") %>% 
-  mutate(subset = NA_character_)
+  mutate(
+    subset = NA_character_, orig.z = NA_real_, orig.z_operator = NA_character_,
+    orig.p = NA_real_, orig.b = NA_real_, orig.se = NA_real_, orig.ss = NA_real_
+  )
 dtlist[["Nuijten"]]       <- dplyr::filter(psymetadata, subset == "nuijten2020") %>% 
   mutate(subset = NA_character_)
   
@@ -502,6 +555,10 @@ bear <- dtlist %>%
   bind_rows(.id = "dataset")
 
 saveRDS(bear, "data/BEAR.rds")
+saveRDS(bear, "BEAR.rds")
 
 # Refresh README
-rmarkdown::render("README.Rmd", output_format = "github_document")
+rmarkdown::render(
+  "README.Rmd",
+  output_format = rmarkdown::github_document(html_preview = FALSE)
+)

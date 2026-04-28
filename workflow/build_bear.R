@@ -470,6 +470,22 @@ dtlist[["Bartos"]] <- readRDS("data/Bartos.rds") %>%
 
 
 
+# SCORE -----
+
+dtlist[["SCORE_replications"]] <- readRDS("data/SCORE_replications.rds") %>%
+  transmute(
+    metaid, studyid, method = NA_character_, measure,
+    z, z_operator, p, b, se, ss, year, source, subset
+  )
+
+dtlist[["SCORE_claims"]] <- readRDS("data/SCORE_all_claims.rds") %>%
+  transmute(
+    metaid, studyid, method = NA_character_, measure,
+    z, z_operator, p, b, se, ss, year, source, subset
+  )
+
+
+
 # psymetadata -----
 
 psymetadata <- readRDS("data/psymetadata.rds")
@@ -502,6 +518,7 @@ bear <- dtlist %>%
   bind_rows(.id = "dataset")
 
 saveRDS(bear, "data/BEAR.rds")
+saveRDS(bear, "BEAR.rds")
 
 # Refresh README
 rmarkdown::render("README.Rmd", output_format = "github_document")

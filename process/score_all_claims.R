@@ -1,17 +1,12 @@
 # Process all SCORE claim-text statistics into a BEAR-ready claim-level dataset.
-# The canonical output is `data/SCORE_all_claims.rds`; audit outputs remain
-# under `nosek_replicate_bear/output/`.
+# The canonical output is `data/SCORE_all_claims.rds`.
 
 suppressPackageStartupMessages(library(tidyverse))
 source("R/helpers.R")
 source("R/score_helpers.R")
 
 raw_path <- "data_raw/SCORE/replication/analyst data.RData"
-audit_dir <- "nosek_replicate_bear/output"
-table_dir <- file.path(audit_dir, "tables")
 dir.create("data", recursive = TRUE, showWarnings = FALSE)
-dir.create(audit_dir, recursive = TRUE, showWarnings = FALSE)
-dir.create(table_dir, recursive = TRUE, showWarnings = FALSE)
 
 score_raw <- new.env(parent = emptyenv())
 load(raw_path, envir = score_raw)
@@ -52,13 +47,13 @@ score_all_claims_fragments <- bind_cols(claim_fragments, parsed_fragments) %>%
   left_join(paper_lookup, by = "paper_id") %>%
   mutate(
     dataset = "SCORE",
-    metaid = journal,
+    metaid = NA_character_,
     studyid = doi,
     estimate_id = paste0(claim4_id, "_frag", fragment_id),
     claim_id = claim4_id,
     report_id = NA_character_,
     source = "claim_text",
-    subset = "all_claims",
+    subset = discipline,
     measure = score_bear_measure(measure),
     ss = NA_real_,
     selected_significant = nonsig != "T",
@@ -123,7 +118,7 @@ score_all_claims <- score_all_claims_fragments %>%
   ) %>%
   calc_study_weights() %>%
   select(
-    dataset, metaid, studyid, estimate_id, paper_id, doi, claim_id, report_id,
+    dataset, metaid, studyid, estimate_id, paper_id, claim_id, report_id,
     citation, journal, discipline, year, source, subset, measure, z, abs_z,
     z_operator, p, b, se, ss, weights, significant,
     claim4_id, p_operator, coded_stat_evidence, stat_fragment, fragment_id,
@@ -257,31 +252,9 @@ print(validation_checks, n = nrow(validation_checks), width = Inf)
 stopifnot(all(validation_checks$passed))
 
 saveRDS(score_all_claims, "data/SCORE_all_claims.rds")
-saveRDS(
-  score_all_claims_fragments,
-  file.path(audit_dir, "score_all_claims_fragments.rds")
-)
-write_csv_if_present(
-  score_all_claims,
-  file.path(audit_dir, "score_all_claims_claim_level.csv")
-)
-write_csv_if_present(
-  validation_checks,
-  file.path(audit_dir, "score_all_claims_validation.csv")
-)
-
-capture.output(
-  {
-    cat("SCORE all-claims validation\n\n")
-    print(validation_checks, n = nrow(validation_checks), width = Inf)
-    cat("\nClaim-level summary\n\n")
-    print(claim_level_summary, n = nrow(claim_level_summary), width = Inf)
-    cat("\nCounts\n\n")
-    print(validation_counts, n = nrow(validation_counts), width = Inf)
-  },
-  file = file.path(table_dir, "score_all_claims_validation.txt")
-)
 
 cat("\nClaim-level summary:\n")
 print(claim_level_summary, n = nrow(claim_level_summary), width = Inf)
+cat("\nValidation counts:\n")
+print(validation_counts, n = nrow(validation_counts), width = Inf)
 cat("\nSaved SCORE all-claims outputs.\n")

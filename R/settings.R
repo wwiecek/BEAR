@@ -13,6 +13,8 @@ bear_names <- c(
    "Head" = "Head et al",
    "JagerLeek" = "Jager and Leek",
    "OSC" = "OpenSciCollab",
+   "SCORE_claims" = "SCORE, all claims",
+   "SCORE_replications" = "SCORE replications",
    "Metapsy" = "Metapsy",
    "Sladekova" = "Sladekova et al",
    "WWC" = "What Works Clearing.",
@@ -40,6 +42,8 @@ bear_labels <- c(
   # "Head" = "Head et al",
   # "JagerLeek" = "Jager and Leek",
   "OSC" = "OpenSciCollab\npsychology",
+  "SCORE_claims" = "SCORE claims\nsocial & behavioural sciences",
+  "SCORE_replications" = "SCORE replications\nsocial & behavioural sciences",
   "Metapsy" = "Metapsy\npsychotherapy",
   # "Sladekova" = "Sladekova et al",
   "WWC" = "What Works Clearing.\neducation",
@@ -70,6 +74,8 @@ bear_classification <- c(
    "Metapsy" = "meta",
    "Nuijten" = "curated",
    "OSC" = "replications",
+   "SCORE_claims" = "curated",
+   "SCORE_replications" = "replications",
    "psymetadata" = "curated",
    "Sladekova" = "meta",
    "WWC" = "curated",
@@ -97,6 +103,8 @@ bear_domain <- c(
   "Metapsy"       = "psychotherapy",
   "Nuijten"       = "intelligence",
   "OSC"           = "psychology",
+  "SCORE_claims"  = "social & behavioural sciences",
+  "SCORE_replications" = "social & behavioural sciences",
   "psymetadata"   = "psychology",
   "Sladekova"     = "psychology",
   "WWC"           = "education",
@@ -117,4 +125,3 @@ bear_colors <- c(
   "scrape"       = "#4DAF4A",
   "replications" = "#B8860B"
 )
-

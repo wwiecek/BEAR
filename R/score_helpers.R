@@ -272,6 +272,19 @@ score_extract_effect <- function(text) {
   list(value = NA_real_, measure = NA_character_, source = "missing")
 }
 
+score_bear_measure <- function(measure) {
+  case_when(
+    is.na(measure) ~ NA_character_,
+    measure == "d" ~ "SMD",
+    measure == "r" ~ "r",
+    measure %in% c("beta", "β") ~ "beta",
+    measure %in% c("eta-squared", "partial eta-squared") ~ measure,
+    measure %in% c("b", "coef", "coefficient", "estimate", "effect") ~
+      NA_character_,
+    TRUE ~ measure
+  )
+}
+
 score_extract_se <- function(text) {
   pattern <- paste0(
     "(?:standard\\s+error|s\\.?e\\.?|\\bse\\b)\\s*(?:=|:)\\s*(",
@@ -451,16 +464,4 @@ describe_significance_rule <- function(p, p_operator, z, z_operator) {
     !is.na(z) ~ "ambiguous_z_bound",
     TRUE ~ "unavailable"
   )
-}
-
-write_csv_if_present <- function(data, path) {
-  dir.create(dirname(path), recursive = TRUE, showWarnings = FALSE)
-  readr::write_csv(as_tibble(data), path, na = "")
-}
-
-write_txt_table <- function(data, path, digits = 3) {
-  dir.create(dirname(path), recursive = TRUE, showWarnings = FALSE)
-  rounded <- data %>%
-    mutate(across(where(is.numeric), ~ round(.x, digits)))
-  capture.output(print(rounded, n = nrow(rounded), width = Inf), file = path)
 }

@@ -10,28 +10,32 @@ source("R/mix.R")
 
 load("paper/bear_lists.Rdata")
 
-# previous_hash <- readRDS("results/mixtures_hash.rds")
-# for(nm in names(bear_hash)){
-#   if(bear_hash[[nm]] != previous_hash[[nm]])
-#     cat(nm)
-# }
+previous_hash <- if(file.exists("results/mixtures_hash.rds")) {
+  readRDS("results/mixtures_hash.rds")
+} else {
+  list()
+}
 
 # Nelder-Mead optimisation we use here will take ~a few minutes (up to 10 maybe) per dataset
-mtofit <- names(bear_list_thin)
+changed <- names(bear_hash)[
+  !(names(bear_hash) %in% names(previous_hash)) |
+    vapply(names(bear_hash), function(nm) {
+      !identical(bear_hash[[nm]], previous_hash[[nm]])
+    }, logical(1))
+]
+missing_fit <- names(bear_hash)[
+  !file.exists(file.path("mixtures", paste0(names(bear_hash), ".rds")))
+]
+mtofit <- union(changed, missing_fit)
 
 for(nm in mtofit) {
   fnm <- paste0("mixtures/", nm, ".rds")
-  # if(!file.exists(fnm) || !(nm %in% names(previous_hash)) || previous_hash[[nm]] != bear_hash[[nm]]) {
-  if(!file.exists(fnm)) {
-    cat(nm); cat("\n")
-    tic()
-    df <- bear_list_thin[[nm]]
-    cfit <- fit_mixture(z = df$z, 
-                        operator = df$z_operator,
-                        weight = df$weights)
-    saveRDS(cfit, fnm)
-    toc()
-  }
+  cat(nm); cat("\n")
+  tic()
+  df <- bear_list_thin[[nm]]
+  cfit <- fit_mixture(z = df$z, operator = df$z_operator, weight = df$weights)
+  saveRDS(cfit, fnm)
+  toc()
 }
 
-saveRDS(bear_hash, file="results/mixtures_hash.rds")
+saveRDS(bear_hash, file = "results/mixtures_hash.rds")

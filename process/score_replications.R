@@ -1,17 +1,12 @@
 # Process SCORE matched original/replication reports into a BEAR-ready dataset.
-# The canonical output is `data/SCORE_replications.rds`; the paired audit table
-# remains under `nosek_replicate_bear/output/`.
+# The canonical output is `data/SCORE_replications.rds`.
 
 suppressPackageStartupMessages(library(tidyverse))
 source("R/helpers.R")
 source("R/score_helpers.R")
 
 raw_path <- "data_raw/SCORE/replication/analyst data.RData"
-audit_dir <- "nosek_replicate_bear/output"
-table_dir <- file.path(audit_dir, "tables")
 dir.create("data", recursive = TRUE, showWarnings = FALSE)
-dir.create(audit_dir, recursive = TRUE, showWarnings = FALSE)
-dir.create(table_dir, recursive = TRUE, showWarnings = FALSE)
 
 score_raw <- new.env(parent = emptyenv())
 load(raw_path, envir = score_raw)
@@ -74,11 +69,10 @@ original_long <- orig_outcomes %>%
   ) %>%
   transmute(
     dataset = "SCORE",
-    metaid = journal,
+    metaid = NA_character_,
     studyid = doi,
     estimate_id = paste0(claim_id, "_original"),
     paper_id,
-    doi,
     claim_id,
     report_id = NA_character_,
     citation,
@@ -86,7 +80,7 @@ original_long <- orig_outcomes %>%
     discipline,
     year,
     source,
-    subset = "main",
+    subset = discipline,
     measure = "r",
     z = truncate_score_z(z_preferred),
     abs_z = abs(z),
@@ -145,11 +139,10 @@ replication_long <- main_replication_source %>%
   ) %>%
   transmute(
     dataset = "SCORE",
-    metaid = journal,
+    metaid = NA_character_,
     studyid = doi,
     estimate_id = paste0(claim_id, "_replication"),
     paper_id,
-    doi,
     claim_id,
     report_id,
     citation,
@@ -157,7 +150,7 @@ replication_long <- main_replication_source %>%
     discipline,
     year,
     source,
-    subset = "main",
+    subset = discipline,
     measure = "r",
     z = truncate_score_z(z_preferred),
     abs_z = abs(z),
@@ -187,7 +180,7 @@ score_replications <- bind_rows(original_long, replication_long) %>%
   calc_study_weights() %>%
   arrange(paper_id, claim_id, source) %>%
   select(
-    dataset, metaid, studyid, estimate_id, paper_id, doi, claim_id, report_id,
+    dataset, metaid, studyid, estimate_id, paper_id, claim_id, report_id,
     citation, journal, discipline, year, source, subset, measure, z, abs_z,
     z_operator, p, b, se, ss, weights, significant,
     replication_type, type_internal, z_source, z_from_coef, z_from_stat,
@@ -224,7 +217,6 @@ score_replication_pairs_main <- main_replication_source %>%
   ) %>%
   transmute(
     paper_id,
-    doi,
     claim_id,
     report_id,
     citation,
@@ -307,23 +299,7 @@ stopifnot(all(validation_checks$passed))
 stopifnot(!anyDuplicated(score_replications$estimate_id))
 
 saveRDS(score_replications, "data/SCORE_replications.rds")
-saveRDS(
-  score_replication_pairs_main,
-  file.path(audit_dir, "score_replication_pairs_main.rds")
-)
-write_csv_if_present(
-  validation_checks,
-  file.path(audit_dir, "score_replications_validation.csv")
-)
 
-capture.output(
-  {
-    cat("SCORE replications validation\n\n")
-    print(validation_checks, n = nrow(validation_checks), width = Inf)
-    cat("\nMain replication discipline counts\n\n")
-    print(count(score_replication_pairs_main, discipline), n = Inf)
-  },
-  file = file.path(table_dir, "score_replications_validation.txt")
-)
-
+cat("\nMain replication discipline counts:\n")
+print(count(score_replication_pairs_main, discipline), n = Inf)
 cat("\nSaved SCORE matched replication outputs.\n")

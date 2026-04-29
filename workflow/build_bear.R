@@ -365,10 +365,10 @@ dtlist[["clinicaltrials"]] <- readRDS("data/clinicaltrialsgov.rds") %>%
             method = "RCT",
             measure = measure_class,
             z = z,
-            b = effect,
+            z_operator = z_operator,
+            b = b,
             se = se,
-            ss = enrollment,
-            z_operator = "=")
+            ss = enrollment)
 
 
 

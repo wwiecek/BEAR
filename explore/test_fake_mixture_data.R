@@ -70,7 +70,7 @@ ff <- fit_mixture(z = df$z,
                   operator = df$operator,
                   weights = df$weights)
 ff
-plot_mixture_v3(ff, df)
+plot_mixture_v4(ff, df, exact_only = FALSE)
 
 ff <- fit_mixture(z = df$z, 
                   operator = df$operator,
@@ -95,4 +95,3 @@ loglik_op(theta = c(.43, .55, .01, 1.6, 2.1, 3.1, 3.7, .5),
 #                    k = k, weights = df$weight)
 # 
 # print(c(loglik_v2 = ll_v2, loglik_op = ll_op))
-

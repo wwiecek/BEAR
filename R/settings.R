@@ -48,7 +48,7 @@ bear_labels <- c(
   # "Sladekova" = "Sladekova et al",
   "WWC" = "What Works Clearing.\neducation",
   "Yang" = "Yang et al\necology & evolution",
-  "psymetadata" = "metapsydata\npsychology",
+  "psymetadata" = "psymetadata\npsychology",
   "Nuijten" = "Nuijten et al\nintelligence",
   "ManyLabs2" = "Many Labs 2\npsychology"
   # "Adda" = "Adda et al",

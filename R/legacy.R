@@ -72,6 +72,31 @@ plot_mixture <- function(fit, z, weights) {
     xlim(0,10) + theme_bw()
 }
 
+# Older absolute-z mixture plot preserved for historical exploratory scripts.
+plot_mixture_v3 <- function(fit, dt, nm = "", col = "black", xmax = 10, nbreaks = 25, ymax = 0.6) {
+  den_calc <- fit_density_calc_abs(fit, x = seq(0, min(500, max(abs(dt$z))), by = 0.1))
+  df <- den_calc$df
+  br <- c(seq(0, xmax, length = nbreaks), max(abs(dt$z)))
+  omega_val <- round(fit$omega[1], 2)
+  e_abs_z_val <- round(den_calc$E_abs_z, 1)
+  lab <- sprintf("atop(omega==%s, E(group('|',z,'|'))==%s)", omega_val, e_abs_z_val)
+
+  ggplot() +
+    geom_histogram(
+      data = dt %>% mutate(x = abs(z)),
+      aes(x = x, y = after_stat(density), weight = weights),
+      breaks = br, fill = col, alpha = 0.25, colour = NA
+    ) +
+    geom_line(data = df, aes(x = x, y = fz), linewidth = 0.8, colour = col) +
+    coord_cartesian(xlim = c(-0.1, xmax + 0.1), ylim = c(0, ymax)) +
+    labs(x = NULL, y = NULL, title = nm) +
+    theme_bw() +
+    theme(plot.title = element_text(size = 8),
+          axis.text = element_text(size = 7),
+          legend.position = "none") +
+    annotate("text", x = 7, y = ymax - 0.075, label = lab, parse = TRUE, size = 2.5)
+}
+
 # Erik's function that used to do analysis within Rmd. Current scripts
 # precalculate mixtures before plotting reports.
 fit_and_plot = function(z,truncated,k=4,weights){

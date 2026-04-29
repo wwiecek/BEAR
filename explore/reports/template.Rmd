@@ -66,7 +66,7 @@ We show the weighted histogram, together with the distribution of the absolute $
 ```{r warning=FALSE, echo=TRUE}
 # fit <- fit_mixture(z = d$z, operator = ifelse(d$truncated, "<", "="),
 #                    k = 4, weights = 1 / d$k)
-plot_mixture_v3(fit, d %>% mutate(weights = 1 / d$k))
+plot_mixture_v4(fit, d %>% mutate(weights = 1 / d$k), exact_only = FALSE)
 fit
 ```
 
@@ -153,4 +153,3 @@ exaggeration_plot(p=fit$p,m=fit$m,s=fit$sigma_SNR)
 # References
 
 <div id="refs"></div>
-

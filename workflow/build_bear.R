@@ -526,13 +526,9 @@ dtlist[["SCORE_claims"]] <- readRDS("data/SCORE_all_claims.rds") %>%
 
 psymetadata <- readRDS("data/psymetadata.rds")
   
-# disaggregate a large meta-analyses of intelligence and Many Labs replications
+# keep Many Labs 2 and the intelligence meta-meta-analysis out of psymetadata
 dtlist[["psymetadata"]]   <- dplyr::filter(psymetadata, !(subset %in% c("manylabs2018", "nuijten2020")))
-dtlist[["ManyLabs2"]]     <- dplyr::filter(psymetadata, subset == "manylabs2018") %>% 
-  mutate(
-    subset = NA_character_, orig.z = NA_real_, orig.z_operator = NA_character_,
-    orig.p = NA_real_, orig.b = NA_real_, orig.se = NA_real_, orig.ss = NA_real_
-  )
+dtlist[["ManyLabs2"]]     <- readRDS("data/ManyLabs2.rds")
 dtlist[["Nuijten"]]       <- dplyr::filter(psymetadata, subset == "nuijten2020") %>% 
   mutate(subset = NA_character_)
   

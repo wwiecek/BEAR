@@ -40,7 +40,7 @@ Here is a short summary of what’s included in BEAR:
     ##  8 Costello and Fox     ecology & evo…    88218    466   12927   6.82      0.419
     ##  9 Head et al           biomedicine     2010875      1  219220   9.17      0.622
     ## 10 Jager and Leek       biomedicine       15653      1    5322   2.94      0.777
-    ## 11 Many Labs 2          psychology         1414     25    1414   1         0.443
+    ## 11 Many Labs 2          psychology         1592     28     128  12.4       0.414
     ## 12 Metapsy              psychotherapy      4395     20    1494   2.94      0.484
     ## 13 Nuijten et al        intelligence       2439      1    1913   1.27      0.529
     ## 14 OpenSciCollab        psychology           97      1      97   1         0.351
@@ -67,7 +67,7 @@ from original studies.
     ##   <chr>             <int>   <int>  <int>    <int>      <dbl>
     ## 1 curated               7   29625     NA    83385      0.438
     ## 2 meta                  8   65488   7463   200145      0.422
-    ## 3 replications          3    1674     27     1778      0.468
+    ## 3 replications          3     388     30     1956      0.442
     ## 4 scrape                4 2527747     NA 11268943      0.648
 
 # Downloading BEAR data

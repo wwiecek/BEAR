@@ -44,7 +44,7 @@ gen_df <- function(
   
   df <- do.call(rbind, study_list)
   study_sizes        <- table(df$study_id)
-  df$weight          <- 1 / study_sizes[ as.character(df$study_id) ]
+  df$weights         <- 1 / study_sizes[ as.character(df$study_id) ]
   
   df
   
@@ -56,7 +56,7 @@ sapply(c(0,0,0,0,0, 5,5,5,5,5), function(le) {
     df <- gen_df(lambda_extra = le)
     ff <- fit_mixture(z = df$z, 
                       operator = df$operator,
-                      weight = df$weight)
+                      weights = df$weights)
     ff$omega[1]
 })
 
@@ -68,21 +68,19 @@ df <- gen_df(lambda_extra = 0,
              n = 10000)
 ff <- fit_mixture(z = df$z, 
                   operator = df$operator,
-                  weight = df$weight, 
-                  optimiser = "L-BFGS")
+                  weights = df$weights)
 ff
-plot_mixture(ff, df$z, df$weight)
+plot_mixture_v4(ff, df, exact_only = FALSE)
 
 ff <- fit_mixture(z = df$z, 
                   operator = df$operator,
-                  weight = df$weight, 
-                  optimiser = "Nelder-Mead")
+                  weights = df$weights)
 
 loglik_op(theta = c(.43, .55, .01, 1.6, 2.1, 3.1, 3.7, .5),
                    z        = abs(df$z),
           
                    operator = df$operator,
-                   k = 4, weights = df$weight)
+                   k = 4, weights = df$weights)
 
 # theta_true <- c(p[1:(k - 1)], sigma, omega)   # length 8
 # 
@@ -97,4 +95,3 @@ loglik_op(theta = c(.43, .55, .01, 1.6, 2.1, 3.1, 3.7, .5),
 #                    k = k, weights = df$weight)
 # 
 # print(c(loglik_v2 = ll_v2, loglik_op = ll_op))
-

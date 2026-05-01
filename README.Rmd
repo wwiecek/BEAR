@@ -1,14 +1,18 @@
 
 # Benchmarks of Empirical Accuracy in Research
 
-BEAR is a "meta"-database containing z values, effect sizes and standard errors 
+BEAR is a meta-database containing z values, effect sizes and standard errors 
 from existing databases in various scientific disciplines. 
 It doesn't contribute any new data, but 
 repackages and merges what's publicly available in a manner which we hope 
 is maximally user-friendly. Our intention is to help researchers interested in 
 issues of replication, exchangeability, meta-analysis etc. etc. The current release includes millions of z-values, including about 100,000 studies from curated datasets across a diverse range of fields.
 
-This package includes our entire workflow (in R), documentation, and results. **If you only want to grab data, head to the GitHub Releases page and grab `BEAR.rds` [at this link](https://github.com/wwiecek/BEAR/releases).** If you want to do more data work yourself, see _Downloading BEAR data_ below. To re-run everyting, see `main.R`.
+This package includes our entire workflow (in R), documentation, results, and optional modelling of empirical research. 
+
+- **If you want to grab data only**, head to the GitHub Releases page and grab `BEAR.rds` [at this link](https://github.com/wwiecek/BEAR/releases).** 
+- If you want to do more data work with individual datasets, see _Downloading BEAR data_ below. 
+- To re-run everything, including modelling of data, see `main.R`.
 
 
 ![](doc/bear_banner.png)
@@ -87,11 +91,13 @@ Once datasets are present in `data/`, `BEAR.rds` is stiched together in script `
 
 # Modelling datasets using mixture models
 
-Once `BEAR.rds` exists, you may choose to fit our preferred mixture models to the sets of z-values. To fit models described in the accompanying paper, we first do minimal postprocess (`workflow/postprocess.R`):
+Once `BEAR.rds` exists, you may choose to fit our preferred mixture models to the sets of z-values. These models are described in the accompanying paper: [A Statistical Case for Qualified Scientific Optimism](https://sites.stat.columbia.edu/gelman/research/unpublished/A_statistical_case_for_qualified_scientific_optimism.pdf).
+
+Before fitting models, we first do minimal postprocess (`workflow/postprocess.R`):
 
 - Add number of observations in each study and number of studies in each meta-analysis 
 - Add study weights as 1 / (N values reported in that study)
-- For large datasets (>50,000 rows), choose one z-value per study
+- For large datasets, thin out the dataset to 50,000 rows, preferring one z-value per paper
 - Truncate very large z values (z > 20) and replace "z = 0" statements with "z < 0.5" (z=0 would not work when fitting mixtures)
 
 In `workflow/fit_mixtures.R` we create a fit for each of the datasets, saved in `mixtures/`. This can take a few minutes per dataset. We include the up-to-date results in the repo.

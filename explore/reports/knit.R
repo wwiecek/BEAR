@@ -13,8 +13,11 @@ knit_with_df <- function(dataframe, fit = NULL, rmd_file = "template.Rmd", outpu
   params_env$d <- d
   if(!is.null(fit)) 
     params_env$fit <- fit
-  else
-    fit <- fit_mixture(z=d$z,truncated=d$truncated,k=4,weight=1/d$k)
+  else {
+    operator <- ifelse(d$truncated, "<", "=")
+    fit <- fit_mixture(z = d$z, operator = operator, k = 4, weights = 1 / d$k)
+    params_env$fit <- fit
+  }
   
   # Use rmarkdown::render with envir parameter to pass the data frame
   rmarkdown::render(

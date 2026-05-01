@@ -3,7 +3,7 @@
 
 suppressPackageStartupMessages(library(tidyverse))
 source("R/helpers.R")
-source("R/score_helpers.R")
+source("process/score_helpers.R")
 
 raw_path <- "data_raw/SCORE/replication/analyst data.RData"
 dir.create("data", recursive = TRUE, showWarnings = FALSE)

@@ -32,13 +32,6 @@ rmix = function(n,p,m,s){    # sample from a normal mixture
 pmix = function(x,p,m,s) # cdf of normal mixture (vector x)
   drop(p %*% sapply(x, function(x) pnorm(x,mean=m,sd=s)))
 
-qfun = function(q,p,m,s)   # quantile function scalar q
-  uniroot(function(x) pmix(x,p,m,s)-q, interval=c(-20,20))$root
-
-qmix = function(q,p,m,s)   # quantile function vector q
-  sapply(q, function(q) qfun(q,p=p,m=m,s=s) )
-
-
 ## Helper functions for mixture of half-normals -----
 dmixabs = function(x,p,m,s) # density of normal mixture (vector x)
   drop(p %*% sapply(x, function(x) (dnorm(-x,mean=m,sd=s) + dnorm(x,mean=m,sd=s))))
@@ -46,12 +39,6 @@ dmixabs = function(x,p,m,s) # density of normal mixture (vector x)
 pmixabs = function(x,p,m,s) # cumulative distr of |x|
   
   drop(p %*% sapply(x, function(x) pnorm(x,mean=m,sd=s) - pnorm(-x,mean=m,sd=s)))
-
-qfunabs = function(q,p,m,s) # quantile function scalar q
-  uniroot(function(x) pmixabs(x,p,m,s)-q, interval=c(0,20))$root
-
-qmixabs = function(q,p,m,s) # quantile function vector q
-  sapply(q, function(q) qfunabs(q,p=p,m=m,s=s))
 
 # Some faster alternatives to speed up calculations in newer versions -----
 
@@ -184,37 +171,24 @@ loglik_op <- function(theta, z, operator,
 
 # Mixture optimisation function -----
 
-optimise_mixture <- function(z, z_operator, weights, k = 4,
-                             legacy_mode = FALSE) {
+optimise_mixture <- function(z, z_operator, weights, k = 4) {
   z <- abs(z)
   
   ## starting values (WW added large sigma as last entry, sigma = k too inflexible)
   theta0 <- c(rep(1 / k, k - 1), 
               c(1.2, if (k > 2) 2:(k-1), max(z)),
               .5)
-  ui <- c(rep(-1, k - 1), rep(0, k), 0)
-  ui <- rbind(ui, cbind(diag(2 * k)))
-  ci <- c(-1, rep(0, k - 1), rep(1, k), 0) #sigma > 1!
-  
-  # Use this instead for omega < 1
+
   ui <- c(rep(-1, k - 1), rep(0, k), 0)
   ui <- rbind(ui, cbind(diag(2 * k)))
   ui <- rbind(ui, c(rep(0, 2*k-1), -1))  
   ci <- c(-1, rep(0, k - 1), rep(1, k), 0, -1) 
   
-  if(!legacy_mode){
-    opt <- constrOptim(theta0, f = loglik_op, ui = ui, ci = ci,
-                       method = "Nelder-Mead",
-                       z = z, operator = z_operator, 
-                       k = k, weights = weights,
-                       control = list(maxit = 1e4))
-  }else{
-    opt <- constrOptim(theta0, f = loglik_orig, ui = ui, ci = ci,
-                       method = "Nelder-Mead",
-                       z = z, truncated = (z_operator != "="), 
-                       k = k, weights = weights,
-                       control = list(maxit = 1e4))
-  }
+  opt <- constrOptim(theta0, f = loglik_op, ui = ui, ci = ci,
+                     method = "Nelder-Mead",
+                     z = z, operator = z_operator, 
+                     k = k, weights = weights,
+                     control = list(maxit = 1e4))
   cat("Objective function (divided by n): ", opt$value/length(z), "\n")
   par <- opt$par
   
@@ -234,7 +208,7 @@ optimise_mixture <- function(z, z_operator, weights, k = 4,
 # shorthand for df's
 fit_mixture_df <- function(df, ...) fit_mixture(z = df$z, 
                                                 operator = df$z_operator,
-                                                weight = df$weights,
+                                                weights = df$weights,
                                                 ...)
 
 # Wrapper around optimise_mixture which does some pre-processing of z's

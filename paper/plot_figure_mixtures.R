@@ -3,34 +3,17 @@ library(patchwork)
 source("R/settings.R")
 source("R/helpers.R")
 source("R/mix.R")
-source("R/plot_mixture.R")
 source("R/psr.R") # for powsignrep()
 source("R/fit_density_calc.R")
+source("R/plot_mixture.R")
 
-mfl <- load_all_mixtures()
-load("paper/bear_lists.Rdata")
+load_bear_mixture_inputs()
 
 set.seed(42)
 
 c_star <- 1.96
 
-ds_tbl <- read_csv("paper/power_sign_rep.csv") %>% 
-  mutate(group = bear_classification[dataset]) %>%
-  transmute(dataset, group, PoS = assurance) %>% 
-  arrange(desc(PoS))
-
-# Function that I use to create a mixture plot for a single dataset
-mk_small <- function(ds) {
-  # print(ds)
-  dt <- bear_list_thin[[ds]] %>% 
-    mutate(group = bear_classification[ds])
-  plot_mixture_v4(mfl[[ds]], dt, nm = bear_labels[ds], 
-                  color_map = bear_colors, nbreaks = 25,
-                  ymax = 0.7,
-                  meanpwr = round(ds_tbl$PoS[ds_tbl$dataset == ds], 2),
-                  show_corrected = TRUE,
-                  align_corrected_above_threshold = TRUE)
-}
+ds_tbl <- psr_table
 
 
 # cur <- ds_tbl %>% filter(group == "curated") %>% arrange(desc(PoS)) %>% pull(dataset)
@@ -41,10 +24,9 @@ curmet <- ds_tbl %>%
 rep <- ds_tbl %>% filter(group == "replications") %>% pull(dataset)
 scr <- ds_tbl %>% filter(group == "scrape")  %>% pull(dataset)
 
-# plotlist <- lapply(c(cur, met, rep, scr), mk_small)
-plotlist <- lapply(c(curmet, rep, scr), mk_small)
+plotlist <- lapply(c(curmet, rep, scr), plot_bear_mixture_panel)
 
-plotlist <- append(plotlist, list(plot_spacer()), after = 11)
+plotlist <- append(plotlist, list(plot_spacer()), after = 15)
 
 wrap_plots(plotlist, ncol = 4) +
   plot_annotation(caption = "|z|") &
@@ -56,4 +38,4 @@ wrap_plots(plotlist, ncol = 4) +
     # axis.ticks.y = element_blank()
   )
 
-ggsave("paper/figures/mixtures_plot.pdf", height = 17, width = 14, units = "cm")
+ggsave("paper/figures/mixtures_plot.pdf", height = 19, width = 14, units = "cm")

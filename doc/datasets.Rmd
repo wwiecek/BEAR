@@ -12,6 +12,13 @@ fontsize: 11pt
 bibliography: references.bib
 ---
 
+BEAR is available at https://github.com/wwiecek/BEAR. For those interested in accessing data for individual datasets (which often include additional variables and structure), BEAR stores each processed dataset as a separate `.rds` file under `data/`;
+dataset processing is carried out under `process/`. Raw source data are not
+distributed with the repository, but their source, availability, and relevant
+processing decisions are described below.
+
+
+
 ## Arel-Bundock et al 2022 (political science)
 
 **Reference:**
@@ -21,7 +28,7 @@ bibliography: references.bib
 assess statistical power in political science research
 
 **Data availability:**
-replication package (zip file with date 20241010) can be found at <https://osf.io/fgdet>. All data are in public domain. We notified one of the authors, Ryan Briggs, who was not aware of any licensing issues.
+replication package (zip file with date 20241010) can be found at <https://osf.io/fgdet>. All data are in public domain.
 
 **Data description and source:**
 Authors searched for (and emailed authors of) meta-analysis articles across 141 journals in political science; this led to "a dataset of 16,649 hypothesis tests, grouped in 351 meta-analyses, reported in 46 peer-reviewed meta-analytic articles"
@@ -30,7 +37,7 @@ Authors searched for (and emailed authors of) meta-analysis articles across 141 
 There is possibly a considerable overlap with Askarov et al dataset, but these two datasets are worth analysing separately given their different focus.
 
 **Data processing:**
-using the same code as original authors (replication package runs on makefiles), but skipping some additional processing that they've done, we write a single `estimates.csv` file (3.3 MB). No manipulation of data was done when creating BEAR dataset.
+using the same code as original authors (replication package that runs on makefiles), but skipping some additional processing that they've done for their paper. No manipulation of data was done when creating BEAR dataset. We verified that the distributions of z-values matched.
 
 
 
@@ -49,9 +56,8 @@ file `Mandatory data-sharing 30 Aug 2022.dta` may be downloaded from <https://gi
 The paper includes 64,000 economic estimates surveyed by Ioannidis et al. (2017) plus results of "searching through numerous databases, journal websites, and also an email survey of 109 authors known to have produced meta-analyses of economic topics. We cast the widest net possible to capture empirical economic estimates. Thus, some of the papers included in these meta-analyses were originally published in political science and psychology journals. Nevertheless, these meta-studies deal with economics topics." Later they note: "we collect 166,924 parameter estimates from 345 distinct research areas, of which
 20,121 were published in 24 of the leading general interest and field journals" The paper mentions 12,521 observations before and 2,537 after data sharing policies in 24 journals; reproducibility dataset has 32 journals (authors removed some smaller ones) and 22,172 rows.
 
-
 **Data processing:**
-We use the same file `Mandatory data-sharing 30 Aug 2022.dta` (11.6 MB) as in the reproducibility package. No additional manipulation of data was done when creating BEAR dataset.
+We use the same source file `Mandatory data-sharing 30 Aug 2022.dta` (11.6 MB) as in the reproducibility package. No additional manipulation of data was done when creating BEAR dataset.
 
 
 
@@ -107,13 +113,18 @@ None.
 are preregistration and pre-analysis plans associated with reduced p-hacking and publication bias in economics?
 
 **Data collection:**
-manually extracted test statistics from RCTs in leading economics journals published 2018-2021. Extraction was performed table by table. Each row corresponds to a single reported test statistic, linked to a paper-level identifier. Unlike most other sources in BEAR, this means we have dozens of estimates per paper: 314 articles with 16,390 estimates
+manually extracted test statistics from RCTs in leading economics journals
+published 2018-2021. Extraction was performed table by table. Each source row
+corresponds to a single reported test statistic, linked to a paper-level
+identifier. Unlike most other sources in BEAR, this means the source data have
+dozens of estimates per paper: 314 articles with 16,390 estimates. After BEAR
+processing and filtering, we retain 8,424 estimates.
 
 **Data availability:**
 replication data file `merged.dta` may be downloaded from <https://dataverse.harvard.edu/file.xhtml?fileId=7884702&version=1.0>
 
 **Data processing:**
-the authors’ reported z-statistics were used directly and the reported coefficients and standard errors were retained. No transformation of test statistics or data was required.
+the authors’ reported z-statistics were used directly and the reported coefficients and standard errors were retained. No transformation of test statistics or data was done by us.
 
 
 
@@ -130,7 +141,7 @@ the authors used large-scale text mining of MEDLINE abstracts and PubMed full te
 
 **Data availability:**
 the extracted p-value dataset is publicly available <https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/6FMTT3> (about 6GB of data)
-As per the hosting platform: this dataset is released under the Creative Commons Attribution-NonCommercial 4.0 International License. We extracted the relevant columns into `chavalarias.rds` dataset (25 MB).
+As per the hosting platform: this dataset is released under the Creative Commons Attribution-NonCommercial 4.0 International License.
 
 **Data processing:**
 z-values were derived from p-values assuming two-sided tests. P-value truncation operators were processed by collapsing variants such as `<<`, `<<<`, `<=`, `less than`, and `=<` into `<`. We dropped 0.7% of rows where p-values did not have a “plain” format and 0.08% of rows where truncation could not be unambiguously classified.
@@ -148,7 +159,7 @@ Trials which reported results at clinicaltrials.gov [@clinicaltrials2025]
 12 August 2025
 
 **Data source:**
-This is a set of flat file of studies obtained via <https://aact.ctti-clinicaltrials.org/> (over 2GBs of data for relevant tables) with relevant columns extracted and joined by us to produce a single table `clinicaltrials.gov_aug2025.rds` (12 MB of data).
+This is a set of flat file of studies obtained via <https://aact.ctti-clinicaltrials.org/> (over 2GBs of data for relevant tables), with relevant columns extracted and joined by us before BEAR processing.
 
 **Data availability:**
 terms and conditions for ClinicalTrials.gov are at <https://clinicaltrials.gov/about-site/terms-conditions>. We make distributions of derived effect sizes available in accordance with ToC's. We only use publicly available data and do not imply any endorsement of this work by National Library of Medicine, ClinicalTrials.gov or AACT.
@@ -156,15 +167,11 @@ terms and conditions for ClinicalTrials.gov are at <https://clinicaltrials.gov/a
 **Data processing:**
 extensive. We kept only studies where status was "Completed" and only rows of data where outcome type was "Primary". We set year to the year of `completion_date`.
 
-Both p-values and confidence intervals were reported. See _Standard procedure for dealing with p-values and confidence intervals_ below for how we created and chose the z-values. Briefly, we calculated z-values using two separate procedures (based on p-values and confidence intervals) and, if both were available, we made a judgement on which one was more appropriate using a pre-defined rule. ClinicalTrials.gov reports the number of sides for confidence intervals but not for p-values, so we treated p-values as two-sided. We dropped rows only when `z` was missing. Notably, infinite z-values can arise when `p_value` is recorded as exactly 0, and these are retained because they are not missing.
-
-The result of our data processing is `data/clinicaltrialsgov.rds`.
-
-
+See _Standard procedure for dealing with p-values and confidence intervals_ below for how we created and chose the z-values based on p-values and confidence intervals. Briefly, we calculated z-values using two separate procedures (based on p-values and confidence intervals) and, if both were available, we made a judgement on which one was more appropriate using a pre-defined rule. ClinicalTrials.gov reports the number of sides for confidence intervals but not for p-values, so we treated p-values as two-sided. We dropped rows only when `z` was missing. Notably, infinite z-values can arise when `p_value` is recorded as exactly 0, and these are retained because they are not missing.
 
 ## Cochrane Database of Systematic Reviews (CDSR)
 
-Trials with data available at CDSR, <https://www.cochranelibrary.com/> [@@cochrane2025cdsr]
+Trials with data available at CDSR, <https://www.cochranelibrary.com/> [@cochrane2025cdsr]
 
 **Snapshot date:**
 20 November 2025
@@ -218,7 +225,7 @@ Trials which reported results at the EU Clinical Trials Register, <https://www.c
 18 January 2026
 
 **Data collection:**
-we used R package `ctrdata` [@herold2025ctrdata] to create a snapshot of EU CTR (`collection = "euctr"`); we downloaded trial records with results only. We stored the downloaded records in a local SQLite database and extracted a fixed set of protocol and results fields plus several fields computed by `ctrdata` (trial phase, sample size, and a “first primary endpoint” p-value/size derived by the package). We saved the extracted flat dataset as `data_euctr_ctgov.rds`, but we only use the EUCTR portion of this combined dataset in BEAR.
+we used R package `ctrdata` [@herold2025ctrdata] to create a snapshot of EU CTR (`collection = "euctr"`); we downloaded trial records with results only. We stored the downloaded records in a local SQLite database and extracted a fixed set of protocol and results fields plus several fields computed by `ctrdata` (trial phase, sample size, and a “first primary endpoint” p-value/size derived by the package). We only use the EUCTR portion of this extraction in BEAR.
 
 **Data availability:**
 EUCTR is publicly accessible. The EUCTR legal notice notes that publication on EUCTR does not constitute an endorsement of the information reported.
@@ -245,11 +252,8 @@ PubMed papers that are open access, up to 2014. Authors used regular expressions
 **Data availability:**
 dataset available at <https://datadryad.org/dataset/doi:10.5061/dryad.79d43> under CC0 1.0 Universal licence.
 
-**Data file:**
-`head.rds` (derived from the Dryad files `p.values.csv` and `journal.categories.csv`, with an additional DOI-to-PMID matching table created by us).
-
 **Data processing:**
-we followed the same minimal clean-up steps (e.g. removing values found in large supplementary sections) as the original paper and also attached PubMed IDs to the dataset using DOI look-up. We saved a reduced analysis file `head.rds` (9 MB).
+we followed the same minimal clean-up steps (e.g. removing values found in large supplementary sections) as the original paper and also attached PubMed IDs to the dataset using DOI look-up.
 
 When constructing the BEAR dataset, we treated p-values recorded as exactly 0 as truncated and set the z-operator to `>`. We recoded all inequalities to sharp inequalities.
 
@@ -358,6 +362,9 @@ aggregated replication results from the public data package.
 we retained the 28 preregistered analyses included in the paper. Each row is a
 site-level replication estimate for one analysis, so the dataset has many more
 rows than analyses. We use the Many Labs 2 analysis identifier as `metaid`.
+Thus, a single finding such as `Kay.1` contributes one BEAR row for each
+sample/site estimate, rather than one row for each alternative statistical
+scale reported for the same sample.
 The additional grouping variable distinguishes analyses designated as primary
 or secondary by the original authors.
 
@@ -389,8 +396,12 @@ behavioural sciences.
 the SCORE replication package is available at https://osf.io/g5sny/. The package includes replication data as well as reviews of claims made in included papers.
 
 **Data description and source:**
-BEAR includes two SCORE outputs. Replications dataset has 548
-rows: 274 original claims and 274 matched replications. "All claims" dataset has a wider set with 3,066 claim-level rows from the set of replicated papers (but no replications of these claims), where we select one statistic per claim.
+BEAR includes two SCORE outputs. The replications source dataset has 548 rows:
+274 original claims and 274 matched replications. After BEAR processing and
+filtering, 267 matched replication rows are retained. The "all claims" source
+dataset has 3,066 claim-level rows from the set of replicated papers (but no
+replications of these claims), where we select one statistic per claim; after
+BEAR processing and filtering, 1,946 claim rows are retained.
 
 **Data processing:**
 For the matched replication output, original and replication statistics
@@ -401,7 +412,7 @@ papers.
 When several inputs are available for z-value construction in the all-claims dataset, we prefer 
 reported z, then reported t, then coefficient divided by standard error, then signed
 square-root F for numerator df 1, then a 95% confidence interval with a point estimate, then a two-sided p-value conversion. For
-the all-claims text, it is typical to have multiple statistics backing u pa single claim, e.g. "F(1,38) = 3.73, p = .033, partial eta-squared = .16; F(1,39) = 7.28, p = .010, partial eta-squared = .16; F<1". We created a rule to pick one statistic per claim using agreement with the SCORE significant/nonsignificant coding, statistic provenance, exactness,
+the all-claims text, it is typical to have multiple statistics backing up a single claim, e.g. "F(1,38) = 3.73, p = .033, partial eta-squared = .16; F(1,39) = 7.28, p = .010, partial eta-squared = .16; F<1". We created a rule to pick one statistic per claim using agreement with the SCORE significant/nonsignificant coding, statistic provenance, exactness,
 available effect and standard error, and text order. 
 
 **Additional grouping variables:**
@@ -412,7 +423,7 @@ discipline and SCORE source indicator.
 
 ## What Works Clearinghouse (education)
 
-Large database of education effect sizes created by Institute of Education Sciences <@wwc2025studyfindings>.
+Large database of education effect sizes created by Institute of Education Sciences [@wwc2025studyfindings].
 
 **Snapshot date:**
 17 May 2025
@@ -421,7 +432,10 @@ Large database of education effect sizes created by Institute of Education Scien
 flat files are available at <https://ies.ed.gov/ncee/wwc/studyfindings>. Per permissions and disclaimers section on that website: "Unless stated otherwise, all information on the U.S. Department of Education’s IES website … is in the public domain and may be reproduced, published, linked to, or otherwise used without permission from IES.”
 
 **Data collection:**
-WWC datasets have 13,054 findings (data-rows) across 1,908 reviews. The dataset includes effect sizes, but not standard errors, as well as p-values reported by the studies and p-values re-calculated by the WWC reviewers.
+The WWC source data have 13,054 findings (data rows) across 1,908 reviews.
+The dataset includes effect sizes, but not standard errors, as well as p-values
+reported by the studies and p-values re-calculated by the WWC reviewers. After
+BEAR processing and filtering, 12,045 findings are retained.
 
 **Data processing:**
 We retained only RCTs and quasi-experimental studies (98% of data altogether). Where available, we preferred effect sizes and p-values calculated by WWC to the ones reported by the studies. We replaced p-values that were equal to zero (this occurred in 3% of the dataset) with truncated p-value (i.e. assumed $p < 10^{-16}$). We calculated z-values from these p-values under assumption of two-sided tests.

@@ -55,6 +55,9 @@ file `Mandatory data-sharing 30 Aug 2022.dta` may be downloaded from <https://gi
 **Data description and source:**
 The paper includes 64,000 economic estimates surveyed by Ioannidis et al. (2017) plus results of "searching through numerous databases, journal websites, and also an email survey of 109 authors known to have produced meta-analyses of economic topics. We cast the widest net possible to capture empirical economic estimates. Thus, some of the papers included in these meta-analyses were originally published in political science and psychology journals. Nevertheless, these meta-studies deal with economics topics." Later they note: "we collect 166,924 parameter estimates from 345 distinct research areas, of which
 20,121 were published in 24 of the leading general interest and field journals" The paper mentions 12,521 observations before and 2,537 after data sharing policies in 24 journals; reproducibility dataset has 32 journals (authors removed some smaller ones) and 22,172 rows.
+The rows are meta-analysis estimate rows, not all results from each paper:
+the meta-analyses collect comparable effect sizes for specific economic
+phenomena and are not used only to identify papers for full extraction.
 
 **Data processing:**
 We use the same source file `Mandatory data-sharing 30 Aug 2022.dta` (11.6 MB) as in the reproducibility package. No additional manipulation of data was done when creating BEAR dataset.
@@ -113,18 +116,62 @@ None.
 are preregistration and pre-analysis plans associated with reduced p-hacking and publication bias in economics?
 
 **Data collection:**
-manually extracted test statistics from RCTs in leading economics journals
-published 2018-2021. Extraction was performed table by table. Each source row
-corresponds to a single reported test statistic, linked to a paper-level
-identifier. Unlike most other sources in BEAR, this means the source data have
-dozens of estimates per paper: 314 articles with 16,390 estimates. After BEAR
-processing and filtering, we retain 8,424 estimates.
+manually extracted test statistics from articles identified as RCT studies in
+leading economics journals published 2018-2021. Extraction was performed
+table by table. They collected coefficients of interest from results tables,
+excluding constants, balance checks, robustness checks, regression controls,
+and placebo tests. Each source row corresponds to a single reported test
+statistic, linked to a paper-level identifier. Unlike most other sources in
+BEAR, this means the source data have dozens of estimates per paper: 314
+articles with 16,390 estimates. After BEAR processing and filtering, we
+retain 15,917 RCT estimates.
 
 **Data availability:**
 replication data file `merged.dta` may be downloaded from <https://dataverse.harvard.edu/file.xhtml?fileId=7884702&version=1.0>
 
 **Data processing:**
-the authors’ reported z-statistics were used directly and the reported coefficients and standard errors were retained. No transformation of test statistics or data was done by us.
+the authors’ reported z-statistics were used directly and the reported
+coefficients and standard errors were retained. We retain RCT rows and use the
+source `zstat` field because the alternative `myz` field is not populated for
+all publication years in the replication file. We also retain a grouping
+variable distinguishing not preregistered studies, preregistered studies
+without a PAP, and preregistered studies with a PAP.
+
+
+## Lang 2025 (economics)
+
+**Reference:**
+@lang2025credible.
+
+**Research question:**
+how frequently are statistically significant rejections of nulls in economics false positives?
+
+**Data collection:**
+This paper uses empirical top-five economics papers published in 2021 and
+Brodeur, Cook, and Heyes dataset of 2015 and 2018 articles in 25 leading economics journals. 
+In each paper, research assistants checked abstracts and results text, kept
+estimates emphasized in abstracts or as principal results, used the authors'
+preferred specification when several specifications tested the same
+hypothesis, and excluded robustness checks or heterogeneity analyses unless
+heterogeneity was central to the article.
+
+The source data contain 3,885 extracted hypothesis tests from 736 papers. The
+main sample in the Lang paper is the subset of 2,082 tests with `1.96 <= |t| < 10`. 
+The paper also reports a one-null-per-article: 736 t-values,but without row or paper identifiers.
+We do not use the latter.
+
+**Data processing:**
+We use the full 3,885-test source table. 
+We use supplied t-statistics (derounded by Lang) 
+as the `z` value and compute two-sided p-values
+from `|z|`. We add source-article DOIs based on bibliographic
+metadata matching, and the reported or derounded coefficients and standard
+errors. The one-null-per-article t-vector is not represented in the row-level
+BEAR data because its source file has no identifiers that would support
+matching to the extracted-test table.
+
+**Notes:** Presumably there is a strong overlap with Brodeur in terms of selected papers, 
+but with differences in extracted values.
 
 
 

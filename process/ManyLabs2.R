@@ -3,7 +3,7 @@
 
 library(tidyverse)
 
-zip_path <- "data_raw/ManyLabs/OSFdata.zip"
+zip_path <- "data_raw/ManyLabs/reproducibility_package/OSFdata.zip"
 out_path <- "data/ManyLabs2.rds"
 
 primary_results_path <- "OSFdata/!!RawData/ML2_results_primary_all.rds"

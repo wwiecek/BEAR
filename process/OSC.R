@@ -1,6 +1,6 @@
 # Absolutely zero data work here
 
-osc_raw <- read.csv("data_raw/OSC/rpp_data.csv",header=TRUE)
+osc_raw <- read.csv("data_raw/OSC/reproducibility_package/rpp_data.csv",header=TRUE)
 # dt_osc <-  osc_raw %>% 
 #   transmute(p_orig = T_pval_USE..O., 
 #             p_repl = T_pval_USE..R.) %>% 

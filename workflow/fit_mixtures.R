@@ -6,7 +6,7 @@ source("R/settings.R")
 source("R/mix.R")
 # source("R/mix_v2.R") #faster alternatives!
 
-# bear <- readRDS("data/BEAR.rds")
+# bear <- readRDS("BEAR.rds")
 
 load("paper/bear_lists.Rdata")
 

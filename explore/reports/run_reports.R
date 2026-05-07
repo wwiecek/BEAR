@@ -7,7 +7,7 @@ for(nm in nms) {
 }
 
 # Load BEAR data
-bear <- readRDS("data/BEAR.rds")
+bear <- readRDS("BEAR.rds")
 bear_list <- 
   bear %>% 
   mutate(truncated = ifelse(is.na(truncated), "not truncated", truncated)) %>% 

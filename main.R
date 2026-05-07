@@ -14,7 +14,7 @@
 # Stitching together of cleaned up datasets is done in...
 
 source("workflow/build_bear.R")
-# Output: data/BEAR.rds
+# Output: BEAR.rds
 
 
 # (2) post-process data to generate datasets for fitting mixtures

@@ -7,7 +7,7 @@ source("R/helpers.R")
 source("R/settings.R")
 source("R/mix.R")
 
-bear <- readRDS("data/BEAR.rds")
+bear <- readRDS("BEAR.rds")
 
 # Fitting ------
 

@@ -7,7 +7,7 @@ library(kableExtra)
 library(scales)
 
 source("R/settings.R")
-bear <- readRDS("data/BEAR.rds")
+bear <- readRDS("BEAR.rds")
 
 
 url <- "https://docs.google.com/spreadsheets/d/1x2A4pgNDfrXRTdzI_LX219twXDXPPPiS7DRw1s6dHyo/edit?gid=0#gid=0"

@@ -575,7 +575,6 @@ bear <- dtlist %>%
   lapply(filter, !is.na(z)) %>% 
   bind_rows(.id = "dataset")
 
-saveRDS(bear, "data/BEAR.rds")
 saveRDS(bear, "BEAR.rds")
 
 # Refresh README

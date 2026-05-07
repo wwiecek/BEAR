@@ -11,13 +11,19 @@ source("R/helpers.R")
 # Brodeur et al ------
 
 dtlist[["Brodeur"]] <- readRDS("data/Brodeur.rds") %>% 
-  # filter(method=="RCT") %>%
+  filter(method == "RCT") %>%
   transmute(
     metaid = NA,
     studyid = title,
     method = method,
     measure = NA,
-    z = myz,
+    subset = case_when(
+      as.numeric(prereg) == 1 & as.numeric(preanalysisplan) == 1 ~
+        "preregistered with PAP",
+      as.numeric(prereg) == 1 ~ "preregistered without PAP",
+      TRUE ~ "not preregistered"
+    ),
+    z = zstat,
     b = coeff,
     se = stderror,
     year = year)
@@ -26,6 +32,23 @@ dtlist[["Brodeur"]] <- readRDS("data/Brodeur.rds") %>%
 # mutate(
 # prereg = factor(prereg, labels=c("not pre-registered","pre-registered")), 
 # papregistry = factor(papregistry,labels=c("no analysis plan","analysis plan"))) %>% 
+
+
+
+# Lang ------
+
+dtlist[["Lang"]] <- readRDS("data/Lang.rds") %>%
+  transmute(
+    metaid = NA,
+    studyid = studyid,
+    method = method,
+    measure = NA,
+    z = z,
+    b = b,
+    se = se,
+    year = year,
+    subset = lang_source
+  )
 
 
 

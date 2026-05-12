@@ -4,10 +4,10 @@
 library(tidyverse)
 
 chava <- rbind(
-  read_csv("data_raw/Chavalarias/medline_full_txt_pv.csv", 
+  read_csv("data_raw/Chavalarias/data/medline_full_txt_pv.csv", 
            col_names = c("studyid", "journal", "operator", "p", "year", "p_format", "flag")) %>% 
     mutate(source = "PMC full text"),
-  read_csv("data_raw/Chavalarias/medline_pt.csv", 
+  read_csv("data_raw/Chavalarias/data/medline_pt.csv", 
            col_names = c("operator", "p", "p_format", "year", "journal", "studyid", "flag")) %>% 
     mutate(source = "MEDLINE")
 ) 

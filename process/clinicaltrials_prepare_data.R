@@ -64,5 +64,5 @@ eff <- oa %>%
   ) 
 
 
-saveRDS(eff, file = "data_raw/clinicaltrials.gov/clinicaltrials.gov_aug2025.rds") 
+saveRDS(eff, file = "data_raw/clinicaltrials.gov/derived/clinicaltrials.gov_aug2025.rds") 
 

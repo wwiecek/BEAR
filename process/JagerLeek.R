@@ -1,5 +1,5 @@
 library(tidyverse)
-load("data_raw/JagerLeek/pvalueData.rda")
+load("data_raw/JagerLeek/data/pvalueData.rda")
 
 pvalueData %>% 
   data.frame() %>% 

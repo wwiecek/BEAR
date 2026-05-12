@@ -6,7 +6,7 @@ library(lubridate)
 
 source("R/z_derivation_helpers.R")
 
-in_path <- "data_raw/eutrials/data_euctr.rds"
+in_path <- "data_raw/eutrials/derived/data_euctr.rds"
 out_path <- "data/euctr.rds"
 
 d_raw <- readRDS(in_path)

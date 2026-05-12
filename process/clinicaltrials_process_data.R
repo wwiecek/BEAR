@@ -7,7 +7,7 @@ library(lubridate)
 
 source("R/z_derivation_helpers.R")
 
-in_path <- "data_raw/clinicaltrials.gov/clinicaltrials.gov_aug2025.rds"
+in_path <- "data_raw/clinicaltrials.gov/derived/clinicaltrials.gov_aug2025.rds"
 out_path <- "data/clinicaltrialsgov.rds"
 
 eff <- readRDS(in_path)

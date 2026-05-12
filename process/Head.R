@@ -8,8 +8,8 @@ library(tidyverse)
 # Load the p values data file, and the file containing the FoR categories for each journal
 # d <- read.csv("raw_data/extracted.p.values.11-June-2014.cleaned.csv", row.names=1)
 
-d <- read.csv("data_raw/Head/1. TEXT_MINING/raw_data/p.values.csv")
-journal.categories <- read.csv("data_raw/Head/1. TEXT_MINING/raw_data/journal.categories.csv", row.names=1)
+d <- read.csv("data_raw/Head/reproducibility_package/1. TEXT_MINING/raw_data/p.values.csv")
+journal.categories <- read.csv("data_raw/Head/reproducibility_package/1. TEXT_MINING/raw_data/journal.categories.csv", row.names=1)
 
 # Get rid of papers that did not yield any p values
 d <- d[!is.na(d$p.value), ]
@@ -40,13 +40,13 @@ journal.categories$journal.name <- journal.categories$Abbreviation
 d <- merge(d, journal.categories,by="journal.name")
 
 # WW addition: join PMIDs created by grab_pmid.R and then write to new RDS
-pmid <- readRDS("data_raw/Head/doi2pmid_progress.rds")
+pmid <- readRDS("data_raw/Head/derived/doi2pmid_progress.rds")
 
 d %>% 
   left_join(rename(pmid, first.doi = doi)) %>% 
   select(journal.name, first.doi, pmid, p.value, operator, section, Category, year) %>% 
   saveRDS("data/Head.rds") #compression: 30x smaller than CSV
-  # write_csv("data_raw/Head/p_values_cleaned_ww.csv")
+  # write_csv("data_raw/Head/derived/p_values_cleaned_ww.csv")
 
 rm(d)
 rm(pmid)

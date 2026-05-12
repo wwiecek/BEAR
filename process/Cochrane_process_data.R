@@ -5,9 +5,9 @@ library(stringr)
 library(metafor)
 
 # Review data + extracted data from each report
-csv_path <- "data_raw/Cochrane/cdsr_interventions_19nov2025.csv"
+csv_path <- "data_raw/Cochrane/data/cdsr_interventions_19nov2025.csv"
 coch_csv <- readr::read_csv(csv_path)
-results_path <- "data_raw/Cochrane/cdsr_rm5_results.rds"
+results_path <- "data_raw/Cochrane/data/cdsr_rm5_results.rds"
 results_all <- readRDS(results_path)
 
 

@@ -5,7 +5,7 @@ library(purrr)
 
 # 1. Point to your CSV -----------------------------------------------------
 # csv_path <- "data/Cochrane/cdsr_child_18nov2025.csv"
-csv_path <- "data/Cochrane/cdsr_interventions_19nov2025.csv"
+csv_path <- "data_raw/Cochrane/data/cdsr_interventions_19nov2025.csv"
 coch_csv <- readr::read_csv(csv_path)
 
 # 2. Where to store the .rm5 files ----------------------------------------
@@ -13,7 +13,7 @@ dl_path <- "data/Cochrane/rm5"
 fs::dir_create(dl_path)
 
 # 3. Where to store progress ----------------------------------------------
-checkpoint_path <- "data/Cochrane/cdsr_rm5_results.rds"
+checkpoint_path <- "data_raw/Cochrane/data/cdsr_rm5_results.rds"
 
 # 4. Helper functions -----------------------------------------------------
 

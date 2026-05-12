@@ -6,7 +6,7 @@ library(data.table)  # fast I/O and binding
 
 ## ---- YOUR INPUT VECTOR -----------------------------------------------
 # Example: pull unique DOIs from your 'head' data frame
-head <- read_csv("data_raw/Head/p_values_cleaned_ww.csv")
+head <- read_csv("data_raw/Head/derived/p_values_cleaned_ww.csv")
 hdoi <- unique(head$first.doi)
 
 ## ---- CONFIG -----------------------------------------------------------
@@ -14,9 +14,9 @@ chunksize   <- 1000              # how many DOIs per save‑point
 max_tries   <- 3                 # retries for transient errors
 wait_secs   <- 2                 # pause between retries
 sleep_after <- 1                 # politeness pause after each batch
-out_rds     <- "data_raw/Head/doi2pmid_progress.rds"
+out_rds     <- "data_raw/Head/derived/doi2pmid_progress.rds"
 out_csv     <- sub("\\.rds$", ".csv", out_rds)
-log_file    <- "data_raw/Head/doi2pmid_log.txt"
+log_file    <- "data_raw/Head/derived/doi2pmid_log.txt"
 
 
 ## ---- RESUME OR START FRESH -------------------------------------------

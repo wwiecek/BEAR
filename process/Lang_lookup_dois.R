@@ -5,7 +5,7 @@ library(tidyverse)
 library(httr2)
 
 input_path <- "data/Lang.rds"
-output_path <- "data_raw/Lang/lang_doi_candidates.csv"
+output_path <- "data_raw/Lang/derived/lang_doi_candidates.csv"
 crossref_mailto <- Sys.getenv("CROSSREF_MAILTO", unset = NA_character_)
 lookup_keys <- c("paper_id", "source_title", "citation", "journal", "year",
                  "lang_source")

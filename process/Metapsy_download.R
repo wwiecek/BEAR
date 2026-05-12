@@ -11,4 +11,4 @@ sets <- sets[sets != "template"]
 
 metapsy_dt <- list()
 for(i in 1:length(sets)) metapsy_dt[[sets[i]]] <- getData(sets[i])$data
-saveRDS(metapsy_dt, file = "data_raw/Metapsy/Metapsy_Jan2026.rds")
+saveRDS(metapsy_dt, file = "data_raw/Metapsy/data/Metapsy_Jan2026.rds")

@@ -1,5 +1,5 @@
 library(tidyverse)
-readRDS("data_raw/Metapsy/Metapsy_Jan2026.rds") %>% 
+readRDS("data_raw/Metapsy/data/Metapsy_Jan2026.rds") %>% 
   lapply(function(df) {
     
     measure <- "Hedges' g"

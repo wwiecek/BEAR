@@ -1,5 +1,8 @@
-dfs <- lapply(list.files("data_raw/Sladekova/", full.names = TRUE), read.csv)
-names(dfs) <- list.files("data_raw/Sladekova/")
+library(tidyverse)
+
+raw_files <- list.files("data_raw/Sladekova/data", full.names = TRUE)
+dfs <- lapply(raw_files, read.csv)
+names(dfs) <- basename(raw_files)
 
 # sort(table(unlist(lapply(dfs, function(f) names(f)))), decreasing = TRUE)
 

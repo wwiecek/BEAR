@@ -26,7 +26,7 @@ library(dplyr)
 # Important: ctrdata-trial-concepts Trial concepts implemented across registers
 
 # Connect or create local SQLite database
-db = nodbi::src_sqlite(dbname = "data_raw/eutrials/euctr_trials.sqlite", collection = "euctr")
+db = nodbi::src_sqlite(dbname = "data_raw/eutrials/data/euctr_trials.sqlite", collection = "euctr")
 
 # Function to download batch
 download_batch = function(query, db, collection = "EUCTR") {
@@ -43,7 +43,7 @@ start_date = as.Date("1990-01-01")
 end_date = as.Date("2026-01-01")
 date_seq = seq.Date(from = start_date, to = end_date, by = "year")
 
-if (!file.exists("euctr_trials.sqlite")){
+if (!file.exists("data_raw/eutrials/data/euctr_trials.sqlite")){
   for (i in 1:(length(date_seq)-1)) {
     query = ctrGenerateQueries(
       startAfter=date_seq[i],
@@ -141,7 +141,7 @@ d1$estimand=gsub("PARAMETER_TYPE.","",d1$estimand)
 d1$side=gsub("CONF_INTERVAL_SIDE.","",d1$side)
 d1$collection <- "EUCTR"
 
-saveRDS(d1, file = "data_raw/eutrials/data_euctr.rds")
+saveRDS(d1, file = "data_raw/eutrials/derived/data_euctr.rds")
 
 # Disconnect when done
 DBI::dbDisconnect(db$con, shutdown = TRUE)

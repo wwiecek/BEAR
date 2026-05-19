@@ -130,7 +130,9 @@ For both original and replication rows, `z` is derived with this hierarchy:
 
 The sign hint is taken from the best available direction information:
 coefficient sign, effect-size sign, converted-`r` sign, or reported-statistic
-sign. Very large or infinite z-values are truncated to `[-20, 20]`.
+sign. SCORE retains untruncated BEAR-level z-values, including infinite values
+when a source p-value is recorded as zero; mixture fitting may truncate extreme
+z-values later.
 
 The canonical replication output uses the replication package's converted
 correlation scale where available:

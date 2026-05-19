@@ -211,29 +211,37 @@ fit_mixture_df <- function(df, ...) fit_mixture(z = df$z,
                                                 weights = df$weights,
                                                 ...)
 
-# Wrapper around optimise_mixture which does some pre-processing of z's
-fit_mixture <- function(z, 
-                        operator, 
-                        z_star = 25, 
-                        ...){
+# Prepare BEAR z values for mixture work while leaving stored inputs unchanged.
+prepare_mixture_z <- function(z, operator = NULL, z_star = 25,
+                              report = FALSE) {
   if(is.null(operator))
     operator <- rep("=", length(z))
-  
+
   z <- abs(z)
-  
+
   ind <- which(z==0)
   z[ind] <- 0.5
   operator[ind] <- "<"
-  if(length(ind) > 0)
+  if(report && length(ind) > 0)
     message(paste("Changed", length(ind), "'z = 0' cases to 'z < 0.5' to avoid zero likelihood"))
-  
+
   ind <- which(z > z_star)
   z[ind] <- z_star
   operator[ind] <- ">"
-  if(length(ind) > 0)
+  if(report && length(ind) > 0)
     message(paste("Truncated", length(ind), "'z > ", z_star, "' cases to avoid numerical overflows"))
-  
-  fit <- optimise_mixture(z = z, z_operator = operator, ...)
+
+  list(z = z, operator = operator)
+}
+
+# Wrapper around optimise_mixture which does some pre-processing of z's
+fit_mixture <- function(z,
+                        operator,
+                        z_star = 25,
+                        ...){
+  prepared <- prepare_mixture_z(z, operator, z_star, report = TRUE)
+
+  fit <- optimise_mixture(z = prepared$z, z_operator = prepared$operator, ...)
   fit$sigma_SNR <- sqrt(fit$sigma^2 - 1)          # stdev van SNR
   
   return(fit)

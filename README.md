@@ -31,31 +31,31 @@ the doc folder](doc/datasets.pdf).
 Here is a short summary of what’s included in BEAR:
 
     ## # A tibble: 23 × 7
-    ##    dataset              domain                 n_values n_meta n_study mean_k pct_signif
-    ##    <chr>                <chr>                     <int>  <int>   <int>  <dbl>      <dbl>
-    ##  1 Arel-Bundock et al   political science         16649     46    2252   7.39      0.467
-    ##  2 Askarov et al        economics                 21408    352    1913  11.2       0.520
-    ##  3 Barnett and Wren     biomedicine             1306551      1  416027   3.14      0.808
-    ##  4 Bartos et al         exercise                   2239    215    2239   1         0.263
-    ##  5 Brodeur et al        economics                 15917      1     328  48.5       0.357
-    ##  6 Chavalarias et al    biomedicine             7935864      1 1887178   4.21      0.627
-    ##  7 Cochrane             medicine & health         38058   5871   29327   1.30      0.311
-    ##  8 Costello and Fox     ecology & evolution       88218    466   12927   6.82      0.419
-    ##  9 Head et al           biomedicine             2010875      1  219220   9.17      0.622
-    ## 10 Jager and Leek       biomedicine               15653      1    5322   2.94      0.777
-    ## 11 Lang                 economics                  3885      1     736   5.28      0.576
-    ## 12 Many Labs 2          psychology                 1592     28     128  12.4       0.414
-    ## 13 Metapsy              psychotherapy              4395     20    1494   2.94      0.484
-    ## 14 Nuijten et al        intelligence               2439      1    1913   1.27      0.529
-    ## 15 OpenSciCollab        psychology                   97      1      97   1         0.351
-    ## 16 SCORE, all claims    social & behavioural …     1946      1     160  12.2       0.748
-    ## 17 SCORE replications   social & behavioural …      267      1     163   1.64      0.644
-    ## 18 Sladekova et al      psychology                11540    406   11540   1         0.590
-    ## 19 What Works Clearing. education                 12045      1    1408   8.55      0.334
-    ## 20 Yang et al           ecology & evolution       17638     87    3796   4.65      0.417
-    ## 21 clinicaltrials.gov   clinical trials           41367      1   16597   2.49      0.484
-    ## 22 EUDRA                clinical trials            8650      1    8650   1         0.414
-    ## 23 psymetadata          psychology                 8514      1     721  11.8       0.358
+    ##    dataset              domain                       n_values n_meta n_study mean_k pct_signif
+    ##    <chr>                <chr>                           <int>  <int>   <int>  <dbl>      <dbl>
+    ##  1 Arel-Bundock et al   political science               16649     46    2252   7.39      0.467
+    ##  2 Askarov et al        economics                       21408    352    1913  11.2       0.520
+    ##  3 Barnett and Wren     biomedicine                     50000      1   47543   1.05      0.833
+    ##  4 Bartos et al         exercise                         2239    215    2239   1         0.263
+    ##  5 Brodeur et al        economics                       15917      1     328  48.5       0.357
+    ##  6 Chavalarias et al    biomedicine                     50000      1   49458   1.01      0.628
+    ##  7 Cochrane             medicine & health               38058   5871   29327   1.30      0.311
+    ##  8 Costello and Fox     ecology & evolution             88218    466   12927   6.82      0.419
+    ##  9 Head et al           biomedicine                     50000      1   48175   1.04      0.609
+    ## 10 Jager and Leek       biomedicine                     15653      1    5322   2.94      0.777
+    ## 11 Lang                 economics                        3885      1     736   5.28      0.576
+    ## 12 Many Labs 2          psychology                       1592     28     128  12.4       0.414
+    ## 13 Metapsy              psychotherapy                    4395     20    1494   2.94      0.484
+    ## 14 Nuijten et al        intelligence                     2439      1    1913   1.27      0.529
+    ## 15 OpenSciCollab        psychology                         97      1      97   1         0.351
+    ## 16 SCORE, all claims    social & behavioural scienc…     1946      1     160  12.2       0.748
+    ## 17 SCORE replications   social & behavioural scienc…      267      1     163   1.64      0.644
+    ## 18 Sladekova et al      psychology                      11540    406   11540   1         0.590
+    ## 19 What Works Clearing. education                       12045      1    1408   8.55      0.334
+    ## 20 Yang et al           ecology & evolution             17638     87    3796   4.65      0.417
+    ## 21 clinicaltrials.gov   clinical trials                 41367      1   16597   2.49      0.484
+    ## 22 EUDRA                clinical trials                  8650      1    8650   1         0.414
+    ## 23 psymetadata          psychology                       8514      1     721  11.8       0.358
 
 Datasets fall into four main categories that will be useful for
 different types of metascientific investigations: curated datasets of
@@ -72,7 +72,7 @@ from original studies.
     ## 1 curated               8   30513     NA    94763      0.436
     ## 2 meta                  8   65488   7463   200145      0.422
     ## 3 replications          3     388     30     1956      0.442
-    ## 4 scrape                4 2527747     NA 11268943      0.648
+    ## 4 scrape                4  150498     NA   165653      0.698
 
 # Downloading BEAR data
 
@@ -133,23 +133,23 @@ significance, replication, correct sign) in `workflow/calculate_psr.R`
     ## # A tibble: 18 × 6
     ##    dataset              omega   PoS PoS_80 replication  sign
     ##    <chr>                <dbl> <dbl>  <dbl>       <dbl> <dbl>
-    ##  1 Nuijten et al         0.85  0.48   0.29        0.47  0.88
-    ##  2 Askarov et al         0.71  0.48   0.29        0.47  0.88
-    ##  3 ctgov / EU CTR        0.95  0.47   0.28        0.45  0.87
-    ##  4 SCORE, all claims     0.12  0.47   0.27        0.45  0.88
-    ##  5 Metapsy               0.83  0.46   0.27        0.45  0.88
-    ##  6 Lang                  0.24  0.43   0.23        0.41  0.86
+    ##  1 Askarov et al         0.71  0.48   0.3         0.47  0.88
+    ##  2 Nuijten et al         0.85  0.48   0.29        0.47  0.88
+    ##  3 SCORE, all claims     0.13  0.47   0.28        0.46  0.88
+    ##  4 ctgov / EU CTR        0.95  0.47   0.28        0.45  0.87
+    ##  5 Metapsy               0.74  0.43   0.23        0.42  0.87
+    ##  6 Lang                  0.24  0.42   0.22        0.41  0.86
     ##  7 Arel-Bundock et al    0.65  0.4    0.2         0.38  0.85
-    ##  8 Costello and Fox      0.79  0.39   0.23        0.37  0.79
-    ##  9 psymetadata           0.67  0.33   0.21        0.31  0.72
+    ##  8 Costello and Fox      0.79  0.39   0.24        0.37  0.79
+    ##  9 psymetadata           0.67  0.32   0.21        0.31  0.72
     ## 10 Brodeur et al         0.68  0.32   0.14        0.3   0.82
     ## 11 What Works Clearing.  0.88  0.32   0.17        0.3   0.76
-    ## 12 Cochrane              0.7   0.23   0.1         0.21  0.69
-    ## 13 Bartos et al          0.82  0.23   0.09        0.2   0.76
-    ## 14 SCORE replications    0.71  0.51   0.34        0.5   0.88
-    ## 15 Many Labs 2           0.87  0.41   0.33        0.4   0.75
-    ## 16 OpenSciCollab         1     0.36   0.22        0.34  0.79
-    ## 17 Chavalarias et al     0.2   0.51   0.32        0.5   0.89
+    ## 12 Cochrane              0.7   0.24   0.1         0.21  0.69
+    ## 13 Bartos et al          0.82  0.23   0.09        0.21  0.76
+    ## 14 SCORE replications    0.69  0.5    0.33        0.49  0.87
+    ## 15 Many Labs 2           0.87  0.41   0.33        0.39  0.75
+    ## 16 OpenSciCollab         1     0.35   0.22        0.34  0.79
+    ## 17 Chavalarias et al     0.19  0.51   0.32        0.5   0.89
     ## 18 Barnett and Wren      0.08  0.32   0.13        0.3   0.82
 
 `omega` is relative publication probability based on crossing of the

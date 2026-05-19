@@ -74,7 +74,7 @@ score_all_claims_fragments <- bind_cols(claim_fragments, parsed_fragments) %>%
     ),
     selection_agrees_coded = !is.na(fragment_significant) &
       fragment_significant == selected_significant,
-    z = truncate_score_z(z)
+    z = z
   ) %>%
   arrange(paper_id, claim4_id, fragment_id)
 
@@ -210,7 +210,7 @@ validation_checks <- tibble(
     ) < 0.02,
     score_all_claims_fragments %>%
       filter(z_source == "two_sided_p", p_operator == "=", p > 0) %>%
-      summarise(ok = all(abs(abs(z) - z_from_two_sided_p(p)) < 1e-10)) %>%
+      summarise(ok = all(abs(abs(z) - z_from_p(p)) < 1e-10)) %>%
       pull(ok),
     score_all_claims_fragments %>%
       filter(z_source == "two_sided_p", p_operator == "<") %>%

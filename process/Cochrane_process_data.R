@@ -146,4 +146,29 @@ studies_long <- results_all_fixed %>%
     phase              = NA
   )
 
-saveRDS(studies_long, file = "data/Cochrane.rds")
+
+# Calculate the z-values using our preferred specification
+# Probit for events (important!)
+# And SMD for continuous data
+
+studies_long <- dplyr::filter(studies_long, total1 > 0, total2 > 0)
+
+# In 0.3% of data (or something like that) SMD cannot be calculated 
+# because recorded SD is zero
+# but only in 10 rows the effect size/SD is then non-zero
+# (we still keep a lot of effect sizes == 0 after this procedure!)
+cdsr <- rbind(
+  dplyr::filter(studies_long, outcome.flag=="CONT") %>% 
+    escalc(m1i=mean1,sd1i=sd1,n1i=total1,
+           m2i=mean2,sd2i=sd2,n2i=total2,measure="SMD",
+           data=., append=TRUE) %>% 
+    as_tibble() %>% mutate(measure = "SMD"),
+  dplyr::filter(studies_long, outcome.flag=="DICH") %>% 
+    escalc(ai=events1,n1i=total1,
+           ci=events2,n2i=total2,measure="PBIT",
+           data=.,append=TRUE) %>% 
+    as_tibble() %>% mutate(measure = "probit")
+) %>% 
+  mutate(z = yi/sqrt(vi))
+
+saveRDS(cdsr, file = "data/Cochrane.rds")

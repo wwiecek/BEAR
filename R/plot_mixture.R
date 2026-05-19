@@ -39,7 +39,7 @@ plot_bear_mixture_panel <- function(dataset,
                                     ymax = 0.7,
                                     show_corrected = TRUE,
                                     align_corrected_above_threshold = TRUE,
-                                    exact_only = TRUE,
+                                    exact_only = FALSE,
                                     ...) {
   dt <- bear_list_thin[[dataset]] %>%
     mutate(group = bear_classification[dataset])
@@ -65,7 +65,7 @@ plot_mixture_v4 <- function(fit, dt, nm = "", col = "black", color_map = NULL,
                             annotate = "psr", meanpwr = NULL,
                             show_corrected = FALSE,
                             align_corrected_above_threshold = FALSE,
-                            exact_only = TRUE) {
+                            exact_only = FALSE) {
   
   # Use color_map if provided and col is default
   if (!is.null(color_map) && col == "black" && "group" %in% names(dt)) {
@@ -74,10 +74,17 @@ plot_mixture_v4 <- function(fit, dt, nm = "", col = "black", color_map = NULL,
 
   if (!"z_operator" %in% names(dt)) dt$z_operator <- "="
   dt <- dt %>% mutate(z_operator = ifelse(is.na(z_operator), "=", z_operator))
+  exact_source_z <- abs(dt$z[dt$z_operator == "="])
+  exact_source_z <- exact_source_z[!is.na(exact_source_z)]
+
+  prepared <- prepare_mixture_z(dt$z, dt$z_operator)
+  dt$z <- prepared$z
+  dt$z_operator <- prepared$operator
+
   hist_dt <- if (exact_only) {
     dt %>% filter(z_operator == "=")
   } else {
-    dt
+    resample_inequalities_for_hist(dt, exact_source_z)
   }
   if (nrow(hist_dt) == 0) stop("No exact z values available for histogram.")
   
@@ -131,4 +138,22 @@ plot_mixture_v4 <- function(fit, dt, nm = "", col = "black", color_map = NULL,
                                     parse = TRUE, size = 2.5) }
   
     # annotate("text", x = 5, y = ymax - 0.075, label = lab, parse = TRUE, size = 2.5)
+}
+
+# Replace censored rows by draws from exact rows beyond the same threshold.
+resample_inequalities_for_hist <- function(dt, exact_source_z, z_star = 25) {
+  for(op in c("<", ">")) {
+    for(threshold in unique(dt$z[dt$z_operator == op])) {
+      ind <- dt$z_operator == op & dt$z == threshold
+      pool <- if(op == "<") {
+        exact_source_z[exact_source_z < threshold]
+      } else {
+        exact_source_z[exact_source_z > threshold]
+      }
+      if(length(pool) > 0)
+        dt$z[ind] <- pmin(sample(pool, sum(ind), replace = TRUE), z_star)
+    }
+  }
+
+  dt
 }

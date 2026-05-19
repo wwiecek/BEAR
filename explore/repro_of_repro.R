@@ -1,5 +1,5 @@
 source("R/match_studyid.R")
-source("postprocess.R")
+source("workflow/fit_mixtures.R")
 
 mfl <- load_all_mixtures()
 

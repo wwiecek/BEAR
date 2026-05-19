@@ -233,38 +233,29 @@ dtlist[["BarnettWren"]] <- readRDS("data/BarnettWren.rds") %>%
             b = b,
             se = se,
             year = Year,
-            ss = NA)
+            ss = NA) %>% 
+  # For scraped datasets, I only keep 50,000 rows in BEAR
+  thin_df(50000)
 
 
 
-# Cochrane 2025 -----
+# Cochrane (2025 cut) -----
 
-cdsr_filtered <- readRDS("data/Cochrane.rds") %>% 
-  # Remove studies with sample size of zero 
-  filter(total1 > 0, total2 > 0, 
-         !is.na(measure_group),
-         # Even though we make our own calculation, it's better to 
-         # Remove small minority of studies that would require more complicated calculations
-         # small minority of data is IPD or IV ("results with effects and standard errors 
-         # but without the data necessary for their computation") and we exclude these
-         outcome.flag %in% c("CONT","DICH"),
-         # First comparison and first outcome is most likely to be the primary outcome of interest in a given review
-         # THIS REMOVES 95% OF DATA! YOu may want to construct it differently for future analyses
-         comparison.nr == 1, outcome.nr == 1,
-         outcome_group == "efficacy")
-
-dtlist[["Cochrane"]] <- rbind(
-  dplyr::filter(cdsr_filtered, outcome.flag=="CONT") %>% 
-    escalc(m1i=mean1,sd1i=sd1,n1i=total1,
-           m2i=mean2,sd2i=sd2,n2i=total2,measure="SMD",
-           data=., append=TRUE) %>% 
-    as_tibble() %>% mutate(measure = "SMD"),
-  dplyr::filter(cdsr_filtered, outcome.flag=="DICH") %>% 
-    escalc(ai=events1,n1i=total1,
-           ci=events2,n2i=total2,measure="PBIT",
-           data=.,append=TRUE) %>% 
-    as_tibble() %>% mutate(measure = "probit")
-) %>% 
+dtlist[["Cochrane"]] <- readRDS("data/Cochrane.rds") %>% 
+  # This dataset has >700,00 rows but for main BEAR I care about 
+  # main comparisons and main outcomes  
+  dplyr::filter(
+    !is.na(measure_group), #in last version this is zero
+    # Even though we make our own calculation, it's better to 
+    # Remove small minority of studies that would require more complicated calculations
+    # small minority of data is IPD or IV ("results with effects and standard errors 
+    # but without the data necessary for their computation") and we exclude these
+    outcome.flag %in% c("CONT","DICH"),
+    # First comparison and first outcome is most likely to be the primary outcome of interest in a given review
+    # THIS REMOVES 95% OF DATA! YOu may want to construct it differently for future analyses
+    comparison.nr == 1, outcome.nr == 1,
+    outcome_group == "efficacy") %>% 
+  # I do a little bit extra recoding for BEAR, but no essential changes
   transmute(
     metaid = id,
     studyid = study.name,
@@ -273,7 +264,7 @@ dtlist[["Cochrane"]] <- rbind(
     method = ifelse(rct, "RCT", "unknown"),
     measure = measure,
     outcome_group = as.character(outcome_group),
-    z = yi/sqrt(vi),
+    z = z,
     b = yi,
     se = sqrt(vi),
     subset = as.character(specialty),
@@ -290,9 +281,6 @@ dtlist[["Cochrane"]] <- rbind(
   ungroup() %>% 
   mutate(subset = if_else(n < 50, NA_character_, subset)) %>% 
   filter(!is.na(b))
-
-
-rm(cdsr_filtered)
 
 
 
@@ -418,7 +406,9 @@ dtlist[["Head"]] <- readRDS("data/Head.rds") %>%
               operator == ">" ~ "<",
               operator == "≤" ~ ">",
               operator == "≥" ~ "<"
-            )) 
+            )) %>% 
+  # For scraped datasets, I only keep 50,000 rows in BEAR
+  thin_df(50000) 
 
 
 
@@ -451,7 +441,9 @@ dtlist[["Chavalarias"]] <- readRDS("data/Chavalarias.rds") %>%
               operator == "=" ~ "=",
               operator == "<" ~ ">",
               operator == ">" ~ "<"
-            )) 
+            )) %>% 
+  # For scraped datasets, I only keep 50,000 rows in BEAR
+  thin_df(50000) 
 
 
 
@@ -548,13 +540,13 @@ dtlist[["SCORE_claims"]] <- readRDS("data/SCORE_all_claims.rds") %>%
 # psymetadata -----
 
 psymetadata <- readRDS("data/psymetadata.rds")
-  
+
 # keep Many Labs 2 and the intelligence meta-meta-analysis out of psymetadata
 dtlist[["psymetadata"]]   <- dplyr::filter(psymetadata, !(subset %in% c("manylabs2018", "nuijten2020")))
 dtlist[["ManyLabs2"]]     <- readRDS("data/ManyLabs2.rds")
 dtlist[["Nuijten"]]       <- dplyr::filter(psymetadata, subset == "nuijten2020") %>% 
   mutate(subset = NA_character_)
-  
+
 
 
 
@@ -576,6 +568,8 @@ bear <- dtlist %>%
   bind_rows(.id = "dataset")
 
 saveRDS(bear, "BEAR.rds")
+
+rm(dtlist)
 
 # Refresh README
 rmarkdown::render(

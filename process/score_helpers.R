@@ -25,29 +25,11 @@ score_first_match <- function(text, pattern) {
   stringr::str_match(text, stringr::regex(pattern, ignore_case = TRUE))[1, ]
 }
 
-z_from_two_sided_p <- function(p) {
-  p <- as.numeric(p)
-  p <- ifelse(is.na(p), NA_real_, p)
-  p <- pmax(pmin(p, 1 - 1e-16), 1e-300)
-  qnorm(1 - p / 2)
-}
-
 sign_nonzero <- function(x) {
   x <- as.numeric(x)
   out <- sign(x)
   out[out == 0] <- NA_real_
   out
-}
-
-truncate_score_z <- function(z, limit = 20) {
-  case_when(
-    is.na(z) ~ NA_real_,
-    !is.finite(z) & z > 0 ~ limit,
-    !is.finite(z) & z < 0 ~ -limit,
-    z > limit ~ limit,
-    z < -limit ~ -limit,
-    TRUE ~ z
-  )
 }
 
 derive_preferred_z <- function(data,
@@ -90,7 +72,7 @@ derive_preferred_z <- function(data,
 
   z_from_p <- ifelse(
     !is.na(p_value_num) & !is.na(sign_hint_num),
-    sign_hint_num * z_from_two_sided_p(p_value_num),
+    sign_hint_num * z_from_p(p_value_num),
     NA_real_
   )
 
@@ -391,8 +373,7 @@ parse_score_fragment <- function(text) {
     z_source <- "ci_95"
     sign_source <- effect$source
   } else if (!is.na(p_reported$value)) {
-    p_for_z <- ifelse(p_reported$value == 0, 1e-300, p_reported$value)
-    z <- sign_info$sign * z_from_two_sided_p(p_for_z)
+    z <- sign_info$sign * z_from_p(p_reported$value)
     z_operator <- case_when(
       p_reported$value == 0 ~ ">",
       p_reported$operator == "<" ~ ">",

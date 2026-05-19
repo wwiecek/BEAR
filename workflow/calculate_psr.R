@@ -33,6 +33,21 @@ bear_summary_psr <- bear %>%
   # if we used 1.96 here, we'd lose a big chunk of scraping studies that reported p of 0.05
   summarise(prop_signif = sum((abs(z) > 1.959) & (z_operator != "<"))/n())
 
+bear_env <- new.env(parent = emptyenv())
+load("paper/bear_lists.Rdata", envir = bear_env)
+
+original_summary_psr <- imap_dfr(
+  bear_env$bear_list_thin[c("SCORE original", "Many Labs original",
+                            "OSC original")],
+  ~ .x %>%
+    summarise(
+      dataset = .y,
+      prop_signif = sum((abs(z) > 1.959) & (z_operator != "<")) / n()
+    )
+)
+
+bear_summary_psr <- bind_rows(bear_summary_psr, original_summary_psr)
+
 # Table with study summaries ------
 summarise_psr <- function(df) 
   df %>% 

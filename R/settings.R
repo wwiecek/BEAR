@@ -22,7 +22,10 @@ bear_names <- c(
    "Yang" = "Yang et al",   
    "psymetadata" = "psymetadata",
    "Nuijten" = "Nuijten et al",
-   "ManyLabs2" = "Many Labs 2"
+   "ManyLabs2" = "Many Labs 2",
+   "SCORE original" = "SCORE original",
+   "Many Labs original" = "Many Labs original",
+   "OSC original" = "OSC original"
    # "Adda" = "Adda et al",
    # "ctgov" = "clinicaltrials (v2 cut)",
    # "Cochrane2019" = "Cochrane (2019 cut)",
@@ -52,7 +55,10 @@ bear_labels <- c(
   "Yang" = "Yang et al\necology & evolution",
   "psymetadata" = "psymetadata\npsychology",
   "Nuijten" = "Nuijten et al\nintelligence",
-  "ManyLabs2" = "Many Labs 2\npsychology"
+  "ManyLabs2" = "Many Labs 2\npsychology",
+  "SCORE original" = "SCORE original\nsocial & behav. sci.",
+  "Many Labs original" = "Many Labs original\npsychology",
+  "OSC original" = "OpenSciCollab original\npsychology"
   # "Adda" = "Adda et al",
   # "ctgov" = "clinicaltrials (v2 cut)",
   # "Cochrane2019" = "Cochrane (2019 cut)",
@@ -74,6 +80,9 @@ bear_classification <- c(
    "Head" = "scrape",
    "JagerLeek" = "scrape",
    "ManyLabs2" = "replications",
+   "SCORE original" = "replications",
+   "Many Labs original" = "replications",
+   "OSC original" = "replications",
    "Metapsy" = "meta",
    "Nuijten" = "curated",
    "OSC" = "replications",
@@ -104,6 +113,9 @@ bear_domain <- c(
   "Head"          = "biomedicine",
   "JagerLeek"     = "biomedicine",
   "ManyLabs2"     = "psychology",
+  "SCORE original" = "social & behavioural sciences",
+  "Many Labs original" = "psychology",
+  "OSC original" = "psychology",
   "Metapsy"       = "psychotherapy",
   "Nuijten"       = "intelligence",
   "OSC"           = "psychology",
@@ -119,7 +131,8 @@ bear_domain <- c(
 # which we will not use in the BEAR paper
 paper_do_not_include <- c("ctgov", "Cochrane2019", 
                           "euctr", "clinicaltrials",
-                          "Sladekova", "Head", "JagerLeek",
+                          "Sladekova", 
+                          "Head", "JagerLeek",
                           "Yang")
 
 bear_colors <- c(

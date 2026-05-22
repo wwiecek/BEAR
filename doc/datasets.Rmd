@@ -37,7 +37,10 @@ Authors searched for (and emailed authors of) meta-analysis articles across 141 
 There is possibly a considerable overlap with Askarov et al dataset, but these two datasets are worth analysing separately given their different focus.
 
 **Data processing:**
-using the same code as original authors (replication package that runs on makefiles), but skipping some additional processing that they've done for their paper. No manipulation of data was done when creating BEAR dataset. We verified that the distributions of z-values matched.
+using the same code as original authors (replication package that runs on makefiles),
+but skipping some additional processing that they've done for their paper. Signed
+z-values were computed as reported estimates divided by their standard errors.
+We verified that the distributions of z-values matched.
 
 
 
@@ -60,7 +63,9 @@ the meta-analyses collect comparable effect sizes for specific economic
 phenomena and are not used only to identify papers for full extraction.
 
 **Data processing:**
-We use the same source file `Mandatory data-sharing 30 Aug 2022.dta` (11.6 MB) as in the reproducibility package. No additional manipulation of data was done when creating BEAR dataset.
+We use the same source file `Mandatory data-sharing 30 Aug 2022.dta` (11.6 MB)
+as in the reproducibility package. Signed z-values were computed as reported
+effect sizes divided by their standard errors.
 
 
 
@@ -131,11 +136,13 @@ replication data file `merged.dta` may be downloaded from <https://dataverse.har
 
 **Data processing:**
 the authors’ reported z-statistics were used directly and the reported
-coefficients and standard errors were retained. We retain RCT rows and use the
-source `zstat` field because the alternative `myz` field is not populated for
-all publication years in the replication file. We also retain a grouping
-variable distinguishing not preregistered studies, preregistered studies
-without a PAP, and preregistered studies with a PAP.
+coefficients and standard errors were retained. The source `zstat` field stores
+unsigned magnitudes, so we apply the sign of the reported coefficient when
+available. We retain RCT rows and use the source `zstat` field because the
+alternative `myz` field is not populated for all publication years in the
+replication file. We also retain a grouping variable distinguishing not
+preregistered studies, preregistered studies without a PAP, and preregistered
+studies with a PAP.
 
 
 ## Lang 2025 (economics)
@@ -191,7 +198,11 @@ the extracted p-value dataset is publicly available <https://dataverse.harvard.e
 As per the hosting platform: this dataset is released under the Creative Commons Attribution-NonCommercial 4.0 International License.
 
 **Data processing:**
-z-values were derived from p-values assuming two-sided tests. P-value truncation operators were processed by collapsing variants such as `<<`, `<<<`, `<=`, `less than`, and `=<` into `<`. We dropped 0.7% of rows where p-values did not have a “plain” format and 0.08% of rows where truncation could not be unambiguously classified.
+unsigned z-values were derived from p-values assuming two-sided tests. P-value
+truncation operators were processed by collapsing variants such as `<<`, `<<<`,
+`<=`, `less than`, and `=<` into `<`. We dropped 0.7% of rows where p-values did
+not have a “plain” format and 0.08% of rows where truncation could not be
+unambiguously classified.
 
 **Additional variables used:**
 source indicator (abstract versus full text).
@@ -257,7 +268,10 @@ Costello and Fox look at 466 meta-analyses obtained through searching Web of Sci
 two datasets may be downloaded from <https://github.com/Yefeng0920/replication_EcoEvo_git/>. Available under CC BY 4.0 licence.
 
 **Data processing:**
-no additional data processing other than cleaning up study years. Note that the replication package for Yang et al does not include meta-analysis indicators.
+no additional data processing other than cleaning up study years. Signed
+z-values were computed as effect sizes divided by their standard errors. Note
+that the replication package for Yang et al does not include meta-analysis
+indicators.
 
 **Additional variables used:**
 we retained a measure variable ("lnRR", "SMD", "Zr" or "uncommon")
@@ -302,7 +316,9 @@ dataset available at <https://datadryad.org/dataset/doi:10.5061/dryad.79d43> und
 **Data processing:**
 we followed the same minimal clean-up steps (e.g. removing values found in large supplementary sections) as the original paper and also attached PubMed IDs to the dataset using DOI look-up.
 
-When constructing the BEAR dataset, we treated p-values recorded as exactly 0 as truncated and set the z-operator to `>`. We recoded all inequalities to sharp inequalities.
+When constructing the BEAR dataset, we derived unsigned z-values from p-values.
+We treated p-values recorded as exactly 0 as truncated and set the z-operator
+to `>`. We recoded all inequalities to sharp inequalities.
 
 **Additional variables used:**
 we use the "Abstract vs Results" variable for grouping
@@ -324,7 +340,7 @@ authors used a custom program to extract p-values from scraped PubMed abstracts 
 the data file `pvalueData.rda` is available <https://github.com/jtleek/swfdr>  License for the programs in that repository is GNU GPL, although a license for the dataset is not stated, as far as we are aware.
 
 **Data processing:**
-there was only minimal processing. We derived z values from p-values assuming they were two-sided.
+there was only minimal processing. We derived unsigned z values from p-values assuming they were two-sided.
 
 Notably, large proportion of p-values is truncated, almost always at 0.0001, 0.001, 0.01, or 0.05. As in all datasets, we retained information on truncation. We also treated p-values recorded as exactly 0 as truncated (z-operator `>`). We created a crude flag for RCTs by searching the paper titles for “randomized", "randomised" and "controlled”.
 
@@ -341,7 +357,11 @@ Jan 2026
 Metapsy is maintained by an international collaboration led by Vrije Universiteit Amsterdam. Databases are available at <https://www.metapsy.org/> and via R package `metapsyData` [@harrer2022metapsydata]. Metapsy FAQ states that all data provided as part of the project are open-access and requires attribution.
 
 **Data processing:**
-we merged 20 individual datasets in Metapsy with some cleaning (e.g. to extract study dates from titles). Almost all estimates are Hedges' g, but for one of the databases (`total-response`) we converted log-odds ratios to SMD (dividing by $\Pi/\sqrt{3}$ to scale SD of logistic regression).
+we merged 20 individual datasets in Metapsy with some cleaning (e.g. to extract
+study dates from titles). Almost all estimates are Hedges' g, but for one of
+the databases (`total-response`) we converted log-odds ratios to SMD (dividing
+by $\Pi/\sqrt{3}$ to scale SD of logistic regression). Signed z-values were
+computed as effect sizes divided by their standard errors.
 
 
 
@@ -360,7 +380,13 @@ authors of the paper make a comprehensive dataset of results available with thei
 the data file `rpp_data.csv` is available as part of repository for the paper <https://osf.io/ytpuq/overview> under CC0 1.0 Universal license.
 
 **Data processing:**
-we derived z values from the replication p-values assuming two-sided p-values (we use the replication p-value column, not the original-study p-value). Because the replication dataset does not carry direction in a way we use here, z values are unsigned. We treated p-values recorded as exactly 0 as truncated and recorded this as a lower bound on z (z-operator `>`); otherwise we treated p-values as exact (z-operator `=`). We retained the replication sample size as `ss`.
+we derived z values from the replication p-values assuming two-sided p-values
+(we use the replication p-value column, not the original-study p-value). We
+applied the sign of the replication correlation, so z-values are signed where
+that correlation is available. We treated p-values recorded as exactly 0 as
+truncated and recorded this as a lower bound on z (z-operator `>`); otherwise
+we treated p-values as exact (z-operator `=`). We retained the replication
+sample size as `ss`.
 
 
 
@@ -381,6 +407,7 @@ _psymetadata_ is an R package that curates multiple open datasets from published
 
 **Data processing:**
 minimal. We used regular expressions to extract year labels from titles. We dropped some invalid rows (missing, non-finite, or non-positive standard errors).
+Signed z-values were computed as effect sizes divided by their standard errors.
 
 **Additional grouping variable:**
 name of the original psymetadata dataset.
@@ -406,7 +433,8 @@ BEAR represents the imported meta-analytic datasets as row-level effect sizes, a
 **Data processing:**
 we use rows with available effect estimates and sampling variances. Effect
 sizes on the correlation scale are transformed to Fisher's z scale, with
-standard errors derived from the reported variances. 
+standard errors derived from the reported variances. Signed z-values were
+computed as transformed effect sizes divided by their standard errors.
 
 
 
@@ -478,11 +506,17 @@ we used the package's converted correlation scale where available.
 For the all-claims set, effects are heterogeneous across the source
 papers.
 
-When several inputs are available for z-value construction in the all-claims dataset, we prefer 
-reported z, then reported t, then coefficient divided by standard error, then signed
-square-root F for numerator df 1, then a 95% confidence interval with a point estimate, then a two-sided p-value conversion. For
-the all-claims text, it is typical to have multiple statistics backing up a single claim, e.g. "F(1,38) = 3.73, p = .033, partial eta-squared = .16; F(1,39) = 7.28, p = .010, partial eta-squared = .16; F<1". We created a rule to pick one statistic per claim using agreement with the SCORE significant/nonsignificant coding, statistic provenance, exactness,
-available effect and standard error, and text order. 
+When several inputs are available for z-value construction in the all-claims
+dataset, we prefer reported z, then reported t, then coefficient divided by
+standard error, then signed square-root F for numerator df 1, then a 95%
+confidence interval with a point estimate, then a two-sided p-value conversion.
+When the selected statistic only supplies a p-value and no sign can be inferred,
+the z-value is unsigned. For the all-claims text, it is typical to have multiple
+statistics backing up a single claim, e.g. "F(1,38) = 3.73, p = .033, partial
+eta-squared = .16; F(1,39) = 7.28, p = .010, partial eta-squared = .16; F<1".
+We created a rule to pick one statistic per claim using agreement with the SCORE
+significant/nonsignificant coding, statistic provenance, exactness, available
+effect and standard error, and text order.
 
 **Additional grouping variables:**
 discipline and SCORE source indicator.
@@ -507,7 +541,13 @@ reported by the studies and p-values re-calculated by the WWC reviewers. After
 BEAR processing and filtering, 12,045 findings are retained.
 
 **Data processing:**
-We retained only RCTs and quasi-experimental studies (98% of data altogether). Where available, we preferred effect sizes and p-values calculated by WWC to the ones reported by the studies. We replaced p-values that were equal to zero (this occurred in 3% of the dataset) with truncated p-value (i.e. assumed $p < 10^{-16}$). We calculated z-values from these p-values under assumption of two-sided tests.
+We retained only RCTs and quasi-experimental studies (98% of data altogether).
+Where available, we preferred effect sizes and p-values calculated by WWC to
+the ones reported by the studies. We replaced p-values that were equal to zero
+(this occurred in 3% of the dataset) with truncated p-value (i.e. assumed
+$p < 10^{-16}$). We calculated z-values from these p-values under assumption of
+two-sided tests. We then applied the sign of the reported effect size, so
+z-values are signed where the effect size is non-zero.
 
 **Additional grouping variable:**
 "outcome domain" variable (e.g. "academic achievement", "alphabetics")
@@ -541,7 +581,9 @@ We also flagged potentially non-Wald intervals using text matching on type of pa
 
 ## p-values
 
-The default approach, used for several datasets which report p-values, especially those scraping data from PubMed/Medline, is to treat p-values as two-sided (`z <- qnorm(1 - p/2)`). In EU CTR, when the result is marked as one-sided, we use `z <- qnorm(1 - p)` instead; missing sidedness is treated as two-sided. ClinicalTrials.gov does not provide a separate p-value sidedness field, so its p-values are treated as two-sided.
+The default approach, used for several datasets which report p-values, especially those scraping data from PubMed/Medline, is to treat p-values as two-sided, using the upper-tail standard normal quantile corresponding to $p/2$. In EU CTR, when the result is marked as one-sided, we use the corresponding one-sided normal quantile instead; missing sidedness is treated as two-sided. ClinicalTrials.gov does not provide a separate p-value sidedness field, so its p-values are treated as two-sided.
+
+When a source reports t-statistics and degrees of freedom, we first derive the two-sided p-value from the t distribution as twice the upper-tail probability beyond the absolute observed t-statistic. We then store the signed normal-equivalent statistic by applying the sign of the t-statistic to the upper-tail standard normal quantile corresponding to half that two-sided p-value.
 
 For clinical trials databases (clinicaltrials.gov and EU CTR) we sometimes found ambiguity in how p-values were recorded. Sometimes significant results report p-values close to 1, suggesting that authors reported cumulative distribution, $\Phi(z)$. Therefore for each row we also calculated $2\cdot\min\{p,1-p\}$. When a CI-derived z-statistic was available, we chose whichever p-value led to a z-value that was closest to the CI-derived z.
 

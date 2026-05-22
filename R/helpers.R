@@ -31,15 +31,41 @@ z_from_p <- function(p) {
   z
 }
 
-# If there are too many rows, first try to pick only one estimate per study then "thin it out"
-thin_df <- function(df, N = 50000) {
-  if(nrow(df) > N){
-    # single observation per study; done in base R for speed
-    indices <- aggregate(seq_len(nrow(df)), by = list(studyid = df$studyid), FUN = sample, size = 1)$x
-    df <- df[indices, ]
+# If there are too many rows, first keep one row from as many studies as
+# possible, then sample extra rows up to N.
+thin_df <- function(df, N = 50000, seed = NULL) {
+  if(!is.null(seed)){
+    had_seed <- exists(".Random.seed", envir = .GlobalEnv, inherits = FALSE)
+    if(had_seed)
+      old_seed <- get(".Random.seed", envir = .GlobalEnv)
+    on.exit({
+      if(had_seed)
+        assign(".Random.seed", old_seed, envir = .GlobalEnv)
+      else if(exists(".Random.seed", envir = .GlobalEnv, inherits = FALSE))
+        rm(".Random.seed", envir = .GlobalEnv)
+    }, add = TRUE)
+    set.seed(seed)
   }
-  if(nrow(df) > N)
-    df <- df %>% slice_sample(n = N)
+
+  sample_indices <- function(x, size) x[sample.int(length(x), size)]
+
+  if(nrow(df) > N){
+    study_indices <- aggregate(
+      seq_len(nrow(df)),
+      by = list(studyid = df$studyid),
+      FUN = function(x) sample_indices(x, 1)
+    )$x
+
+    if(length(study_indices) >= N){
+      return(df[sample_indices(study_indices, N), ])
+    }
+
+    remaining_indices <- setdiff(seq_len(nrow(df)), study_indices)
+    extra_n <- min(N - length(study_indices), length(remaining_indices))
+    extra_indices <- sample_indices(remaining_indices, extra_n)
+    df <- df[c(study_indices, extra_indices), ]
+  }
+
   df
 }
 

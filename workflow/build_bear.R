@@ -2,10 +2,13 @@
 library(haven)
 library(tidyverse)
 library(metafor) #for CDSR calculations of effect sizes (binary data)
+library(dplyr)
 library(stringi) #for cleaning up some study names
+filter <- dplyr::filter
 
 dtlist <- list()
 source("R/helpers.R")
+
 
 
 # Brodeur et al ------
@@ -23,7 +26,7 @@ dtlist[["Brodeur"]] <- readRDS("data/Brodeur.rds") %>%
       as.numeric(prereg) == 1 ~ "preregistered without PAP",
       TRUE ~ "not preregistered"
     ),
-    z = zstat,
+    z = ifelse(!is.na(coeff) & coeff != 0, sign(coeff) * zstat, zstat),
     b = coeff,
     se = stderror,
     year = year)
@@ -64,6 +67,7 @@ dtlist[["Askarov"]] <- readRDS("data/Askarov.rds") %>%
     studyid = studyid,
     method = ifelse(EXPERIMENT == 1, "RCT", ifelse(mixed == 1, "mixed", "observational")),
     measure = NA,
+    subset = if_else(MACRO == 1, "macro", "micro/other"),
     z = effectsize/standarderror,
     b = effectsize,
     se = standarderror,
@@ -90,6 +94,7 @@ dtlist[["ArelBundock"]] <-
     field = subfield,
     method = NA,
     measure = NA,
+    subset = sample,
     z = as.numeric(estimate)/as.numeric(std.error),
     b = as.numeric(estimate),
     se = as.numeric(std.error),
@@ -108,14 +113,20 @@ dtlist[["WWC"]] <- readRDS("data/WWC.rds") %>%
     studyid = study_id,
     method = method,
     measure = NA,
-    subset = Outcome_Domain,         
+    subset = Outcome_Domain,
     z = sign(b) * z_from_p(pval),
     z_operator = ifelse(pval == 1e-16, ">", "="),
     b = b,
     se = NA_real_,
     ss = ss,
     year = year
-  )
+  ) %>%
+  filter(!is.na(z)) %>%
+  group_by(subset) %>%
+  mutate(subset_n = n()) %>%
+  ungroup() %>%
+  mutate(subset = if_else(subset_n < 50, "Other", subset)) %>%
+  select(-subset_n)
 
 
 
@@ -123,6 +134,8 @@ dtlist[["WWC"]] <- readRDS("data/WWC.rds") %>%
 
 dtlist[["Yang"]] <- readRDS("data/Yang.rds") %>% 
   mutate(year_pub = ifelse(year_pub < 1900, NA, year_pub)) %>% # 1 typo
+  # The saved metadata has measure and meta_id file IDs, but no reviewed
+  # source map for classifying ecology/evolution per row yet.
   transmute(
     metaid = meta_id,
     studyid = study_ID,
@@ -138,12 +151,26 @@ dtlist[["Yang"]] <- readRDS("data/Yang.rds") %>%
 
 # Costello and Fox -----
 
+label_costello_source <- function(source) {
+  source <- str_to_lower(source)
+  case_when(
+    str_detect(source, "evol|evolution|heredity|j\\.evol|jeb") ~ "evolution",
+    str_detect(source, paste(c(
+      "ecol", "oikos", "oecologia", "gcb", "global\\.ecol", "geb",
+      "jae", "jecol", "j\\.anim\\.ecol", "j\\.appl\\.ecol", "functecol",
+      "func\\.ecol", "ecosphere", "new\\.phyto", "conserv\\.biol"
+    ), collapse = "|")) ~ "ecology",
+    TRUE ~ "other ecology/evolution"
+  )
+}
+
 dtlist[["CostelloFox"]] <- 
   readRDS("data/CostelloFox.rds") %>% 
   transmute(
     metaid = as.character(meta.analysis.id), #meta.analysis.paper has only 232 unique values, this has 466
     studyid = study2,
     measure = grouped_es, #could use eff.size.measure for more info
+    subset = label_costello_source(meta.analysis.paper),
     method = NA,
     z = z,
     b = eff.size,
@@ -233,9 +260,10 @@ dtlist[["BarnettWren"]] <- readRDS("data/BarnettWren.rds") %>%
             b = b,
             se = se,
             year = Year,
-            ss = NA) %>% 
+            ss = NA) %>%
+  filter(!is.na(z)) %>%
   # For scraped datasets, I only keep 50,000 rows in BEAR
-  thin_df(50000)
+  thin_df(50000, seed = 20250117)
 
 
 
@@ -388,7 +416,11 @@ dtlist[["clinicaltrials"]] <- readRDS("data/clinicaltrialsgov.rds") %>%
 dtlist[["Head"]] <- readRDS("data/Head.rds") %>% 
   transmute(metaid = NA,
             studyid = pmid,
-            source = section,
+            subset = case_when(
+              section == "abstract" ~ "abstract",
+              section == "results" ~ "full text/results",
+              TRUE ~ NA_character_
+            ),
             method = NA,
             measure = NA,
             year = year,
@@ -406,9 +438,10 @@ dtlist[["Head"]] <- readRDS("data/Head.rds") %>%
               operator == ">" ~ "<",
               operator == "≤" ~ ">",
               operator == "≥" ~ "<"
-            )) %>% 
+            )) %>%
+  filter(!is.na(z)) %>%
   # For scraped datasets, I only keep 50,000 rows in BEAR
-  thin_df(50000) 
+  thin_df(50000, seed = 20250117) 
 
 
 
@@ -427,7 +460,11 @@ dtlist[["Chavalarias"]] <- readRDS("data/Chavalarias.rds") %>%
   filter(!is.na(operator)) %>% 
   transmute(metaid = NA,
             studyid = studyid,
-            source = source,
+            subset = case_when(
+              source == "MEDLINE" ~ "MEDLINE abstract",
+              source == "PMC full text" ~ "PMC full text",
+              TRUE ~ NA_character_
+            ),
             method = NA,
             measure = NA,
             year = year,
@@ -441,9 +478,10 @@ dtlist[["Chavalarias"]] <- readRDS("data/Chavalarias.rds") %>%
               operator == "=" ~ "=",
               operator == "<" ~ ">",
               operator == ">" ~ "<"
-            )) %>% 
+            )) %>%
+  filter(!is.na(z)) %>%
   # For scraped datasets, I only keep 50,000 rows in BEAR
-  thin_df(50000) 
+  thin_df(50000, seed = 20250117) 
 
 
 

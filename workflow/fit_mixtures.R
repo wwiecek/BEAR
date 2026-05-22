@@ -10,7 +10,6 @@ set.seed(1990)
 bear_list <-
   readRDS("BEAR.rds") %>%
   mutate(z_operator = ifelse(is.na(z_operator), "=", z_operator)) %>%
-  calc_study_weights() %>% # Calculate the weights = 1/n rows per study
   # Choice of subsets, merging of datasets etc. for BEAR modelling paper
   # for now only...
   # (1) We merge EUDRA CT and clinicaltrials.gov into a single database of trials

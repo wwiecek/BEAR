@@ -541,6 +541,18 @@ dtlist[["Bartos"]] <- readRDS("data/Bartos.rds") %>%
 
 
 
+# Szucs -----
+
+dtlist[["Szucs"]] <- readRDS("data/Szucs.rds") %>%
+  filter(subset == "Cognitive neuroscience") %>%
+  transmute(
+    metaid, studyid, method, measure, subset, field,
+    z, z_operator, p, b, se, ss,
+    source
+  )
+
+
+
 # SCORE -----
 
 score_replications <- readRDS("data/SCORE_replications.rds")

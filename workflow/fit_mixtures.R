@@ -27,7 +27,7 @@ original_bear_list <- list(
   "OSC original" = bear_list[["OSC"]]
 ) %>%
   map(~ .x %>%
-        filter(!is.na(orig.z)) %>%
+        dplyr::filter(!is.na(orig.z)) %>%
         transmute(
           metaid, studyid, method, measure, subset,
           z = orig.z,

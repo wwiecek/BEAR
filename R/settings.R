@@ -25,7 +25,8 @@ bear_names <- c(
    "ManyLabs2" = "Many Labs 2",
    "SCORE original" = "SCORE original",
    "Many Labs original" = "Many Labs original",
-   "OSC original" = "OSC original"
+   "OSC original" = "OSC original",
+   "Szucs" = "Szucs and Ioannidis"
    # "Adda" = "Adda et al",
    # "ctgov" = "clinicaltrials (v2 cut)",
    # "Cochrane2019" = "Cochrane (2019 cut)",
@@ -58,7 +59,8 @@ bear_labels <- c(
   "ManyLabs2" = "Many Labs 2\npsychology",
   "SCORE original" = "SCORE original\nsocial & behav. sci.",
   "Many Labs original" = "Many Labs original\npsychology",
-  "OSC original" = "OpenSciCollab original\npsychology"
+  "OSC original" = "OpenSciCollab original\npsychology",
+  "Szucs" = "Szucs and Ioannidis\nCognitive neuroscience"
   # "Adda" = "Adda et al",
   # "ctgov" = "clinicaltrials (v2 cut)",
   # "Cochrane2019" = "Cochrane (2019 cut)",
@@ -91,7 +93,8 @@ bear_classification <- c(
    "psymetadata" = "curated",
    "Sladekova" = "meta",
    "WWC" = "curated",
-   "Yang" = "meta"
+   "Yang" = "meta",
+   "Szucs" = "curated"
    # "Adda" = "curated",
    # "ctgov" = "curated",
    # "Cochrane2019" = "meta",
@@ -124,7 +127,8 @@ bear_domain <- c(
   "psymetadata"   = "psychology",
   "Sladekova"     = "psychology",
   "WWC"           = "education",
-  "Yang"          = "ecology & evolution"
+  "Yang"          = "ecology & evolution",
+  "Szucs"         = "Cognitive neuroscience"
 )
 
 # This is a vector to remove some fitted mixtures 

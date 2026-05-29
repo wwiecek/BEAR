@@ -1,17 +1,17 @@
 
 # Benchmarks of Empirical Accuracy in Research
 
-BEAR is a meta-database containing z values, effect sizes and standard errors 
-from existing databases in various scientific disciplines. 
-It doesn't contribute any new data, but 
-repackages and merges what's publicly available in a manner which we hope 
-is maximally user-friendly. Our intention is to help researchers interested in 
+BEAR is a meta-database containing z values, effect sizes and standard errors
+from existing databases in various scientific disciplines.
+It doesn't contribute any new data, but
+repackages and merges what's publicly available in a manner which we hope
+is maximally user-friendly. Our intention is to help researchers interested in
 issues of replication, exchangeability, meta-analysis etc. etc. The current release includes millions of z-values, including about 100,000 studies from curated datasets across a diverse range of fields.
 
-This package includes our entire workflow (in R), documentation, results, and optional modelling of empirical research. 
+This package includes our entire workflow (in R), documentation, results, and optional modelling of empirical research.
 
-- **If you want to grab data only**, head to the GitHub Releases page and grab `BEAR.rds` [at this link](https://github.com/wwiecek/BEAR/releases).** 
-- If you want to do more data work with individual datasets, see _Downloading BEAR data_ below. 
+- **If you want to grab data only**, head to the GitHub Releases page and grab `BEAR.rds` [at this link](https://github.com/wwiecek/BEAR/releases).**
+- If you want to do more data work with individual datasets, see _Downloading BEAR data_ below.
 - To re-run everything, including modelling of data, see `main.R`.
 
 
@@ -23,7 +23,7 @@ References, details of data availability and processing, links to raw data, and 
 
 Here is a short summary of what's included in BEAR:
 
-```{r echo=FALSE, messages=FALSE}
+```{r echo=FALSE, message=FALSE}
 library(dplyr)
 library(readr)
 source("R/settings.R")
@@ -31,38 +31,58 @@ bear <- readRDS("BEAR.rds")
 tab_psr <- suppressMessages(
   readr::read_csv("paper/power_sign_rep.csv", show_col_types = FALSE))
 
-bear_summary <- bear %>% 
-  group_by(dataset) %>% 
-  summarise(n_z = n(), 
-            n_meta = n_distinct(metaid), 
-            n_study = n_distinct(studyid), 
-            mean_k  = n()/n_distinct(studyid), 
+fmt_int <- function(x) format(x, big.mark = ",", scientific = FALSE)
+fmt_num <- function(x, digits = 2) format(round(x, digits), nsmall = digits)
+fmt_pct <- function(x) paste0(format(round(100 * x, 1), nsmall = 1), "%")
+
+bear_summary <- bear %>%
+  group_by(dataset) %>%
+  summarise(n_z = n(),
+            n_meta = n_distinct(metaid),
+            n_study = n_distinct(studyid),
+            mean_k  = n()/n_distinct(studyid),
             pct_signif = sum(abs(z)>1.96)/n()
-  ) %>% 
+  ) %>%
   mutate(domain = bear_domain[dataset])
 
-bear_summary %>% 
-  arrange(dataset) %>% 
-  relocate(domain, .after = dataset) %>% 
-  mutate(dataset = bear_names[dataset]) %>% 
-  rename(n_values = n_z) %>% 
-  print(n = Inf)
+bear_summary %>%
+  arrange(dataset) %>%
+  relocate(domain, .after = dataset) %>%
+  mutate(dataset = bear_names[dataset]) %>%
+  transmute(
+    Dataset = dataset,
+    Domain = domain,
+    Values = fmt_int(n_z),
+    `Meta-analyses` = fmt_int(n_meta),
+    Studies = fmt_int(n_study),
+    `Values/study` = fmt_num(mean_k),
+    `Significant` = fmt_pct(pct_signif)
+  ) %>%
+  knitr::kable(align = c("l", "l", rep("r", 5)))
 ```
 
 Datasets fall into four main categories that will be useful for different types of metascientific investigations: curated datasets of single studies, curated sets of meta-analyses (i.e. with additional `metaid` grouping column), large-scale scraped datasets from PubMed/Medline, and replication datasets. Additional groupings (e.g. clinical trial phases) are available within some datasets. Replication datasets
 also include additional columns that store values from original studies.
 
-```{r echo=FALSE, messages=FALSE}
-bear_summary %>% 
-  mutate(gr = bear_classification[dataset]) %>% 
-  # mutate(gr = ifelse(gr == "meta", "curated", gr)) %>% 
-  group_by(gr) %>% 
+```{r echo=FALSE, message=FALSE}
+bear_summary %>%
+  mutate(gr = bear_classification[dataset]) %>%
+  # mutate(gr = ifelse(gr == "meta", "curated", gr)) %>%
+  group_by(gr) %>%
   summarise(n_datasets = n(),
             n_study = sum(n_study),
             n_meta = ifelse(sum(n_meta) == n_datasets, NA, sum(n_meta)),
             n_values = sum(n_z),
-            pct_signif = sum(pct_signif*n_z) / sum(n_z)) %>% 
-  print(n = Inf)
+            pct_signif = sum(pct_signif*n_z) / sum(n_z)) %>%
+  transmute(
+    Category = gr,
+    Datasets = n_datasets,
+    Studies = fmt_int(n_study),
+    `Meta-analyses` = ifelse(is.na(n_meta), "", fmt_int(n_meta)),
+    Values = fmt_int(n_values),
+    `Significant` = fmt_pct(pct_signif)
+  ) %>%
+  knitr::kable(align = c("l", rep("r", 5)))
 ```
 
 
@@ -83,7 +103,7 @@ git submodule update --init --recursive
 
 That will download about 100 MB of individual datasets. In other words, downloading all of the input data files is opt-in rather than part of this repo, to keep the repo size minimal.
 
-If you want to re-derive each of the datasets yourself, you can see all of data processing done for individual datasets in `process/`. For many datasets there is nil processing done by us, but for some there are extensive scripts to download and clean up data. 
+If you want to re-derive each of the datasets yourself, you can see all of data processing done for individual datasets in `process/`. For many datasets there is nil processing done by us, but for some there are extensive scripts to download and clean up data.
 
 Once datasets are present in `data/`, `BEAR.rds` is stiched together in script `workflow/build_bear.R` which does some of the processing described in [datasets documentation](doc/datasets.pdf).
 
@@ -95,7 +115,7 @@ Once `BEAR.rds` exists, you may choose to fit our preferred mixture models to th
 
 Before fitting models, we first do minimal postprocess (`workflow/postprocess.R`):
 
-- Add number of observations in each study and number of studies in each meta-analysis 
+- Add number of observations in each study and number of studies in each meta-analysis
 - Add study weights as 1 / (N values reported in that study)
 - For large datasets, thin out the dataset to 50,000 rows, preferring one z-value per paper
 - Truncate very large z values (z > 20) and replace "z = 0" statements with "z < 0.5" (z=0 would not work when fitting mixtures)
@@ -107,15 +127,15 @@ We calculate summaries for each dataset (e.g. probablity of significance, replic
 
 # Results of mixture modelling
 
-```{r echo=FALSE, messages=FALSE}
-tab_psr %>% 
-  mutate(gr = bear_classification[dataset]) %>% 
-  mutate(gr = ifelse(gr %in% c("curated", "meta"), "curated+meta", gr)) %>% 
-  arrange(gr, desc(assurance)) %>% 
-  mutate(dataset = bear_names[dataset]) %>% 
-  transmute(dataset, omega, PoS=assurance, PoS_80=pos_80pct, replication, sign) %>% 
-  mutate_if(is.numeric, function(x) round(x, 2)) %>% 
-  print(n = Inf)
+```{r echo=FALSE, message=FALSE}
+tab_psr %>%
+  mutate(gr = bear_classification[dataset]) %>%
+  mutate(gr = ifelse(gr %in% c("curated", "meta"), "curated+meta", gr)) %>%
+  arrange(gr, desc(assurance)) %>%
+  mutate(dataset = bear_names[dataset]) %>%
+  transmute(dataset, omega, PoS=assurance, PoS_80=pos_80pct, replication, sign) %>%
+  mutate_if(is.numeric, function(x) round(x, 2)) %>%
+  knitr::kable(align = c("l", rep("r", 5)))
 
 ```
 

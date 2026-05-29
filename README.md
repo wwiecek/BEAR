@@ -30,32 +30,31 @@ the doc folder](doc/datasets.pdf).
 
 Here is a short summary of what’s included in BEAR:
 
-    ## # A tibble: 23 × 7
-    ##    dataset              domain                       n_values n_meta n_study mean_k pct_signif
-    ##    <chr>                <chr>                           <int>  <int>   <int>  <dbl>      <dbl>
-    ##  1 Arel-Bundock et al   political science               16649     46    2252   7.39      0.467
-    ##  2 Askarov et al        economics                       21408    352    1913  11.2       0.520
-    ##  3 Barnett and Wren     biomedicine                     50000      1   47543   1.05      0.833
-    ##  4 Bartos et al         exercise                         2239    215    2239   1         0.263
-    ##  5 Brodeur et al        economics                       15917      1     328  48.5       0.357
-    ##  6 Chavalarias et al    biomedicine                     50000      1   49458   1.01      0.628
-    ##  7 Cochrane             medicine & health               38058   5871   29327   1.30      0.311
-    ##  8 Costello and Fox     ecology & evolution             88218    466   12927   6.82      0.419
-    ##  9 Head et al           biomedicine                     50000      1   48175   1.04      0.609
-    ## 10 Jager and Leek       biomedicine                     15653      1    5322   2.94      0.777
-    ## 11 Lang                 economics                        3885      1     736   5.28      0.576
-    ## 12 Many Labs 2          psychology                       1592     28     128  12.4       0.414
-    ## 13 Metapsy              psychotherapy                    4395     20    1494   2.94      0.484
-    ## 14 Nuijten et al        intelligence                     2439      1    1913   1.27      0.529
-    ## 15 OpenSciCollab        psychology                         97      1      97   1         0.351
-    ## 16 SCORE, all claims    social & behavioural scienc…     1946      1     160  12.2       0.748
-    ## 17 SCORE replications   social & behavioural scienc…      267      1     163   1.64      0.644
-    ## 18 Sladekova et al      psychology                      11540    406   11540   1         0.590
-    ## 19 What Works Clearing. education                       12045      1    1408   8.55      0.334
-    ## 20 Yang et al           ecology & evolution             17638     87    3796   4.65      0.417
-    ## 21 clinicaltrials.gov   clinical trials                 41367      1   16597   2.49      0.484
-    ## 22 EUDRA                clinical trials                  8650      1    8650   1         0.414
-    ## 23 psymetadata          psychology                       8514      1     721  11.8       0.358
+| Dataset | Domain | Values | Meta-analyses | Studies | Values/study | Significant |
+|:---|:---|---:|---:|---:|---:|---:|
+| Arel-Bundock et al | political science | 16,649 | 46 | 2,252 | 7.39 | 46.7% |
+| Askarov et al | economics | 21,408 | 352 | 1,913 | 11.19 | 52.0% |
+| Barnett and Wren | biomedicine | 50,000 | 1 | 50,000 | 1.00 | 81.9% |
+| Bartos et al | exercise | 2,239 | 215 | 2,239 | 1.00 | 26.3% |
+| Brodeur et al | economics | 15,917 | 1 | 328 | 48.53 | 35.7% |
+| Chavalarias et al | biomedicine | 50,000 | 1 | 50,000 | 1.00 | 63.1% |
+| Cochrane | medicine & health | 38,058 | 5,871 | 29,327 | 1.30 | 31.1% |
+| Costello and Fox | ecology & evolution | 88,218 | 466 | 12,927 | 6.82 | 41.9% |
+| Head et al | biomedicine | 50,000 | 1 | 50,000 | 1.00 | 59.2% |
+| Jager and Leek | biomedicine | 15,653 | 1 | 5,322 | 2.94 | 77.7% |
+| Lang | economics | 3,885 | 1 | 736 | 5.28 | 57.6% |
+| Many Labs 2 | psychology | 1,592 | 28 | 128 | 12.44 | 41.4% |
+| Metapsy | psychotherapy | 4,395 | 20 | 1,494 | 2.94 | 48.4% |
+| Nuijten et al | intelligence | 2,439 | 1 | 1,913 | 1.27 | 52.9% |
+| OpenSciCollab | psychology | 97 | 1 | 97 | 1.00 | 35.1% |
+| SCORE, all claims | social & behavioural sciences | 1,946 | 1 | 160 | 12.16 | 74.8% |
+| SCORE replications | social & behavioural sciences | 267 | 1 | 163 | 1.64 | 64.4% |
+| Sladekova et al | psychology | 11,540 | 406 | 11,540 | 1.00 | 59.0% |
+| What Works Clearing. | education | 12,045 | 1 | 1,408 | 8.55 | 33.4% |
+| Yang et al | ecology & evolution | 17,638 | 87 | 3,796 | 4.65 | 41.7% |
+| clinicaltrials.gov | clinical trials | 41,367 | 1 | 16,597 | 2.49 | 48.4% |
+| EUDRA | clinical trials | 8,650 | 1 | 8,650 | 1.00 | 41.4% |
+| psymetadata | psychology | 8,514 | 1 | 721 | 11.81 | 35.8% |
 
 Datasets fall into four main categories that will be useful for
 different types of metascientific investigations: curated datasets of
@@ -66,13 +65,12 @@ PubMed/Medline, and replication datasets. Additional groupings
 Replication datasets also include additional columns that store values
 from original studies.
 
-    ## # A tibble: 4 × 6
-    ##   gr           n_datasets n_study n_meta n_values pct_signif
-    ##   <chr>             <int>   <int>  <int>    <int>      <dbl>
-    ## 1 curated               8   30513     NA    94763      0.436
-    ## 2 meta                  8   65488   7463   200145      0.422
-    ## 3 replications          3     388     30     1956      0.442
-    ## 4 scrape                4  150498     NA   165653      0.698
+| Category     | Datasets | Studies | Meta-analyses |  Values | Significant |
+|:-------------|---------:|--------:|--------------:|--------:|------------:|
+| curated      |        8 |  30,513 |               |  94,763 |       43.6% |
+| meta         |        8 |  65,488 |         7,463 | 200,145 |       42.2% |
+| replications |        3 |     388 |            30 |   1,956 |       44.2% |
+| scrape       |        4 | 155,322 |               | 165,653 |       69.0% |
 
 # Downloading BEAR data
 
@@ -130,27 +128,29 @@ significance, replication, correct sign) in `workflow/calculate_psr.R`
 
 # Results of mixture modelling
 
-    ## # A tibble: 18 × 6
-    ##    dataset              omega   PoS PoS_80 replication  sign
-    ##    <chr>                <dbl> <dbl>  <dbl>       <dbl> <dbl>
-    ##  1 Askarov et al         0.71  0.48   0.3         0.47  0.88
-    ##  2 Nuijten et al         0.85  0.48   0.29        0.47  0.88
-    ##  3 SCORE, all claims     0.13  0.47   0.28        0.46  0.88
-    ##  4 ctgov / EU CTR        0.95  0.47   0.28        0.45  0.87
-    ##  5 Metapsy               0.74  0.43   0.23        0.42  0.87
-    ##  6 Lang                  0.24  0.42   0.22        0.41  0.86
-    ##  7 Arel-Bundock et al    0.65  0.4    0.2         0.38  0.85
-    ##  8 Costello and Fox      0.79  0.39   0.24        0.37  0.79
-    ##  9 psymetadata           0.67  0.32   0.21        0.31  0.72
-    ## 10 Brodeur et al         0.68  0.32   0.14        0.3   0.82
-    ## 11 What Works Clearing.  0.88  0.32   0.17        0.3   0.76
-    ## 12 Cochrane              0.7   0.24   0.1         0.21  0.69
-    ## 13 Bartos et al          0.82  0.23   0.09        0.21  0.76
-    ## 14 SCORE replications    0.69  0.5    0.33        0.49  0.87
-    ## 15 Many Labs 2           0.87  0.41   0.33        0.39  0.75
-    ## 16 OpenSciCollab         1     0.35   0.22        0.34  0.79
-    ## 17 Chavalarias et al     0.19  0.51   0.32        0.5   0.89
-    ## 18 Barnett and Wren      0.08  0.32   0.13        0.3   0.82
+| dataset              | omega |  PoS | PoS_80 | replication | sign |
+|:---------------------|------:|-----:|-------:|------------:|-----:|
+| Askarov et al        |  0.71 | 0.48 |   0.30 |        0.47 | 0.88 |
+| Nuijten et al        |  0.85 | 0.48 |   0.29 |        0.47 | 0.88 |
+| SCORE, all claims    |  0.13 | 0.47 |   0.28 |        0.46 | 0.88 |
+| ctgov / EU CTR       |  0.95 | 0.47 |   0.28 |        0.45 | 0.87 |
+| Metapsy              |  0.74 | 0.43 |   0.23 |        0.42 | 0.87 |
+| Lang                 |  0.24 | 0.42 |   0.22 |        0.41 | 0.86 |
+| Arel-Bundock et al   |  0.65 | 0.40 |   0.20 |        0.38 | 0.85 |
+| Costello and Fox     |  0.79 | 0.38 |   0.23 |        0.37 | 0.79 |
+| psymetadata          |  0.67 | 0.33 |   0.21 |        0.31 | 0.72 |
+| Brodeur et al        |  0.68 | 0.32 |   0.14 |        0.30 | 0.82 |
+| What Works Clearing. |  0.88 | 0.32 |   0.17 |        0.30 | 0.76 |
+| Cochrane             |  0.70 | 0.23 |   0.10 |        0.21 | 0.69 |
+| Bartos et al         |  0.82 | 0.23 |   0.09 |        0.20 | 0.76 |
+| SCORE replications   |  0.69 | 0.50 |   0.34 |        0.49 | 0.87 |
+| SCORE original       |  0.05 | 0.49 |   0.30 |        0.47 | 0.88 |
+| Many Labs 2          |  0.87 | 0.41 |   0.33 |        0.39 | 0.75 |
+| OpenSciCollab        |  1.00 | 0.35 |   0.22 |        0.33 | 0.79 |
+| OSC original         |  0.03 | 0.29 |   0.09 |        0.27 | 0.81 |
+| Many Labs original   |  0.06 | 0.24 |   0.13 |        0.22 | 0.73 |
+| Chavalarias et al    |  0.19 | 0.52 |   0.32 |        0.50 | 0.89 |
+| Barnett and Wren     |  0.09 | 0.32 |   0.13 |        0.30 | 0.82 |
 
 `omega` is relative publication probability based on crossing of the
 \|z\|=1.96 threshold; `PoS` is probability of significance (assurance)

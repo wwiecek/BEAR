@@ -98,16 +98,29 @@ We excluded a small fraction of data. First we restricted to 95% confidence inte
 @bartos2025exercise, which builds on another analysis, @singh2025exercise.
 
 **Research question:**
-What is the effect of physical exercise on cognition, memory, and executive function; with extra focus on selective reporting and heterogeneity.
+What is the effect of physical exercise on cognition, memory, and executive function; 
+with extra focus on selective reporting and heterogeneity.
 
 **Data availability:**
-Replication data are publicly available via PsyArXiv  <https://osf.io/preprints/psyarxiv/qr8e2_v1> under Creative Commons By Attribution 4.0 license.
+Replication data are publicly available via 
+PsyArXiv  <https://osf.io/preprints/psyarxiv/qr8e2_v1> 
+under Creative Commons By Attribution 4.0 license.
 
 **Data description and source:**
-"2,239 effect-size estimates from 215 meta-analyses of randomized controlled trials" was done by Bartoš et al (2025) based on extension of work by Singh et al (2025)
+Bartoš et al. (2025) extended the systematic review and
+meta-meta-analysis by Singh et al. (2025). Singh et al. compiled a set of 
+peer-reviewed systematic reviews with
+meta-analyses of randomized controlled trials 
+that evaluated exercise effects on general cognition, memory, or
+executive function. Bartoš et al. extracted study-level effect
+sizes and standard errors, or information needed to compute them, from study
+tables, forest plots, and online supplementary materials. 
+Their analysis included 2,239 effect-size estimates
+from 215 meta-analyses.
 
 **Data processing:**
-z-values were computed as effect size divided by its reported standard error. No filtering or recoding beyond variable renaming was required.
+z-values were computed as effect size divided by its reported standard error. 
+No filtering or recoding beyond variable renaming was required.
 
 **Additional variables used:**
 None.
@@ -292,7 +305,7 @@ we used R package `ctrdata` [@herold2025ctrdata] to create a snapshot of EU CTR 
 EUCTR is publicly accessible. The EUCTR legal notice notes that publication on EUCTR does not constitute an endorsement of the information reported.
 
 **Data processing:**
-extensive. We use only primary endpoints. We defaulted missing CI levels to 95% and where truncation of p-values was not stated we assumed equality (the latter was the case for about 15% of data). Where EU CTR reported whether a result was one- or two-sided, we used this information for both confidence intervals and p-values; when it was missing, we assumed two-sided. Rest of the derivation of z-values followed the  _Standard procedure for dealing with p-values and confidence intervals_ described below. We set `year` to record _entry_ date (since "completion date" field was not accessible), dropped rows only when z was not finite, and harmonised phase labels to follow the same naming convention as ClinicalTrials.gov.
+extensive. We use only primary endpoints. We defaulted missing CI levels to 95% and where truncation of p-values was not stated we assumed equality (the latter was the case for about 15% of data). Where EU CTR reported whether a result was one- or two-sided, we used this information for both confidence intervals and p-values; when it was missing, we assumed two-sided. Rest of the derivation of z-values followed the  _Standard procedure for dealing with p-values and confidence intervals_ described below. We set `year` to record _entry_ date because completion date was not available. We dropped rows only when z was not finite, and harmonised phase labels to follow the same naming convention as ClinicalTrials.gov.
 
 **Additional variables used:**
 we retained phase labels, a measure class (derived from the estimand label), primary endpoint sample size
@@ -438,6 +451,35 @@ computed as transformed effect sizes divided by their standard errors.
 
 
 
+## Szucs and Ioannidis 2017 (cognitive neuroscience)
+
+**Reference:**
+@szucs2017empirical.
+
+**Research question:**
+empirical assessment of published effect sizes, statistical significance, and
+power in cognitive neuroscience and psychology literature.
+
+**Data availability:**
+the article and supporting data are available from PLOS Biology <https://journals.plos.org/plosbiology/article?id=10.1371/journal.pbio.2000797>
+
+**Data description and source:**
+the source contains 26,841 text-mined t-test records from 3,801 papers in 18
+journals (cognitive neuroscience, psychology, and medical). 
+The processed dataset preserves all
+three fields; for BEAR main dataset we include only the cognitive neuroscience subset
+(since psychology and medical literature is well covered by other datasets in BEAR).
+
+**Notes:**
+the extraction targeted t-test records reported in article text and did not
+mine tables.
+
+**Data processing:**
+we followed our default procedure for deriving z-values from t-values. 
+
+
+
+
 ## Many Labs 2
 
 **Reference:**
@@ -501,8 +543,8 @@ replications of these claims), where we select one statistic per claim; after
 BEAR processing and filtering, 1,946 claim rows are retained.
 
 **Data processing:**
-For the matched replication output, original and replication statistics
-we used the package's converted correlation scale where available.
+For the matched replication output, we used the package's converted correlation
+scale where available for original and replication statistics.
 For the all-claims set, effects are heterogeneous across the source
 papers.
 

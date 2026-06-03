@@ -206,18 +206,12 @@ dtlist[["JagerLeek"]] <-
 
 dtlist[["Sladekova"]] <- 
   readRDS("data/Sladekova.rds") %>% 
-  filter(!is.na(b) & !is.infinite(b)) %>% 
-  mutate(studyid = 1:nrow(.)) %>% 
+  filter(!is.na(b)) %>% 
   mutate(method = NA,
          measure = "Zr",
          z = b/se,
-         year = NA) %>% 
+         year = NA) %>%
   filter(!is.na(metaid)) 
-
-# year and studyid could be extracted, but they would need some cleaning up of strings
-# in each of the 406 files, so it may be best to do it later
-
-
 
 # Metapsy -----
 

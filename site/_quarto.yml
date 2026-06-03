@@ -1,0 +1,44 @@
+project:
+  type: website
+  output-dir: _site
+  pre-render:
+    - Rscript --vanilla build_dataset_pages.R
+
+website:
+  title: "BEAR"
+  site-url: "https://wwiecek.github.io/BEAR/"
+  repo-url: "https://github.com/wwiecek/BEAR"
+  repo-actions: [source, issue]
+  navbar:
+    left:
+      - href: index.qmd
+        text: Home
+      - href: getting-started.qmd
+        text: Get data
+      - href: datasets.qmd
+        text: Datasets
+      - href: artifacts.qmd
+        text: Artifacts
+      - href: reproduce.qmd
+        text: Reproduce
+    right:
+      - icon: github
+        href: https://github.com/wwiecek/BEAR
+        aria-label: GitHub repository
+  sidebar:
+    - title: "Datasets"
+      style: docked
+      contents:
+        - datasets.qmd
+        - section: "Dataset pages"
+          contents: datasets/*.qmd
+
+bibliography: ../doc/references.bib
+
+format:
+  html:
+    theme: cosmo
+    toc: true
+    code-fold: true
+    fig-align: center
+    link-external-newwindow: true

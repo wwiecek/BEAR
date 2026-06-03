@@ -10,6 +10,7 @@ issues of replication, exchangeability, meta-analysis etc. etc. The current rele
 
 This package includes our entire workflow (in R), documentation, results, and optional modelling of empirical research.
 
+- **Website:** <https://wwiecek.github.io/BEAR/>
 - **If you want to grab data only**, head to the GitHub Releases page and grab `BEAR.rds` [at this link](https://github.com/wwiecek/BEAR/releases).**
 - If you want to do more data work with individual datasets, see _Downloading BEAR data_ below.
 - To re-run everything, including modelling of data, see `main.R`.
@@ -140,4 +141,3 @@ tab_psr %>%
 ```
 
 `omega` is relative publication probability based on crossing of the |z|=1.96 threshold; `PoS` is probability of significance (assurance) and `PoS_80` is proportion of studies that reach 80% power; `replication` and `sign` probabilities are described in accompanying paper.
-

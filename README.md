@@ -13,6 +13,7 @@ from curated datasets across a diverse range of fields.
 This package includes our entire workflow (in R), documentation,
 results, and optional modelling of empirical research.
 
+- **Website:** <https://wwiecek.github.io/BEAR/>
 - **If you want to grab data only**, head to the GitHub Releases page
   and grab `BEAR.rds` [at this
   link](https://github.com/wwiecek/BEAR/releases).\*\*

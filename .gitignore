@@ -27,8 +27,12 @@ vignettes/*.pdf
 *.knit.md
 # R Environment Variables
 .Renviron
-# pkgdown site
+# pkgdown / Quarto site
 docs/
+site/_site/
+site/.quarto/
+site/_dataset_index.md
+site/datasets/*.qmd
 # translation temp files
 po/*~
 # RStudio Connect folder

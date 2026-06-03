@@ -1,0 +1,37 @@
+---
+title: "Reproduce"
+---
+
+The website is a static documentation layer. It should not run the full
+BEAR data-processing or modelling pipeline during a website build.
+
+## Main workflow
+
+- `main.R` is the high-level entry point for the repository workflow.
+- `process/` contains dataset-specific processing scripts.
+- `workflow/build_bear.R` stitches processed inputs into `BEAR.rds`.
+- `workflow/fit_mixtures.R` fits the mixture models used in downstream
+  summaries.
+- `workflow/calculate_psr.R` calculates probability of significance,
+  replication, and sign summaries from fitted models.
+
+## Data layers
+
+The repository contains code, documentation, and selected outputs. Large
+combined data artifacts are distributed through
+[GitHub Releases](https://github.com/wwiecek/BEAR/releases). Individual
+processed datasets can be fetched through the data submodule when deeper
+dataset-level work is needed.
+
+## Website build
+
+The website source lives in `site/`. Dataset pages are generated from
+`doc/datasets/*.Rmd` before Quarto renders the static HTML.
+
+```bash
+cd site
+quarto render
+```
+
+On GitHub, the Pages workflow runs the same generation-and-render step
+and deploys the rendered site.

@@ -1,0 +1,50 @@
+---
+title: "BEAR"
+subtitle: "Benchmarks of Empirical Accuracy in Research"
+---
+
+BEAR is a meta-database of z-values, effect sizes, and standard errors
+from existing datasets across scientific fields. It does not contribute
+new source data; it repackages public datasets into a common structure
+for research on replication, exchangeability, meta-analysis, and related
+questions about empirical accuracy.
+
+::: {.callout-note appearance="simple"}
+The main data artifact is distributed through
+[GitHub Releases](https://github.com/wwiecek/BEAR/releases), not through
+this website.
+:::
+
+::: {.grid}
+::: {.g-col-12 .g-col-md-6}
+## What is included?
+
+BEAR combines curated single-study datasets, collections of
+meta-analyses, large text-mined biomedical datasets, clinical-trial
+databases, and direct replication projects. The current documentation
+describes each source dataset, data availability, and the main processing
+choices used to bring it into BEAR.
+:::
+
+::: {.g-col-12 .g-col-md-6}
+## Who is this for?
+
+The project is intended for researchers who want a common empirical base
+for studying statistical evidence across fields, publication bias,
+replicability, power, exchangeability, and the behaviour of meta-analytic
+datasets.
+:::
+:::
+
+## Start here
+
+- [Get data](getting-started.qmd) for release downloads and a minimal R
+  loading example.
+- [Datasets](datasets.qmd) for the current dataset index and individual
+  dataset notes.
+- [Artifacts](artifacts.qmd) for the dataset appendix and other public
+  documents.
+- [Reproduce](reproduce.qmd) for the repository workflow and rebuild
+  entry points.
+- [GitHub repository](https://github.com/wwiecek/BEAR) for code, issues,
+  and releases.

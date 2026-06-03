@@ -1,0 +1,29 @@
+---
+title: "Get data"
+---
+
+The fastest way to use BEAR is to download the combined `BEAR.rds`
+artifact from [GitHub Releases](https://github.com/wwiecek/BEAR/releases).
+Large data artifacts should live in releases rather than in this website
+or in the repository history.
+
+```r
+bear <- readRDS("BEAR.rds")
+```
+
+From a shell, the current release artifact can be downloaded with:
+
+```bash
+curl -L -o BEAR.rds \
+  https://github.com/wwiecek/BEAR/releases/download/v1/BEAR.rds
+```
+
+If you want the individual processed datasets under `data/`, clone the
+repository and initialise the data submodule:
+
+```bash
+git submodule update --init --recursive
+```
+
+The repository intentionally keeps those inputs opt-in so the main code
+checkout remains small.

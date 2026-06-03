@@ -30,6 +30,8 @@ The website source lives in `site/`. Dataset pages are generated from
 
 ```bash
 cd site
+Rscript --vanilla build_dataset_pages.R
+Rscript --vanilla check_site_inputs.R
 quarto render
 ```
 

@@ -1,8 +1,6 @@
 project:
   type: website
   output-dir: _site
-  pre-render:
-    - Rscript --vanilla build_dataset_pages.R
 
 website:
   title: "BEAR"

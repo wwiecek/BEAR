@@ -10,6 +10,9 @@ permissions:
   pages: write
   id-token: write
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 concurrency:
   group: pages
   cancel-in-progress: false
@@ -29,6 +32,14 @@ jobs:
 
       - name: Configure Pages
         uses: actions/configure-pages@v5
+
+      - name: Generate dataset pages
+        working-directory: site
+        run: Rscript --vanilla build_dataset_pages.R
+
+      - name: Check site inputs
+        working-directory: site
+        run: Rscript --vanilla check_site_inputs.R
 
       - name: Render site
         working-directory: site

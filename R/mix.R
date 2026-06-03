@@ -95,7 +95,7 @@ log1mexp <- function(a) {            # vectorised, works for any finite a
 # likelihood as loglik() on non-truncated cases
 loglik_op <- function(theta, z, operator,            
                       k, weights,
-                      c_star = 1.96) {               
+                      c_star = qnorm(.975)) {               
   
   abs_z <- abs(z)
   
@@ -115,7 +115,7 @@ loglik_op <- function(theta, z, operator,
   # F_abs      <- exp(log_F)
   log_omega  <- log(omega)
   
-  ## constants at the publication frontier c* = 1.96 
+  ## constants at the publication frontier c* = qnorm(.975)
   F_star <- sum(p * (2 * pnorm(c_star, 0, s) - 1))   #  F_Y(c*)
   B1     <- 1 - F_star                               #  = Pr(|Z|≥c*)
   B2     <- F_star                                   #  = Pr(|Z|< c*)

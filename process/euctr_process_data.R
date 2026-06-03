@@ -13,7 +13,7 @@ d_raw <- readRDS(in_path)
 
 d_primary <- d_raw %>%
   ungroup() %>%
-  filter(endpoint == "primary")
+  dplyr::filter(endpoint == "primary")
 
 d_clean <- d_primary %>%
   mutate(
@@ -39,7 +39,7 @@ d_clean <- d_primary %>%
     completion_date = as.Date(completion_date),
     year = year(coalesce(completion_date, as.Date(date)))
   ) %>%
-  filter(!is.na(z)) %>%
+  dplyr::filter(!is.na(z)) %>%
   mutate(
     phase = as.character(phase),
     phase = case_when(

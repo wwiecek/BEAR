@@ -27,14 +27,14 @@ paper_lookup <- paper_metadata %>%
   )
 
 main_replication_source <- repli_outcomes %>%
-  filter(repli_version_of_record, !is_covid)
+  dplyr::filter(repli_version_of_record, !is_covid)
 
 main_claim_ids <- main_replication_source %>%
   distinct(claim_id) %>%
   pull(claim_id)
 
 original_long <- orig_outcomes %>%
-  filter(claim_id %in% main_claim_ids) %>%
+  dplyr::filter(claim_id %in% main_claim_ids) %>%
   left_join(paper_lookup, by = "paper_id") %>%
   mutate(
     source = "original",

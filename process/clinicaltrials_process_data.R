@@ -19,7 +19,7 @@ eff_clean <- eff %>%
     estimate = param_value
   ) %>%
   mutate(across(c(lower, upper, estimate), as.numeric)) %>%
-  filter(
+  dplyr::filter(
     overall_status == "COMPLETED",
     outcome_type == "PRIMARY"
   )
@@ -50,7 +50,7 @@ z_table_small <- z_table %>%
     effect, b, se, z,
     z_ci, z_p, z_source, use_ci, sym_ratio, z_operator, p_sides
   ) %>%
-  filter(!is.na(z))
+  dplyr::filter(!is.na(z))
 
 validation_checks <- tibble::tibble(
   check = c(

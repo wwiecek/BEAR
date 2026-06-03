@@ -33,7 +33,7 @@ claim_fragments <- claims_non_significant_bushels %>%
   ) %>%
   tidyr::unnest_longer(fragments, values_to = "stat_fragment") %>%
   mutate(stat_fragment = stringr::str_squish(stat_fragment)) %>%
-  filter(!is.na(stat_fragment), stat_fragment != "") %>%
+  dplyr::filter(!is.na(stat_fragment), stat_fragment != "") %>%
   group_by(claim4_id) %>%
   mutate(fragment_id = row_number()) %>%
   ungroup()
@@ -173,7 +173,9 @@ claim_level_summary <- score_all_claims %>%
 
 known_fragment_ok <- function(fragment, predicate) {
   score_all_claims_fragments %>%
-    filter(stringr::str_detect(stat_fragment, stringr::fixed(fragment))) %>%
+    dplyr::filter(
+      stringr::str_detect(stat_fragment, stringr::fixed(fragment))
+    ) %>%
     summarise(ok = any({{ predicate }}, na.rm = TRUE)) %>%
     pull(ok)
 }
@@ -209,15 +211,23 @@ validation_checks <- tibble(
         mean(score_all_claims$selected_significant)
     ) < 0.02,
     score_all_claims_fragments %>%
-      filter(z_source == "two_sided_p", p_operator == "=", p > 0) %>%
-      summarise(ok = all(abs(abs(z) - z_from_p(p)) < 1e-10)) %>%
+      dplyr::filter(
+        z_source == "two_sided_p", p_operator == "=", p > 0, p <= 1,
+        !is.na(z)
+      ) %>%
+      summarise(
+        ok = all(
+          abs(abs(z) - z_from_p_value(p)) < 1e-10 |
+            (is.infinite(abs(z)) & is.infinite(z_from_p_value(p)))
+        )
+      ) %>%
       pull(ok),
     score_all_claims_fragments %>%
-      filter(z_source == "two_sided_p", p_operator == "<") %>%
+      dplyr::filter(z_source == "two_sided_p", p_operator == "<") %>%
       summarise(ok = all(z_operator == ">")) %>%
       pull(ok),
     score_all_claims_fragments %>%
-      filter(z_source == "two_sided_p", p_operator == ">") %>%
+      dplyr::filter(z_source == "two_sided_p", p_operator == ">") %>%
       summarise(ok = all(z_operator == "<")) %>%
       pull(ok),
     known_fragment_ok(
@@ -226,7 +236,8 @@ validation_checks <- tibble(
     ),
     known_fragment_ok(
       "t(34) = -.17",
-      z_source == "reported_t" & abs(z + 0.17) < 1e-12
+      z_source == "reported_t" &
+        abs(z - z_from_t_value(-0.17, 34)) < 1e-12
     ),
     known_fragment_ok(
       "F(1,38)=5.40, p=.026, partial eta-squared = .12",
@@ -235,7 +246,7 @@ validation_checks <- tibble(
     known_fragment_ok(
       "B = .04, t(169) = 2.28, p = .02, 95% CI: [.01, .07]",
       z_source == "reported_t" &
-        abs(z - 2.28) < 1e-12 &
+        abs(z - z_from_t_value(2.28, 169)) < 1e-12 &
         abs(b - 0.04) < 1e-12 &
         !is.na(se)
     ),

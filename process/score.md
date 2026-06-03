@@ -61,7 +61,8 @@ semicolons, parses each statistical fragment, and selects one fragment per
 Each fragment is parsed with this statistic priority:
 
 1. Reported `z`.
-2. Reported `t`, with or without degrees of freedom.
+2. Reported `t` converted to a normal-equivalent z-value when degrees of
+   freedom are available; otherwise the reported `t` is used directly.
 3. Coefficient or effect divided by `SE`.
 4. `F(1, df)` transformed to `sqrt(F)`, using the best available sign hint.
 5. 95% confidence interval plus a point estimate.
@@ -122,7 +123,9 @@ and their matched original claims.
 For both original and replication rows, `z` is derived with this hierarchy:
 
 1. If a coefficient and standard error are available, use `coef / se`.
-2. Else if a reported `z` or `t` statistic is available, use it directly.
+2. Else if a reported `z` statistic is available, use it directly; if a
+   reported `t` statistic and degrees of freedom are available, convert it to a
+   normal-equivalent z-value.
 3. Else if an `F` statistic is available with numerator df equal to 1, use
    `sign_hint * sqrt(F)`.
 4. Else if a p-value and sign hint are available, derive `z` from a two-sided

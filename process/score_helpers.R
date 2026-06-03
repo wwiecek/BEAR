@@ -2,6 +2,7 @@
 # data frames.
 
 suppressPackageStartupMessages(library(tidyverse))
+source("R/z_derivation_helpers.R")
 
 score_number_pattern <- "[-+]?(?:\\d+\\.\\d+|\\.\\d+|\\d+)(?:[eE][-+]?\\d+)?"
 score_operator_pattern <- "(?:<=|>=|<|>|=|<=|>=|≤|≥)"
@@ -61,6 +62,8 @@ derive_preferred_z <- function(data,
 
   z_from_stat <- case_when(
     stat_type_value == "z" & !is.na(stat_value_num) ~ stat_value_num,
+    stat_type_value == "t" & !is.na(stat_value_num) &
+      !is.na(stat_dof_1_num) ~ z_from_t_value(stat_value_num, stat_dof_1_num),
     stat_type_value == "t" & !is.na(stat_value_num) ~ stat_value_num,
     stat_type_value == "f" &
       !is.na(stat_value_num) &
@@ -72,7 +75,7 @@ derive_preferred_z <- function(data,
 
   z_from_p <- ifelse(
     !is.na(p_value_num) & !is.na(sign_hint_num),
-    sign_hint_num * z_from_p(p_value_num),
+    sign_hint_num * z_from_p_value(p_value_num),
     NA_real_
   )
 
@@ -175,16 +178,20 @@ score_extract_reported_z <- function(text) {
 
 score_extract_reported_t <- function(text) {
   pattern <- paste0(
-    "\\bt\\s*(?:\\([^)]*\\))?\\s*(", score_operator_pattern,
+    "\\bt\\s*(?:\\(\\s*(", score_number_pattern, ")\\s*\\))?\\s*(",
+    score_operator_pattern,
     ")\\s*(", score_number_pattern, ")"
   )
   match <- score_first_match(text, pattern)
-  if (length(match) < 3 || is.na(match[2])) {
-    return(list(value = NA_real_, operator = NA_character_))
+  if (length(match) < 4 || is.na(match[3])) {
+    return(list(value = NA_real_, df = NA_real_, operator = NA_character_))
   }
 
-  list(value = score_parse_number(match[3]),
-       operator = score_normalize_operator(match[2]))
+  list(
+    value = score_parse_number(match[4]),
+    df = score_parse_number(match[2]),
+    operator = score_normalize_operator(match[3])
+  )
 }
 
 score_extract_reported_f <- function(text) {
@@ -350,7 +357,10 @@ parse_score_fragment <- function(text) {
     z_source <- "reported_z"
     sign_source <- "reported_z"
   } else if (!is.na(t_reported$value)) {
-    z <- t_reported$value
+    z <- dplyr::coalesce(
+      z_from_t_value(t_reported$value, t_reported$df),
+      t_reported$value
+    )
     z_operator <- t_reported$operator
     z_source <- "reported_t"
     sign_source <- "reported_t"
@@ -373,13 +383,8 @@ parse_score_fragment <- function(text) {
     z_source <- "ci_95"
     sign_source <- effect$source
   } else if (!is.na(p_reported$value)) {
-    z <- sign_info$sign * z_from_p(p_reported$value)
-    z_operator <- case_when(
-      p_reported$value == 0 ~ ">",
-      p_reported$operator == "<" ~ ">",
-      p_reported$operator == ">" ~ "<",
-      TRUE ~ "="
-    )
+    z <- sign_info$sign * z_from_p_value(p_reported$value)
+    z_operator <- z_operator_from_p_operator(p_reported$operator)
     z_source <- "two_sided_p"
   }
 

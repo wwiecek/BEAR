@@ -100,7 +100,31 @@ z_from_p_value <- function(p, sides = 2L) {
   p <- suppressWarnings(as.numeric(p))
   p <- ifelse(!is.na(p) & p >= 0 & p <= 1, p, NA_real_)
   sides <- clean_ci_sides(sides)
-  ifelse(sides == 1L, qnorm(1 - p), qnorm(1 - p / 2))
+  if (length(sides) == 1L && length(p) != 1L) {
+    sides <- rep(sides, length(p))
+  }
+  z <- ifelse(sides == 1L, qnorm(1 - p), qnorm(1 - p / 2))
+  small_p <- !is.na(p) & p > 0 & p < 1e-15
+  z[small_p] <- ifelse(
+    sides[small_p] == 1L,
+    sqrt(-2 * log(p[small_p])),
+    sqrt(-2 * log(p[small_p] / 2))
+  )
+  z[!is.na(p) & p <= 0] <- Inf
+  z[!is.na(p) & p >= 1] <- 0
+  z
+}
+
+# Convert a signed t-statistic and df to its normal-equivalent z-statistic.
+z_from_t_value <- function(t_value, df) {
+  t_value <- suppressWarnings(as.numeric(t_value))
+  df <- suppressWarnings(as.numeric(df))
+  p <- ifelse(
+    !is.na(t_value) & !is.na(df) & df > 0,
+    2 * pt(-abs(t_value), df),
+    NA_real_
+  )
+  sign(t_value) * z_from_p_value(p)
 }
 
 # Derive candidate CI and p-value z-statistics, then choose CI if trusted.

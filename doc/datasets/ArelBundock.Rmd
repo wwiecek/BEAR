@@ -1,0 +1,22 @@
+## Arel-Bundock et al 2022 (political science)
+
+**Reference:**
+@arel2022quantitative.
+
+**Research question:**
+assess statistical power in political science research
+
+**Data availability:**
+replication package (zip file with date 20241010) can be found at <https://osf.io/fgdet>. All data are in public domain.
+
+**Data description and source:**
+Authors searched for (and emailed authors of) meta-analysis articles across 141 journals in political science; this led to "a dataset of 16,649 hypothesis tests, grouped in 351 meta-analyses, reported in 46 peer-reviewed meta-analytic articles"
+
+**Notes:**
+There is possibly a considerable overlap with Askarov et al dataset, but these two datasets are worth analysing separately given their different focus.
+
+**Data processing:**
+using the same code as original authors (replication package that runs on makefiles),
+but skipping some additional processing that they've done for their paper. Signed
+z-values were computed as reported estimates divided by their standard errors.
+We verified that the distributions of z-values matched.

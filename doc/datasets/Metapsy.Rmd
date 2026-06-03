@@ -1,0 +1,16 @@
+## Metapsy (psychotherapy)
+
+Studies included in _Metapsy_ (<https://www.metapsy.org/>), a set of living meta-analytic databases of randomised trials of psychotherapeutic interventions.
+
+**Snapshot date:**
+Jan 2026
+
+**Data availability:**
+Metapsy is maintained by an international collaboration led by Vrije Universiteit Amsterdam. Databases are available at <https://www.metapsy.org/> and via R package `metapsyData` [@harrer2022metapsydata]. Metapsy FAQ states that all data provided as part of the project are open-access and requires attribution.
+
+**Data processing:**
+we merged 20 individual datasets in Metapsy with some cleaning (e.g. to extract
+study dates from titles). Almost all estimates are Hedges' g, but for one of
+the databases (`total-response`) we converted log-odds ratios to SMD (dividing
+by $\Pi/\sqrt{3}$ to scale SD of logistic regression). Signed z-values were
+computed as effect sizes divided by their standard errors.

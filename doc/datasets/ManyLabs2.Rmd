@@ -1,0 +1,37 @@
+## Many Labs 2
+
+**Reference:**
+@klein2018manylabs.
+
+**Snapshot date:**
+Jan 2026
+
+**Research question:**
+replications of 28 classic and contemporary effects in psychology, with the
+same effects tested across many samples and research sites.
+
+**Data availability:**
+the authors make their replication package available through OSF. We use the
+paper-included Many Labs 2 analyses from the key table and the site-level
+aggregated replication results from the public data package.
+
+**Data processing:**
+we retained the 28 preregistered analyses included in the paper. Each row is a
+site-level replication estimate for one analysis, so the dataset has many more
+rows than analyses. We use the Many Labs 2 analysis identifier as `metaid`.
+Thus, a single finding such as `Kay.1` contributes one BEAR row for each
+sample/site estimate, rather than one row for each alternative statistical
+scale reported for the same sample.
+The additional grouping variable distinguishes analyses designated as primary
+or secondary by the original authors.
+
+The retained effect-size measure is the correlation scale. We used the reported
+`r` estimate as `b`, its reported variance to compute `se` where available, and
+then computed `z = b / se`. For two analyses where the variance of `r` was not
+available but a signed equivalent test statistic was available, we used that
+statistic as `z` and derived the implied standard error. Original-study effects
+were matched by analysis where available and stored separately from the
+replication estimates.
+
+**Additional grouping variable:**
+primary or secondary analysis designation.

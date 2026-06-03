@@ -1,0 +1,27 @@
+## EU Clinical Trials Register (EU CTR)
+
+Trials which reported results at the EU Clinical Trials Register, <https://www.clinicaltrialsregister.eu/> [@euctr2025].
+
+**Snapshot date:**
+18 January 2026
+
+**Data collection:**
+we used R package `ctrdata` [@herold2025ctrdata] to create a snapshot of EU CTR (`collection = "euctr"`); we downloaded trial records with results only. We stored the downloaded records in a local SQLite database and extracted a fixed set of protocol and results fields plus several fields computed by `ctrdata` (trial phase, sample size, and a “first primary endpoint” p-value/size derived by the package). We only use the EUCTR portion of this extraction in BEAR.
+
+**Data availability:**
+EUCTR is publicly accessible. The EUCTR legal notice notes that publication on EUCTR does not constitute an endorsement of the information reported.
+
+**Data processing:**
+extensive. We use only primary endpoints. 
+We default missing CI levels to 95% and where truncation of p-values was not 
+stated we assume equality (the latter is the case for about 15% of data). 
+Where data does not report whether a test is one- or two-sided, we assume two-sided. 
+Rest of the derivation of z-values follows the  
+_Standard procedure for dealing with p-values and confidence intervals_ described below. 
+We set `year` to the entry date year since completion dates were unavailable.
+We dropped rows only when `z` was missing; infinite z-values are retained.
+We harmonise phase labels to follow the same naming convention as ClinicalTrials.gov.
+
+**Additional variables used:**
+we retained phase labels and measure categorical variable 
+(derived by us from the estimand label).

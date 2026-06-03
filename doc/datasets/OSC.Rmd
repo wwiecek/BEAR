@@ -1,0 +1,22 @@
+## Open Science Collaboration 2015
+
+**Reference:**
+@opensciencecollaborationEstimatingReproducibilityPsychological2015a.
+
+**Research question:**
+replications of a quasi-random sample of 100 experiments in psychology.
+
+**Data collection:**
+authors of the paper make a comprehensive dataset of results available with their paper. In BEAR we did not use the original studies (since all studies in that set have p < 0.05), only replications.
+
+**Data availability:**
+the data file `rpp_data.csv` is available as part of repository for the paper <https://osf.io/ytpuq/overview> under CC0 1.0 Universal license.
+
+**Data processing:**
+we derived z values from the replication p-values assuming two-sided p-values
+(we use the replication p-value column, not the original-study p-value). We
+applied the sign of the replication correlation, so z-values are signed where
+that correlation is available. We treated p-values recorded as exactly 0 as
+truncated and recorded this as a lower bound on z (z-operator `>`); otherwise
+we treated p-values as exact (z-operator `=`). We retained the replication
+sample size as `ss`.

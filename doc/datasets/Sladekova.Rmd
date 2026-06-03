@@ -1,0 +1,21 @@
+## Sladekova et al. 2023 (psychology)
+
+**Reference:**
+@sladekova2023estimating.
+
+**Research question:**
+how much do meta-analytic effect-size estimates change after applying
+publication-bias adjustment methods in psychology datasets?
+
+**Data availability:**
+data and materials are available through OSF.
+
+**Data description and source:**
+the authors reanalysed 433 meta-analytic datasets from 90 psychology papers.
+BEAR represents the imported meta-analytic datasets as row-level effect sizes, assuming one row per study. 
+
+**Data processing:**
+we use rows with available effect estimates and sampling variances. Effect
+sizes on the correlation scale are transformed to Fisher's z scale, with
+standard errors derived from the reported variances. Signed z-values were
+computed as transformed effect sizes divided by their standard errors.

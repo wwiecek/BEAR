@@ -1,0 +1,18 @@
+## Jager and Leek
+
+**Reference:**
+@jager2014estimate.
+
+**Research question:**
+estimating science-wise false discovery rate.
+
+**Data collection:**
+authors used a custom program to extract p-values from scraped PubMed abstracts for papers published in 5 main medical journals 2000-2010. 15,653 p-values are available in 5,322 articles.
+
+**Data availability:**
+the data file `pvalueData.rda` is available <https://github.com/jtleek/swfdr>  License for the programs in that repository is GNU GPL, although a license for the dataset is not stated, as far as we are aware.
+
+**Data processing:**
+there was only minimal processing. We derived unsigned z values from p-values assuming they were two-sided.
+
+Notably, large proportion of p-values is truncated, almost always at 0.0001, 0.001, 0.01, or 0.05. As in all datasets, we retained information on truncation. We also treated p-values recorded as exactly 0 as truncated (z-operator `>`). We created a crude flag for RCTs by searching the paper titles for “randomized", "randomised" and "controlled”.

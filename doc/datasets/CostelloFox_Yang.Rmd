@@ -1,0 +1,22 @@
+## Costello and Fox 2022; Yang et al 2023, 2024 (ecology and evolution)
+
+**Reference:**
+these two datasets come from the same replication package and shared data processing pipeline in Yang et al. 2024 [@yang2024large]. Original references for the datasets are Yang et al. 2023 and Costello and Fox 2022 [@yang2023publication; @costello2022decline].
+
+**Research question:**
+decline effects in ecology (Costello and Fox) and publication bias and performance of empirical research (Yang et al)
+
+**Data collection:**
+Costello and Fox look at 466 meta-analyses obtained through searching Web of Science. Reproducibility dataset includes 88,000 rows among 466 analyses in 232 papers. Subsequently, Yang et al removed duplicated studies and zeroes, which meant discarding about 20% of rows. Yang et al collect 102 meta-analyses published 2010-2019 in relevant journals, de-duplicated against Costello and Fox dataset.
+
+**Data availability:**
+two datasets may be downloaded from <https://github.com/Yefeng0920/replication_EcoEvo_git/>. Available under CC BY 4.0 licence.
+
+**Data processing:**
+no additional data processing other than cleaning up study years. Signed
+z-values were computed as effect sizes divided by their standard errors. Note
+that the replication package for Yang et al does not include meta-analysis
+indicators.
+
+**Additional variables used:**
+we retained a measure variable ("lnRR", "SMD", "Zr" or "uncommon")

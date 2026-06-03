@@ -1,0 +1,32 @@
+## Bartoš et al. 2025 (exercise)
+
+**Reference:**
+@bartos2025exercise, which builds on another analysis, @singh2025exercise.
+
+**Research question:**
+What is the effect of physical exercise on cognition, memory, and executive function; 
+with extra focus on selective reporting and heterogeneity.
+
+**Data availability:**
+Replication data are publicly available via 
+PsyArXiv  <https://osf.io/preprints/psyarxiv/qr8e2_v1> 
+under Creative Commons By Attribution 4.0 license.
+
+**Data description and source:**
+Bartoš et al. (2025) extended the systematic review and
+meta-meta-analysis by Singh et al. (2025). Singh et al. compiled a set of 
+peer-reviewed systematic reviews with
+meta-analyses of randomized controlled trials 
+that evaluated exercise effects on general cognition, memory, or
+executive function. Bartoš et al. extracted study-level effect
+sizes and standard errors, or information needed to compute them, from study
+tables, forest plots, and online supplementary materials. 
+Their analysis included 2,239 effect-size estimates
+from 215 meta-analyses.
+
+**Data processing:**
+z-values were computed as effect size divided by its reported standard error. 
+No filtering or recoding beyond variable renaming was required.
+
+**Additional variables used:**
+None.

@@ -1,0 +1,20 @@
+## psymetadata and Nuijten et al (psychology datasets)
+
+**Reference:**
+Set of psychology datasets compiled by @rodriguez2022psymetadata. We also disaggregate a large meta-meta-analysis of intelligence research [@nuijten2020intelligence]. 
+
+**Snapshot date:**
+Jan 2026
+
+**Research question:**
+_psymetadata_ is an R package that curates multiple open datasets from published meta-analyses in psychology for teaching and demonstrations. @nuijten2020intelligence is a large meta-meta-analysis of intelligence research, which focused on power and small study effects.
+
+**Data availability:**
+22 datasets are distributed with the `psymetadata` R package (CRAN). We do not use its Many Labs 2 dataset, which we obtain from the original source and include separately. After excluding Many Labs 2 and separately representing the intelligence meta-meta-analysis, the remaining psychology datasets vary from 65 rows of data to over 1,000. The package is GPL-3; individual datasets originate from the cited source papers.
+
+**Data processing:**
+minimal. We used regular expressions to extract year labels from titles. We dropped some invalid rows (missing, non-finite, or non-positive standard errors).
+Signed z-values were computed as effect sizes divided by their standard errors.
+
+**Additional grouping variable:**
+name of the original psymetadata dataset.

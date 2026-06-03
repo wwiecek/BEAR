@@ -291,6 +291,7 @@ we retained a measure variable ("lnRR", "SMD", "Zr" or "uncommon")
 
 
 
+
 ## EU Clinical Trials Register (EU CTR)
 
 Trials which reported results at the EU Clinical Trials Register, <https://www.clinicaltrialsregister.eu/> [@euctr2025].
@@ -305,10 +306,19 @@ we used R package `ctrdata` [@herold2025ctrdata] to create a snapshot of EU CTR 
 EUCTR is publicly accessible. The EUCTR legal notice notes that publication on EUCTR does not constitute an endorsement of the information reported.
 
 **Data processing:**
-extensive. We use only primary endpoints. We defaulted missing CI levels to 95% and where truncation of p-values was not stated we assumed equality (the latter was the case for about 15% of data). Where EU CTR reported whether a result was one- or two-sided, we used this information for both confidence intervals and p-values; when it was missing, we assumed two-sided. Rest of the derivation of z-values followed the  _Standard procedure for dealing with p-values and confidence intervals_ described below. We set `year` to record _entry_ date because completion date was not available. We dropped rows only when z was not finite, and harmonised phase labels to follow the same naming convention as ClinicalTrials.gov.
+extensive. We use only primary endpoints. 
+We default missing CI levels to 95% and where truncation of p-values was not 
+stated we assume equality (the latter is the case for about 15% of data). 
+Where data does not report whether a test is one- or two-sided, we assume two-sided. 
+Rest of the derivation of z-values follows the  
+_Standard procedure for dealing with p-values and confidence intervals_ described below. 
+We set `year` to the entry date year since completion dates were unavailable.
+We harmonise phase labels to follow the same naming convention as ClinicalTrials.gov.
 
 **Additional variables used:**
-we retained phase labels, a measure class (derived from the estimand label), primary endpoint sample size
+we retained phase labels and measure categorical variable 
+(derived by us from the estimand label). 
+
 
 
 

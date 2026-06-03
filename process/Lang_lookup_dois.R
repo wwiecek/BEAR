@@ -10,7 +10,13 @@ crossref_mailto <- Sys.getenv("CROSSREF_MAILTO", unset = NA_character_)
 lookup_keys <- c("paper_id", "source_title", "citation", "journal", "year",
                  "lang_source")
 
+clean_character_columns <- function(data) {
+  data %>%
+    mutate(across(where(is.character), ~ stringi::stri_trans_nfc(enc2utf8(.x))))
+}
+
 lang_papers <- readRDS(input_path) %>%
+  clean_character_columns() %>%
   distinct(paper_id, source_title, citation, journal, year, lang_source) %>%
   mutate(
     query = case_when(
@@ -89,7 +95,8 @@ doi_candidates <- lang_papers %>%
       }
     )
   ) %>%
-  unnest(result)
+  unnest(result) %>%
+  clean_character_columns()
 
 write_csv(doi_candidates, output_path)
 

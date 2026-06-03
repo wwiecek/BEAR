@@ -15,8 +15,18 @@
 # purposes of his study.
 
 library(tidyverse)
+
+clean_character_columns <- function(data) {
+  data |>
+    mutate(across(where(is.character), ~ stringi::stri_trans_nfc(enc2utf8(.x))))
+}
+
 # Load and merge the two datasets
-briggs <- read_csv("data_raw/ArelBundock/ps_power_replication_20241010/data/estimates_rb_vab_mma.csv") |>
+briggs <- read_csv(
+  "data_raw/ArelBundock/ps_power_replication_20241010/data/estimates_rb_vab_mma.csv",
+  locale = locale(encoding = "Latin1")
+) |>
+  clean_character_columns() |>
   mutate(sample = "Briggs",
          study_year = ifelse(is.na(study_year),
                              as.numeric(str_extract(study_id, "[0-9]{4}")),
@@ -25,7 +35,8 @@ briggs <- read_csv("data_raw/ArelBundock/ps_power_replication_20241010/data/esti
 doucouliagos_meta_id <- data.table::fread(("data_raw/ArelBundock/ps_power_replication_20241010/data/doucouliagos_meta_id.csv"))
 doucouliagos <- data.table::fread(("data_raw/ArelBundock/ps_power_replication_20241010/data/estimates_doucouliagos_2021-12-19.csv")) |>
   # type matching with briggs
-  transform(study_id = as.character(study_id))
+  transform(study_id = as.character(study_id)) |>
+  clean_character_columns()
 
 dat <- bind_rows(briggs, doucouliagos) |>
   mutate(z_stat = estimate / std.error,

@@ -22,13 +22,22 @@ check_required <- function(data, vars) {
   }
 }
 
+decode_lang_text <- function(x) {
+  vapply(x, function(s) {
+    if (is.na(s)) return(NA_character_)
+    code_points <- utf8ToInt(s)
+    if (any(code_points > 255)) return(s)
+    iconv(rawToChar(as.raw(code_points)), from = "MACINTOSH", to = "UTF-8")
+  }, character(1), USE.NAMES = FALSE)
+}
+
 clean_character <- function(x) {
-  na_if(str_squish(as.character(x)), "")
+  na_if(str_squish(decode_lang_text(as.character(x))), "")
 }
 
 # Prepare data -----
 
-lang_raw <- read_dta(lang_path)
+lang_raw <- read_dta(lang_path, encoding = "latin1")
 
 check_required(lang_raw, c("t", "year", "method", "unique_paperid"))
 

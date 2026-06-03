@@ -75,6 +75,7 @@ for(nm in mtofit) {
   cfit <- fit_mixture(z = df$z, operator = df$z_operator, weights = df$weights)
   saveRDS(cfit, fnm)
   toc()
+  print(cfit)
 }
 
 # This is not part of the repo, but useful to save it as it takes a moment to derive

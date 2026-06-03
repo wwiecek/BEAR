@@ -15,7 +15,6 @@ for (nm in names(cdsr_fits)) {
   cdsr_pl[[nm]] <- plot_mixture_v4(
     cdsr_fits[[nm]],
     cdsr_sub[[nm]],
-    nbreaks = 40,
     ymax = 0.6,
     show_corrected = TRUE,
     align_corrected_above_threshold = TRUE
@@ -43,7 +42,6 @@ for (nm in names(ct_fits)) {
   ct_pl[[nm]] <- plot_mixture_v4(
     ct_fits[[nm]],
     ct_subsets[[nm]],
-    nbreaks = 40,
     ymax = 0.4,
     show_corrected = TRUE,
     align_corrected_above_threshold = TRUE

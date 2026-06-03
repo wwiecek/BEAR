@@ -55,7 +55,7 @@ bear_summary %>%
     Values = fmt_int(n_z),
     `Meta-analyses` = fmt_int(n_meta),
     Studies = fmt_int(n_study),
-    `Values/study` = fmt_num(mean_k),
+    `Values/study` = fmt_num(mean_k, digits = 1),
     `Significant` = fmt_pct(pct_signif)
   ) %>%
   knitr::kable(align = c("l", "l", rep("r", 5)))

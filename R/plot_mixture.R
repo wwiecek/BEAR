@@ -35,7 +35,7 @@ load_bear_mixture_inputs <- function(exclude = NULL,
 plot_bear_mixture_panel <- function(dataset,
                                     nm = bear_labels[dataset],
                                     color_map = bear_colors,
-                                    nbreaks = 25,
+                                    bin_width = 0.245,
                                     ymax = 0.7,
                                     show_corrected = TRUE,
                                     align_corrected_above_threshold = TRUE,
@@ -49,7 +49,7 @@ plot_bear_mixture_panel <- function(dataset,
     dt,
     nm = nm,
     color_map = color_map,
-    nbreaks = nbreaks,
+    bin_width = bin_width,
     ymax = ymax,
     meanpwr = round(psr_table$PoS[psr_table$dataset == dataset], 2),
     show_corrected = show_corrected,
@@ -61,7 +61,7 @@ plot_bear_mixture_panel <- function(dataset,
 
 # Current absolute-z mixture plot used by paper/report figure scripts.
 plot_mixture_v4 <- function(fit, dt, nm = "", col = "black", color_map = NULL, 
-                            xmax = 10, nbreaks = 25, ymax = 0.6, 
+                            xmax = 10, bin_width = 0.245, ymax = 0.6, 
                             annotate = "psr", meanpwr = NULL,
                             show_corrected = FALSE,
                             align_corrected_above_threshold = FALSE,
@@ -98,7 +98,7 @@ plot_mixture_v4 <- function(fit, dt, nm = "", col = "black", color_map = NULL,
   } else {
     df$corrected_fz
   }
-  bin_width <- 0.245
+  
   br <- seq(0, max(abs(dt$z), xmax) + bin_width, by = bin_width)
   omega_val <- round(fit$omega[1], 2)
   e_abs_z_val <- round(den_calc_result$E_abs_z, 1)

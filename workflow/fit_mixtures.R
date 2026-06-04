@@ -65,14 +65,19 @@ missing_fit <- names(bear_hash)[
 ]
 mtofit <- union(changed, missing_fit)
 
-# Nelder-Mead optimisation we use here will take ~a few minutes 
-# (up to 10 maybe) per dataset
+# Unconstrained optimisation should usually be faster than the old constrained
+# Nelder-Mead path, but some larger datasets can still take a few minutes.
 for(nm in mtofit) {
   fnm <- paste0("mixtures/", nm, ".rds")
   cat(nm); cat("\n")
   tic()
   df <- bear_list_thin[[nm]]
-  cfit <- fit_mixture(z = df$z, operator = df$z_operator, weights = df$weights)
+  cfit <- fit_mixture(
+    z = df$z,
+    operator = df$z_operator,
+    weights = df$weights,
+    mode = "unconstr"
+  )
   saveRDS(cfit, fnm)
   toc()
   print(cfit)

@@ -60,7 +60,7 @@ extract_analysis <- function(metaid, analysis_subset, primary_results,
       subset = analysis_subset
     ) %>%
     filter(!is.na(z), !is.na(b), !is.na(se), !is.na(ss),
-           is.finite(z), is.finite(b), is.finite(se), se > 0)
+           is.finite(b), is.finite(se), se > 0)
 }
 
 stop_if_not <- function(condition, message) {

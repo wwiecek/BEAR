@@ -171,13 +171,17 @@ loglik_op <- function(theta, z, operator,
 
 # Mixture optimisation function -----
 
+initial_mixture_par <- function(z, k = 4) {
+  c(rep(1 / k, k - 1),
+    c(1.2, if (k > 2) 2:(k - 1), max(abs(z))),
+    .5)
+}
+
 optimise_mixture <- function(z, z_operator, weights, k = 4) {
   z <- abs(z)
   
   ## starting values (WW added large sigma as last entry, sigma = k too inflexible)
-  theta0 <- c(rep(1 / k, k - 1), 
-              c(1.2, if (k > 2) 2:(k-1), max(z)),
-              .5)
+  theta0 <- initial_mixture_par(z, k)
 
   ui <- c(rep(-1, k - 1), rep(0, k), 0)
   ui <- rbind(ui, cbind(diag(2 * k)))
@@ -200,6 +204,49 @@ optimise_mixture <- function(z, z_operator, weights, k = 4) {
   data.frame(p = p, m = 0, sigma = sigma, omega = omega, 
              AIC = 2*k + 2*(opt$value),
              BIC = 2*log(sum(weights)) + 2*(opt$value))
+}
+
+unconstr_to_mixture_par <- function(theta, k = 4) {
+  a <- c(0, theta[1:(k - 1)])
+  p <- exp(a - max(a))
+  p <- p / sum(p)
+  sigma <- 1 + exp(theta[k:(2 * k - 1)])
+  omega <- exp(theta[2 * k])
+  c(p[1:(k - 1)], sigma, omega)
+}
+
+mixture_par_to_unconstr <- function(par, k = 4) {
+  p <- c(par[1:(k - 1)], 1 - sum(par[1:(k - 1)]))
+  sigma <- par[k:(2 * k - 1)]
+  omega <- par[2 * k]
+  c(log(p[-1] / p[1]), log(sigma - 1), log(omega))
+}
+
+optimise_mixture_unconstr <- function(z, z_operator, weights, k = 4) {
+  z <- abs(z)
+  theta0 <- mixture_par_to_unconstr(initial_mixture_par(z, k), k)
+  objective <- function(theta) {
+    if (any(!is.finite(theta))) return(1e12)
+    par <- unconstr_to_mixture_par(theta, k)
+    if (any(!is.finite(par))) return(1e12)
+    value <- loglik_op(par, z = z, operator = z_operator,
+                       k = k, weights = weights)
+    if (is.finite(value)) value else 1e12
+  }
+
+  opt <- optim(theta0, fn = objective, method = "BFGS",
+               control = list(maxit = 1e4))
+  cat("Objective function (divided by n): ", opt$value / length(z), "\n")
+  par <- unconstr_to_mixture_par(opt$par, k)
+
+  ## unpack
+  p     <- c(par[1:(k - 1)], 1 - sum(par[1:(k - 1)]))
+  sigma <- par[k:(2 * k - 1)]
+  omega <- par[2 * k]
+
+  data.frame(p = p, m = 0, sigma = sigma, omega = omega,
+             AIC = 2 * k + 2 * opt$value,
+             BIC = 2 * log(sum(weights)) + 2 * opt$value)
 }
 
 
@@ -238,10 +285,13 @@ prepare_mixture_z <- function(z, operator = NULL, z_star = 25,
 fit_mixture <- function(z,
                         operator,
                         z_star = 25,
+                        mode = "constr",
                         ...){
+  mode <- match.arg(mode, c("constr", "unconstr"))
   prepared <- prepare_mixture_z(z, operator, z_star, report = TRUE)
 
-  fit <- optimise_mixture(z = prepared$z, z_operator = prepared$operator, ...)
+  optimise <- if(mode == "unconstr") optimise_mixture_unconstr else optimise_mixture
+  fit <- optimise(z = prepared$z, z_operator = prepared$operator, ...)
   fit$sigma_SNR <- sqrt(fit$sigma^2 - 1)          # stdev van SNR
   
   return(fit)

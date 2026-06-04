@@ -13,9 +13,12 @@ table by table. They collected coefficients of interest from results tables,
 excluding constants, balance checks, robustness checks, regression controls,
 and placebo tests. Each source row corresponds to a single reported test
 statistic, linked to a paper-level identifier. Unlike most other sources in
-BEAR, this means the source data have dozens of estimates per paper: 314
-articles with 16,390 estimates. After BEAR processing and filtering, we
-retain 15,917 RCT estimates.
+BEAR, this means the source data have dozens of estimates per paper. The
+paper reports 314 articles and 15,992 test statistics; the shared `merged.dta`
+file contains 16,390 estimates, of which 15,917 are RCT rows retained here.
+The paper-level preregistration coding matches the source article counts:
+83 preregistered articles, including 44 with a pre-analysis plan and 39
+without one.
 
 **Data availability:**
 replication data file `merged.dta` may be downloaded from <https://dataverse.harvard.edu/file.xhtml?fileId=7884702&version=1.0>

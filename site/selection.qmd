@@ -16,8 +16,32 @@ $$
 $$
 
 Values below one indicate lower observation probability below the conventional
-two-sided significance threshold. The solid curve is the fitted observed
-distribution of absolute z-values; the dashed curve shows the corresponding
-distribution after removing the fitted selection effect.
+two-sided significance threshold.
+
+The interpretation of $\omega$ depends on the unit represented by each
+z-value. In datasets where each observation is close to a focal estimate from a
+paper, such as a headline result or main meta-analytic estimate, $\omega$ is
+close to a conventional publication-selection parameter. It compares the
+probability that a non-significant versus significant result enters the
+published evidence base. In datasets that extract many coefficients from the
+same paper, however, selection need not operate independently on each
+coefficient. A paper may be published because of one main result while other
+coefficients appear because they are reported alongside it, and authors may
+also choose which outcomes and specifications to report within a published
+paper. In these cases, $\omega$ is better read as a reported-result selection
+parameter: it measures how much less visible non-significant z-values are in
+BEAR, without by itself distinguishing journal publication bias, within-paper
+selective reporting, or p-hacking. Comparisons across datasets should therefore
+take the extraction rule seriously, especially the number of observations per
+paper and whether the extracted estimates correspond to pre-specified or focal
+claims.
+
+The solid curve is the fitted observed distribution of absolute z-values; the
+dashed curve shows the corresponding distribution after removing the fitted
+selection effect.
 
 ![](assets/selection_mixture_plot.png){.selection-mixture-plot fig-alt="Multi-panel BEAR mixture model plot showing fitted selection parameters for every current fitted mixture"}
+
+*Panels are ordered by fitted $\hat\omega$. Colours denote dataset families:
+blue for curated datasets, red for meta-analysis datasets, green for
+article-wide harvests, and gold for original-study replications.*

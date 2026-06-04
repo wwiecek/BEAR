@@ -18,10 +18,16 @@ dir.create(dirname(site_output_path), showWarnings = FALSE, recursive = TRUE)
 
 load_bear_mixture_inputs(exclude = NULL)
 
-mixture_order <- c(
+initial_order <- c(
   intersect(names(bear_names), names(mixtures)),
   sort(setdiff(names(mixtures), names(bear_names)))
 )
+mixture_order <- initial_order[order(vapply(mixtures[initial_order],
+                                            function(fit) fit$omega[1],
+                                            numeric(1)))]
+
+selection_colors <- bear_colors
+selection_colors["meta"] <- "#D62728"
 
 missing_inputs <- setdiff(mixture_order, names(bear_list_thin))
 if(length(missing_inputs) > 0) {
@@ -32,12 +38,15 @@ draw_selection_panel <- function(dataset) {
   dt <- bear_list_thin[[dataset]] %>%
     mutate(group = bear_classification[dataset])
 
-  title <- dplyr::coalesce(bear_labels[dataset], bear_names[dataset], dataset)
+  title <- dplyr::coalesce(bear_labels[dataset], bear_names[dataset], dataset) %>%
+    stringr::str_split_1("\n") %>%
+    stringr::str_wrap(width = 20) %>%
+    paste(collapse = "\n")
   plot_mixture_v4(
     mixtures[[dataset]],
     dt,
     nm = title,
-    color_map = bear_colors,
+    color_map = selection_colors,
     bin_width = 0.1225,
     ymax = 0.7,
     annotate = "omega",
@@ -54,16 +63,20 @@ draw_selection_panel <- function(dataset) {
 plots <- lapply(mixture_order, draw_selection_panel)
 n_panels <- length(plots)
 rows <- ceiling(n_panels / 5)
-panel_height <- 2.2
+panel_height_cm <- 23 / 7 * 1.2
 
-selection_plot <- patchwork::wrap_plots(plots, ncol = 5)
+selection_plot <- patchwork::wrap_plots(plots, ncol = 5) +
+  plot_annotation(caption = "|z|") &
+  theme(plot.caption = element_text(hjust = 0.5),
+        axis.text = element_text(size = 8 * 0.75))
 
 ggsave(
   filename = output_path,
   plot = selection_plot,
-  width = 17.5,
-  height = rows * panel_height,
-  dpi = 220
+  width = 17.5 * 1.2,
+  height = rows * panel_height_cm,
+  units = "cm",
+  dpi = 300
 )
 
 copied <- file.copy(from = output_path, to = site_output_path, overwrite = TRUE)

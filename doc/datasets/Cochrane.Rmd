@@ -13,7 +13,12 @@ minimal processing with extensive filtering. Final BEAR effect sizes are recalcu
 for continuous outcomes as standardised mean differences and for dichotomous outcomes
 as probit-transformed effects.
 Only efficacy outcomes are retained.
-The dataset currently has about 38,000 rows, compared to over 800,000 rows in the original extract.
+The distributed `BEAR.rds` file includes a smaller analysis subset with about
+38,000 rows: the first comparison and first outcome from each review, restricted
+to efficacy outcomes. The processed `data/Cochrane.rds` file is larger and is
+available for users who want to make different selection decisions. It contains
+760,486 result rows, representing 90,042 review-study pairs across 6,619
+Cochrane reviews.
 
 On processing side, we cleaned up study years, categorised measures (risk ratio, odds ratio, mean difference etc.) and experimental designs, especially an "RCT" flag (based on scanning of abstracts of each review for inclusion criteria). Most studies in CDSR are RCTs but some reviews also allowed quasi-experimental studies, which prevented us from categorising many studies. We also classify outcome rows into `efficacy`, `safety`, `dropouts`, and `bias` based on the comparison, outcome, and subgroup labels.
 

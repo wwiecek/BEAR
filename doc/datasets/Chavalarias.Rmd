@@ -1,4 +1,4 @@
-## Chavalarias et al. 2016 (MEDLINE/PubMed)
+## Chavalarias et al. 2016
 
 **Reference:**
 @chavalarias2016evolution.
@@ -19,6 +19,8 @@ truncation operators were processed by collapsing variants such as `<<`, `<<<`,
 `<=`, `less than`, and `=<` into `<`. We dropped 0.7% of rows where p-values did
 not have a “plain” format and 0.08% of rows where truncation could not be
 unambiguously classified.
+For the distributed version of BEAR 50,000 studies are selected at random, with
+one row per study, in order to keep the file size manageable.
 
 **Additional variables used:**
 source indicator (abstract versus full text).

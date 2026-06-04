@@ -55,30 +55,30 @@ metadata_override <- function(path, key) {
 data_label_override <- function(path, key) {
   file_key <- tools::file_path_sans_ext(basename(path))
   labels <- c(
-    "ArelBundock" = "46 meta-analyses",
-    "Askarov" = "352 meta-analyses",
-    "BarnettWren" = "50,000 studies",
-    "Bartos" = "215 meta-analyses",
-    "Brodeur" = "328 studies",
-    "Chavalarias" = "50,000 studies",
-    "clinicaltrials" = "16,597 studies",
-    "Cochrane" = "5,871 meta-analyses",
-    "CostelloFox" = "466 meta-analyses",
-    "euctr" = "8,650 studies",
-    "Head" = "50,000 studies",
-    "JagerLeek" = "5,322 studies",
-    "Lang" = "736 studies",
-    "ManyLabs2" = "128 replication studies",
-    "Metapsy" = "20 meta-analyses",
-    "OSC" = "97 replication studies",
-    "Sladekova" = "406 meta-analyses",
-    "Szucs" = "2,261 studies",
-    "WWC" = "1,408 studies"
+    "ArelBundock" = "2.3k studies from 46 meta-analyses",
+    "Askarov" = "1.9k studies from 352 meta-analyses",
+    "BarnettWren" = "416k studies from MEDLINE/PubMed",
+    "Bartos" = "2.2k studies in 215 meta-analyses",
+    "Brodeur" = "328 RCTs from econ journals",
+    "Chavalarias" = "1.9mln studies from MEDLINE/PubMed",
+    "clinicaltrials" = "registry of 16.6k clinical trials",
+    "Cochrane" = "90k studies in 6.6k Cochrane reviews",
+    "CostelloFox" = "13k studies from 466 meta-analyses",
+    "euctr" = "registry of 8.7k clinical trials",
+    "Head" = "219k studies from PubMed",
+    "JagerLeek" = "5.3k articles from 5 medical journals",
+    "Lang" = "736 papers from econ journals",
+    "ManyLabs2" = "128 replications of 28 effects",
+    "Metapsy" = "1.5k studies in 20 meta-analyses",
+    "OSC" = "97 replications of experiments",
+    "Sladekova" = "3.5k studies in 406 meta-analyses",
+    "Szucs" = "2.3k cognitive neuroscience studies",
+    "WWC" = "1.4k education studies"
   )
   switch(file_key,
-         "CostelloFox_Yang" = "553 meta-analyses",
-         "psymetadata_Nuijten" = "2,634 studies",
-         "SCORE" = "159 claims; 163 replications",
+         "CostelloFox_Yang" = "13k studies in 553 meta-analyses",
+         "psymetadata_Nuijten" = "2.6k studies across psychology datasets",
+         "SCORE" = "replications of 163 claims + 1.9k claims from papers",
          unname(labels[key]))
 }
 

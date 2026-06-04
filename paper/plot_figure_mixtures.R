@@ -19,14 +19,20 @@ ds_tbl <- psr_table
 # cur <- ds_tbl %>% filter(group == "curated") %>% arrange(desc(PoS)) %>% pull(dataset)
 # met <- ds_tbl %>% filter(group == "meta")    %>% arrange(desc(PoS)) %>% pull(dataset)
 curmet <- ds_tbl %>% 
-  filter(group %in% c("curated", "meta")) %>% 
+  dplyr::filter(group %in% c("curated", "meta")) %>% 
   arrange(desc(PoS)) %>% pull(dataset)
-rep <- ds_tbl %>% filter(group == "replications") %>% pull(dataset)
-scr <- ds_tbl %>% filter(group == "scrape")  %>% pull(dataset)
+orig <- c("SCORE original", "Many Labs original", "OSC original")
+rep <- ds_tbl %>%
+  dplyr::filter(group == "replications", !(dataset %in% orig)) %>%
+  pull(dataset)
+scr <- ds_tbl %>%
+  dplyr::filter(group == "scrape") %>%
+  pull(dataset)
 
 plotlist <- lapply(c(curmet, rep, scr), plot_bear_mixture_panel)
 
-plotlist <- append(plotlist, list(plot_spacer()), after = 15)
+plotlist <- append(plotlist, list(plot_spacer(), plot_spacer()), after = 18)
+plotlist <- c(plotlist, lapply(orig, plot_bear_mixture_panel), list(plot_spacer()))
 
 wrap_plots(plotlist, ncol = 4) +
   plot_annotation(caption = "|z|") &
@@ -38,4 +44,4 @@ wrap_plots(plotlist, ncol = 4) +
     # axis.ticks.y = element_blank()
   )
 
-ggsave("paper/figures/mixtures_plot.pdf", height = 19, width = 14, units = "cm")
+ggsave("paper/figures/mixtures_plot.pdf", height = 23, width = 14, units = "cm")

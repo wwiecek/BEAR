@@ -35,13 +35,13 @@ Here is a short summary of what’s included in BEAR:
 |:---|:---|---:|---:|---:|---:|---:|
 | Arel-Bundock et al | political science | 16,649 | 46 | 2,252 | 7.4 | 46.7% |
 | Askarov et al | economics | 21,408 | 352 | 1,913 | 11.2 | 52.0% |
-| Barnett and Wren | biomedicine | 50,000 | 1 | 50,000 | 1.0 | 81.9% |
+| Barnett and Wren\* | biomedicine | 50,000 | 1 | 50,000 | 1.0 | 81.9% |
 | Bartos et al | exercise | 2,239 | 215 | 2,239 | 1.0 | 26.3% |
 | Brodeur et al | economics | 15,917 | 1 | 328 | 48.5 | 35.7% |
-| Chavalarias et al | biomedicine | 50,000 | 1 | 50,000 | 1.0 | 63.1% |
-| Cochrane | medicine & health | 38,058 | 5,871 | 29,327 | 1.3 | 31.1% |
+| Chavalarias et al\* | biomedicine | 50,000 | 1 | 50,000 | 1.0 | 63.1% |
+| Cochrane\* | medicine & health | 38,058 | 5,871 | 29,327 | 1.3 | 31.1% |
 | Costello and Fox | ecology & evolution | 88,218 | 466 | 12,927 | 6.8 | 41.9% |
-| Head et al | biomedicine | 50,000 | 1 | 50,000 | 1.0 | 59.2% |
+| Head et al\* | biomedicine | 50,000 | 1 | 50,000 | 1.0 | 59.2% |
 | Jager and Leek | biomedicine | 15,653 | 1 | 5,322 | 2.9 | 77.7% |
 | Lang | economics | 3,885 | 1 | 736 | 5.3 | 57.6% |
 | Many Labs 2 | psychology | 1,592 | 28 | 128 | 12.4 | 41.4% |
@@ -57,6 +57,11 @@ Here is a short summary of what’s included in BEAR:
 | clinicaltrials.gov | clinical trials | 41,367 | 1 | 16,597 | 2.5 | 48.4% |
 | EUDRA | clinical trials | 8,650 | 1 | 8,650 | 1.0 | 41.4% |
 | psymetadata | psychology | 8,514 | 1 | 721 | 11.8 | 35.8% |
+
+*Main file `BEAR.rds` makes available a smaller analysis subset.
+Additional data are available in the `data/` folder: 416k studies for
+Barnett and Wren, 1.9mln studies for Chavalarias et al, 90k studies in
+6.6k reviews for Cochrane, and 219k studies for Head et al.*
 
 Datasets fall into four main categories that will be useful for
 different types of metascientific investigations: curated datasets of

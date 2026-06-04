@@ -18,3 +18,6 @@ These are “ratio estimates” like odds ratios, hazard ratios and risk ratios.
 
 **Data processing:**
 We excluded a small fraction of data. First we restricted to 95% confidence intervals only: where `ci.level` was missing we assumed it was 0.95; among intervals with a known `ci.level`, about 0.3% were not 95% and were dropped. We dropped intervals with non-positive width (i.e. `lower >= upper`). We used log scale (we replaced zero or negative lower bounds with a small positive constant; this affected about 0.1% of the sample) and backed out an approximate standard error and point estimate under the usual normal approximation for a 95% CI, setting point estimate to half-point of the interval.
+
+For the distributed version of BEAR 50,000 studies are selected at random, with
+one row per study, in order to keep the file size manageable. 

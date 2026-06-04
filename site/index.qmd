@@ -5,16 +5,21 @@ subtitle: "Benchmarks of Empirical Accuracy in Research"
 
 ![](assets/bear_banner.png){.bear-banner fig-alt="BEAR banner"}
 
-BEAR is a meta-database of z-values, effect sizes, and standard errors
-from existing datasets across scientific fields. It does not contribute
-new source data; it repackages public datasets into a common structure
-for research on replication, exchangeability, meta-analysis, and related
-questions about empirical accuracy.
+**Problem**: Quantitative metascientific deals with important issues such as 
+publication bias, p-hacking, reporting practices, pre-registration, significance rates, and more. A lot of crucial contributions of metascience is based on analysing 
+individual datasets, often painstakingly constructed by researchers. This means that there is a wealth of data we can use to test metascientific claims and methodologies.
+
+
+**Solution**: BEAR is a open-source database for metascience exploration
+with 25 datasets across many scientific fields and millions of data points. 
+BEAR does not generate any new source data; it repackages public datasets 
+into a common structure for research on replication, exchangeability, 
+meta-analysis, and related questions about empirical accuracy.
 
 ::: {.callout-note appearance="simple"}
-The main data artifact is distributed through
-[GitHub Releases](https://github.com/wwiecek/BEAR/releases), not through
-this website.
+To download latest version of data, head through
+[GitHub Releases](https://github.com/wwiecek/BEAR/releases). 
+or you can follow [download instructions](getting-started.qmd) for command line.
 :::
 
 ::: {.grid}
@@ -23,9 +28,8 @@ this website.
 
 BEAR combines curated single-study datasets, collections of
 meta-analyses, large text-mined biomedical datasets, clinical-trial
-databases, and direct replication projects. The current documentation
-describes each source dataset, data availability, and the main processing
-choices used to bring it into BEAR.
+databases, and direct replication projects. Head to [datasets section](datasets.qmd)
+to read about individual datasets.
 :::
 
 ::: {.g-col-12 .g-col-md-6}
@@ -38,7 +42,7 @@ datasets.
 :::
 :::
 
-## Start here
+## Links
 
 - [Get data](getting-started.qmd) for release downloads and a minimal R
   loading example.

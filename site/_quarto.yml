@@ -16,6 +16,8 @@ website:
         text: Get data
       - href: datasets.qmd
         text: Datasets
+      - href: selection.qmd
+        text: Selection
       - href: reproduce.qmd
         text: Reproduce
     right:

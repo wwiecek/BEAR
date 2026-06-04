@@ -1,4 +1,4 @@
-## Head et al 2015 (PubMed papers)
+## Head et al 2015
 
 **Reference:**
 @head2015extent.
@@ -18,6 +18,8 @@ we followed the same minimal clean-up steps (e.g. removing values found in large
 When constructing the BEAR dataset, we derived unsigned z-values from p-values.
 We treated p-values recorded as exactly 0 as truncated and set the z-operator
 to `>`. We recoded all inequalities to sharp inequalities.
+For the distributed version of BEAR 50,000 studies are selected at random, with
+one row per study, in order to keep the file size manageable.
 
 **Additional variables used:**
 we use the "Abstract vs Results" variable for grouping

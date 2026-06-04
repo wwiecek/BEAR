@@ -50,6 +50,11 @@ bear_summary %>%
   arrange(dataset) %>%
   relocate(domain, .after = dataset) %>%
   mutate(dataset = bear_names[dataset]) %>%
+  mutate(dataset = ifelse(dataset %in% c("Barnett and Wren",
+                                         "Chavalarias et al",
+                                         "Cochrane",
+                                         "Head et al"),
+                          paste0(dataset, "*"), dataset)) %>%
   transmute(
     Dataset = dataset,
     Domain = domain,
@@ -61,6 +66,11 @@ bear_summary %>%
   ) %>%
   knitr::kable(align = c("l", "l", rep("r", 5)))
 ```
+
+*Main file `BEAR.rds` makes available a smaller analysis subset. Additional
+data are available in the `data/` folder: 416k studies for Barnett and Wren,
+1.9mln studies for Chavalarias et al, 90k studies in 6.6k reviews for
+Cochrane, and 219k studies for Head et al.*
 
 Datasets fall into four main categories that will be useful for different types of metascientific investigations: curated datasets of single studies, curated sets of meta-analyses (i.e. with additional `metaid` grouping column), large-scale scraped datasets from PubMed/Medline, and replication datasets. Additional groupings (e.g. clinical trial phases) are available within some datasets. Replication datasets
 also include additional columns that store values from original studies.

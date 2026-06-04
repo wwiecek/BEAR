@@ -26,6 +26,10 @@ if (!file.exists("assets/bear_banner.png")) {
   stop("Missing assets/bear_banner.png.")
 }
 
+if (!file.exists("assets/selection_mixture_plot.png")) {
+  stop("Missing assets/selection_mixture_plot.png. Run Rscript --vanilla workflow/write_selection_plot.R")
+}
+
 expected_plots <- sub("\\.qmd$", ".png", dataset_pages)
 missing_plots <- setdiff(expected_plots, mixture_plots)
 if (length(missing_plots) > 0) {

@@ -122,7 +122,7 @@ dataset_rows <- lapply(dataset_files, function(path) {
   data_label <- data_label_override(path, key)
   page <- file.path(output_dir, paste0(slug, ".qmd"))
   source_path <- file.path("../../doc/datasets", basename(path))
-  plot_path <- file.path("../../results/mixture_plots", paste0(slug, ".png"))
+  plot_path <- file.path("../assets/mixture_plots", paste0(slug, ".png"))
 
   page_lines <- c(
     "---",

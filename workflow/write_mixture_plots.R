@@ -12,7 +12,9 @@ source("R/fit_density_calc.R")
 source("R/plot_mixture.R")
 
 output_dir <- "results/mixture_plots"
+site_output_dir <- "site/assets/mixture_plots"
 dir.create(output_dir, showWarnings = FALSE, recursive = TRUE)
+dir.create(site_output_dir, showWarnings = FALSE, recursive = TRUE)
 
 site_mixture_pages <- tibble::tribble(
   ~slug, ~dataset, ~title,
@@ -74,5 +76,10 @@ for(i in seq_len(nrow(site_mixture_pages))) {
     width = 9,
     height = 5.4,
     dpi = 180
+  )
+  file.copy(
+    from = file.path(output_dir, paste0(page$slug, ".png")),
+    to = file.path(site_output_dir, paste0(page$slug, ".png")),
+    overwrite = TRUE
   )
 }

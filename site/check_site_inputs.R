@@ -2,7 +2,7 @@
 
 dataset_sources <- list.files("../doc/datasets", pattern = "\\.Rmd$")
 dataset_pages <- list.files("datasets", pattern = "\\.qmd$")
-mixture_plots <- list.files("../results/mixture_plots", pattern = "\\.png$")
+mixture_plots <- list.files("assets/mixture_plots", pattern = "\\.png$")
 
 if (!file.exists("_dataset_index.md")) {
   stop("Missing _dataset_index.md. Run Rscript --vanilla build_dataset_pages.R")
@@ -20,6 +20,10 @@ if (any(grepl("|  |", index, fixed = TRUE))) {
 
 if (!file.exists("assets/favicon.png")) {
   stop("Missing assets/favicon.png.")
+}
+
+if (!file.exists("assets/bear_banner.png")) {
+  stop("Missing assets/bear_banner.png.")
 }
 
 expected_plots <- sub("\\.qmd$", ".png", dataset_pages)

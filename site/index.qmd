@@ -3,7 +3,7 @@ title: "BEAR"
 subtitle: "Benchmarks of Empirical Accuracy in Research"
 ---
 
-![](../doc/bear_banner.png){.bear-banner fig-alt="BEAR banner"}
+![](assets/bear_banner.png){.bear-banner fig-alt="BEAR banner"}
 
 BEAR is a meta-database of z-values, effect sizes, and standard errors
 from existing datasets across scientific fields. It does not contribute

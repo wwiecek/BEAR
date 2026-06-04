@@ -40,7 +40,10 @@ jobs:
 
       - name: Render site
         working-directory: site
-        run: quarto render
+        run: |
+          Rscript --vanilla build_dataset_pages.R
+          Rscript --vanilla check_site_inputs.R
+          quarto render
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3

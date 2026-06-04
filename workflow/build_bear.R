@@ -358,6 +358,7 @@ dtlist[["euctr"]] <- readRDS("data/euctr.rds") %>%
     metaid  = NA,
     studyid = id,
     year,
+    subset = tolower(phase),
     measure = measure_class,
     method  = NA_character_,
     z, z_operator,

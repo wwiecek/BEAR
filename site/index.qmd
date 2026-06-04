@@ -3,6 +3,8 @@ title: "BEAR"
 subtitle: "Benchmarks of Empirical Accuracy in Research"
 ---
 
+![](../doc/bear_banner.png){.bear-banner fig-alt="BEAR banner"}
+
 BEAR is a meta-database of z-values, effect sizes, and standard errors
 from existing datasets across scientific fields. It does not contribute
 new source data; it repackages public datasets into a common structure
@@ -42,8 +44,6 @@ datasets.
   loading example.
 - [Datasets](datasets.qmd) for the current dataset index and individual
   dataset notes.
-- [Artifacts](artifacts.qmd) for the dataset appendix and other public
-  documents.
 - [Reproduce](reproduce.qmd) for the repository workflow and rebuild
   entry points.
 - [GitHub repository](https://github.com/wwiecek/BEAR) for code, issues,

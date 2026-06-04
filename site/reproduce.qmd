@@ -2,8 +2,9 @@
 title: "Reproduce"
 ---
 
-The website is a static documentation layer. It should not run the full
-BEAR data-processing or modelling pipeline during a website build.
+The [GitHub repository](https://github.com/wwiecek/BEAR) contains the R
+workflow, dataset documentation, selected outputs, and fitted mixture
+model artifacts used by BEAR.
 
 ## Main workflow
 
@@ -13,7 +14,8 @@ BEAR data-processing or modelling pipeline during a website build.
 - `workflow/fit_mixtures.R` fits the mixture models used in downstream
   summaries.
 - `workflow/calculate_psr.R` calculates probability of significance,
-  replication, and sign summaries from fitted models.
+  replication, and sign summaries from fitted models, then refreshes the
+  dataset-level mixture plots used by this website.
 
 ## Data layers
 
@@ -23,17 +25,24 @@ combined data artifacts are distributed through
 processed datasets can be fetched through the data submodule when deeper
 dataset-level work is needed.
 
-## Website build
+## Rerunning BEAR
 
-The website source lives in `site/`. Dataset pages are generated from
-`doc/datasets/*.Rmd` before Quarto renders the static HTML.
+To work only with the combined dataset, download `BEAR.rds` from
+[GitHub Releases](https://github.com/wwiecek/BEAR/releases):
 
 ```bash
-cd site
-Rscript --vanilla build_dataset_pages.R
-Rscript --vanilla check_site_inputs.R
-quarto render
+curl -L -o BEAR.rds https://github.com/wwiecek/BEAR/releases/download/v1/BEAR.rds
 ```
 
-On GitHub, the Pages workflow runs the same generation-and-render step
-and deploys the rendered site.
+To work with individual processed datasets, initialize the data submodule:
+
+```bash
+git submodule update --init --recursive
+```
+
+This downloads the `data/` contents needed for deeper dataset-level work.
+Dataset-specific processing scripts live in `process/`. Once processed
+datasets are present, `workflow/build_bear.R` stitches `BEAR.rds`;
+`workflow/fit_mixtures.R` fits mixture models in `mixtures/`; and
+`workflow/calculate_psr.R` refreshes the PSR table and website mixture
+plots.

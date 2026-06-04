@@ -1,0 +1,19 @@
+.bear-banner {
+  display: block;
+  width: min(100%, 980px);
+  margin: 0 auto 1.5rem auto;
+}
+
+.quarto-title-block .subtitle {
+  color: #4b5563;
+  font-size: 1.15rem;
+}
+
+.dataset-mixture-plot {
+  width: min(100%, 1100px);
+  margin: 1rem auto;
+}
+
+.table {
+  font-size: 0.95rem;
+}

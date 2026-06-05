@@ -6,6 +6,7 @@ settings_file <- "../R/settings.R"
 output_dir <- "datasets"
 index_file <- "_dataset_index.md"
 downloads_file <- "dataset_downloads.csv"
+download_base_url <- "https://github.com/wwiecek/BEAR_data/blob/main"
 source(settings_file, local = TRUE)
 
 dir.create(output_dir, showWarnings = FALSE, recursive = TRUE)
@@ -125,7 +126,8 @@ download_metadata <- read.csv(downloads_file, stringsAsFactors = FALSE)
 data_callout <- function(source_file) {
   rows <- download_metadata[download_metadata$source_file == source_file, ]
   if (nrow(rows) == 0) stop("Missing download metadata for: ", source_file)
-  links <- paste0("[", rows$file_name, "](../bear_data/", rows$file_name,
+  links <- paste0("[", rows$file_name, "](", download_base_url, "/",
+                  rows$file_name,
                   ") (", rows$file_size_label, ")")
   c(
     "::: {.callout-note}",

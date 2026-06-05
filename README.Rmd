@@ -122,7 +122,7 @@ bear_summary %>%
 If you only want to grab data, head to the GitHub Releases page and grab `BEAR.rds` [at this link](https://github.com/wwiecek/BEAR/releases). Alternatively, in command line do
 
 ```
-curl -L -o BEAR.rds https://github.com/wwiecek/BEAR/releases/download/v1/BEAR.rds
+curl -L -o BEAR.rds https://github.com/wwiecek/BEAR/releases/download/v2/BEAR.rds
 ```
 
 You can also re-generate that file yourself. To work with individual datasets or to do more manipulation of inputs, you need to take an additional step. After cloning this repo (which only includes code and outputs), you need to grab a "submodule" repo that has contents of `data/` folder. In command line of this repository, do

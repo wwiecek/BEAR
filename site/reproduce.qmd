@@ -31,7 +31,7 @@ To work only with the combined dataset, download `BEAR.rds` from
 [GitHub Releases](https://github.com/wwiecek/BEAR/releases):
 
 ```bash
-curl -L -o BEAR.rds https://github.com/wwiecek/BEAR/releases/download/v1/BEAR.rds
+curl -L -o BEAR.rds https://github.com/wwiecek/BEAR/releases/download/v2/BEAR.rds
 ```
 
 To work with individual processed datasets, initialize the data submodule:

@@ -9,15 +9,10 @@ title: "Datasets"
 | [Full dataset appendix](https://github.com/wwiecek/BEAR/blob/main/doc/datasets.pdf) | Stitched dataset notes and shared derivation notes for p-values and confidence intervals. |
 | [Dataset construction reference](https://github.com/wwiecek/BEAR/blob/main/doc/dataset_construction_reference.md) | Source-study selection, source-data extraction, and construction details that align with the paper-facing dataset appendix. |
 
-BEAR stores each processed source as a separate dataset and then stitches
-selected rows into the combined `BEAR.rds` artifact. Dataset pages explain
-what the source is, where the data came from, and the main processing
-choices used to create BEAR-ready z-values, effect sizes, and standard
-errors.
+BEAR stores each data source separately (see `data/`) but also makes available a 
+single `BEAR.rds` dataset. For very large datasets `BEAR.rds` only contains a 
+smaller selection of rows.
 
-The pages below are generated from the existing dataset documentation
-fragments in `doc/datasets/`. When those source `.Rmd` files change, the
-website pages update on the next Quarto render.
 
 ## Dataset index
 

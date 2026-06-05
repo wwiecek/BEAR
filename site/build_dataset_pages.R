@@ -140,8 +140,11 @@ dataset_rows <- lapply(dataset_files, function(path) {
            yaml_escape(title), " mixture model plot\"}"),
     "",
     "The fitted mixture model is shown over the empirical distribution of",
-    "absolute z-values. The dashed line shows the corrected distribution used",
-    "for the model-based summaries."
+    "absolute z-values.",
+    "The solid line is a mixture of half-normals, with selection.",
+    "The dashed line shows the distribution without selection.",
+    "If there are inequalities (e.g. studies",
+    "reporting p < 0.05) the histogram resamples values from the appropriate set."
   )
   writeLines(page_lines, page)
 

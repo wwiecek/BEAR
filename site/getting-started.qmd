@@ -18,6 +18,8 @@ curl -L -o BEAR.rds \
   https://github.com/wwiecek/BEAR/releases/download/v1/BEAR.rds
 ```
 
+## Access individual datasets
+
 If you want the individual processed datasets under `data/`, clone the
 repository and initialise the data submodule:
 
@@ -25,5 +27,8 @@ repository and initialise the data submodule:
 git submodule update --init --recursive
 ```
 
-The repository intentionally keeps those inputs opt-in so the main code
-checkout remains small.
+In some cases the full dataset (e.g. millions of data points from PubMed scrape 
+studies) is only available in the file in `data/`.
+The repository intentionally keeps those individual datasets opt-in so that the 
+main dataset remains small and easy to work with.
+

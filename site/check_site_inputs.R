@@ -1,9 +1,13 @@
 # Check generated inputs required before rendering the Quarto site.
 
+source("../R/settings.R", local = TRUE)
+source("../R/site_dataset_config.R", local = TRUE)
+
 dataset_sources <- list.files("../doc/datasets", pattern = "\\.Rmd$")
 dataset_pages <- list.files("datasets", pattern = "\\.qmd$")
 mixture_plots <- list.files("assets/mixture_plots", pattern = "\\.png$")
 downloads_file <- "dataset_downloads.csv"
+expected_plot_index <- site_dataset_plot_index("../doc/datasets")
 
 if (!file.exists("_dataset_index.md")) {
   stop("Missing _dataset_index.md. Run Rscript --vanilla build_dataset_pages.R")
@@ -69,11 +73,11 @@ if (!file.exists("assets/selection_mixture_plot.png")) {
   stop("Missing assets/selection_mixture_plot.png. Run Rscript --vanilla workflow/write_selection_plot.R")
 }
 
-expected_plots <- sub("\\.qmd$", ".png", dataset_pages)
+expected_plots <- unique(expected_plot_index$plot_file)
 missing_plots <- setdiff(expected_plots, mixture_plots)
 if (length(missing_plots) > 0) {
   stop("Missing dataset mixture plots: ", paste(missing_plots, collapse = ", "))
 }
 
 message("Site inputs OK: ", length(dataset_pages), " dataset pages and ",
-        length(expected_plots), " mixture plots.")
+        length(expected_plots), " dataset mixture plots.")

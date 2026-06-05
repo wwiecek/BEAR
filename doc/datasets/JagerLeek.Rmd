@@ -1,4 +1,4 @@
-## Jager and Leek
+## Jager and Leek 2014 (PubMed/Medline)
 
 **Reference:**
 @jager2014estimate.

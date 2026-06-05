@@ -33,6 +33,7 @@ site/_site/
 site/.quarto/
 site/_dataset_index.md
 site/datasets/*.qmd
+site/assets/mixture_plots/*.png
 # translation temp files
 po/*~
 # RStudio Connect folder

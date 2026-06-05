@@ -32,7 +32,9 @@ jobs:
 
       - name: Generate dataset pages
         working-directory: site
-        run: Rscript --vanilla build_dataset_pages.R
+        run: |
+          Rscript --vanilla build_dataset_pages.R
+          Rscript --vanilla sync_mixture_plots.R
 
       - name: Check site inputs
         working-directory: site
@@ -42,6 +44,7 @@ jobs:
         working-directory: site
         run: |
           Rscript --vanilla build_dataset_pages.R
+          Rscript --vanilla sync_mixture_plots.R
           Rscript --vanilla check_site_inputs.R
           quarto render
 

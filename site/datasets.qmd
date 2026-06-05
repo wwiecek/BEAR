@@ -2,6 +2,15 @@
 title: "Datasets"
 ---
 
+## Dataset index
+
+BEAR stores each data source separately (see `data/`) but also makes available a 
+single `BEAR.rds` dataset to download. For very large datasets `BEAR.rds` only contains a 
+smaller selection of rows.
+
+{{< include _dataset_index.md >}}
+
+
 ## Reference documents
 
 | Document | Contents |
@@ -9,12 +18,3 @@ title: "Datasets"
 | [Documentation](documentation.qmd) | Website documentation for shared derivation rules, currently covering p-values and confidence intervals. |
 | [Full dataset appendix](https://github.com/wwiecek/BEAR/blob/main/doc/datasets.pdf) | Stitched dataset notes and shared derivation notes for p-values and confidence intervals. |
 | [Dataset construction reference](https://github.com/wwiecek/BEAR/blob/main/doc/dataset_construction_reference.md) | Source-study selection, source-data extraction, and construction details that align with the paper-facing dataset appendix. |
-
-BEAR stores each data source separately (see `data/`) but also makes available a 
-single `BEAR.rds` dataset. For very large datasets `BEAR.rds` only contains a 
-smaller selection of rows.
-
-
-## Dataset index
-
-{{< include _dataset_index.md >}}

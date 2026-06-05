@@ -3,7 +3,6 @@ title: "BEAR"
 subtitle: "Benchmarks of Empirical Accuracy in Research"
 ---
 
-![](assets/bear_banner.png){.bear-banner fig-alt="BEAR banner"}
 
 
 ::: {.grid}
@@ -55,6 +54,10 @@ is also inlcuded as part of the repository, to quantify selection,
 power, and replicability of data. 
 :::
 :::
+
+
+![](assets/bear_banner.png){.bear-banner fig-alt="BEAR banner"}
+
 
 ## Links
 

@@ -9,11 +9,13 @@ subtitle: "Benchmarks of Empirical Accuracy in Research"
 ::: {.g-col-12 .g-col-md-6}
 ## Problem
 
-Quantitative metascience drives debates about important issues such as 
-publication bias, p-hacking, reporting practices, pre-registration, significance rates, and more. 
-Most of the crucial contributions of this branch of metascience has been 
+Quantitative metascience drives debates about important issues about research standards.
+Most of the crucial contributions in this branch of metascience have been 
 based on analysing individual datasets, often painstakingly constructed by researchers.
-But how generalisable are these findings?
+Thanks to their work we now have better understanding of publication bias, p-hacking, 
+reporting practices, pre-registration, significance rates, and more. 
+But many canoninical findings of metascience are based on individual datasets,
+each constructed in a specific way. How generalisable are these findings?
 
 :::
 
@@ -22,9 +24,9 @@ But how generalisable are these findings?
 
 BEAR is a open-source database for metascience exploration
 with 25 datasets across many scientific fields and millions of data points. 
-BEAR does not generate any new source data; it repackages public datasets 
-into a common structure for research on replication, exchangeability, 
-meta-analysis, and other questions about standards of empirical research.
+BEAR does not generate any new source data; it repackages publicly available datasets 
+into a common structure to make research on replication, exchangeability, 
+meta-analysis, and other questions about empirical research easier and more generalisable.
 :::
 :::
 
@@ -39,19 +41,27 @@ or you can follow [download instructions](getting-started.qmd) for command line.
 ::: {.g-col-12 .g-col-md-6}
 ## Datasets
 
-BEAR combines curated registries of studies, random collections of articles in different disciplines, sets of meta-analyses, and direct replication projects. It covers data in econonmics, political science, biomedicine, ecology, evolution, education, neuroscience, and more. Head to [datasets section](datasets.qmd) to read about individual datasets.
+BEAR combines curated registries of studies, random collections of articles in 
+different disciplines, sets of meta-analyses, and direct replication projects.
+These are purposefully heterogeneous datasets of varying quality.
+The dataset covers many disciplines: econonmics, political science, biomedicine, 
+clinical trials, ecology, evolution, education, neuroscience, and more. 
+Head to [datasets section](datasets.qmd) to read about individual datasets.
 :::
 
 ::: {.g-col-12 .g-col-md-6}
 ## What to do with these data
 
 At a minimum BEAR contains z-values with clearly labelled identifiers for studies
-and meta-analyses. Where available, effect sizes, standard errors, sample sizes,
-and additional covariates (e.g. pre-registration status, phase of clinical trial,
-journal, discipline) are also included.
+and meta-analyses. Where available, it also includes effect sizes, standard errors, sample sizes,
+methods (e.g. parallel RCT), measures (e.g. standardised mean difference, odds ratio),
+and additional covariates (e.g. year, pre-registration status, phase of clinical trial,
+journal, discipline).
+
 An optional model of signal-to-noise ratios (based on van Zwet et al) 
-is also inlcuded as part of the repository, to quantify selection, 
-power, and replicability of data. 
+is also inlcuded as part of the repository, to quantify basic metascientific parameters
+like selection, assurance, and replicability of findings. Users are encouraged 
+to fit their own models.
 :::
 :::
 

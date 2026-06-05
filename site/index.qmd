@@ -85,5 +85,6 @@ to fit their own models.
 
 All credit is due to researchers who put together the metascientific datasets
 and people maintaining large scale repositories from which
-data are compiled here. Please see individual dataset pages for references.
+data are compiled here. Please see individual dataset pages for references and
+licensing information.
 

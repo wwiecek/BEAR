@@ -80,3 +80,10 @@ to fit their own models.
   from individual data sources and modelling.
 - [GitHub repository](https://github.com/wwiecek/BEAR) to access code and dataset 
   directly.
+
+## Credits
+
+All credit is due to researchers who put together the metascientific datasets
+and people maintaining large scale repositories from which
+data are compiled here. Please see individual dataset pages for references.
+

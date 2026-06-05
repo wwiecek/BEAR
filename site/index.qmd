@@ -10,12 +10,13 @@ toc: false
 ::: {.g-col-12 .g-col-md-6}
 ## Problem
 
-Quantitative metascience drives debates about important issues about research standards.
-Most of the crucial contributions in this branch of metascience have been 
+Quantitative metascience drives important debates about research standards.
+Most of its crucial contributions have been
 based on analysing individual datasets, often painstakingly constructed by researchers.
-Thanks to their work we now have better understanding of publication bias, p-hacking, 
-reporting practices, pre-registration, significance rates, and more. 
-But many canoninical findings of metascience are based on individual datasets,
+Thanks to their work we now have better understanding of replicability,
+publication bias, p-hacking,
+reporting practices, pre-registration, significance rates, and more.
+But many canonical findings of metascience are based on individual datasets,
 each constructed in a specific way. How generalisable are these findings?
 
 :::
@@ -23,19 +24,19 @@ each constructed in a specific way. How generalisable are these findings?
 ::: {.g-col-12 .g-col-md-6}
 ## Solution
 
-BEAR is a open-source database for metascience exploration
-with over 20 datasets across many scientific fields and millions of data points. 
-BEAR does not generate any new source data; it repackages publicly available datasets 
-into a common structure to make research on replication, exchangeability, 
+BEAR is an open-source database for metascience exploration
+with over 20 datasets across many scientific fields and millions of data points.
+BEAR does not generate any new source data; it repackages publicly available datasets
+into a common structure to make research on replication, exchangeability,
 meta-analysis, and other questions about empirical research easier and more generalisable.
 :::
 :::
 
 
 ::: {.callout-note appearance="simple"}
-To download latest version of data, go to
-[GitHub Releases](https://github.com/wwiecek/BEAR/releases). 
-or you can follow [download instructions](getting-started.qmd) for command line.
+To download the latest version of the data, go to
+[GitHub Releases](https://github.com/wwiecek/BEAR/releases),
+or follow the [download instructions](getting-started.qmd) for the command line.
 :::
 
 {{< include _site_metrics.md >}}
@@ -44,11 +45,11 @@ or you can follow [download instructions](getting-started.qmd) for command line.
 ::: {.g-col-12 .g-col-md-6}
 ## Datasets
 
-BEAR combines curated registries of studies, random collections of articles in 
+BEAR combines curated registries of studies, random collections of articles in
 different disciplines, sets of meta-analyses, and direct replication projects.
 These are purposefully heterogeneous datasets of varying quality.
-The dataset covers many disciplines: econonmics, political science, biomedicine, 
-clinical trials, ecology, evolution, education, neuroscience, and more. 
+The dataset covers many disciplines: economics, political science, biomedicine,
+clinical trials, ecology, evolution, education, neuroscience, and more.
 Head to [datasets section](datasets.qmd) to read about individual datasets.
 See [Documentation](documentation.qmd) for shared derivation rules, including
 the treatment of p-values and confidence intervals.
@@ -63,9 +64,9 @@ methods (e.g. parallel RCT), measures (e.g. standardised mean difference, odds r
 and additional covariates (e.g. year, pre-registration status, phase of clinical trial,
 journal, discipline).
 
-An optional model of signal-to-noise ratios (based on van Zwet et al) 
-is also inlcuded as part of the repository, to quantify basic metascientific parameters
-like selection, assurance, and replicability of findings. Users are encouraged 
+An optional model of signal-to-noise ratios (based on van Zwet et al)
+is also included as part of the repository, to quantify basic metascientific parameters
+like selection, assurance, and replicability of findings. Users are encouraged
 to fit their own models.
 :::
 :::
@@ -82,7 +83,7 @@ to fit their own models.
 - [Documentation](documentation.qmd) for shared derivation rules and processing notes.
 - [Reproduce](reproduce.qmd) for more complete workflow of rebuilding the database
   from individual data sources and modelling.
-- [GitHub repository](https://github.com/wwiecek/BEAR) to access code and dataset 
+- [GitHub repository](https://github.com/wwiecek/BEAR) to access code and dataset
   directly.
 
 ## Credits

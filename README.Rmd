@@ -16,7 +16,7 @@ This package includes our entire workflow (in R), documentation, results, and op
 - To re-run everything, including modelling of data, see `main.R`.
 
 
-![](doc/bear_banner.png)
+![](doc/img/bear_banner.png)
 
 # Datasets included in BEAR
 
@@ -39,7 +39,7 @@ fmt_pct <- function(x) paste0(format(round(100 * x, 1), nsmall = 1), "%")
 bear_summary <- bear %>%
   group_by(dataset) %>%
   summarise(n_z = n(),
-            n_meta = n_distinct(metaid),
+            n_meta = n_distinct(metaid, na.rm = TRUE),
             n_study = n_distinct(studyid),
             mean_k  = n()/n_distinct(studyid),
             pct_signif = sum(abs(z)>1.96)/n()
@@ -66,7 +66,7 @@ dataset_table <- bear_summary %>%
     Dataset = dataset,
     Domain = domain,
     Values = fmt_int(n_z),
-    `Meta-analyses` = fmt_int(n_meta),
+    `Meta-analyses` = ifelse(n_meta == 0, "-", fmt_int(n_meta)),
     Studies = fmt_int(n_study),
     `Values/study` = fmt_num(mean_k, digits = 1),
     `Significant` = fmt_pct(pct_signif)
@@ -101,7 +101,7 @@ bear_summary %>%
   group_by(gr) %>%
   summarise(n_datasets = n(),
             n_study = sum(n_study),
-            n_meta = ifelse(sum(n_meta) == n_datasets, NA, sum(n_meta)),
+            n_meta = ifelse(sum(n_meta) == 0, NA, sum(n_meta)),
             n_values = sum(n_z),
             pct_signif = sum(pct_signif*n_z) / sum(n_z)) %>%
   transmute(

@@ -6,7 +6,7 @@ output:
   bookdown::pdf_document2:
     toc: true
     number_sections: false
-    keep_tex: true
+    keep_tex: false
 geometry: margin=1in
 fontsize: 11pt
 bibliography: references.bib
@@ -19,7 +19,8 @@ BEAR is available at https://github.com/wwiecek/BEAR. For those interested in ac
 BEAR stores each processed dataset as a separate `.rds` file under `data/`;
 dataset processing is carried out under `process/`. Raw source data are not
 distributed with the repository, but their source, availability, and relevant
-processing decisions are described below.
+processing decisions are described in the dataset notes and in the section
+_Standard procedure for dealing with p-values and confidence intervals_.
 
 
 

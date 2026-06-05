@@ -1,6 +1,7 @@
 ---
 title: "BEAR"
 subtitle: "Benchmarks of Empirical Accuracy in Research"
+toc: false
 ---
 
 
@@ -49,6 +50,8 @@ These are purposefully heterogeneous datasets of varying quality.
 The dataset covers many disciplines: econonmics, political science, biomedicine, 
 clinical trials, ecology, evolution, education, neuroscience, and more. 
 Head to [datasets section](datasets.qmd) to read about individual datasets.
+See [Documentation](documentation.qmd) for shared derivation rules, including
+the treatment of p-values and confidence intervals.
 :::
 
 ::: {.g-col-12 .g-col-md-6}
@@ -76,6 +79,7 @@ to fit their own models.
 - [Get data](getting-started.qmd) for a minimal R example.
 - [Datasets](datasets.qmd) for the current dataset index, basic results, and individual
   dataset descriptions.
+- [Documentation](documentation.qmd) for shared derivation rules and processing notes.
 - [Reproduce](reproduce.qmd) for more complete workflow of rebuilding the database
   from individual data sources and modelling.
 - [GitHub repository](https://github.com/wwiecek/BEAR) to access code and dataset 

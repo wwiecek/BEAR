@@ -6,6 +6,7 @@ title: "Datasets"
 
 | Document | Contents |
 |:--|:--|
+| [Documentation](documentation.qmd) | Website documentation for shared derivation rules, currently covering p-values and confidence intervals. |
 | [Full dataset appendix](https://github.com/wwiecek/BEAR/blob/main/doc/datasets.pdf) | Stitched dataset notes and shared derivation notes for p-values and confidence intervals. |
 | [Dataset construction reference](https://github.com/wwiecek/BEAR/blob/main/doc/dataset_construction_reference.md) | Source-study selection, source-data extraction, and construction details that align with the paper-facing dataset appendix. |
 

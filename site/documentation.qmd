@@ -1,0 +1,5 @@
+---
+title: "Documentation"
+---
+
+{{< include ../doc/p_value_and_ci_derivations.Rmd >}}

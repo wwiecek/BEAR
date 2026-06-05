@@ -27,8 +27,8 @@
 
 .bear-metric-value {
   color: #172033;
-  font-size: clamp(2.4rem, 5vw, 4.25rem);
-  font-weight: 800;
+  font-size: clamp(1rem, 5vw, 2.5rem);
+  font-weight: 600;
   line-height: 1;
 }
 

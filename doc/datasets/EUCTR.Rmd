@@ -17,7 +17,7 @@ We default missing CI levels to 95% and where truncation of p-values was not
 stated we assume equality (the latter is the case for about 15% of data). 
 Where data does not report whether a test is one- or two-sided, we assume two-sided. 
 Rest of the derivation of z-values follows the  
-_Standard procedure for dealing with p-values and confidence intervals_ described below. 
+_Standard procedure for dealing with p-values and confidence intervals_. 
 We set `year` to the entry date year since completion dates were unavailable.
 We dropped rows only when `z` was missing; infinite z-values are retained.
 We harmonise phase labels to follow the same naming convention as ClinicalTrials.gov.

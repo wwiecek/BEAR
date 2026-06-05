@@ -38,6 +38,7 @@ po/*~
 # RStudio Connect folder
 rsconnect/
 *desktop.ini
+README.html
 BEAR.rds
 explore/stan_mixtures/*.rds
 explore/reports/*.pdf

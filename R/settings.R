@@ -101,9 +101,9 @@ bear_classification <- c(
 )
 
 bear_data_summary_group_levels <- c(
-  "Replication efforts",
-  "Metascience datasets",
   "Databases",
+  "Metascience datasets",
+  "Replication efforts",
   "PubMed/Medline scraped data"
 )
 

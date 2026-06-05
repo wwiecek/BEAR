@@ -8,6 +8,10 @@ if (!file.exists("_dataset_index.md")) {
   stop("Missing _dataset_index.md. Run Rscript --vanilla build_dataset_pages.R")
 }
 
+if (!file.exists("_site_metrics.md")) {
+  stop("Missing _site_metrics.md. Run Rscript --vanilla build_dataset_pages.R")
+}
+
 if (length(dataset_pages) != length(dataset_sources)) {
   stop("Expected ", length(dataset_sources), " dataset pages, found ",
        length(dataset_pages), ". Re-run build_dataset_pages.R")

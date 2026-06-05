@@ -23,7 +23,7 @@ each constructed in a specific way. How generalisable are these findings?
 ## Solution
 
 BEAR is a open-source database for metascience exploration
-with 25 datasets across many scientific fields and millions of data points. 
+with over 20 datasets across many scientific fields and millions of data points. 
 BEAR does not generate any new source data; it repackages publicly available datasets 
 into a common structure to make research on replication, exchangeability, 
 meta-analysis, and other questions about empirical research easier and more generalisable.
@@ -36,6 +36,8 @@ To download latest version of data, go to
 [GitHub Releases](https://github.com/wwiecek/BEAR/releases). 
 or you can follow [download instructions](getting-started.qmd) for command line.
 :::
+
+{{< include _site_metrics.md >}}
 
 ::: {.grid}
 ::: {.g-col-12 .g-col-md-6}

@@ -5,6 +5,7 @@ dataset_dir <- "../doc/datasets"
 settings_file <- "../R/settings.R"
 output_dir <- "datasets"
 index_file <- "_dataset_index.md"
+metrics_file <- "_site_metrics.md"
 source(settings_file, local = TRUE)
 
 dir.create(output_dir, showWarnings = FALSE, recursive = TRUE)
@@ -113,6 +114,12 @@ yaml_escape <- function(x) {
   gsub("\"", "\\\\\"", x)
 }
 
+fmt_int <- function(x) format(x, big.mark = ",", scientific = FALSE)
+
+fmt_mln <- function(x) {
+  paste0(format(round(x / 1e6, 1), nsmall = 1), " mln")
+}
+
 dataset_rows <- lapply(dataset_files, function(path) {
   slug <- slugify(path)
   key <- dataset_key(path)
@@ -177,3 +184,27 @@ table_lines <- c(
 )
 
 writeLines(table_lines, index_file)
+
+bear <- readRDS("../BEAR.rds")
+data_files <- list.files("../data", pattern = "\\.rds$", full.names = TRUE)
+data_points <- if (length(data_files) > 0) {
+  sum(vapply(data_files, function(path) nrow(readRDS(path)), integer(1)))
+} else {
+  nrow(bear)
+}
+
+metrics_lines <- c(
+  "::: {.bear-metrics}",
+  paste0("<div class=\"bear-metric\"><div class=\"bear-metric-value\">",
+         fmt_mln(data_points), "</div><div class=\"bear-metric-label\">",
+         "data points</div></div>"),
+  paste0("<div class=\"bear-metric\"><div class=\"bear-metric-value\">",
+         fmt_int(length(unique(na.omit(bear$metaid)))),
+         "</div><div class=\"bear-metric-label\">meta-analyses</div></div>"),
+  paste0("<div class=\"bear-metric\"><div class=\"bear-metric-value\">",
+         fmt_int(length(unique(bear$dataset))),
+         "</div><div class=\"bear-metric-label\">datasets</div></div>"),
+  ":::"
+)
+
+writeLines(metrics_lines, metrics_file)

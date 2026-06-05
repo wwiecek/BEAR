@@ -3,18 +3,53 @@
 dataset_sources <- list.files("../doc/datasets", pattern = "\\.Rmd$")
 dataset_pages <- list.files("datasets", pattern = "\\.qmd$")
 mixture_plots <- list.files("assets/mixture_plots", pattern = "\\.png$")
+downloads_file <- "dataset_downloads.csv"
 
 if (!file.exists("_dataset_index.md")) {
   stop("Missing _dataset_index.md. Run Rscript --vanilla build_dataset_pages.R")
 }
 
 if (!file.exists("_site_metrics.md")) {
-  stop("Missing _site_metrics.md. Run Rscript --vanilla build_dataset_pages.R")
+  stop("Missing _site_metrics.md. Run Rscript --vanilla ../workflow/write_site_metrics.R")
+}
+
+if (!file.exists(downloads_file)) {
+  stop("Missing ", downloads_file, ". Run Rscript --vanilla update_dataset_downloads.R")
 }
 
 if (length(dataset_pages) != length(dataset_sources)) {
   stop("Expected ", length(dataset_sources), " dataset pages, found ",
        length(dataset_pages), ". Re-run build_dataset_pages.R")
+}
+
+required_download_cols <- c("source_file", "file_name", "file_size",
+                            "file_size_label")
+downloads <- read.csv(downloads_file, stringsAsFactors = FALSE)
+missing_download_cols <- setdiff(required_download_cols, names(downloads))
+if (length(missing_download_cols) > 0) {
+  stop("Missing download metadata columns: ",
+       paste(missing_download_cols, collapse = ", "))
+}
+
+missing_downloads <- setdiff(dataset_sources, downloads$source_file)
+unknown_downloads <- setdiff(downloads$source_file, dataset_sources)
+
+if (length(missing_downloads) > 0) {
+  stop("Missing download metadata for: ", paste(missing_downloads, collapse = ", "))
+}
+
+if (length(unknown_downloads) > 0) {
+  stop("Download metadata references unknown source files: ",
+       paste(unknown_downloads, collapse = ", "))
+}
+
+if (any(!grepl("\\.rds$", downloads$file_name))) {
+  stop("Download metadata contains non-RDS files.")
+}
+
+if (any(is.na(downloads$file_size) | downloads$file_size <= 0 |
+        downloads$file_size_label == "")) {
+  stop("Download metadata has missing file sizes or labels.")
 }
 
 index <- readLines("_dataset_index.md", warn = FALSE)

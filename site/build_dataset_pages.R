@@ -5,7 +5,7 @@ dataset_dir <- "../doc/datasets"
 settings_file <- "../R/settings.R"
 output_dir <- "datasets"
 index_file <- "_dataset_index.md"
-metrics_file <- "_site_metrics.md"
+downloads_file <- "dataset_downloads.csv"
 source(settings_file, local = TRUE)
 
 dir.create(output_dir, showWarnings = FALSE, recursive = TRUE)
@@ -51,6 +51,12 @@ metadata_override <- function(path, key) {
   }
   c(domain = unname(bear_domain[key]),
     category = unname(bear_classification[key]))
+}
+
+summary_group_override <- function(path, key) {
+  file_key <- tools::file_path_sans_ext(basename(path))
+  if (file_key == "SCORE") return("Replication efforts")
+  unname(bear_data_summary_group[key])
 }
 
 data_label_override <- function(path, key) {
@@ -114,15 +120,26 @@ yaml_escape <- function(x) {
   gsub("\"", "\\\\\"", x)
 }
 
-fmt_int <- function(x) format(x, big.mark = ",", scientific = FALSE)
+download_metadata <- read.csv(downloads_file, stringsAsFactors = FALSE)
 
-fmt_mln <- function(x) {
-  paste0(format(round(x / 1e6, 1), nsmall = 1), " mln")
+data_callout <- function(source_file) {
+  rows <- download_metadata[download_metadata$source_file == source_file, ]
+  if (nrow(rows) == 0) stop("Missing download metadata for: ", source_file)
+  links <- paste0("[", rows$file_name, "](../bear_data/", rows$file_name,
+                  ") (", rows$file_size_label, ")")
+  c(
+    "::: {.callout-note}",
+    paste0("To download only this data file: ", paste(links, collapse = "; ")),
+    "",
+    "To download all BEAR datasets, click [here](../getting-started.qmd).",
+    ":::"
+  )
 }
 
 dataset_rows <- lapply(dataset_files, function(path) {
   slug <- slugify(path)
   key <- dataset_key(path)
+  source_file <- basename(path)
   metadata <- metadata_override(path, key)
   title <- read_title(path)
   index_title <- clean_dataset_title(title, unname(metadata["domain"]))
@@ -138,6 +155,8 @@ dataset_rows <- lapply(dataset_files, function(path) {
     "  html:",
     "    toc: true",
     "---",
+    "",
+    data_callout(source_file),
     "",
     paste0("{{< include ", source_path, " >}}"),
     "",
@@ -161,6 +180,7 @@ dataset_rows <- lapply(dataset_files, function(path) {
     key = key,
     domain = unname(metadata["domain"]),
     category = unname(metadata["category"]),
+    summary_group = summary_group_override(path, key),
     data_label = data_label,
     page = file.path("datasets", paste0(slug, ".qmd")),
     stringsAsFactors = FALSE
@@ -170,41 +190,31 @@ dataset_rows <- lapply(dataset_files, function(path) {
 dataset_index <- do.call(rbind, dataset_rows)
 dataset_index$domain[is.na(dataset_index$domain)] <- ""
 dataset_index$category[is.na(dataset_index$category)] <- ""
+dataset_index$summary_group[is.na(dataset_index$summary_group)] <- ""
 dataset_index$data_label[is.na(dataset_index$data_label)] <- ""
+
+if (any(dataset_index$summary_group == "")) {
+  stop("Missing data summary group for: ",
+       paste(dataset_index$key[dataset_index$summary_group == ""],
+             collapse = ", "))
+}
 
 link <- function(title, page) {
   paste0("[", title, "](", page, ")")
 }
 
-table_lines <- c(
-  "| Dataset | Domain | Data |",
-  "|:--|:--|:--|",
-  paste0("| ", link(dataset_index$index_title, dataset_index$page), " | ",
-         dataset_index$domain, " | ", dataset_index$data_label, " |")
-)
+table_lines <- unlist(lapply(bear_data_summary_group_levels, function(group) {
+  group_rows <- dataset_index[dataset_index$summary_group == group, ]
+  if (nrow(group_rows) == 0) return(character())
+  c(
+    paste0("### ", group),
+    "",
+    "| Dataset | Domain | Data |",
+    "|:--|:--|:--|",
+    paste0("| ", link(group_rows$index_title, group_rows$page), " | ",
+           group_rows$domain, " | ", group_rows$data_label, " |"),
+    ""
+  )
+}))
 
 writeLines(table_lines, index_file)
-
-bear <- readRDS("../BEAR.rds")
-data_files <- list.files("../data", pattern = "\\.rds$", full.names = TRUE)
-data_points <- if (length(data_files) > 0) {
-  sum(vapply(data_files, function(path) nrow(readRDS(path)), integer(1)))
-} else {
-  nrow(bear)
-}
-
-metrics_lines <- c(
-  "::: {.bear-metrics}",
-  paste0("<div class=\"bear-metric\"><div class=\"bear-metric-value\">",
-         fmt_mln(data_points), "</div><div class=\"bear-metric-label\">",
-         "data points</div></div>"),
-  paste0("<div class=\"bear-metric\"><div class=\"bear-metric-value\">",
-         fmt_int(length(unique(na.omit(bear$metaid)))),
-         "</div><div class=\"bear-metric-label\">meta-analyses</div></div>"),
-  paste0("<div class=\"bear-metric\"><div class=\"bear-metric-value\">",
-         fmt_int(length(unique(bear$dataset))),
-         "</div><div class=\"bear-metric-label\">datasets</div></div>"),
-  ":::"
-)
-
-writeLines(metrics_lines, metrics_file)

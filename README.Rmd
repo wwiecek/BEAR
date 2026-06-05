@@ -24,7 +24,7 @@ References, details of data availability and processing, links to raw data, and 
 
 Here is a short summary of what's included in BEAR:
 
-```{r echo=FALSE, message=FALSE}
+```{r echo=FALSE, message=FALSE, results='asis'}
 library(dplyr)
 library(readr)
 source("R/settings.R")
@@ -44,18 +44,25 @@ bear_summary <- bear %>%
             mean_k  = n()/n_distinct(studyid),
             pct_signif = sum(abs(z)>1.96)/n()
   ) %>%
-  mutate(domain = bear_domain[dataset])
+  mutate(domain = bear_domain[dataset],
+         summary_group = bear_data_summary_group[dataset])
 
-bear_summary %>%
+dataset_table <- bear_summary %>%
   arrange(dataset) %>%
   relocate(domain, .after = dataset) %>%
-  mutate(dataset = bear_names[dataset]) %>%
-  mutate(dataset = ifelse(dataset %in% c("Barnett and Wren",
-                                         "Chavalarias et al",
-                                         "Cochrane",
-                                         "Head et al"),
-                          paste0(dataset, "*"), dataset)) %>%
+  mutate(
+    summary_group = factor(summary_group,
+                           levels = bear_data_summary_group_levels),
+    dataset = bear_names[dataset],
+    dataset = ifelse(dataset %in% c("Barnett and Wren",
+                                    "Chavalarias et al",
+                                    "Cochrane",
+                                    "Head et al"),
+                     paste0(dataset, "*"), dataset)
+  ) %>%
+  arrange(summary_group, dataset) %>%
   transmute(
+    Group = as.character(summary_group),
     Dataset = dataset,
     Domain = domain,
     Values = fmt_int(n_z),
@@ -63,8 +70,16 @@ bear_summary %>%
     Studies = fmt_int(n_study),
     `Values/study` = fmt_num(mean_k, digits = 1),
     `Significant` = fmt_pct(pct_signif)
-  ) %>%
-  knitr::kable(align = c("l", "l", rep("r", 5)))
+  )
+
+for (group in bear_data_summary_group_levels) {
+  group_rows <- dataset_table[dataset_table$Group == group, -1]
+  if (nrow(group_rows) == 0) next
+  cat("\n\n### ", group, "\n\n", sep = "")
+  print(knitr::kable(group_rows, format = "pipe",
+                     align = c("l", "l", rep("r", 5))))
+  cat("\n")
+}
 ```
 
 *Main file `BEAR.rds` makes available a smaller analysis subset. Additional
@@ -72,7 +87,11 @@ data are available in the `data/` folder: 416k studies for Barnett and Wren,
 1.9mln studies for Chavalarias et al, 90k studies in 6.6k reviews for
 Cochrane, and 219k studies for Head et al.*
 
-Datasets fall into four main categories that will be useful for different types of metascientific investigations: curated datasets of single studies, curated sets of meta-analyses (i.e. with additional `metaid` grouping column), large-scale scraped datasets from PubMed/Medline, and replication datasets. Additional groupings (e.g. clinical trial phases) are available within some datasets. Replication datasets
+The table groups datasets by broad source family. A separate workflow
+classification used below distinguishes curated datasets of single studies,
+curated sets of meta-analyses (i.e. with additional `metaid` grouping column),
+large-scale scraped datasets from PubMed/Medline, and replication datasets.
+Additional groupings (e.g. clinical trial phases) are available within some datasets. Replication datasets
 also include additional columns that store values from original studies.
 
 ```{r echo=FALSE, message=FALSE}

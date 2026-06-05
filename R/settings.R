@@ -100,6 +100,44 @@ bear_classification <- c(
    # "Cochrane2019" = "meta",
 )
 
+bear_data_summary_group_levels <- c(
+  "Replication efforts",
+  "Metascience datasets",
+  "Databases",
+  "PubMed/Medline scraped data"
+)
+
+bear_data_summary_group <- c(
+  "ArelBundock" = "Metascience datasets",
+  "Askarov" = "Metascience datasets",
+  "Bartos" = "Metascience datasets",
+  "BarnettWren" = "PubMed/Medline scraped data",
+  "Brodeur" = "Metascience datasets",
+  "Lang" = "Metascience datasets",
+  "Chavalarias" = "PubMed/Medline scraped data",
+  "ctgov_euctr" = "Databases",
+  "clinicaltrials" = "Databases",
+  "Cochrane" = "Databases",
+  "CostelloFox" = "Metascience datasets",
+  "euctr" = "Databases",
+  "Head" = "PubMed/Medline scraped data",
+  "JagerLeek" = "PubMed/Medline scraped data",
+  "ManyLabs2" = "Replication efforts",
+  "SCORE original" = "Replication efforts",
+  "Many Labs original" = "Replication efforts",
+  "OSC original" = "Replication efforts",
+  "Metapsy" = "Databases",
+  "Nuijten" = "Databases",
+  "OSC" = "Replication efforts",
+  "SCORE_claims" = "Metascience datasets",
+  "SCORE_replications" = "Replication efforts",
+  "psymetadata" = "Databases",
+  "Sladekova" = "Metascience datasets",
+  "WWC" = "Databases",
+  "Yang" = "Metascience datasets",
+  "Szucs" = "Metascience datasets"
+)
+
 bear_domain <- c(
   "ArelBundock"   = "political science",
   "Askarov"       = "economics",

@@ -31,46 +31,62 @@ the doc folder](doc/datasets.pdf).
 
 Here is a short summary of what’s included in BEAR:
 
+### Replication efforts
+
+| Dataset | Domain | Values | Meta-analyses | Studies | Values/study | Significant |
+|:---|:---|---:|---:|---:|---:|---:|
+| Many Labs 2 | psychology | 1,592 | 28 | 128 | 12.4 | 41.4% |
+| OpenSciCollab | psychology | 97 | 1 | 97 | 1.0 | 35.1% |
+| SCORE replications | social & behavioural sciences | 267 | 1 | 163 | 1.6 | 64.4% |
+
+### Metascience datasets
+
 | Dataset | Domain | Values | Meta-analyses | Studies | Values/study | Significant |
 |:---|:---|---:|---:|---:|---:|---:|
 | Arel-Bundock et al | political science | 16,649 | 46 | 2,252 | 7.4 | 46.7% |
 | Askarov et al | economics | 21,408 | 352 | 1,913 | 11.2 | 52.0% |
-| Barnett and Wren\* | biomedicine | 50,000 | 1 | 50,000 | 1.0 | 81.9% |
 | Bartos et al | exercise | 2,239 | 215 | 2,239 | 1.0 | 26.3% |
 | Brodeur et al | economics | 15,917 | 1 | 328 | 48.5 | 35.7% |
-| Chavalarias et al\* | biomedicine | 50,000 | 1 | 50,000 | 1.0 | 63.1% |
-| Cochrane\* | medicine & health | 38,058 | 5,871 | 29,327 | 1.3 | 31.1% |
 | Costello and Fox | ecology & evolution | 88,218 | 466 | 12,927 | 6.8 | 41.9% |
-| Head et al\* | biomedicine | 50,000 | 1 | 50,000 | 1.0 | 59.2% |
-| Jager and Leek | biomedicine | 15,653 | 1 | 5,322 | 2.9 | 77.7% |
 | Lang | economics | 3,885 | 1 | 736 | 5.3 | 57.6% |
-| Many Labs 2 | psychology | 1,592 | 28 | 128 | 12.4 | 41.4% |
+| SCORE, all claims | social & behavioural sciences | 1,942 | 1 | 159 | 12.2 | 74.9% |
+| Sladekova et al | psychology | 11,591 | 406 | 3,547 | 3.3 | 59.2% |
+| Szucs and Ioannidis | cognitive neuroscience | 16,887 | 1 | 2,261 | 7.5 | 62.0% |
+| Yang et al | ecology & evolution | 17,638 | 87 | 3,796 | 4.6 | 41.7% |
+
+### Databases
+
+| Dataset | Domain | Values | Meta-analyses | Studies | Values/study | Significant |
+|:---|:---|---:|---:|---:|---:|---:|
+| Cochrane\* | medicine & health | 38,058 | 5,871 | 29,327 | 1.3 | 31.1% |
+| EUDRA | clinical trials | 8,650 | 1 | 8,650 | 1.0 | 41.4% |
 | Metapsy | psychotherapy | 4,395 | 20 | 1,494 | 2.9 | 48.4% |
 | Nuijten et al | intelligence | 2,439 | 1 | 1,913 | 1.3 | 52.9% |
-| OpenSciCollab | psychology | 97 | 1 | 97 | 1.0 | 35.1% |
-| SCORE, all claims | social & behavioural sciences | 1,942 | 1 | 159 | 12.2 | 74.9% |
-| SCORE replications | social & behavioural sciences | 267 | 1 | 163 | 1.6 | 64.4% |
-| Sladekova et al | psychology | 11,591 | 406 | 3,547 | 3.3 | 59.2% |
-| Szucs and Ioannidis | Cognitive neuroscience | 16,887 | 1 | 2,261 | 7.5 | 62.0% |
 | What Works Clearing. | education | 12,045 | 1 | 1,408 | 8.6 | 33.4% |
-| Yang et al | ecology & evolution | 17,638 | 87 | 3,796 | 4.6 | 41.7% |
 | clinicaltrials.gov | clinical trials | 41,367 | 1 | 16,597 | 2.5 | 48.4% |
-| EUDRA | clinical trials | 8,650 | 1 | 8,650 | 1.0 | 41.4% |
 | psymetadata | psychology | 8,514 | 1 | 721 | 11.8 | 35.8% |
+
+### PubMed/Medline scraped data
+
+| Dataset | Domain | Values | Meta-analyses | Studies | Values/study | Significant |
+|:---|:---|---:|---:|---:|---:|---:|
+| Barnett and Wren\* | biomedicine | 50,000 | 1 | 50,000 | 1.0 | 81.9% |
+| Chavalarias et al\* | biomedicine | 50,000 | 1 | 50,000 | 1.0 | 63.1% |
+| Head et al\* | biomedicine | 50,000 | 1 | 50,000 | 1.0 | 59.2% |
+| Jager and Leek | biomedicine | 15,653 | 1 | 5,322 | 2.9 | 77.7% |
 
 *Main file `BEAR.rds` makes available a smaller analysis subset.
 Additional data are available in the `data/` folder: 416k studies for
 Barnett and Wren, 1.9mln studies for Chavalarias et al, 90k studies in
 6.6k reviews for Cochrane, and 219k studies for Head et al.*
 
-Datasets fall into four main categories that will be useful for
-different types of metascientific investigations: curated datasets of
-single studies, curated sets of meta-analyses (i.e. with additional
-`metaid` grouping column), large-scale scraped datasets from
-PubMed/Medline, and replication datasets. Additional groupings
-(e.g. clinical trial phases) are available within some datasets.
-Replication datasets also include additional columns that store values
-from original studies.
+The table groups datasets by broad source family. A separate workflow
+classification used below distinguishes curated datasets of single
+studies, curated sets of meta-analyses (i.e. with additional `metaid`
+grouping column), large-scale scraped datasets from PubMed/Medline, and
+replication datasets. Additional groupings (e.g. clinical trial phases)
+are available within some datasets. Replication datasets also include
+additional columns that store values from original studies.
 
 | Category     | Datasets | Studies | Meta-analyses |  Values | Significant |
 |:-------------|---------:|--------:|--------------:|--------:|------------:|

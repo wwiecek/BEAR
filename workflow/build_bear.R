@@ -614,6 +614,9 @@ bear <- dtlist %>%
 
 saveRDS(bear, "BEAR.rds")
 
+source("workflow/write_site_metrics.R")
+write_site_metrics(calculate_site_metrics(bear))
+
 rm(dtlist)
 
 # Refresh README

@@ -66,6 +66,7 @@ plot_mixture_v4 <- function(fit, dt, nm = "", col = "black", color_map = NULL,
                             show_corrected = FALSE,
                             align_corrected_above_threshold = FALSE,
                             exact_only = FALSE) {
+  annotate <- match.arg(annotate, c("psr", "omega", "none"))
   
   # Use color_map if provided and col is default
   if (!is.null(color_map) && col == "black" && "group" %in% names(dt)) {
@@ -101,7 +102,6 @@ plot_mixture_v4 <- function(fit, dt, nm = "", col = "black", color_map = NULL,
   
   br <- seq(0, max(abs(dt$z), xmax) + bin_width, by = bin_width)
   omega_val <- round(fit$omega[1], 2)
-  e_abs_z_val <- round(den_calc_result$E_abs_z, 1)
   
   N <- 1e04
   if(annotate == "psr" & is.null(meanpwr)){
@@ -110,9 +110,6 @@ plot_mixture_v4 <- function(fit, dt, nm = "", col = "black", color_map = NULL,
     power   <- (1 - pnorm(1.96, snr, 1)) + pnorm(-1.96, snr, 1)
     meanpwr <- round(mean(power), 2)
   }
-  # lab <- sprintf("atop(omega==%s, E(group('|',z,'|'))==%s)", omega_val, e_abs_z_val)
-  # lab <- sprintf("atop(omega==%s, scriptstyle(E(group('|',z,'|'))==%s))", omega_val, e_abs_z_val)
-  # lab <- sprintf("omega==%s~~E(group('|',z,'|'))==%s", omega_val, e_abs_z_val)
   ggplot() +
     geom_histogram(
       data = hist_dt %>% mutate(x = abs(z)),
@@ -129,10 +126,8 @@ plot_mixture_v4 <- function(fit, dt, nm = "", col = "black", color_map = NULL,
     theme(plot.title = element_text(size = 8),
           axis.text  = element_text(size = 7),
           legend.position = "none") + 
-    {if(annotate != "psr") annotate("text", x = 7, y = ymax - 0.055, 
-             label = paste("omega ==", omega_val), parse = TRUE, size = 2.5) } +
-    {if(annotate != "psr") annotate("text", x = 7, y = ymax - 0.15, 
-             label = paste("E(group('|',z,'|')) ==", e_abs_z_val), parse = TRUE, size = 2.5) } +
+    {if(annotate == "omega") annotate("text", x = 7, y = ymax - 0.055, 
+             label = paste("hat(omega) ==", omega_val), parse = TRUE, size = 2.5) } +
     {if(annotate == "psr") annotate("text", x = 7, y = ymax - 0.055, 
                                     label = paste("bar(PoS) ==", meanpwr), 
                                     parse = TRUE, size = 2.5) }

@@ -60,7 +60,7 @@ bear_labels <- c(
   "SCORE original" = "SCORE original\nsocial & behav. sci.",
   "Many Labs original" = "Many Labs original\npsychology",
   "OSC original" = "OpenSciCollab original\npsychology",
-  "Szucs" = "Szucs and Ioannidis\nCognitive neuroscience"
+  "Szucs" = "Szucs & Ioannidis\ncognitive neuroscience"
   # "Adda" = "Adda et al",
   # "ctgov" = "clinicaltrials (v2 cut)",
   # "Cochrane2019" = "Cochrane (2019 cut)",
@@ -128,7 +128,7 @@ bear_domain <- c(
   "Sladekova"     = "psychology",
   "WWC"           = "education",
   "Yang"          = "ecology & evolution",
-  "Szucs"         = "Cognitive neuroscience"
+  "Szucs"         = "cognitive neuroscience"
 )
 
 # This is a vector to remove some fitted mixtures 

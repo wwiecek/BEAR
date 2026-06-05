@@ -5,16 +5,30 @@ subtitle: "Benchmarks of Empirical Accuracy in Research"
 
 ![](assets/bear_banner.png){.bear-banner fig-alt="BEAR banner"}
 
-**Problem**: Quantitative metascientific deals with important issues such as 
-publication bias, p-hacking, reporting practices, pre-registration, significance rates, and more. A lot of crucial contributions of metascience is based on analysing 
-individual datasets, often painstakingly constructed by researchers. This means that there is a wealth of data we can use to test metascientific claims and methodologies.
 
+::: {.grid}
+::: {.g-col-12 .g-col-md-6}
+## Problem
 
-**Solution**: BEAR is a open-source database for metascience exploration
+Quantitative metascience drives debates about important issues such as 
+publication bias, p-hacking, reporting practices, pre-registration, significance rates, and more. 
+Most of the crucial contributions of this branch of metascience has been 
+based on analysing individual datasets, often painstakingly constructed by researchers.
+But how generalisable are these findings?
+
+:::
+
+::: {.g-col-12 .g-col-md-6}
+## Solution
+
+BEAR is a open-source database for metascience exploration
 with 25 datasets across many scientific fields and millions of data points. 
 BEAR does not generate any new source data; it repackages public datasets 
 into a common structure for research on replication, exchangeability, 
-meta-analysis, and related questions about empirical accuracy.
+meta-analysis, and other questions about standards of empirical research.
+:::
+:::
+
 
 ::: {.callout-note appearance="simple"}
 To download latest version of data, head through
@@ -24,31 +38,30 @@ or you can follow [download instructions](getting-started.qmd) for command line.
 
 ::: {.grid}
 ::: {.g-col-12 .g-col-md-6}
-## What is included?
+## Datasets
 
-BEAR combines curated single-study datasets, collections of
-meta-analyses, large text-mined biomedical datasets, clinical-trial
-databases, and direct replication projects. Head to [datasets section](datasets.qmd)
-to read about individual datasets.
+BEAR combines curated registries of studies, random collections of articles in different disciplines, sets of meta-analyses, and direct replication projects. It covers data in econonmics, political science, biomedicine, ecology, evolution, education, neuroscience, and more. Head to [datasets section](datasets.qmd) to read about individual datasets.
 :::
 
 ::: {.g-col-12 .g-col-md-6}
-## Who is this for?
+## What to do with these data
 
-The project is intended for researchers who want a common empirical base
-for studying statistical evidence across fields, publication bias,
-replicability, power, exchangeability, and the behaviour of meta-analytic
-datasets.
+At a minimum BEAR contains z-values with clearly labelled identifiers for studies
+and meta-analyses. Where available, effect sizes, standard errors, sample sizes,
+and additional covariates (e.g. pre-registration status, phase of clinical trial,
+journal, discipline) are also included.
+An optional model of signal-to-noise ratios (based on van Zwet et al) 
+is also inlcuded as part of the repository, to quantify selection, 
+power, and replicability of data. 
 :::
 :::
 
 ## Links
 
-- [Get data](getting-started.qmd) for release downloads and a minimal R
-  loading example.
-- [Datasets](datasets.qmd) for the current dataset index and individual
-  dataset notes.
-- [Reproduce](reproduce.qmd) for the repository workflow and rebuild
-  entry points.
-- [GitHub repository](https://github.com/wwiecek/BEAR) for code, issues,
-  and releases.
+- [Get data](getting-started.qmd) for a minimal R example.
+- [Datasets](datasets.qmd) for the current dataset index, basic results, and individual
+  dataset descriptions.
+- [Reproduce](reproduce.qmd) for more complete workflow of rebuilding the database
+  from individual data sources and modelling.
+- [GitHub repository](https://github.com/wwiecek/BEAR) to access code and dataset 
+  directly.

@@ -36,3 +36,15 @@ source("workflow/fit_mixtures.R")
 
 source("workflow/calculate_psr.R")
 # output: paper/power_sign_rep.csv
+
+
+# (5) write optional website and presentation outputs
+
+# The write_* scripts are optional. They mostly refresh generated assets used
+# by the GitHub Pages site and other rendered outputs, not the core BEAR data
+# or fitted mixture results.
+
+source("workflow/write_outputs.R")
+# output: results/site_metrics.rds, site/_site_metrics.md,
+# results/selection_mixture_plot.png, site/assets/selection_mixture_plot.png,
+# results/mixture_plots/, README.md

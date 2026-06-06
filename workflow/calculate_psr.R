@@ -81,10 +81,3 @@ tab2 <- summarise_psr(df_psr) %>%
 
 rm(bear)
 write_csv(tab2, file = "paper/power_sign_rep.csv")
-
-source("workflow/write_mixture_plots.R")
-# Refresh README
-rmarkdown::render(
-  "README.Rmd",
-  output_format = rmarkdown::github_document(html_preview = FALSE)
-)

@@ -7,16 +7,31 @@
 assess statistical power in political science research
 
 **Data availability:**
-replication package (zip file with date 20241010) can be found at <https://osf.io/fgdet>. All data are in public domain.
+replication package (zip file with date 20241010) can be found at 
+<https://osf.io/fgdet>. All data are in public domain.
 
 **Data description and source:**
-Authors searched for (and emailed authors of) meta-analysis articles across 141 journals in political science; this led to "a dataset of 16,649 hypothesis tests, grouped in 351 meta-analyses, reported in 46 peer-reviewed meta-analytic articles"
+Authors searched for, and contacted authors of, meta-analysis articles across
+141 journals in political science. The resulting source dataset contains 16,649
+hypothesis tests, grouped in 351 meta-analyses and reported in 46 peer-reviewed
+meta-analytic articles. 
 
 **Notes:**
-There is possibly a considerable overlap with Askarov et al dataset, but these two datasets are worth analysing separately given their different focus.
+This is a collection of meta-analysis inputs rather than a direct
+extraction of all results from primary articles. The source combines a
+political-science search with an earlier Doucouliagos work, meaning that 
+some of this dataset will overlap with Askarov et al.
+However, the two articles cover different fields and therefore BEAR keeps the two
+datasets separate.
 
 **Data processing:**
 using the same code as original authors (replication package that runs on makefiles),
-but skipping some additional processing that they've done for their paper. Signed
-z-values were computed as reported estimates divided by their standard errors.
-We verified that the distributions of z-values matched.
+but skipping some additional processing that they've done for their paper.
+BEAR uses `question_id` as `metaid` (351 meta-analysis/research question groups)
+Signed z-values were
+computed as reported estimates divided by their standard errors. We verified
+that the distributions of z-values matched with the article.
+
+**Additional variables used:** BEAR release includes meta-analytic article (46 papers).
+The dataset also includes `sample` field records whether a row
+comes from the Doucouliagos data collection or the later Briggs/Arel-Bundock data collection.

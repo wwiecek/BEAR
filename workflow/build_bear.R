@@ -89,12 +89,15 @@ dtlist[["ArelBundock"]] <-
   # so best to normalise them
   mutate(study_id = stri_trans_nfc(study_id)) %>% 
   transmute(
-    metaid = meta_id, 
+    # question_id is the 351 within-article meta-analysis unit; meta_id is the
+    # 46 source-article identifier. The Briggs/Doucouliagos source flag remains
+    # in data/ArelBundock.rds.
+    metaid = question_id,
     studyid = study_id,
     field = subfield,
     method = NA,
     measure = NA,
-    subset = sample,
+    subset = meta_id,
     z = as.numeric(estimate)/as.numeric(std.error),
     b = as.numeric(estimate),
     se = as.numeric(std.error),

@@ -47,7 +47,7 @@ Here is a short summary of what’s included in BEAR:
 
 | Dataset | Domain | Values | Meta-analyses | Studies | Values/study | Significant |
 |:---|:---|---:|---:|---:|---:|---:|
-| Arel-Bundock et al | political science | 16,649 | 46 | 2,252 | 7.4 | 46.7% |
+| Arel-Bundock et al | political science | 16,649 | 351 | 2,252 | 7.4 | 46.7% |
 | Askarov et al | economics | 21,408 | 352 | 1,913 | 11.2 | 52.0% |
 | Bartos et al | exercise | 2,239 | 215 | 2,239 | 1.0 | 26.3% |
 | Brodeur et al | economics | 15,917 | \- | 328 | 48.5 | 35.7% |
@@ -91,7 +91,7 @@ additional columns that store values from original studies.
 | Category     | Datasets | Studies | Meta-analyses |  Values | Significant |
 |:-------------|---------:|--------:|--------------:|--------:|------------:|
 | curated      |        9 |  32,773 |               | 111,646 |       46.4% |
-| meta         |        8 |  57,495 |         7,463 | 200,196 |       42.3% |
+| meta         |        8 |  57,495 |         7,768 | 200,196 |       42.3% |
 | replications |        3 |     388 |            28 |   1,956 |       44.2% |
 | scrape       |        4 | 155,322 |               | 165,653 |       69.0% |
 

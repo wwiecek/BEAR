@@ -7,7 +7,8 @@
 Impact of mandatory data sharing on (excessive) statistical significance in economics papers
 
 **Data availability:**
-file `Mandatory data-sharing 30 Aug 2022.dta` may be downloaded from <https://github.com/anthonydouc/Datasharing/blob/master/Stata/>; reproducibility package at <https://dataverse.harvard.edu/file.xhtml?fileId=7884702&version=1.0>
+file `Mandatory data-sharing 30 Aug 2022.dta` may be downloaded from <https://github.com/anthonydouc/Datasharing/blob/master/Stata/>; 
+reproducibility package at <https://dataverse.harvard.edu/file.xhtml?fileId=7884702&version=1.0>
 
 **Data description and source:**
 The paper includes 64,000 economic estimates surveyed by Ioannidis et al. (2017) plus results of "searching through numerous databases, journal websites, and also an email survey of 109 authors known to have produced meta-analyses of economic topics. We cast the widest net possible to capture empirical economic estimates. Thus, some of the papers included in these meta-analyses were originally published in political science and psychology journals. Nevertheless, these meta-studies deal with economics topics." Later they note: "we collect 166,924 parameter estimates from 345 distinct research areas, of which
@@ -15,6 +16,12 @@ The paper includes 64,000 economic estimates surveyed by Ioannidis et al. (2017)
 The rows are meta-analysis estimate rows, not all results from each paper:
 the meta-analyses collect comparable effect sizes for specific economic
 phenomena and are not used only to identify papers for full extraction.
+
+**Notes:**
+Askarov et al article starts from the Ioannidis-Stanley-Doucouliagos dataset, same as 
+in the case of Arel-Bundock et al (another dataset in BEAR). Both datasets 
+incorporate additional data and target different fields of research, but 
+there is likely a lot of overlap between the two sets.
 
 **Data processing:**
 We use the same source file `Mandatory data-sharing 30 Aug 2022.dta` (11.6 MB)

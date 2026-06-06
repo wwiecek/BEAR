@@ -43,9 +43,12 @@ original_bear_list <- list(
 
 bear_list <- c(bear_list, original_bear_list)
 
-bear_hash <- lapply(bear_list, digest)
-
 bear_list_thin <- lapply(bear_list, thin_df)
+
+mixture_input_cols <- c("z", "z_operator", "weights")
+bear_hash <- lapply(bear_list_thin, function(df) {
+  digest(df[mixture_input_cols])
+})
 
 previous_hash <- if(file.exists("results/mixtures_hash.rds")) {
   readRDS("results/mixtures_hash.rds")
@@ -83,5 +86,5 @@ for(nm in mtofit) {
 
 # This is not part of the repo, but useful to save it as it takes a moment to derive
 # save(bear_list, bear_list_thin, bear_hash, file = "transformed_data/bear_lists.Rdata")
-save(bear_list_thin, bear_hash, file = "paper/bear_lists.Rdata")
+save(bear_list_thin, file = "paper/bear_lists.Rdata")
 saveRDS(bear_hash, file = "results/mixtures_hash.rds")

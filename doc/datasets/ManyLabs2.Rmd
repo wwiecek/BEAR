@@ -11,9 +11,10 @@ replications of 28 classic and contemporary effects in psychology, with the
 same effects tested across many samples and research sites.
 
 **Data availability:**
-the authors make their replication package available through OSF. We use the
-paper-included Many Labs 2 analyses from the key table and the site-level
-aggregated replication results from the public data package.
+the authors make their replication package available through OSF
+(<https://osf.io/fanre/>). We use the paper-included Many Labs 2 analyses from
+the key table and the site-level aggregated replication results from the public
+data package.
 
 **Data processing:**
 we retained the 28 preregistered analyses included in the paper. Each row is a

@@ -6,7 +6,10 @@ Trials which reported results at clinicaltrials.gov [@clinicaltrials2025]
 12 August 2025
 
 **Data source:**
-This is a set of flat file of studies obtained via <https://aact.ctti-clinicaltrials.org/> (over 2GBs of data for relevant tables), with relevant columns extracted and joined by us before BEAR processing.
+This is a set of flat files of studies obtained from the AACT downloads page
+(<https://aact.ctti-clinicaltrials.org/downloads/>; over 2GBs of data for
+relevant tables), with relevant columns extracted and joined by us before BEAR
+processing.
 
 **Data availability:**
 terms and conditions for ClinicalTrials.gov are at <https://clinicaltrials.gov/about-site/terms-conditions>. We make distributions of derived effect sizes available in accordance with ToC's. We only use publicly available data and do not imply any endorsement of this work by National Library of Medicine, ClinicalTrials.gov or AACT.

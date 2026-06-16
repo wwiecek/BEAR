@@ -39,6 +39,12 @@ package can therefore have more than one processing script when it produces
 materially different BEAR datasets. Keep scripts runnable from the project
 root and use simple project-root relative paths.
 
+Use `data_raw/` for downloaded source files, a README explaining how to obtain
+or refresh those files, partial processing artifacts, validation/audit
+artifacts, and occasional pre-processing when raw files are too large or
+awkward to read directly. The main pipeline from raw source material to a
+canonical `.rds` dataset in `data/` should be self-contained under `process/`.
+
 Write canonical analysis outputs to `data/`. When audits are useful, write
 them to a dataset-specific documentation or audit folder with clear names.
 Audit files should make validation and later review easier; they are not a

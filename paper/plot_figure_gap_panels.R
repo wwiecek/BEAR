@@ -60,7 +60,7 @@ small_gap_plot <- function(fit, single = FALSE){
 
 # Arranging all of the plots on a single page
 ds_tbl <- read_csv("paper/power_sign_rep.csv") %>% 
-  mutate(group = bear_classification[dataset]) %>%
+  mutate(group = bear_dataset_classes$workflow_classification[dataset]) %>%
   transmute(dataset, group, PoS = assurance)  %>% 
   arrange(desc(PoS))
 

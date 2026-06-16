@@ -45,7 +45,7 @@ bear_summary <- bear %>%
             pct_signif = sum(abs(z)>1.96)/n()
   ) %>%
   mutate(domain = bear_domain[dataset],
-         summary_group = bear_data_summary_group[dataset])
+         summary_group = bear_dataset_classes$summary_group[dataset])
 
 dataset_table <- bear_summary %>%
   arrange(dataset) %>%
@@ -96,7 +96,7 @@ also include additional columns that store values from original studies.
 
 ```{r echo=FALSE, message=FALSE}
 bear_summary %>%
-  mutate(gr = bear_classification[dataset]) %>%
+  mutate(gr = bear_dataset_classes$workflow_classification[dataset]) %>%
   # mutate(gr = ifelse(gr == "meta", "curated", gr)) %>%
   group_by(gr) %>%
   summarise(n_datasets = n(),
@@ -159,7 +159,7 @@ We calculate summaries for each dataset (e.g. probablity of significance, replic
 
 ```{r echo=FALSE, message=FALSE}
 tab_psr %>%
-  mutate(gr = bear_classification[dataset]) %>%
+  mutate(gr = bear_dataset_classes$workflow_classification[dataset]) %>%
   mutate(gr = ifelse(gr %in% c("curated", "meta"), "curated+meta", gr)) %>%
   arrange(gr, desc(assurance)) %>%
   mutate(dataset = bear_names[dataset]) %>%

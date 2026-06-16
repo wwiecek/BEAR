@@ -23,7 +23,7 @@ df_psr_small <- lapply(mfl, function(fit) {
 }) %>% 
   bind_rows(.id = "dataset") %>%
   mutate(z = abs(z)) %>% 
-  mutate(group = bear_classification[dataset]) %>%
+  mutate(group = bear_dataset_classes$workflow_classification[dataset]) %>%
   pivot_longer(c(power, sgn, rep), names_to = "metric", values_to = "value") %>% 
   mutate(metric = factor(metric, levels = c("power", "rep", "sgn"),
                          labels = c("Power", "Pr(Exact Replication)", "Pr(Sign)")))

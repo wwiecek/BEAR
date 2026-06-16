@@ -21,7 +21,7 @@ load_bear_mixture_inputs(exclude = NULL)
 
 draw_site_mixture_panel <- function(dataset, title) {
   dt <- bear_list_thin[[dataset]] %>%
-    mutate(group = bear_classification[dataset])
+    mutate(group = bear_dataset_classes$workflow_classification[dataset])
 
   plot <- plot_mixture_v4(
     mixtures[[dataset]],

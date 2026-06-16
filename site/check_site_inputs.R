@@ -1,5 +1,6 @@
 # Check generated inputs required before rendering the Quarto site.
 
+dataset_classification_file <- "../doc/dataset_classification.csv"
 source("../R/settings.R", local = TRUE)
 source("../R/site_dataset_config.R", local = TRUE)
 

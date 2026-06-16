@@ -8,7 +8,7 @@ source("R/mix.R")
 source("R/psr.R")
 
 read_csv("paper/power_sign_rep.csv") %>% 
-  mutate(gr = bear_classification[dataset]) %>% 
+  mutate(gr = bear_dataset_classes$workflow_classification[dataset]) %>% 
   mutate(gr = ifelse(gr %in% c("curated", "meta"), "curated+meta", gr)) %>% 
   arrange(gr, desc(assurance)) %>% 
   mutate(dataset = bear_names[dataset]) %>%
@@ -26,7 +26,7 @@ read_csv("paper/power_sign_rep.csv") %>%
 
 # results with |z| = 1.96
 read_csv("paper/power_sign_rep.csv") %>% 
-  mutate(gr = bear_classification[dataset]) %>% 
+  mutate(gr = bear_dataset_classes$workflow_classification[dataset]) %>% 
   mutate(gr = ifelse(gr %in% c("curated", "meta"), "curated+meta", gr)) %>% 
   arrange(gr, desc(assurance)) %>% 
   mutate(dataset = bear_names[dataset]) %>%

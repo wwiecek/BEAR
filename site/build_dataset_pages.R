@@ -8,6 +8,7 @@ output_dir <- "datasets"
 index_file <- "_dataset_index.md"
 downloads_file <- "dataset_downloads.csv"
 download_base_url <- "https://github.com/wwiecek/BEAR_data/blob/main"
+dataset_classification_file <- "../doc/dataset_classification.csv"
 source(settings_file, local = TRUE)
 source(site_config_file, local = TRUE)
 

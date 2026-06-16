@@ -7,7 +7,9 @@ source("R/psr.R")
 
 set.seed(1990)
 
-keep_sets <- names(bear_classification[bear_classification %in% c("meta", "curated")])
+keep_sets <- names(
+  bear_dataset_classes$workflow_classification[
+    bear_dataset_classes$workflow_classification %in% c("meta", "curated")])
 keep_sets <- setdiff(keep_sets, paper_do_not_include)
 
 bear_ns <- readRDS("BEAR.rds") %>%

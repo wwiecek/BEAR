@@ -2,7 +2,7 @@ df_psr_v2 <- lapply(mfl, powsignrep, N = 1e04) %>% bind_rows(.id = "dataset")
 
 df_psr_v2 %>% 
   mutate(snr = abs(snr)) %>% 
-  mutate(col = bear_classification[dataset]) %>% 
+  mutate(col = bear_dataset_classes$workflow_classification[dataset]) %>% 
   filter(snr < 100) %>% 
   ggplot(aes(snr, fill = col)) + 
   geom_histogram(breaks = seq(0, 5, length = 20)) + 

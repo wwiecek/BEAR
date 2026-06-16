@@ -36,7 +36,7 @@ if(length(missing_inputs) > 0) {
 
 draw_selection_panel <- function(dataset) {
   dt <- bear_list_thin[[dataset]] %>%
-    mutate(group = bear_classification[dataset])
+    mutate(group = bear_dataset_classes$workflow_classification[dataset])
 
   title <- dplyr::coalesce(bear_labels[dataset], bear_names[dataset], dataset) %>%
     stringr::str_split_1("\n") %>%

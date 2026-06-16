@@ -1,5 +1,10 @@
+# Prepare a local AACT ClinicalTrials.gov flat-file snapshot for BEAR.
+# Download the AACT pipe-delimited flat-file zip manually from:
 # https://aact.ctti-clinicaltrials.org/downloads/
-# https://aact.ctti-clinicaltrials.org/downloads/flatfiles_instructions
+# Then put the zip in a dated data_raw/clinicaltrials.gov/ folder and unzip it
+# there. This script expects studies.txt, designs.txt, outcomes.txt, and
+# outcome_analyses.txt to already exist in `dir`.
+# See data_raw/clinicaltrials.gov/README.md for the maintainer workflow.
 
 # packages
 # install.packages(c("readr","dplyr","tidyr","stringr"))
@@ -65,4 +70,3 @@ eff <- oa %>%
 
 
 saveRDS(eff, file = "data_raw/clinicaltrials.gov/derived/clinicaltrials.gov_aug2025.rds") 
-

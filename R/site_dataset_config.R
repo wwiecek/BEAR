@@ -51,16 +51,19 @@ site_metadata_override <- function(path, key) {
   }
   if (file_key == "psymetadata_Nuijten") {
     return(c(domain = "psychology / intelligence",
-             category = unname(bear_classification[key])))
+             category = unname(bear_dataset_classes$workflow_classification[key])))
   }
   c(domain = unname(bear_domain[key]),
-    category = unname(bear_classification[key]))
+    category = unname(bear_dataset_classes$workflow_classification[key]))
 }
 
 site_summary_group_override <- function(path, key) {
-  file_key <- tools::file_path_sans_ext(basename(path))
-  if (file_key == "SCORE") return("Replication efforts")
-  unname(bear_data_summary_group[key])
+  datasets <- site_dataset_plot_keys(path, key)
+  groups <- unique(unname(bear_dataset_classes$summary_group[datasets]))
+  groups <- groups[!is.na(groups)]
+  if ("Replication efforts" %in% groups) return("Replication efforts")
+  if (length(groups) == 1) return(groups)
+  groups[order(match(groups, bear_data_summary_group_levels))][1]
 }
 
 site_data_label_override <- function(path, key) {

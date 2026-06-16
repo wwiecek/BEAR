@@ -20,7 +20,7 @@ load_bear_mixture_inputs <- function(exclude = NULL,
   load(bear_lists_path, envir = bear_env)
 
   psr_table <- readr::read_csv(psr_path, show_col_types = FALSE) %>%
-    mutate(group = bear_classification[dataset]) %>%
+    mutate(group = bear_dataset_classes$workflow_classification[dataset]) %>%
     transmute(dataset, group, PoS = assurance) %>%
     arrange(desc(PoS))
 
@@ -42,7 +42,7 @@ plot_bear_mixture_panel <- function(dataset,
                                     exact_only = FALSE,
                                     ...) {
   dt <- bear_list_thin[[dataset]] %>%
-    mutate(group = bear_classification[dataset])
+    mutate(group = bear_dataset_classes$workflow_classification[dataset])
 
   plot_mixture_v4(
     mixtures[[dataset]],

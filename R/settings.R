@@ -40,18 +40,18 @@ bear_labels <- c(
   "Brodeur" = "Brodeur et al\neconomics",
   "Lang" = "Lang\neconomics",
   "ctgov_euctr" = "ctgov & EU CTR\nclinical trials",
-  # "clinicaltrials" = "clinicaltrials.gov",
-  # "euctr" = "EUDRA",
+  "clinicaltrials" = "clinicaltrials.gov",
+  "euctr" = "EU CTR\nclinical trials",
   "Chavalarias" = "Chavalarias et al\nMedline & PubMed",
   "Cochrane" = "Cochrane Database of\nSystematic Reviews",
   "CostelloFox" = "Costello and Fox\necology & evolution",
-  # "Head" = "Head et al",
-  # "JagerLeek" = "Jager and Leek",
+  "Head" = "Head et al\nbiomedicine",
+  "JagerLeek" = "Jager and Leek\nbiomedicine",
   "OSC" = "OpenSciCollab\npsychology",
   "SCORE_claims" = "SCORE claims\nsocial & behav. sci.",
   "SCORE_replications" = "SCORE replications\nsocial & behav. sci.",
   "Metapsy" = "Metapsy\npsychotherapy",
-  # "Sladekova" = "Sladekova et al",
+  "Sladekova" = "Sladekova et al\npsychology",
   "WWC" = "What Works Clearing.\neducation",
   "Yang" = "Yang et al\necology & evolution",
   "psymetadata" = "psymetadata\npsychology",
@@ -64,78 +64,6 @@ bear_labels <- c(
   # "Adda" = "Adda et al",
   # "ctgov" = "clinicaltrials (v2 cut)",
   # "Cochrane2019" = "Cochrane (2019 cut)",
-)
-
-bear_classification <- c(
-   "ArelBundock" = "meta",
-   "Askarov" = "meta",
-   "Bartos" = "meta",
-   "BarnettWren" = "scrape",
-   "Brodeur" = "curated",
-   "Lang" = "curated",
-   "Chavalarias" = "scrape",
-   "ctgov_euctr" = "curated",
-   "clinicaltrials" = "curated",
-   "Cochrane" = "meta",
-   "CostelloFox" = "meta",
-   "euctr" = "curated",
-   "Head" = "scrape",
-   "JagerLeek" = "scrape",
-   "ManyLabs2" = "replications",
-   "SCORE original" = "replications",
-   "Many Labs original" = "replications",
-   "OSC original" = "replications",
-   "Metapsy" = "meta",
-   "Nuijten" = "curated",
-   "OSC" = "replications",
-   "SCORE_claims" = "curated",
-   "SCORE_replications" = "replications",
-   "psymetadata" = "curated",
-   "Sladekova" = "meta",
-   "WWC" = "curated",
-   "Yang" = "meta",
-   "Szucs" = "curated"
-   # "Adda" = "curated",
-   # "ctgov" = "curated",
-   # "Cochrane2019" = "meta",
-)
-
-bear_data_summary_group_levels <- c(
-  "Databases",
-  "Metascience datasets",
-  "Replication efforts",
-  "PubMed/Medline scraped data"
-)
-
-bear_data_summary_group <- c(
-  "ArelBundock" = "Metascience datasets",
-  "Askarov" = "Metascience datasets",
-  "Bartos" = "Metascience datasets",
-  "BarnettWren" = "PubMed/Medline scraped data",
-  "Brodeur" = "Metascience datasets",
-  "Lang" = "Metascience datasets",
-  "Chavalarias" = "PubMed/Medline scraped data",
-  "ctgov_euctr" = "Databases",
-  "clinicaltrials" = "Databases",
-  "Cochrane" = "Databases",
-  "CostelloFox" = "Metascience datasets",
-  "euctr" = "Databases",
-  "Head" = "PubMed/Medline scraped data",
-  "JagerLeek" = "PubMed/Medline scraped data",
-  "ManyLabs2" = "Replication efforts",
-  "SCORE original" = "Replication efforts",
-  "Many Labs original" = "Replication efforts",
-  "OSC original" = "Replication efforts",
-  "Metapsy" = "Databases",
-  "Nuijten" = "Databases",
-  "OSC" = "Replication efforts",
-  "SCORE_claims" = "Metascience datasets",
-  "SCORE_replications" = "Replication efforts",
-  "psymetadata" = "Databases",
-  "Sladekova" = "Metascience datasets",
-  "WWC" = "Databases",
-  "Yang" = "Metascience datasets",
-  "Szucs" = "Metascience datasets"
 )
 
 bear_domain <- c(
@@ -168,6 +96,36 @@ bear_domain <- c(
   "Yang"          = "ecology & evolution",
   "Szucs"         = "cognitive neuroscience"
 )
+
+missing_dataset_labels <- setdiff(names(bear_domain), names(bear_labels))
+if (length(missing_dataset_labels) > 0) {
+  stop("Missing dataset labels for: ",
+       paste(missing_dataset_labels, collapse = ", "))
+}
+
+
+
+if (!exists("dataset_classification_file")) {
+  dataset_classification_file <- "doc/dataset_classification.csv"
+}
+bear_df_classes <- read.csv(dataset_classification_file, stringsAsFactors = FALSE)
+
+bear_class_cols <- c("replication", "meta_analysis", "database",
+                     "metascience_paper", "pubmed_scrape", "targeted",
+                     "random_sample", "primary_outcome",
+                     "workflow_classification", "summary_group")
+bear_dataset_classes <- lapply(bear_df_classes[bear_class_cols], setNames,
+                               nm = bear_df_classes$dataset)
+
+bear_data_summary_group_levels <- c(
+  "Databases", "Metascience datasets", "Replication efforts", "PubMed/Medline scraped data")
+
+missing_dataset_classification <- setdiff(names(bear_domain),
+                                          bear_df_classes$dataset)
+if (length(missing_dataset_classification) > 0) {
+  stop("Missing dataset classification for: ",
+       paste(missing_dataset_classification, collapse = ", "))
+}
 
 # This is a vector to remove some fitted mixtures 
 # which we will not use in the BEAR paper

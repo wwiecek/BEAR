@@ -90,8 +90,8 @@ additional columns that store values from original studies.
 
 | Category     | Datasets | Studies | Meta-analyses |  Values | Significant |
 |:-------------|---------:|--------:|--------------:|--------:|------------:|
-| curated      |        9 |  32,773 |               | 111,646 |       46.4% |
-| meta         |        8 |  57,495 |         7,768 | 200,196 |       42.3% |
+| curated      |        8 |  30,860 |               | 109,207 |       46.2% |
+| meta         |        9 |  59,408 |         7,768 | 202,635 |       42.4% |
 | replications |        3 |     388 |            28 |   1,956 |       44.2% |
 | scrape       |        4 | 155,322 |               | 165,653 |       69.0% |
 

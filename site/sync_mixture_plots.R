@@ -1,5 +1,6 @@
 # Copy canonical mixture plot artifacts into the Quarto site asset tree.
 
+dataset_classification_file <- "../doc/dataset_classification.csv"
 source("../R/settings.R", local = TRUE)
 source("../R/site_dataset_config.R", local = TRUE)
 

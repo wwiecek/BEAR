@@ -21,7 +21,7 @@ gg2 <-   map_dfr(names(mfl), ~{
   pr <- gap_vec(z, p = mfl[[.x]]$p, m = mfl[[.x]]$m, s_snr = mfl[[.x]]$sigma_SNR)
   data.frame(z, sgn = pr$sgn, rep = pr$rep, dataset = .x)
 }) %>%
-  mutate(colgr = bear_classification[dataset]) %>% 
+  mutate(colgr = bear_dataset_classes$workflow_classification[dataset]) %>% 
   pivot_longer(c(sgn, rep), names_to = 'label', values_to = 'prob') %>%
   mutate(label = recode_factor(label, rep = "successful replication", sgn = "correct sign")) %>%
   mutate(metric = "Sign and replication probability") %>% 

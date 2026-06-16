@@ -1,4 +1,5 @@
-# Absolutely zero data work here
+# Save the Reproducibility Project: Psychology source table for BEAR.
+# Source package: https://osf.io/ytpuq/overview
 
 osc_raw <- read.csv("data_raw/OSC/reproducibility_package/rpp_data.csv",
                     header = TRUE, fileEncoding = "latin1")

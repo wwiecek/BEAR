@@ -41,6 +41,8 @@ rsconnect/
 *desktop.ini
 README.html
 BEAR.rds
+data_raw/
+pdf/
 explore/stan_mixtures/*.rds
 explore/reports/*.pdf
 paper/bear_lists.Rdata

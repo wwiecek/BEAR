@@ -1,5 +1,6 @@
 # Build the Many Labs 2 BEAR dataset directly from the OSF replication package.
 # Outputs all 28 preregistered paper-included replication analyses.
+# Source package: https://osf.io/fanre/
 
 library(tidyverse)
 

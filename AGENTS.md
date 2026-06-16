@@ -23,11 +23,18 @@ Read both files before making changes in `BEAR/`.
   GitHub Actions can materialize the site-local copy during render.
 - When working on processing data from papers and needing context, read PDF of the paper, which will typically be located in a subfolder of `data_raw/`
 - It is OK to save artefacts from reading a PDF for faster processing in the future, but keep the folders clean when you do it
-- Use `data_raw/` for source downloads, READMEs explaining how to obtain data,
+- Do not track content under `data_raw/` in the repository. Use `data_raw/`
+  locally for source downloads, local READMEs explaining how to obtain data,
   partial processing artifacts, validation/audit artifacts, and occasional
-  pre-processing needed to make raw sources tractable. Keep the main pipeline
-  that turns raw source material into canonical `.rds` datasets under
-  `process/`.
+  pre-processing needed to make raw sources tractable. Keep essential
+  acquisition details in `process/` scripts or maintainer docs that are tracked.
+  Keep the main pipeline that turns raw source material into canonical `.rds`
+  datasets under `process/`.
+- Do not track content under `pdf/` in the repository. Use `pdf/` locally for
+  papers and reference PDFs.
+- Avoid committing large files in BEAR unless explicitly requested. Prefer
+  ignored local storage for raw data, PDFs, generated binaries, and bulky
+  intermediate artifacts.
 
 ## Current Assumptions
 - Processed inputs under `data/` are available locally as `.rds` files.

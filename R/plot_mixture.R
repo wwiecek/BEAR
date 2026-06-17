@@ -18,14 +18,19 @@ load_bear_mixture_inputs <- function(exclude = NULL,
 
   bear_env <- new.env(parent = emptyenv())
   load(bear_lists_path, envir = bear_env)
+  bear_list_thin <- bear_env$bear_list_thin
+  if (!is.null(exclude)) {
+    bear_list_thin <- bear_list_thin[!(names(bear_list_thin) %in% exclude)]
+  }
 
   psr_table <- readr::read_csv(psr_path, show_col_types = FALSE) %>%
+    dplyr::filter(!dataset %in% exclude) %>%
     mutate(group = bear_dataset_classes$workflow_classification[dataset]) %>%
     transmute(dataset, group, PoS = assurance) %>%
     arrange(desc(PoS))
 
   assign("mixtures", mixtures, envir = envir)
-  assign("bear_list_thin", bear_env$bear_list_thin, envir = envir)
+  assign("bear_list_thin", bear_list_thin, envir = envir)
   assign("psr_table", psr_table, envir = envir)
 
   invisible(NULL)

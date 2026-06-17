@@ -2,15 +2,13 @@
 # Source prose remains in doc/datasets/*.Rmd.
 
 dataset_dir <- "../doc/datasets"
-settings_file <- "../R/settings.R"
-site_config_file <- "../R/site_dataset_config.R"
 output_dir <- "datasets"
 index_file <- "_dataset_index.md"
 downloads_file <- "dataset_downloads.csv"
 download_base_url <- "https://github.com/wwiecek/BEAR_data/blob/main"
 dataset_classification_file <- "../doc/dataset_classification.csv"
-source(settings_file, local = TRUE)
-source(site_config_file, local = TRUE)
+source("../R/settings.R", local = TRUE)
+source("../R/site_dataset_config.R", local = TRUE)
 
 dir.create(output_dir, showWarnings = FALSE, recursive = TRUE)
 

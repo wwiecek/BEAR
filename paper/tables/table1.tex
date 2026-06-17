@@ -1,25 +1,47 @@
-\begin{table}[!h]
+\begin{table}
 \centering
-\begin{tabular}{p{2.5cm}rp{6cm}rrr}
+%\begin{tabular}{p{3.5cm}p{7.1cm}rrc}
+\begin{tabular}{p{3.7cm}@{\hspace{1cm}}p{7cm}rrc}
+Corpus & Purpose of dataset & studies & $\bar{k}$ & \% signif. \\
 \toprule
-Dataset & Year & Purpose of dataset & N studies & k & pct signif.\\
-\midrule
-Bartoš et al & 2025 & Effect of physical exercise on cognition, memory, and executive function & 2,239 & 1.0 & 26\\
-Cochrane & 2025 & Database of systematic reviews & 30,306 & 1.3 & 31\\
-What Works Clearing. & 2025 & Database of education intervention effect sizes & 1,408 & 8.6 & 33\\
-psymetadata & 2022 & Curated psychology meta-analysis datasets & 721 & 11.8 & 36\\
-Brodeur et al & 2024 & Do pre-registration and pre-analysis plans affect p-hacking and publication bias in economics journals? & 176 & 47.9 & 37\\
-Costello and Fox & 2022 & Do effects in ecology decline over time? & 12,927 & 6.8 & 42\\
-Arel-Bundock et al & 2022 & Assess statistical power in political science research & 2,252 & 7.4 & 47\\
-ctgov / EU CTR & 2025 & Registry of clinical trials with posted results (ClinicalTrials.gov + EU CTR) & 24,468 & 2.0 & 48\\
-Metapsy & 2026 & Database and meta-analyses of psychotherapy RCTs & 1,494 & 2.9 & 48\\
-Askarov et al & 2023 & Impact of mandatory data sharing on (excessive) statistical significance in economics papers & 1,913 & 11.2 & 52\\
-Nuijten et al & 2020 & Meta-meta-analysis of intelligence research & 1,913 & 1.3 & 53\\
+\textcite{cochrane2025cdsr} & Database of systematic reviews in health and medicine & 30,306 & 1.3 & 31\%\\
+
+ClinicalTrials.gov + EU CTR & Registries of clinical trials in the United States and European Union %\parencite{clinicaltrials2025,euctr2025}
+& 24,468 & 2.0 & 52\%\\
+
+\textcite{costello2022decline} & Do effects in ecology decline over time? & 12,927 & 6.8 & 42\%\\
+
+\textcite{arel2022quantitative} & Assess statistical power in political science research & 2,252 & 7.4 & 47\%\\
+
+\textcite{bartos2025exercise} & Effect of physical exercise on cognition, memory, and executive function & 2,239 & 1.0 & 26\%\\
+
+\textcite{askarov2023significance} & Impact of mandatory data sharing on statistical significance in economics papers & 1,913 & 11.2 & 52\%\\
+
+\textcite{nuijten2020intelligence} & Meta-meta-analysis of studies in intelligence research & 1,913 & 1.3 & 53\%\\
+
+Metapsy (2025) & Database and meta-analyses of psychotherapy RCTs & 1,494 & 2.9 & 48\%\\
+
+What Works Clearinghouse & Database of education intervention effect sizes \parencite{wwc2025studyfindings} & 1,408 & 8.6 & 34\%\\
+
+psymetadata  & Curated psychology meta-analysis datasets \parencite{rodriguez2022psymetadata} & 721 & 11.8 & 36\%\\
+
+\textcite{brodeur2024preregistration} & Pre-registration and pre-analysis plans in economics journals? & 176 & 47.9 & 37\%\\
+
 \addlinespace
-Many Labs 2 & 2018 & Replication of classic and contemporary psychology experiments across labs & 1,414 & 1.0 & 44\\
-OpenSciCollab & 2015 & Replications of a quasi-random sample of 100 experiments in psychology & 99 & 1.0 & 35\\
-Barnett and Wren & 2019 & Bias for statistical significance in health and medical journals & 416,027 & 3.1 & 81\\
-Chavalarias et al & 2016 & Reporting of p-values over time & 1,887,178 & 4.2 & 63\\
+\midrule
+
+Many Labs 2 \parencite{klein2018manylabs}  & Replication of classic and contemporary psychology experiments across labs & 1,414 & 1.0 & 44\%\\
+\textcite{opensciencecollaborationEstimatingReproducibilityPsychological2015a} & Replications of a quasi-random sample of 100 experiments in psychology & 99 & 1.0 & 35\%\\
+
+\addlinespace
+\midrule
+
+\textcite{chavalarias2016evolution} & Reporting of $p$-values over time & 1,887,178 & 4.2 & 84\%\\
+
+\textcite{barnett2019examination} & Bias for statistical significance in health and medical journals & 416,027 & 3.1 & 83\%\\
+
 \bottomrule
 \end{tabular}
+\caption{Datasets currently included in BEAR, divided into three groups: curated datasets, meta-analyses, and datasets based on large-scale scraping of published results; $\bar{k}$ is the mean number of observations per study, and ``\% signif.'' is the percentage of absolute $z$-values exceeding 1.96.}
+\label{tab:dataset_summary}
 \end{table}

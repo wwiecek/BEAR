@@ -1,28 +1,42 @@
-\begin{table}[!h]
+\begin{table}
 \centering
-\begin{tabular}{llllllll}
-\toprule
-dataset & omega & assurance & pos_80pct & replication & repl_signif & sign & sign_signif\\
-\midrule
-Askarov et al & 0.71 & 0.48 & 0.29 & 0.47 & 0.75 & 0.88 & 0.99\\
-Nuijten et al & 0.85 & 0.48 & 0.29 & 0.47 & 0.75 & 0.88 & 0.99\\
-ctgov / EU CTR & 0.95 & 0.47 & 0.28 & 0.45 & 0.75 & 0.87 & 0.99\\
-Metapsy & 0.83 & 0.46 & 0.26 & 0.45 & 0.73 & 0.88 & 0.99\\
-Arel-Bundock et al & 0.65 & 0.40 & 0.20 & 0.38 & 0.69 & 0.85 & 0.99\\
-\addlinespace
-Costello and Fox & 0.79 & 0.39 & 0.23 & 0.37 & 0.74 & 0.79 & 0.98\\
-Brodeur et al & 0.79 & 0.36 & 0.17 & 0.34 & 0.66 & 0.83 & 0.99\\
-psymetadata & 0.67 & 0.33 & 0.21 & 0.31 & 0.75 & 0.72 & 0.96\\
-What Works Clearing. & 0.88 & 0.32 & 0.17 & 0.30 & 0.68 & 0.76 & 0.97\\
-Cochrane & 0.70 & 0.23 & 0.10 & 0.21 & 0.60 & 0.69 & 0.94\\
-\addlinespace
-Bartos et al & 0.82 & 0.23 & 0.09 & 0.21 & 0.54 & 0.76 & 0.97\\
-\midrule\\
-Many Labs 2 & 0.99 & 0.44 & 0.34 & 0.42 & 0.85 & 0.76 & 0.97\\
-OpenSciCollab & 1.00 & 0.35 & 0.22 & 0.34 & 0.74 & 0.78 & 0.98\\
-\midrule\\
-Chavalarias et al & 0.20 & 0.51 & 0.32 & 0.50 & 0.76 & 0.89 & 1.00\\
-Barnett and Wren & 0.08 & 0.32 & 0.12 & 0.30 & 0.61 & 0.82 & 0.98\\
-\bottomrule
+\begin{tabular}{lccccccccc}
+\multicolumn{2}{c}{} 
+& \multicolumn{2}{c}{Significance} 
+& \multicolumn{3}{c}{``Successful'' replication} 
+& \multicolumn{3}{c}{Correct sign} \\
+\cmidrule(lr){3-4}\cmidrule(lr){5-7}\cmidrule(lr){8-10}
+& & & & & \multicolumn{2}{c} {\scriptsize Conditional on} & & \multicolumn{2}{c} {\scriptsize Conditional on} \\
+Corpus & \multicolumn{1}{c}{\scriptsize $\hat\omega$}
+        & \multicolumn{1}{c}{\scriptsize signif.}
+        & \multicolumn{1}{c}{\scriptsize $\overline{PoS}$}
+        & \multicolumn{1}{c}{\scriptsize uncond.}
+        & \multicolumn{1}{c}{\scriptsize $|z| = 1.96$}
+        & \multicolumn{1}{c}{\scriptsize $|z| \geq 1.96$} 
+        & \multicolumn{1}{c}{\scriptsize uncond.} 
+        & \multicolumn{1}{c}{\scriptsize $|z| = 1.96$}
+        & \multicolumn{1}{c}{\scriptsize $|z| \geq 1.96$} \\
+\cmidrule(lr){1-10}
+Cochrane & 0.70 & 0.31 & 0.23 & 0.21 & 0.26 & 0.60 & 0.69 & 0.82 & 0.94\\
+ctgov / EU CTR & 0.95 & 0.52 & 0.47 & 0.46 & 0.38 & 0.75 & 0.87 & 0.96 & 0.99\\
+Costello and Fox & 0.79 & 0.42 & 0.39 & 0.37 & 0.34 & 0.74 & 0.79 & 0.89 & 0.98\\
+Arel-Bundock et al.$\!\!\!$ & 0.65 & 0.47 & 0.40 & 0.38 & 0.36 & 0.69 & 0.85 & 0.96 & 0.99\\
+Bartos et al.\ & 0.82 & 0.26 & 0.23 & 0.20 & 0.23 & 0.54 & 0.76 & 0.91 & 0.97\\
+Askarov et al.\ & 0.71 & 0.52 & 0.48 & 0.47 & 0.40 & 0.75 & 0.88 & 0.96 & 0.99\\
+Nuijten et al.\ & 0.85 & 0.53 & 0.48 & 0.47 & 0.41 & 0.75 & 0.88 & 0.96 & 0.99\\
+Metapsy & 0.83 & 0.48 & 0.46 & 0.45 & 0.41 & 0.73 & 0.88 & 0.96 & 0.99\\
+What Works & 0.88 & 0.34 & 0.32 & 0.30 & 0.31 & 0.69 & 0.76 & 0.88 & 0.97\\
+psymetadata & 0.67 & 0.36 & 0.33 & 0.31 & 0.29 & 0.75 & 0.72 & 0.81 & 0.96\\
+Brodeur et al.\ & 0.79 & 0.37 & 0.36 & 0.34 & 0.33 & 0.66 & 0.83 & 0.95 & 0.99\\
+\cmidrule(lr){1-10}
+Many Labs 2 & 0.99 & 0.44 & 0.44 & 0.42 & 0.30 & 0.85 & 0.75 & 0.79 & 0.97\\
+OpenSciCollab & 1.00 & 0.35 & 0.36 & 0.34 & 0.31 & 0.74 & 0.78 & 0.90 & 0.98\\
+\cmidrule(lr){1-10}
+Chavalarias et al.\ & 0.20 & 0.84 & 0.51 & 0.50 & 0.44 & 0.76 & 0.89 & 0.97 & 1.00\\
+Barnett and Wren & 0.08 & 0.83 & 0.32 & 0.30 & 0.32 & 0.61 & 0.82 & 0.95 & 0.98\\
+\cmidrule(lr){1-10}
+
 \end{tabular}
+\caption{Summary of signal-to-noise ratio modeling results for the 15 corpora of studies in our data. Calculations of power, replication, and direction of effects use the distributions of $z$-values and signal-to-noise ratios by fitted mixture models without selection.}
+\label{tab:results_summary_table2}
 \end{table}

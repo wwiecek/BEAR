@@ -1,49 +1,128 @@
-library(kableExtra)
+# Build paper result tables from fitted mixture summaries.
+
 library(tidyverse)
-library(ggplot2)
 
 source("R/settings.R")
-source("R/helpers.R")
-source("R/mix.R")
-source("R/psr.R")
+source("R/paper_selection.R")
 
-read_csv("paper/power_sign_rep.csv") %>% 
-  mutate(gr = bear_dataset_classes$workflow_classification[dataset]) %>% 
-  mutate(gr = ifelse(gr %in% c("curated", "meta"), "curated+meta", gr)) %>% 
-  arrange(gr, desc(assurance)) %>% 
-  mutate(dataset = bear_names[dataset]) %>%
-  # select(dataset, prop_signif, omega, assurance, pos_80pct, replication, repl_196, sign, sign_196)
-  select(dataset, omega, assurance, pos_80pct, replication, repl_signif, repl_196, sign, sign_signif, sign_196) %>%
-  mutate_if(is.numeric, function(x) format(round(x, 2), nsmall = 2)) %>% 
-  kable(format = "latex", booktabs = TRUE, escape = FALSE) %>% 
-        # col.names = c("Dataset", "Assurance", "Pr(power > 0.8)", "Correct sign", 
-                      # "Replication")) %>% 
-        # align = c("p{2.5cm}", "p{2.5cm}", "p{2.5cm}", "p{2.5cm}")) %>%
-  kable_styling(latex_options = c("hold_position")) %>%
-  row_spec(11, hline_after = TRUE) %>%
-  row_spec(13, hline_after = TRUE) %>%
-  writeLines("paper/tables/table2.tex")
+psr_results <- read_csv("paper/power_sign_rep.csv", show_col_types = FALSE)
+psr_table <- psr_results %>% transmute(dataset, PoS = assurance)
+paper_groups <- lapply(paper_dataset_groups, order_paper_datasets,
+                       psr_table = psr_table)
 
-# results with |z| = 1.96
-read_csv("paper/power_sign_rep.csv") %>% 
-  mutate(gr = bear_dataset_classes$workflow_classification[dataset]) %>% 
-  mutate(gr = ifelse(gr %in% c("curated", "meta"), "curated+meta", gr)) %>% 
-  arrange(gr, desc(assurance)) %>% 
-  mutate(dataset = bear_names[dataset]) %>%
-  select(dataset, prop_signif, omega, replication, repl_196, sign, sign_196) %>% 
-  mutate_if(is.numeric, function(x) format(round(x, 2), nsmall = 2)) %>% 
-  kable(format = "latex", booktabs = TRUE, escape = FALSE) %>% 
-  kable_styling(latex_options = c("hold_position")) %>%
-  row_spec(11, hline_after = TRUE) %>%
-  row_spec(13, hline_after = TRUE) %>%
-  writeLines("paper/tables/table3.tex")
+format_num <- function(x) sprintf("%.2f", round(x, 2))
 
+format_result_row <- function(dataset_key, cols) {
+  row <- psr_results %>% filter(.data$dataset == .env$dataset_key)
+  values <- row %>%
+    select(all_of(cols)) %>%
+    mutate(across(everything(), format_num)) %>%
+    unlist(use.names = FALSE)
+  paste0(bear_names[dataset_key], " & ", paste(values, collapse = " & "), "\\\\")
+}
 
-# What if studies were larger?
+grouped_rows <- function(cols, n_cols) {
+  group_header <- function(group_key) {
+    paste0("\\multicolumn{", n_cols, "}{l}{\\emph{",
+           paper_collection_group_labels[group_key], "}}\\\\")
+  }
 
-# left_join(summarise_psr(df_psr),
-#           summarise_psr(df_psr_169), 
-#           by = "dataset") %>% 
-#   mutate(diff_p = p.x - p.y,
-#          diff_r = r.x - r.y) %>% 
-#   mutate_if(is.numeric, function(x) scales::percent(as.numeric(x), accuracy = 1))
+  c(
+    group_header("curated_evidence"),
+    "\\cmidrule(lr){1-10}",
+    vapply(paper_groups$curated_evidence, format_result_row, character(1),
+           cols = cols),
+    "\\addlinespace",
+    "\\cmidrule(lr){1-10}",
+    group_header("domain_sample"),
+    "\\cmidrule(lr){1-10}",
+    vapply(paper_groups$domain_sample, format_result_row, character(1),
+           cols = cols)
+  )
+}
+
+table2_cols <- c(
+  "omega", "prop_signif", "assurance",
+  "replication", "repl_196", "repl_signif",
+  "sign", "sign_196", "sign_signif"
+)
+
+table2_lines <- c(
+  "\\begin{table}",
+  "\\centering",
+  "\\scriptsize",
+  "\\begin{tabular}{lccccccccc}",
+  "\\multicolumn{2}{c}{}",
+  "& \\multicolumn{2}{c}{Significance}",
+  "& \\multicolumn{3}{c}{``Successful'' replication}",
+  "& \\multicolumn{3}{c}{Correct sign} \\\\",
+  "\\cmidrule(lr){3-4}\\cmidrule(lr){5-7}\\cmidrule(lr){8-10}",
+  "& & & & & \\multicolumn{2}{c}{\\scriptsize Conditional on}",
+  "& & \\multicolumn{2}{c}{\\scriptsize Conditional on} \\\\",
+  "Corpus & \\multicolumn{1}{c}{\\scriptsize $\\hat\\omega$}",
+  "        & \\multicolumn{1}{c}{\\scriptsize signif.}",
+  "        & \\multicolumn{1}{c}{\\scriptsize $\\overline{PoS}$}",
+  "        & \\multicolumn{1}{c}{\\scriptsize uncond.}",
+  "        & \\multicolumn{1}{c}{\\scriptsize $|z| = 1.96$}",
+  "        & \\multicolumn{1}{c}{\\scriptsize $|z| \\geq 1.96$}",
+  "        & \\multicolumn{1}{c}{\\scriptsize uncond.}",
+  "        & \\multicolumn{1}{c}{\\scriptsize $|z| = 1.96$}",
+  "        & \\multicolumn{1}{c}{\\scriptsize $|z| \\geq 1.96$} \\\\",
+  "\\cmidrule(lr){1-10}",
+  grouped_rows(table2_cols, 10),
+  "\\bottomrule",
+  "\\end{tabular}",
+  paste0(
+    "\\caption{Summary of signal-to-noise ratio modeling results for ",
+    "the 16 corpora used in the paper. Rows are grouped into curated sets ",
+    "and representative domain samples plus replication projects. ",
+    "Calculations of power, replication, and direction of effects use the ",
+    "distributions of $z$-values and signal-to-noise ratios by fitted ",
+    "mixture models without selection.}"
+  ),
+  "\\label{tab:results_summary_table2}",
+  "\\end{table}"
+)
+
+writeLines(table2_lines, "paper/tables/table2.tex")
+
+table3_cols <- c(
+  "omega", "prop_signif", "assurance",
+  "pos_80pct", "pos_80pct_196", "pos_80pct_signif"
+)
+
+table3_rows <- function(cols) {
+  grouped_rows(cols, 7) %>%
+    str_replace_all("\\\\cmidrule\\(lr\\)\\{1-10\\}", "\\\\cmidrule(lr){1-7}")
+}
+
+table3_lines <- c(
+  "\\begin{table}",
+  "\\centering",
+  "\\small",
+  "\\begin{tabular}{lcccccc}",
+  "\\multicolumn{2}{c}{}",
+  "& \\multicolumn{2}{c}{Significance}",
+  "& \\multicolumn{3}{c}{PoS at least 80\\%} \\\\",
+  "\\cmidrule(lr){3-4}\\cmidrule(lr){5-7}",
+  "& & & & & \\multicolumn{2}{c}{\\scriptsize Conditional on} \\\\",
+  "Corpus & \\multicolumn{1}{c}{\\scriptsize $\\hat\\omega$}",
+  "        & \\multicolumn{1}{c}{\\scriptsize signif.}",
+  "        & \\multicolumn{1}{c}{\\scriptsize $\\overline{PoS}$}",
+  "        & \\multicolumn{1}{c}{\\scriptsize uncond.}",
+  "        & \\multicolumn{1}{c}{\\scriptsize $|z| = 1.96$}",
+  "        & \\multicolumn{1}{c}{\\scriptsize $|z| \\geq 1.96$} \\\\",
+  "\\cmidrule(lr){1-7}",
+  table3_rows(table3_cols),
+  "\\bottomrule",
+  "\\end{tabular}",
+  paste0(
+    "\\caption{Summary of probability-of-significance results for the ",
+    "16 corpora used in the paper. Rows are grouped into curated sets ",
+    "and representative domain samples plus replication projects.}"
+  ),
+  "\\label{tab:results_summary_table3}",
+  "\\end{table}"
+)
+
+writeLines(table3_lines, "paper/tables/table3.tex")

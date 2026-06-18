@@ -1,3 +1,6 @@
+# Fit Cochrane specialty mixtures used by the paper subset figure.
+# Run from the BEAR project root.
+
 library(tidyverse)
 library(tictoc)
 library(digest)
@@ -30,33 +33,3 @@ cdsr_rct_fits <-  cdsr_rct_sub %>%
 
 save(cdsr_sub, cdsr_fits, cdsr_rct_sub, cdsr_rct_fits, ezvec, pl_choose, 
      file = "paper/results/cdsr_subset_fits.Rdata")
-
-
-
-# Only large studies
-
-cdsr_lrg <- bear %>% filter(dataset == "Cochrane") %>% 
-  mutate(z_operator = ifelse(is.na(z_operator), "=", z_operator)) %>%  
-  calc_study_weights() %>% filter(ss > 2000)
-fit_lrg <- fit_mixture_df(cdsr_lrg)
-powsignrep(fit_lrg) %>% summary
-
-
-# Plotting -----
-
-# load("paper/results/cdsr_subset_fits.Rdata")
-# 
-# cdsr_pl <- list()
-# for(nm in names(cdsr_fits)) 
-#   cdsr_pl[[nm]] <- plot_mixture_v4(cdsr_fits[[nm]], cdsr_sub[[nm]], 
-#                                    nbreaks = 40,
-#                                    ymax = 0.6) + ggtitle(nm)
-# 
-# cdsr_rct_pl <- list()
-# for(nm in names(cdsr_rct_fits)) 
-#   cdsr_rct_pl[[nm]] <- plot_mixture_v4(cdsr_rct_fits[[nm]], cdsr_rct_sub[[nm]], 
-#                                        nbreaks = 40, ymax = 0.6) + ggtitle(paste(nm, "RCT"))
-# 
-# wrap_plots(c(cdsr_pl[pl_choose[c(1,2)]], cdsr_rct_pl), ncol = 4)
-# 
-# ggsave("paper/figures/mixtures_plot_cochrane_4.pdf", height = 5, width = 16, units = "cm")

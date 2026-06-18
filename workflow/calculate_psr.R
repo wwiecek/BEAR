@@ -6,9 +6,12 @@ source("R/settings.R")
 source("R/helpers.R")
 source("R/mix.R")
 source("R/psr.R")
+source("R/paper_selection.R")
 
-# Calcualte performance of datasets 
-mfl <- load_all_mixtures(exclude = paper_do_not_include)
+# Calculate performance of datasets.
+mfl <- load_all_mixtures(exclude = paper_analysis_exclude)
+paper_datasets <- intersect(paper_selected_datasets, names(mfl))
+mfl <- mfl[paper_datasets]
 df_psr <- lapply(mfl, powsignrep) %>% bind_rows(.id = "dataset")
 # now only keeping significant results 
 # (power columns won't make sense/won't change!----but I do not use them)

@@ -1,4 +1,5 @@
 \documentclass[11pt]{article}
+\usepackage{array}
 \usepackage{booktabs}
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
@@ -187,7 +188,7 @@ The challenge is internalizing the juxtaposition of two ideas.  On one hand, the
 
 We have compiled a large number of empirical results from a variety of sources in a new database which we call Benchmarks of Empirical Accuracy in Research (BEAR). BEAR currently has 26 dataset entries, but for this paper we use 16 corpora, comprising about 180,000 studies. Characteristics of the presented datasets are given in Table~\ref{tab:dataset_summary} and in Appendix \ref{app:datasets}. We describe our processing steps in Appendix \ref{standard-procedure-for-dealing-with-p-values-and-confidence-intervals}.
 
-The first group contains eight curated evidence collections. These include meta-analytic or systematic-review collections in intelligence research \parencite{nuijten2020intelligence}, economics \parencite{askarov2023significance}, psychotherapy \parencite{cuijpers2024effects}, political science \parencite{arel2022quantitative}, ecology and evolution \parencite{costello2022decline,yang2024large}, psychology \parencite{rodriguez2022psymetadata}, and medicine through the Cochrane Database of Systematic Reviews \parencite{schwab2024cochrane,cochrane2025cdsr}. We also include education intervention results from the What Works Clearinghouse \parencite{wwc2025studyfindings}. Where the source is meta-analytic, BEAR treats the rows as collections of individual studies, while retaining meta-analysis identifiers for other uses.
+The first group contains eight curated sets. These include meta-analytic or systematic-review collections in intelligence research \parencite{nuijten2020intelligence}, economics \parencite{askarov2023significance}, psychotherapy \parencite{cuijpers2024effects}, political science \parencite{arel2022quantitative}, ecology and evolution \parencite{costello2022decline,yang2024large}, psychology \parencite{rodriguez2022psymetadata}, and medicine through the Cochrane Database of Systematic Reviews \parencite{schwab2024cochrane,cochrane2025cdsr}. We also include education intervention results from the What Works Clearinghouse \parencite{wwc2025studyfindings}. Where the source is meta-analytic, BEAR treats the rows as collections of individual studies, while retaining meta-analysis identifiers for other uses.
 
 Other datasets include six corpora that can be thought of as representative samples of studies or results within research domains: SCORE dataset of claims in the social and behavioural sciences \parencite{tyner2026investigating}, main results from top economics papers \parencite{lang2025credible}, text-mined $t$-tests in cognitive neuroscience \parencite{szucs2017empirical}, clinical trial registry results from \texttt{clinicaltrials.gov} and EU CTR \parencite{clinicaltrials2025, euctr2025}, and text-mined p-values \parencite{chavalarias2016evolution} and confidence intervals \parencite{barnett2019examination} in biomedical journals.
 
@@ -310,7 +311,7 @@ All the computations that yielded the results reported in the next section are d
 
 \section{Results}
 
-Figure~\ref{fig:zmixtures} displays the histograms of the observed absolute $z$-statistics of our 16 corpora. The solid curves are the fitted mixtures of half-normal distributions conditional on publication, and the dashed curves are the ``corrected'' unconditional distributions. We find that the estimated distributions generally track the histogram well and conclude that our model is appropriate for our purpose of quantifying large-scale properties of research areas. The first eight panels are curated evidence collections and the second eight are domain samples and replication projects, arranged within groups by their estimated assurances $\overline{\text{PoS}}$. 
+Figure~\ref{fig:zmixtures} displays the histograms of the observed absolute $z$-statistics of our 16 corpora. The solid curves are the fitted mixtures of half-normal distributions conditional on publication, and the dashed curves are the ``corrected'' unconditional distributions. We find that the estimated distributions generally track the histogram well and conclude that our model is appropriate for our purpose of quantifying large-scale properties of research areas. The first eight panels are curated sets and the second eight are representative domain samples and replication projects, arranged within groups by their estimated assurances $\overline{\text{PoS}}$. 
 
 Mixtures of half-normal densities are necessarily decreasing. Apart from the effects of publication bias, we also see this feature in the histograms. We claim that this is typical of large collections of $z$-values. To further support this claim, we have broken down the Cochrane data by 19 medical specialties and the data from {\tt clinicaltrials.gov} by trial phase, see Figure~\ref{fig:subsets}. Again, we see decreasing distributions of absolute $z$-values.
 
@@ -338,7 +339,7 @@ The right panel of Figure~\ref{fig:pos_gap} displays the probabilities of succes
 \begin{figure}
 \centering
 \includegraphics[width=1\textwidth]{fig/mixtures_plot_collection_groups.pdf}
-\caption{Histograms of absolute $z$-values across 16 corpora with fitted curves overlaid on top. The solid curves are densities, fitted using mixtures of half-normal distributions and conditioning on publication. Dashed curves are the unconditional ``corrected'' distributions, scaled to match the solid curve in region $|z| > 1.96$. Blue: curated evidence collections; purple: domain samples; brown: replication projects.}\label{fig:zmixtures}
+\caption{Histograms of absolute $z$-values across 16 corpora with fitted curves overlaid on top. The solid curves are densities, fitted using mixtures of half-normal distributions and conditioning on publication. Dashed curves are the unconditional ``corrected'' distributions, scaled to match the solid curve in region $|z| > 1.96$. Blue: curated sets; red: representative domain samples; yellow: replication projects.}\label{fig:zmixtures}
 \end{figure}
 
 \input{table2.tex}

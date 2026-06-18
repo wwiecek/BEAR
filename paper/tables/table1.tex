@@ -1,47 +1,33 @@
 \begin{table}
 \centering
-%\begin{tabular}{p{3.5cm}p{7.1cm}rrc}
-\begin{tabular}{p{3.7cm}@{\hspace{1cm}}p{7cm}rrc}
-Corpus & Purpose of dataset & studies & $\bar{k}$ & \% signif. \\
+\small
+\begin{tabular}{>{\raggedright\arraybackslash}p{4.3cm}@{\hspace{0.6cm}}p{6.8cm}rrc}
+\textbf{Corpus} & \textbf{Purpose of dataset} & \textbf{study units} & \textbf{$\bar{k}$} & \textbf{\% signif.} \\
 \toprule
-\textcite{cochrane2025cdsr} & Database of systematic reviews in health and medicine & 30,306 & 1.3 & 31\%\\
-
-ClinicalTrials.gov + EU CTR & Registries of clinical trials in the United States and European Union %\parencite{clinicaltrials2025,euctr2025}
-& 24,468 & 2.0 & 52\%\\
-
-\textcite{costello2022decline} & Do effects in ecology decline over time? & 12,927 & 6.8 & 42\%\\
-
-\textcite{arel2022quantitative} & Assess statistical power in political science research & 2,252 & 7.4 & 47\%\\
-
-\textcite{bartos2025exercise} & Effect of physical exercise on cognition, memory, and executive function & 2,239 & 1.0 & 26\%\\
-
-\textcite{askarov2023significance} & Impact of mandatory data sharing on statistical significance in economics papers & 1,913 & 11.2 & 52\%\\
-
-\textcite{nuijten2020intelligence} & Meta-meta-analysis of studies in intelligence research & 1,913 & 1.3 & 53\%\\
-
-Metapsy (2025) & Database and meta-analyses of psychotherapy RCTs & 1,494 & 2.9 & 48\%\\
-
-What Works Clearinghouse & Database of education intervention effect sizes \parencite{wwc2025studyfindings} & 1,408 & 8.6 & 34\%\\
-
-psymetadata  & Curated psychology meta-analysis datasets \parencite{rodriguez2022psymetadata} & 721 & 11.8 & 36\%\\
-
-\textcite{brodeur2024preregistration} & Pre-registration and pre-analysis plans in economics journals? & 176 & 47.9 & 37\%\\
-
+\multicolumn{5}{l}{\emph{Curated sets}}\\
+\midrule
+\textcite{nuijten2020intelligence} & Meta-meta-analysis of intelligence research & 1,913 & 1.3 & 53\%\\
+\textcite{askarov2023significance} & Economics meta-analyses and leading-journal estimates & 1,913 & 11.2 & 52\%\\
+Metapsy \parencite{harrer2022metapsydata} & Meta-analytic psychotherapy trial databases & 1,494 & 2.9 & 48\%\\
+\textcite{arel2022quantitative} & Meta-analytic estimates in political science & 2,252 & 7.4 & 47\%\\
+\textcite{costello2022decline} & Meta-analyses of decline effects in ecology and evolution & 12,927 & 6.8 & 42\%\\
+psymetadata \parencite{rodriguez2022psymetadata} & Curated psychology meta-analysis datasets & 721 & 11.8 & 36\%\\
+What Works Clearinghouse \parencite{wwc2025studyfindings} & Education intervention effect sizes & 1,408 & 8.6 & 34\%\\
+Cochrane Database of Systematic Reviews & Systematic reviews in health and medicine & 29,327 & 1.3 & 31\%\\
 \addlinespace
 \midrule
-
-Many Labs 2 \parencite{klein2018manylabs}  & Replication of classic and contemporary psychology experiments across labs & 1,414 & 1.0 & 44\%\\
-\textcite{opensciencecollaborationEstimatingReproducibilityPsychological2015a} & Replications of a quasi-random sample of 100 experiments in psychology & 99 & 1.0 & 35\%\\
-
-\addlinespace
+\multicolumn{5}{l}{\emph{Representative domain samples and replication projects}}\\
 \midrule
-
-\textcite{chavalarias2016evolution} & Reporting of $p$-values over time & 1,887,178 & 4.2 & 84\%\\
-
-\textcite{barnett2019examination} & Bias for statistical significance in health and medical journals & 416,027 & 3.1 & 83\%\\
-
+SCORE claims (Tyner et al 2026) & Claims from papers selected for SCORE & 159 & 12.2 & 87\%\\
+\textcite{chavalarias2016evolution} & Text-mined $p$-values from Medline and PubMed & 50,000 & 1.0 & 87\%\\
+\textcite{barnett2019examination} & Text-mined confidence intervals in health and medicine & 50,000 & 1.0 & 84\%\\
+SCORE replications (Tyner et al 2026) & Matched replications of published claims & 163 & 1.6 & 64\%\\
+\textcite{szucs2017empirical} & Text-mined $t$-tests in cognitive neuroscience & 2,261 & 7.5 & 62\%\\
+\textcite{lang2025credible} & Principal and abstract results from economics papers & 736 & 5.3 & 58\%\\
+clinicaltrials.gov + EU CTR & Clinical trial registries in the United States and Europe & 25,247 & 2.0 & 51\%\\
+\textcite{opensciencecollaborationEstimatingReproducibilityPsychological2015a} & Replications of psychology experiments & 97 & 1.0 & 35\%\\
 \bottomrule
 \end{tabular}
-\caption{Datasets currently included in BEAR, divided into three groups: curated datasets, meta-analyses, and datasets based on large-scale scraping of published results; $\bar{k}$ is the mean number of observations per study, and ``\% signif.'' is the percentage of absolute $z$-values exceeding 1.96.}
+\caption{Datasets included in the paper, grouped into curated sets and representative domain samples plus replication projects. Study units are source-specific studies, trials, papers, or claims. $\bar{k}$ is the mean number of observations per study unit, and ``\% signif.'' is the percentage of absolute $z$-values exceeding 1.96. Barnett and Wren and Chavalarias are represented by 50,000-row BEAR subsamples; after the table filters their processed source files contain 416,027 and 1,887,178 study units, respectively.}
 \label{tab:dataset_summary}
 \end{table}

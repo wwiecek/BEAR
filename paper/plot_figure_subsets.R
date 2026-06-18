@@ -1,3 +1,6 @@
+# Rebuild the paper subset mixture figure from cached subset fits.
+# Set REFIT_SUBSETS=true to refit the clinicaltrials.gov and Cochrane subsets.
+
 library(tidyverse)
 library(patchwork)
 source("R/helpers.R")
@@ -6,6 +9,15 @@ source("R/mix.R")
 source("R/plot_mixture.R")
 source("R/fit_density_calc.R")
 source("R/psr.R")
+
+refit_subset_fits <- identical(Sys.getenv("REFIT_SUBSETS"), "true")
+if (refit_subset_fits ||
+    !file.exists("paper/results/clinicaltrials_subset_fits.Rdata")) {
+  source("paper/subsets_clinicaltrials.R")
+}
+if (refit_subset_fits || !file.exists("paper/results/cdsr_subset_fits.Rdata")) {
+  source("paper/subsets_cdsr.R")
+}
 
 # Cochrane (CDSR) subsets
 load("paper/results/cdsr_subset_fits.Rdata")

@@ -1,8 +1,9 @@
-# Rebuild the paper subset mixture figure from cached subset fits.
-# Set REFIT_SUBSETS=true to refit the clinicaltrials.gov and Cochrane subsets.
+# Rebuild the paper subset mixture figure from explore/subgroups fits.
+# Run explore/subgroups/fit_models.R first if the fit cache is missing.
 
 library(tidyverse)
 library(patchwork)
+
 source("R/helpers.R")
 source("R/settings.R")
 source("R/mix.R")
@@ -10,59 +11,63 @@ source("R/plot_mixture.R")
 source("R/fit_density_calc.R")
 source("R/psr.R")
 
-refit_subset_fits <- identical(Sys.getenv("REFIT_SUBSETS"), "true")
-if (refit_subset_fits ||
-    !file.exists("paper/results/clinicaltrials_subset_fits.Rdata")) {
-  source("paper/subsets_clinicaltrials.R")
-}
-if (refit_subset_fits || !file.exists("paper/results/cdsr_subset_fits.Rdata")) {
-  source("paper/subsets_cdsr.R")
+fit_file <- "explore/subgroups/fits.rds"
+if (!file.exists(fit_file)) {
+  stop("Missing ", fit_file, ". Run Rscript --vanilla explore/subgroups/fit_models.R")
 }
 
-# Cochrane (CDSR) subsets
-load("paper/results/cdsr_subset_fits.Rdata")
+fit_obj <- readRDS(fit_file)
+subgroup_fits <- fit_obj$fits
+subgroup_dfs <- fit_obj$dfs
+subgroup_manifest <- fit_obj$manifest
 
-cdsr_pl <- list()
-for (nm in names(cdsr_fits)) {
-  cdsr_pl[[nm]] <- plot_mixture_v4(
-    cdsr_fits[[nm]],
-    cdsr_sub[[nm]],
-    ymax = 0.6,
+plot_subgroup_fit <- function(fit_name, title, ymax) {
+  plot_mixture_v4(
+    subgroup_fits[[fit_name]],
+    subgroup_dfs[[fit_name]],
+    ymax = ymax,
     show_corrected = TRUE,
     align_corrected_above_threshold = TRUE
-  ) + ggtitle(paste0("CDSR\n", nm))
+  ) + ggtitle(title)
 }
 
-cdsr_pos <- lapply(cdsr_fits, function(x) mean(powsignrep(x)$power)) %>% unlist()
-cdsr_choose <- names(sort(cdsr_pos)[c(1,2,length(cdsr_pos)-1,length(cdsr_pos))])
-
-# clinicaltrials.gov subsets
-load("paper/results/clinicaltrials_subset_fits.Rdata")
-ct_names <- c(
-  obs = "Observational",
-  ph1 = "Phase 1",
-  ph2 = "Phase 2",
-  ph3 = "Phase 3",
-  ph4 = "Phase 4",
-  ph3lrg = "Phase 3, N > 1,000",
-  ph3sml = "Phase 3, N < 1,000",
-  ph3best = "Ph3, N > 2,000, blinded"
+phase_titles <- c(
+  phase1 = "Phase 1",
+  phase2 = "Phase 2",
+  phase3 = "Phase 3",
+  phase4 = "Phase 4"
 )
 
-ct_pl <- list()
-for (nm in names(ct_fits)) {
-  ct_pl[[nm]] <- plot_mixture_v4(
-    ct_fits[[nm]],
-    ct_subsets[[nm]],
-    ymax = 0.4,
-    show_corrected = TRUE,
-    align_corrected_above_threshold = TRUE
-  ) + ggtitle(paste0("clinicaltrials.gov\n", ct_names[[nm]]))
+phase_panels <- subgroup_manifest %>%
+  filter(category == "Phase", subgroup %in% names(phase_titles)) %>%
+  mutate(subgroup = factor(subgroup, names(phase_titles))) %>%
+  arrange(subgroup) %>%
+  transmute(
+    fit_name,
+    title = paste0("clinicaltrials.gov\n", phase_titles[as.character(subgroup)])
+  )
+
+cochrane_panels <- subgroup_manifest %>%
+  filter(category == "Cochrane specialty") %>%
+  mutate(PoS = map_dbl(fit_name, ~ mean(powsignrep(subgroup_fits[[.x]])$power))) %>%
+  arrange(PoS) %>%
+  slice(c(1, 2, n() - 1, n())) %>%
+  transmute(fit_name, title = paste0("CDSR\n", subgroup))
+
+if (nrow(phase_panels) != 4 || nrow(cochrane_panels) != 4) {
+  stop("Expected four phase and four Cochrane panels for subset figure.")
 }
 
-ct_row <- wrap_plots(ct_pl[c(2,3,4,8)], ncol = 4)
+ct_row <- wrap_plots(
+  pmap(phase_panels, ~ plot_subgroup_fit(..1, ..2, ymax = 0.4)),
+  ncol = 4
+)
 
-cdsr_row <- wrap_plots(cdsr_pl[cdsr_choose], ncol = 4)
+cdsr_row <- wrap_plots(
+  pmap(cochrane_panels, ~ plot_subgroup_fit(..1, ..2, ymax = 0.6)),
+  ncol = 4
+)
+
 p <- wrap_elements(full = ct_row) / wrap_elements(full = cdsr_row)
 
 ggsave(
@@ -72,7 +77,3 @@ ggsave(
   width = 14,
   units = "cm"
 )
-
-
-
-

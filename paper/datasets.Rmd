@@ -1,0 +1,74 @@
+---
+title: "Datasets used in the paper"
+subtitle: "Appendix"
+date: "`r format(Sys.Date(), '%Y-%m-%d')`"
+output:
+  bookdown::pdf_document2:
+    toc: true
+    number_sections: false
+    keep_tex: false
+geometry: margin=1in
+fontsize: 11pt
+bibliography: ../doc/references.bib
+---
+
+```{r setup, include=FALSE}
+repo_root <- normalizePath(file.path(dirname(knitr::current_input()), ".."))
+knitr::opts_knit$set(root.dir = repo_root)
+```
+
+This appendix describes the 16 BEAR corpora used in the paper. The full BEAR
+database contains additional datasets documented elsewhere.
+
+```{r stitch, echo=FALSE, results="asis", message=FALSE, warning=FALSE}
+suppressPackageStartupMessages(library(tidyverse))
+
+source("R/settings.R")
+source("R/paper_selection.R")
+
+psr_table <- readr::read_csv("paper/power_sign_rep.csv",
+                             show_col_types = FALSE) |>
+  dplyr::transmute(dataset, PoS = assurance)
+
+paper_groups <- lapply(paper_dataset_groups, order_paper_datasets,
+                       psr_table = psr_table)
+paper_datasets <- unlist(paper_groups, use.names = FALSE)
+
+dataset_files <- c(
+  "ArelBundock" = "doc/datasets/ArelBundock.Rmd",
+  "Askarov" = "doc/datasets/Askarov.Rmd",
+  "BarnettWren" = "doc/datasets/BarnettWren.Rmd",
+  "Chavalarias" = "doc/datasets/Chavalarias.Rmd",
+  "Cochrane" = "doc/datasets/Cochrane.Rmd",
+  "CostelloFox" = "doc/datasets/CostelloFox_Yang.Rmd",
+  "Lang" = "doc/datasets/Lang.Rmd",
+  "Metapsy" = "doc/datasets/Metapsy.Rmd",
+  "Nuijten" = "doc/datasets/psymetadata_Nuijten.Rmd",
+  "OSC" = "doc/datasets/OSC.Rmd",
+  "psymetadata" = "doc/datasets/psymetadata_Nuijten.Rmd",
+  "SCORE_claims" = "doc/datasets/SCORE.Rmd",
+  "SCORE_replications" = "doc/datasets/SCORE.Rmd",
+  "Szucs" = "doc/datasets/Szucs.Rmd",
+  "WWC" = "doc/datasets/WWC.Rmd",
+  "ctgov_euctr" = "doc/datasets/clinicaltrials_gov.Rmd",
+  "euctr" = "doc/datasets/EUCTR.Rmd"
+)
+
+child_files <- unique(unname(dataset_files[paper_datasets]))
+if ("ctgov_euctr" %in% paper_datasets) {
+  child_files <- append(
+    child_files,
+    "doc/datasets/EUCTR.Rmd",
+    after = match("doc/datasets/clinicaltrials_gov.Rmd", child_files)
+  )
+}
+
+for (child in child_files) {
+  cat("\n\n\\newpage\n\n")
+  cat(knitr::knit_child(child, quiet = TRUE), sep = "\n")
+}
+
+cat("\n\n\\newpage\n\n")
+cat(knitr::knit_child("doc/p_value_and_ci_derivations.Rmd", quiet = TRUE),
+    sep = "\n")
+```

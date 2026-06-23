@@ -1,0 +1,656 @@
+This appendix describes the 16 BEAR corpora used in the paper. The full
+BEAR database contains additional datasets documented elsewhere.
+
+\newpage
+
+\subsection{psymetadata and Nuijten et al (psychology
+datasets)}\label{psymetadata-and-nuijten-et-al-psychology-datasets}
+
+\textbf{Reference:} Set of psychology datasets compiled by
+\textcite{rodriguez2022psymetadata}. We also disaggregate a large
+meta-meta-analysis of intelligence research
+\autocite{nuijten2020intelligence}.
+
+\textbf{Snapshot date:} Jan 2026
+
+\textbf{Research question:} \emph{psymetadata} is an R package that
+curates multiple open datasets from published meta-analyses in
+psychology for teaching and demonstrations.
+\textcite{nuijten2020intelligence} is a large meta-meta-analysis of
+intelligence research, which focused on power and small study effects.
+
+\textbf{Data availability:} 22 datasets are distributed with the
+\texttt{psymetadata} R package (CRAN). We do not use its Many Labs 2
+dataset, which we obtain from the original source and include
+separately. After excluding Many Labs 2 and separately representing the
+intelligence meta-meta-analysis, the remaining psychology datasets vary
+from 65 rows of data to over 1,000. The package is GPL-3; individual
+datasets originate from the cited source papers.
+
+\textbf{Data processing:} minimal. We used regular expressions to
+extract year labels from titles. We dropped some invalid rows (missing,
+non-finite, or non-positive standard errors). Signed z-values were
+computed as effect sizes divided by their standard errors.
+
+\textbf{Additional grouping variable:} name of the original psymetadata
+dataset.
+
+\newpage
+
+\subsection{Askarov et al 2023
+(economics)}\label{askarov-et-al-2023-economics}
+
+\textbf{Reference:} \textcite{askarov2023significance}.
+
+\textbf{Research question:} Impact of mandatory data sharing on
+(excessive) statistical significance in economics papers
+
+\textbf{Data availability:} file
+\texttt{Mandatory\ data-sharing\ 30\ Aug\ 2022.dta} may be downloaded
+from
+\url{https://github.com/anthonydouc/Datasharing/blob/master/Stata/};
+reproducibility package at
+\url{https://dataverse.harvard.edu/file.xhtml?fileId=7884702&version=1.0}
+
+\textbf{Data description and source:} The paper includes 64,000 economic
+estimates surveyed by Ioannidis et al.~(2017) plus results of
+``searching through numerous databases, journal websites, and also an
+email survey of 109 authors known to have produced meta-analyses of
+economic topics. We cast the widest net possible to capture empirical
+economic estimates. Thus, some of the papers included in these
+meta-analyses were originally published in political science and
+psychology journals. Nevertheless, these meta-studies deal with
+economics topics.'' Later they note: ``we collect 166,924 parameter
+estimates from 345 distinct research areas, of which 20,121 were
+published in 24 of the leading general interest and field journals'' The
+paper mentions 12,521 observations before and 2,537 after data sharing
+policies in 24 journals; reproducibility dataset has 32 journals
+(authors removed some smaller ones) and 22,172 rows. The rows are
+meta-analysis estimate rows, not all results from each paper: the
+meta-analyses collect comparable effect sizes for specific economic
+phenomena and are not used only to identify papers for full extraction.
+
+\textbf{Notes:} Askarov et al article starts from the
+Ioannidis-Stanley-Doucouliagos dataset, same as in the case of
+Arel-Bundock et al (another dataset in BEAR). Both datasets incorporate
+additional data and target different fields of research, but there is
+likely a lot of overlap between the two sets.
+
+\textbf{Data processing:} We use the same source file
+\texttt{Mandatory\ data-sharing\ 30\ Aug\ 2022.dta} (11.6 MB) as in the
+reproducibility package. Signed z-values were computed as reported
+effect sizes divided by their standard errors.
+
+\newpage
+
+\subsection{Metapsy (psychotherapy)}\label{metapsy-psychotherapy}
+
+Studies included in \emph{Metapsy} (\url{https://www.metapsy.org/}), a
+set of living meta-analytic databases of randomised trials of
+psychotherapeutic interventions.
+
+\textbf{Snapshot date:} Jan 2026
+
+\textbf{Data availability:} Metapsy is maintained by an international
+collaboration led by Vrije Universiteit Amsterdam. Databases are
+available at \url{https://www.metapsy.org/} and via R package
+\texttt{metapsyData} \autocite{harrer2022metapsydata}. Metapsy FAQ
+states that all data provided as part of the project are open-access and
+requires attribution.
+
+\textbf{Data processing:} we merged 20 individual datasets in Metapsy
+with some cleaning (e.g.~to extract study dates from titles). Almost all
+estimates are Hedges' g, but for one of the databases
+(\texttt{total-response}) we converted log-odds ratios to SMD (dividing
+by \(\Pi/\sqrt{3}\) to scale SD of logistic regression). Signed z-values
+were computed as effect sizes divided by their standard errors.
+
+\newpage
+
+\subsection{Arel-Bundock et al 2022 (political
+science)}\label{arel-bundock-et-al-2022-political-science}
+
+\textbf{Reference:} \textcite{arel2022quantitative}.
+
+\textbf{Research question:} assess statistical power in political
+science research
+
+\textbf{Data availability:} replication package (zip file with date
+20241010) can be found at \url{https://osf.io/fgdet}. All data are in
+public domain.
+
+\textbf{Data description and source:} Authors searched for, and
+contacted authors of, meta-analysis articles across 141 journals in
+political science. The resulting source dataset contains 16,649
+hypothesis tests, grouped in 351 meta-analyses and reported in 46
+peer-reviewed meta-analytic articles.
+
+\textbf{Notes:} This is a collection of meta-analysis inputs rather than
+a direct extraction of all results from primary articles. The source
+combines a political-science search with an earlier Doucouliagos work,
+meaning that some of this dataset will overlap with Askarov et al.
+However, the two articles cover different fields and therefore BEAR
+keeps the two datasets separate.
+
+\textbf{Data processing:} using the same code as original authors
+(replication package that runs on makefiles), but skipping some
+additional processing that they've done for their paper. BEAR uses
+\texttt{question\_id} as \texttt{metaid} (351 meta-analysis/research
+question groups) Signed z-values were computed as reported estimates
+divided by their standard errors. We verified that the distributions of
+z-values matched with the article.
+
+\textbf{Additional variables used:} BEAR release includes meta-analytic
+article (46 papers). The dataset also includes \texttt{sample} field
+records whether a row comes from the Doucouliagos data collection or the
+later Briggs/Arel-Bundock data collection.
+
+\newpage
+
+\subsection{Costello and Fox 2022; Yang et al 2023, 2024 (ecology and
+evolution)}\label{costello-and-fox-2022-yang-et-al-2023-2024-ecology-and-evolution}
+
+\textbf{Reference:} these two datasets come from the same replication
+package and shared data processing pipeline in Yang et al.~2024
+\autocite{yang2024large}. Original references for the datasets are Yang
+et al.~2023 and Costello and Fox 2022
+\autocite{yang2023publication,costello2022decline}.
+
+\textbf{Research question:} decline effects in ecology (Costello and
+Fox) and publication bias and performance of empirical research (Yang et
+al)
+
+\textbf{Data collection:} Costello and Fox look at 466 meta-analyses
+obtained through searching Web of Science. Reproducibility dataset
+includes 88,000 rows among 466 analyses in 232 papers. Subsequently,
+Yang et al removed duplicated studies and zeroes, which meant discarding
+about 20\% of rows. Yang et al collect 102 meta-analyses published
+2010-2019 in relevant journals, de-duplicated against Costello and Fox
+dataset.
+
+\textbf{Data availability:} two datasets may be downloaded from
+\url{https://github.com/Yefeng0920/replication_EcoEvo_git/}. Available
+under CC BY 4.0 licence.
+
+\textbf{Data processing:} no additional data processing other than
+cleaning up study years. Signed z-values were computed as effect sizes
+divided by their standard errors. Note that the replication package for
+Yang et al does not include meta-analysis indicators.
+
+\textbf{Additional variables used:} we retained a measure variable
+(``lnRR'', ``SMD'', ``Zr'' or ``uncommon'')
+
+\newpage
+
+\subsection{What Works Clearinghouse
+(education)}\label{what-works-clearinghouse-education}
+
+Large database of education effect sizes created by Institute of
+Education Sciences \autocite{wwc2025studyfindings}.
+
+\textbf{Snapshot date:} 17 May 2025
+
+\textbf{Data availability:} flat files are available at
+\url{https://ies.ed.gov/ncee/wwc/studyfindings}. Per permissions and
+disclaimers section on that website: ``Unless stated otherwise, all
+information on the U.S.\,Department of Education's IES website \ldots{}
+is in the public domain and may be reproduced, published, linked to, or
+otherwise used without permission from IES.''
+
+\textbf{Data collection:} The WWC source data have 13,054 findings (data
+rows) across 1,908 reviews. The dataset includes effect sizes, but not
+standard errors, as well as p-values reported by the studies and
+p-values re-calculated by the WWC reviewers. After BEAR processing and
+filtering, 12,045 findings are retained.
+
+\textbf{Data processing:} We retained only RCTs and quasi-experimental
+studies (98\% of data altogether). Where available, we preferred effect
+sizes and p-values calculated by WWC to the ones reported by the
+studies. We replaced p-values that were equal to zero (this occurred in
+3\% of the dataset) with truncated p-value (i.e.~assumed
+\(p < 10^{-16}\)). We calculated z-values from these p-values under
+assumption of two-sided tests. We then applied the sign of the reported
+effect size, so z-values are signed where the effect size is non-zero.
+
+\textbf{Additional grouping variable:} ``outcome domain'' variable
+(e.g.~``academic achievement'', ``alphabetics'')
+
+\newpage
+
+\subsection{Cochrane Database of Systematic Reviews
+(CDSR)}\label{cochrane-database-of-systematic-reviews-cdsr}
+
+Trials with data available at CDSR,
+\url{https://www.cochranelibrary.com/} \autocite{cochrane2025cdsr}
+
+\textbf{Snapshot date:} 20 November 2025
+
+\textbf{Data collection:} using R package \texttt{cochrane}
+\autocite{schwab2024cochrane} we merged data from 8,726 records of
+reviews in CDSR and merged them into a single file
+\texttt{cdsr\_interventions\_19nov2025.csv} (63 MB).
+
+\textbf{Data processing:} minimal processing with extensive filtering.
+Final BEAR effect sizes are recalculated for continuous outcomes as
+standardised mean differences and for dichotomous outcomes as
+probit-transformed effects. Only efficacy outcomes are retained. The
+distributed \texttt{BEAR.rds} file includes a smaller analysis subset
+with about 38,000 rows: the first comparison and first outcome from each
+review, restricted to efficacy outcomes. The processed
+\texttt{data/Cochrane.rds} file is larger and is available for users who
+want to make different selection decisions. It contains 760,486 result
+rows, representing 90,042 review-study pairs across 6,619 Cochrane
+reviews.
+
+On processing side, we cleaned up study years, categorised measures
+(risk ratio, odds ratio, mean difference etc.) and experimental designs,
+especially an ``RCT'' flag (based on scanning of abstracts of each
+review for inclusion criteria). Most studies in CDSR are RCTs but some
+reviews also allowed quasi-experimental studies, which prevented us from
+categorising many studies. We also classify outcome rows into
+\texttt{efficacy}, \texttt{safety}, \texttt{dropouts}, and \texttt{bias}
+based on the comparison, outcome, and subgroup labels.
+
+Unlike in most of the other datasets in BEAR, we filter CDSR data
+heavily. First, we only use the outcome and comparison of each review
+that are coded as ``1'', as that is most likely the primary outcome and
+most relevant comparison. Secondly, we keep only rows classified as
+\texttt{efficacy}, excluding likely safety, dropout, and bias-related
+outcomes based on comparison, outcome, and subgroup labels. Thirdly, we
+only use studies with continuous and dichotomous outcomes, removing rows
+where effect estimates are based on instrumental variables or based on
+individual patient data. Lastly, we remove rows where measure of effect
+is unknown (retaining: OR, RR, Peto OR, mean difference, standardised
+mean difference, and risk difference) and rows where there are zero
+subjects.
+
+\textbf{Additional grouping variable:} we retained a ``source data
+type'' variable to distinguish estimates from published, unpublished,
+``sought'', and mixed data sources. We also retain an
+\texttt{outcome\_group} variable in the processed Cochrane data.
+
+\newpage
+
+\subsection{Chavalarias et al.~2016
+(PubMed/Medline)}\label{chavalarias-et-al.-2016-pubmedmedline}
+
+\textbf{Reference:} \textcite{chavalarias2016evolution}.
+
+\textbf{Research question:} reporting of p-values in the biomedical
+literature
+
+\textbf{Data collection:} the authors used large-scale text mining of
+MEDLINE abstracts and PubMed full texts: 4.5mln p-values in 1.6mln
+MEDLINE abstracts; 3.4mln p-values in 385k PubMed full-text articles.
+
+\textbf{Data availability:} the extracted p-value dataset is publicly
+available
+\url{https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/6FMTT3}
+(about 6GB of data) As per the hosting platform: this dataset is
+released under the Creative Commons Attribution-NonCommercial 4.0
+International License.
+
+\textbf{Data processing:} unsigned z-values were derived from p-values
+assuming two-sided tests. P-value truncation operators were processed by
+collapsing variants such as \texttt{\textless{}\textless{}},
+\texttt{\textless{}\textless{}\textless{}}, \texttt{\textless{}=},
+\texttt{less\ than}, and \texttt{=\textless{}} into
+\texttt{\textless{}}. We dropped 0.7\% of rows where p-values did not
+have a ``plain'' format and 0.08\% of rows where truncation could not be
+unambiguously classified. For the distributed version of BEAR 50,000
+studies are selected at random, with one row per study, in order to keep
+the file size manageable.
+
+\textbf{Additional variables used:} source indicator (abstract versus
+full text).
+
+\newpage
+
+\subsection{SCORE (social science)}\label{score-social-science}
+
+\textbf{Reference:} \textcite{tyner2026investigating}.
+
+\textbf{Research question:} investigating the replicability of published
+claims in the social and behavioural sciences.
+
+\textbf{Data availability:} the SCORE replication package is available
+at https://osf.io/g5sny/. The package includes replication data as well
+as reviews of claims made in included papers.
+
+\textbf{Data description and source:} BEAR includes two SCORE outputs.
+The replications source dataset has 548 rows: 274 original claims and
+274 matched replications. After BEAR processing and filtering, 267
+matched replication rows are retained. The ``all claims'' source dataset
+has 3,066 claim-level rows from the set of replicated papers (but no
+replications of these claims), where we select one statistic per claim;
+after BEAR processing and filtering, 1,946 claim rows are retained.
+
+\textbf{Data processing:} For the matched replication output, we used
+the package's converted correlation scale where available for original
+and replication statistics. For the all-claims set, effects are
+heterogeneous across the source papers.
+
+When several inputs are available for z-value construction in the
+all-claims dataset, we prefer reported z, then reported t, then
+coefficient divided by standard error, then signed square-root F for
+numerator df 1, then a 95\% confidence interval with a point estimate,
+then a two-sided p-value conversion. When the selected statistic only
+supplies a p-value and no sign can be inferred, the z-value is unsigned.
+For the all-claims text, it is typical to have multiple statistics
+backing up a single claim, e.g.~``F(1,38) = 3.73, p = .033, partial
+eta-squared = .16; F(1,39) = 7.28, p = .010, partial eta-squared = .16;
+F\textless1''. We created a rule to pick one statistic per claim using
+agreement with the SCORE significant/nonsignificant coding, statistic
+provenance, exactness, available effect and standard error, and text
+order.
+
+\textbf{Additional grouping variables:} discipline and SCORE source
+indicator.
+
+\newpage
+
+\subsection{Lang 2025 (economics)}\label{lang-2025-economics}
+
+\textbf{Reference:} \textcite{lang2025credible}.
+
+\textbf{Research question:} how frequently are statistically significant
+rejections of nulls in economics false positives?
+
+\textbf{Data collection:} This paper uses empirical top-five economics
+papers published in 2021 and the Brodeur, Cook, and Heyes dataset of
+2015 and 2018 articles in 25 leading economics journals. In each paper,
+research assistants checked abstracts and results text, kept estimates
+emphasized in abstracts or as principal results, used the authors'
+preferred specification when several specifications tested the same
+hypothesis, and excluded robustness checks or heterogeneity analyses
+unless heterogeneity was central to the article.
+
+The source data contain 3,885 extracted hypothesis tests from 736
+papers. The main sample in the Lang paper is the subset of 2,082 tests
+with
+\texttt{1.96\ \textless{}=\ \textbar{}t\textbar{}\ \textless{}\ 10}. The
+paper also reports one null per article: 736 t-values, but without row
+or paper identifiers. We do not use the latter.
+
+\textbf{Data processing:} We use the full 3,885-test source table. We
+use supplied t-statistics (derounded by Lang) as the \texttt{z} value
+and compute two-sided p-values from \texttt{\textbar{}z\textbar{}}. We
+add source-article DOIs based on bibliographic metadata matching, and
+the reported or derounded coefficients and standard errors. The
+one-null-per-article t-vector is not represented in the row-level BEAR
+data because its source file has no identifiers that would support
+matching to the extracted-test table.
+
+\textbf{Notes:} Presumably there is a strong overlap with Brodeur in
+terms of selected papers, but with differences in extracted values.
+
+\newpage
+
+\subsection{Open Science Collaboration 2015
+(psychology)}\label{open-science-collaboration-2015-psychology}
+
+\textbf{Reference:}
+\textcite{opensciencecollaborationEstimatingReproducibilityPsychological2015a}.
+
+\textbf{Research question:} replications of a quasi-random sample of 100
+experiments in psychology.
+
+\textbf{Data collection:} The authors make a comprehensive dataset of
+results available with their paper. In BEAR we did not use the original
+studies, since all studies in that set have p \textless{} 0.05, only
+replications.
+
+\textbf{Data availability:} The data file \texttt{rpp\_data.csv} is
+available as part of the repository for the paper
+\url{https://osf.io/ytpuq/overview} under a CC0 1.0 Universal license.
+
+\textbf{Data processing:} We derived z-values from the replication
+p-values assuming two-sided p-values (we use the replication p-value
+column, not the original-study p-value). We applied the sign of the
+replication correlation, so z-values are signed where that correlation
+is available. We treated p-values recorded as exactly 0 as truncated and
+recorded this as a lower bound on z (z-operator
+\texttt{\textgreater{}}); otherwise we treated p-values as exact
+(z-operator \texttt{=}). We retained the replication sample size as
+\texttt{ss}.
+
+\newpage
+
+\subsection{Szucs and Ioannidis 2017 (cognitive
+neuroscience)}\label{szucs-and-ioannidis-2017-cognitive-neuroscience}
+
+\textbf{Reference:} \textcite{szucs2017empirical}.
+
+\textbf{Research question:} empirical assessment of published effect
+sizes, statistical significance, and power in cognitive neuroscience and
+psychology literature.
+
+\textbf{Data availability:} the article and supporting data are
+available from PLOS Biology
+\url{https://journals.plos.org/plosbiology/article?id=10.1371/journal.pbio.2000797}
+
+\textbf{Data description and source:} the source contains 26,841
+text-mined t-test records from 3,801 papers in 18 journals (cognitive
+neuroscience, psychology, and medical). The processed dataset preserves
+all three fields; for BEAR main dataset we include only the cognitive
+neuroscience subset (since psychology and medical literature is well
+covered by other datasets in BEAR).
+
+\textbf{Notes:} the extraction targeted t-test records reported in
+article text and did not mine tables.
+
+\textbf{Data processing:} we followed our default procedure for deriving
+z-values from t-values.
+
+\newpage
+
+\subsection{clinicaltrials.gov
+snapshot}\label{clinicaltrials.gov-snapshot}
+
+Trials which reported results at clinicaltrials.gov
+\autocite{clinicaltrials2025}
+
+\textbf{Snapshot date:} 12 August 2025
+
+\textbf{Data source:} This is a set of flat files of studies obtained
+from the AACT downloads page
+(\url{https://aact.ctti-clinicaltrials.org/downloads/}; over 2GBs of
+data for relevant tables), with relevant columns extracted and joined by
+us before BEAR processing.
+
+\textbf{Data availability:} terms and conditions for ClinicalTrials.gov
+are at \url{https://clinicaltrials.gov/about-site/terms-conditions}. We
+make distributions of derived effect sizes available in accordance with
+ToC's. We only use publicly available data and do not imply any
+endorsement of this work by National Library of Medicine,
+ClinicalTrials.gov or AACT.
+
+\textbf{Data processing:} extensive. We kept only studies where status
+was ``Completed'' and only rows of data where outcome type was
+``Primary''. We set year to the year of \texttt{completion\_date}.
+
+See \emph{Standard procedure for dealing with p-values and confidence
+intervals} for how we created and chose the z-values based on p-values
+and confidence intervals. Briefly, we calculated z-values using two
+separate procedures (based on p-values and confidence intervals) and, if
+both were available, we made a judgement on which one was more
+appropriate using a pre-defined rule. ClinicalTrials.gov reports the
+number of sides for confidence intervals but not for p-values, so we
+treated p-values as two-sided. We dropped rows only when \texttt{z} was
+missing. Notably, infinite z-values can arise when \texttt{p\_value} is
+recorded as exactly 0, and these are retained because they are not
+missing.
+
+\newpage
+
+\subsection{EU Clinical Trials Register (EU
+CTR)}\label{eu-clinical-trials-register-eu-ctr}
+
+Trials which reported results at the EU Clinical Trials Register,
+\url{https://www.clinicaltrialsregister.eu/} \autocite{euctr2025}.
+
+\textbf{Snapshot date:} 18 January 2026
+
+\textbf{Data collection:} we used R package \texttt{ctrdata}
+\autocite{herold2025ctrdata} to create a snapshot of EU CTR
+(\texttt{collection\ =\ "euctr"}); we downloaded trial records with
+results only. We stored the downloaded records in a local SQLite
+database and extracted a fixed set of protocol and results fields plus
+several fields computed by \texttt{ctrdata} (trial phase, sample size,
+and a ``first primary endpoint'' p-value/size derived by the package).
+We only use the EUCTR portion of this extraction in BEAR.
+
+\textbf{Data availability:} EUCTR is publicly accessible. The EUCTR
+legal notice notes that publication on EUCTR does not constitute an
+endorsement of the information reported.
+
+\textbf{Data processing:} extensive. We use only primary endpoints. We
+default missing CI levels to 95\% and where truncation of p-values was
+not stated we assume equality (the latter is the case for about 15\% of
+data). Where data does not report whether a test is one- or two-sided,
+we assume two-sided. Rest of the derivation of z-values follows the\\
+\emph{Standard procedure for dealing with p-values and confidence
+intervals}. We set \texttt{year} to the entry date year since completion
+dates were unavailable. We dropped rows only when \texttt{z} was
+missing; infinite z-values are retained. We harmonise phase labels to
+follow the same naming convention as ClinicalTrials.gov.
+
+\textbf{Additional variables used:} we retained phase labels and measure
+categorical variable (derived by us from the estimand label).
+
+\newpage
+
+\subsection{Barnett and Wren 2019
+(PubMed/Medline)}\label{barnett-and-wren-2019-pubmedmedline}
+
+\textbf{Reference:} \textcite{barnett2019examination}.
+
+\textbf{Research question:} Bias for statistical significance in health
+and medical journals
+
+\textbf{Data availability:} The dataset Georgescu.Wren.RData may be
+downloaded from
+\url{https://github.com/agbarnett/intervals/tree/master/data} and also
+\url{https://github.com/jdwren/ASEC}. Data file is
+\texttt{Georgescu.Wren.RData}. Availability: no clear licence given in
+the repo but the article is CC BY 4.0 in BMJ Open.
+
+\textbf{Data description and source:} The dataset is a collection of
+confidence intervals for ratio estimates from Medline papers from
+1976-2019. Authors scraped (via regular expressions, followed by an
+independent check using another data mining algorithm, manual checks for
+10,000 intervals) 968,000 CIs from abstracts and 350,000 from full
+texts.
+
+\textbf{Notes:} These are ``ratio estimates'' like odds ratios, hazard
+ratios and risk ratios. Note that binary outcomes tend to have (much)
+lower information than continuous outcomes.
+
+\textbf{Data processing:} We excluded a small fraction of data. First we
+restricted to 95\% confidence intervals only: where \texttt{ci.level}
+was missing we assumed it was 0.95; among intervals with a known
+\texttt{ci.level}, about 0.3\% were not 95\% and were dropped. We
+dropped intervals with non-positive width
+(i.e.~\texttt{lower\ \textgreater{}=\ upper}). We used log scale (we
+replaced zero or negative lower bounds with a small positive constant;
+this affected about 0.1\% of the sample) and backed out an approximate
+standard error and point estimate under the usual normal approximation
+for a 95\% CI, setting point estimate to half-point of the interval.
+
+For the distributed version of BEAR 50,000 studies are selected at
+random, with one row per study, in order to keep the file size
+manageable.
+
+\newpage
+
+\section{Standard procedure for dealing with p-values and confidence
+intervals}\label{standard-procedure-for-dealing-with-p-values-and-confidence-intervals}
+
+Most datasets come with pre-computed effect sizes and standard errors.
+Some (especially databases of clinical trials and large sets of scraped
+studies) report p-values. Reporting in clinical trial database is done
+by investigators and data entry fields are not standardised, requiring
+more extensive clean-up and a procedure for deriving z-values.
+
+\subsection{Cleaning up data}\label{cleaning-up-data}
+
+For confidence interval levels, we clean them up by setting values above
+100 or below 0 to missing, and treating values below 1 as proportions
+rather than percentages by multiplying by 100. This means that, for
+example, 0.95 is treated as a 95\% confidence interval. For missing
+values in EU CTR database, we assume 95\%.
+
+In clinical trial datasets we classify the effect measure using text
+matching to a small set of classes (Mean Difference, Odds Ratio, Risk
+Ratio, Hazard Ratio, Geometric Ratio, Risk Difference, Difference in
+Percentages, Ratio/Other Ratio, and Other). This string-based mapping is
+an arbitrary choice. Unstandardised data in these datasets have many
+hundreds of values.
+
+\subsection{Confidence intervals}\label{confidence-intervals}
+
+When working with CIs, ratio measures were analysed on the log scale (if
+and only if lower bound, upper bound, and point estimate were all
+strictly positive) and non-ratio measures were always kept on the raw
+scale.
+
+For z-statistics derived from confidence intervals, we computed the
+critical value using stated CI percent and the reported number of sides
+(if missing, we defaulted to a two-sided interval). To avoid undefined
+critical values (e.g.~when at 100\% or extremely close to it), we
+bounded the implied \(\alpha\) at a small value. We then computed two
+one-sided standard error estimates from the upper and lower bounds and
+used their average when both were finite.
+
+We computed a simple symmetry diagnostic for the confidence interval on
+the chosen scale, defined as the smaller of the two half-widths divided
+by the larger. We treated intervals as ``symmetric enough'' only if this
+ratio exceeded 0.8. This threshold is arbitrary and affects when we
+trust the CI-derived z-statistic.
+
+We also flagged potentially non-Wald intervals using text matching on
+type of parameter column, if available, searching for keywords such as
+median, Hodges, posterior/Bayes, exact, Fieller, bootstrap, and
+permutation. Any row flagged this way was treated as unreliable for
+CI-based inference, regardless of its numeric properties.
+
+\subsection{p-values}\label{p-values}
+
+The default approach, used for several datasets which report p-values,
+especially those scraping data from PubMed/Medline, is to treat p-values
+as two-sided, using the upper-tail standard normal quantile
+corresponding to \(p/2\). In EU CTR, when the result is marked as
+one-sided, we use the corresponding one-sided normal quantile instead;
+missing sidedness is treated as two-sided. ClinicalTrials.gov does not
+provide a separate p-value sidedness field, so its p-values are treated
+as two-sided.
+
+When a source reports t-statistics and degrees of freedom, we first
+derive the two-sided p-value from the t distribution as twice the
+upper-tail probability beyond the absolute observed t-statistic. We then
+store the signed normal-equivalent statistic by applying the sign of the
+t-statistic to the upper-tail standard normal quantile corresponding to
+half that two-sided p-value.
+
+For clinical trials databases (clinicaltrials.gov and EU CTR) we
+sometimes found ambiguity in how p-values were recorded. Sometimes
+significant results report p-values close to 1, suggesting that authors
+reported cumulative distribution, \(\Phi(z)\). Therefore for each row we
+also calculated \(2\cdot\min\{p,1-p\}\). When a CI-derived z-statistic
+was available, we chose whichever p-value led to a z-value that was
+closest to the CI-derived z.
+
+To avoid dropping rows, we retained unsigned z-statistics when the sign
+could not be determined. If the sign of effect was known, we applied it
+to the ``p-derived'' z; otherwise we used absolute value.
+
+\subsection{Choice of a single z-value when multiple candidates
+available}\label{choice-of-a-single-z-value-when-multiple-candidates-available}
+
+In situations where \(z\) can be derived from both CIs and p-values. We
+choose a single ``best'' z-statistic per row as follows. We prefer the
+CI-derived \(z\) when it looked like a plausible Wald interval on the
+chosen scale, meaning: (1) finite \(z\) and standard error, (2) positive
+standard error, (3) not flagged as non-Wald by keyword search in measure
+label, and (4) either missing symmetry information or symmetry above
+0.8. Otherwise we used the p-derived z.

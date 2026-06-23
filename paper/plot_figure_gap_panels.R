@@ -87,14 +87,18 @@ paper_groups <- lapply(paper_dataset_groups, intersect, available_datasets)
 
 plotlist <- c(
   category_row(paper_groups$curated_evidence),
-  category_row(paper_groups$domain_sample)
+  category_row(paper_groups$domain_sample),
+  category_row(paper_groups$replication_effort)
 )
 
-expected_group_sizes <- c(curated_evidence = 8L, domain_sample = 8L)
+expected_group_sizes <- c(curated_evidence = 8L, domain_sample = 6L,
+                          replication_effort = 2L)
 actual_group_sizes <- c(curated_evidence = length(paper_groups$curated_evidence),
-                        domain_sample = length(paper_groups$domain_sample))
+                        domain_sample = length(paper_groups$domain_sample),
+                        replication_effort =
+                          length(paper_groups$replication_effort))
 if (!identical(actual_group_sizes, expected_group_sizes)) {
-  stop("Expected two collection groups of 8 datasets, but found: ",
+  stop("Expected collection groups of 8, 6, and 2 datasets, but found: ",
        paste(names(actual_group_sizes), actual_group_sizes,
              sep = " = ", collapse = ", "))
 }

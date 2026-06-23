@@ -14,12 +14,15 @@ paper_analysis_exclude <- unique(c(paper_do_not_include,
 
 paper_collection_group_labels <- c(
   curated_evidence = "Curated sets",
-  domain_sample = "Representative domain samples and replication projects"
+  domain_sample = "Representative domain samples",
+  replication_effort = "Replication efforts"
 )
 
 paper_collection_group_colors <- c(
   curated_evidence = "#377EB8",
   domain_sample = "#E41A1C",
+  replication_effort = "#B8860B",
+  original_result = "#4D4D4D",
   replication_result = "#B8860B"
 )
 
@@ -30,7 +33,10 @@ paper_dataset_groups <- list(
   ),
   domain_sample = c(
     "BarnettWren", "Lang", "Chavalarias", "ctgov_euctr",
-    "SCORE_claims", "Szucs", "OSC", "SCORE_replications"
+    "SCORE_claims", "Szucs"
+  ),
+  replication_effort = c(
+    "OSC", "SCORE_replications"
   )
 )
 
@@ -53,7 +59,5 @@ paper_dataset_group <- function(datasets) {
 }
 
 paper_dataset_color_group <- function(datasets) {
-  groups <- paper_dataset_group(datasets)
-  ifelse(datasets %in% c("OSC", "SCORE_replications"),
-         "replication_result", groups)
+  paper_dataset_group(datasets)
 }

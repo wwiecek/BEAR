@@ -87,7 +87,13 @@ body_lines <- c(
   paste0("\\multicolumn{5}{l}{\\emph{",
          paper_collection_group_labels["domain_sample"], "}}\\\\"),
   "\\midrule",
-  vapply(paper_groups$domain_sample, format_row, character(1))
+  vapply(paper_groups$domain_sample, format_row, character(1)),
+  "\\addlinespace",
+  "\\midrule",
+  paste0("\\multicolumn{5}{l}{\\emph{",
+         paper_collection_group_labels["replication_effort"], "}}\\\\"),
+  "\\midrule",
+  vapply(paper_groups$replication_effort, format_row, character(1))
 )
 
 table_lines <- c(
@@ -101,8 +107,8 @@ table_lines <- c(
   "\\bottomrule",
   "\\end{tabular}",
   paste0(
-    "\\caption{Datasets included in the paper, grouped into curated sets ",
-    "and representative domain samples plus replication projects. ",
+    "\\caption{Datasets included in the paper, grouped into curated sets, ",
+    "representative domain samples, and replication projects. ",
     "Study units are source-specific studies, trials, papers, or claims. ",
     "$\\bar{k}$ is the mean number of observations per study unit, and ",
     "``\\% signif.'' is the percentage of absolute $z$-values exceeding ",

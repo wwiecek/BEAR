@@ -70,7 +70,9 @@ plot_mixture_v4 <- function(fit, dt, nm = "", col = "black", color_map = NULL,
                             annotate = "psr", meanpwr = NULL,
                             show_corrected = FALSE,
                             align_corrected_above_threshold = FALSE,
-                            exact_only = FALSE) {
+                            exact_only = FALSE,
+                            show_fitted = TRUE,
+                            corrected_colour = "black") {
   annotate <- match.arg(annotate, c("psr", "omega", "none"))
   
   # Use color_map if provided and col is default
@@ -121,10 +123,11 @@ plot_mixture_v4 <- function(fit, dt, nm = "", col = "black", color_map = NULL,
       aes(x = x, y = after_stat(density), weight = weights),
       breaks = br, fill = col, alpha = 0.25, colour = NA
     ) +
-    geom_line(data = df, aes(x = x, y = fz), linewidth = 0.8, colour = col) +
+    {if(show_fitted) geom_line(data = df, aes(x = x, y = fz),
+                               linewidth = 0.8, colour = col)} +
     {if(show_corrected) geom_line(data = df, aes(x = x, y = corrected_plot), 
                                   linetype = "22", linewidth = 0.6,
-                                  colour = "black")} +
+                                  colour = corrected_colour)} +
     coord_cartesian(xlim = c(-0.1, xmax + 0.1), ylim = c(0, ymax)) +
     labs(x = NULL, y = NULL, title = nm) +
     theme_bw() +

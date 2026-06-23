@@ -26,17 +26,24 @@ grouped_rows <- function(cols, n_cols) {
     paste0("\\multicolumn{", n_cols, "}{l}{\\emph{",
            paper_collection_group_labels[group_key], "}}\\\\")
   }
+  rule <- paste0("\\cmidrule(lr){1-", n_cols, "}")
 
   c(
     group_header("curated_evidence"),
-    "\\cmidrule(lr){1-10}",
+    rule,
     vapply(paper_groups$curated_evidence, format_result_row, character(1),
            cols = cols),
     "\\addlinespace",
-    "\\cmidrule(lr){1-10}",
+    rule,
     group_header("domain_sample"),
-    "\\cmidrule(lr){1-10}",
+    rule,
     vapply(paper_groups$domain_sample, format_result_row, character(1),
+           cols = cols),
+    "\\addlinespace",
+    rule,
+    group_header("replication_effort"),
+    rule,
+    vapply(paper_groups$replication_effort, format_result_row, character(1),
            cols = cols)
   )
 }
@@ -74,8 +81,8 @@ table2_lines <- c(
   "\\end{tabular}",
   paste0(
     "\\caption{Summary of signal-to-noise ratio modeling results for ",
-    "the 16 corpora used in the paper. Rows are grouped into curated sets ",
-    "and representative domain samples plus replication projects. ",
+    "the 16 corpora used in the paper. Rows are grouped into curated sets, ",
+    "representative domain samples, and replication projects. ",
     "Calculations of power, replication, and direction of effects use the ",
     "distributions of $z$-values and signal-to-noise ratios by fitted ",
     "mixture models without selection.}"
@@ -92,8 +99,7 @@ table3_cols <- c(
 )
 
 table3_rows <- function(cols) {
-  grouped_rows(cols, 7) %>%
-    str_replace_all("\\\\cmidrule\\(lr\\)\\{1-10\\}", "\\\\cmidrule(lr){1-7}")
+  grouped_rows(cols, 7)
 }
 
 table3_lines <- c(
@@ -118,8 +124,8 @@ table3_lines <- c(
   "\\end{tabular}",
   paste0(
     "\\caption{Summary of probability-of-significance results for the ",
-    "16 corpora used in the paper. Rows are grouped into curated sets ",
-    "and representative domain samples plus replication projects.}"
+    "16 corpora used in the paper. Rows are grouped into curated sets, ",
+    "representative domain samples, and replication projects.}"
   ),
   "\\label{tab:results_summary_table3}",
   "\\end{table}"

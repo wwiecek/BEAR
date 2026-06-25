@@ -131,6 +131,26 @@ replication statistics, or multiple analysis subsets are represented
 separately, describe how they are distinguished. Mention important grouping
 variables and whether they come from source metadata or BEAR processing.
 
+If the public `.rds` file has many columns, or preserves substantial
+source-specific information beyond the fields selected into `BEAR.rds`, add a
+dataset dictionary. Follow the ClinicalTrials.gov pattern:
+
+- keep the reader-facing prose in `doc/datasets/<dataset>.Rmd`
+- keep the hand-maintained dictionary CSV beside it as
+  `doc/datasets/<dataset>_dictionary.csv`
+- add a reproducible generator beside it, such as
+  `doc/datasets/build_<dataset>_dictionary.R`, that reads the public `.rds`,
+  computes any summary column, validates one dictionary row per public column,
+  and writes `doc/datasets/<dataset>_dictionary.md`
+- let `site/build_dataset_pages.R` include the generated Markdown
+  automatically; do not put dataset-specific dictionary computation in the site
+  builder
+
+Good dictionary candidates are datasets with many provenance, source, subgroup,
+or audit fields. In the current repo, likely candidates include
+ClinicalTrials.gov, Brodeur, Askarov, OSC, SCORE, WWC, Cochrane, Lang, EUCTR,
+and Bartos. Small narrow datasets usually do not need a separate dictionary.
+
 Keep `doc/datasets.Rmd` reader-facing. Raw source file names may be named when
 they identify what was obtained from the source. Do not refer to internal
 staging notes, processing-script paths, or repository-level artifacts such as

@@ -68,7 +68,7 @@ designs <- read_aact(
 )
 outcomes <- read_aact("outcomes.txt", c("id", "nct_id", "outcome_type"))
 
-old_bear <- readRDS("data/clinicaltrialsgov.rds")
+old_bear <- readRDS(file.path(out_dir, "author_reported_candidates.rds"))
 raw_endpoint <- readRDS(file.path(out_dir, "raw_endpoint_effects.rds"))
 raw_source_v3 <- readRDS(file.path(out_dir, "endpoint_source_rows_classified.rds"))
 prepost <- readRDS(file.path(out_dir, "prepost_measurement_pairs.rds"))

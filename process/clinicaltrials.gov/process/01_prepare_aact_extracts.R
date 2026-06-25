@@ -283,6 +283,7 @@ eligible_design_nct_ids <- read_aact(
     by = "nct_id"
   ) %>%
   filter(
+    is_completed,
     is_interventional,
     allocation_norm == "randomized",
     intervention_model_norm %in% c("parallel", "parallel assignment")

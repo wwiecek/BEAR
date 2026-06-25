@@ -53,3 +53,4 @@ Do not write verbatim R code in datasets.Rmd. Use publication-ready prose and ma
 Dataset prose under `doc/datasets/` is reused in both the stitched paper
 appendix and standalone website pages, so avoid location-dependent references
 such as "below" or "above"; refer to named sections instead.
+Keep `doc/datasets/*.Rmd` prose precise and concise, with minimum verbiage.

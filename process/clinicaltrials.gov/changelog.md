@@ -1,5 +1,29 @@
 # Changelog
 
+## 2026-06-25 completed-only and global row-count rule
+
+- Restricted selected raw-derived imports to completed studies, matching the
+  author-reported path.
+- Kept the public analytic file unrestricted by study row count, while applying
+  the fewer-than-20 candidate-row rule in the main BEAR build for both
+  author-reported and raw-derived rows.
+- Added `direction_unknown` to the public file so raw-derived sign ambiguity is
+  visible without interpreting role-confidence labels.
+
+## 2026-06-18 author/raw merge pipeline
+
+- Added author-reported candidate construction inside the canonical
+  `process/clinicaltrials.gov` workflow, preserving `outcome_id`,
+  `outcome_analysis_id`, z-derivation metadata, and linked result-group pairs.
+- Added raw scale selection for BEAR import. Continuous raw-only contrasts use
+  standardized mean difference; binary raw-only contrasts use probit
+  differences. Non-selected raw scales are retained as side artifacts.
+- Added a final author-preferred merge that writes
+  `data_raw/clinicaltrials.gov/derived/clinicaltrialsgov_merged_candidates.rds`
+  and replaces `data/clinicaltrialsgov.rds`.
+- Added final merge checks and documentation for retained raw calculation
+  inputs, overlap policy, scale-comparison summaries, and memory-safety rules.
+
 ## 2026-06-12 canonical pipeline cleanup
 
 - Moved the active ClinicalTrials.gov side-data workflow into `process/`,

@@ -204,7 +204,7 @@ coverage <- read_csv(
   mutate(across(c(in_primary_denominator, in_old_bear, has_author_analysis,
                   has_raw_endpoint, has_prepost_rows), ~ .x == "TRUE"))
 
-old_bear <- readRDS("data/clinicaltrialsgov.rds")
+old_bear <- readRDS(file.path(out_dir, "author_reported_candidates.rds"))
 raw_endpoint <- readRDS(file.path(out_dir, "raw_endpoint_effects.rds"))
 author_links <- readRDS(file.path(input_dir, "author_analysis_links.rds"))
 prepost <- readRDS(file.path(out_dir, "prepost_measurement_pairs.rds"))

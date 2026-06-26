@@ -9,6 +9,34 @@
   font-size: 1.15rem;
 }
 
+.bear-home-heading {
+  align-items: center;
+  display: flex;
+  gap: 1.5rem;
+  justify-content: space-between;
+  margin: 0 0 1.25rem 0;
+}
+
+.bear-home-title h1 {
+  font-size: clamp(2.6rem, 7vw, 4rem);
+  line-height: 1;
+  margin: 0;
+}
+
+.bear-home-title p {
+  color: #4b5563;
+  font-size: 1.15rem;
+  margin: 0.35rem 0 0 0;
+}
+
+.bear-home-logo {
+  flex: 0 1 11rem;
+  margin: 0;
+  max-height: 5.5rem;
+  max-width: 32%;
+  object-fit: contain;
+}
+
 .bear-metrics {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -312,6 +340,26 @@
 }
 
 @media (max-width: 700px) {
+  .bear-home-heading {
+    align-items: flex-start;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+  }
+
+  .bear-home-title h1 {
+    font-size: clamp(2.3rem, 13vw, 3rem);
+  }
+
+  .bear-home-title p {
+    font-size: 1rem;
+  }
+
+  .bear-home-logo {
+    flex-basis: 6.5rem;
+    max-height: 3.75rem;
+    max-width: 35%;
+  }
+
   .bear-metrics {
     grid-template-columns: 1fr;
   }

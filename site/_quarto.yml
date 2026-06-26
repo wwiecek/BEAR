@@ -32,6 +32,7 @@ website:
       contents:
         - datasets.qmd
         - section: "Dataset pages"
+          href: datasets.qmd
           contents: datasets/*.qmd
 
 bibliography: ../doc/references.bib

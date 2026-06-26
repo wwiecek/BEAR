@@ -2,8 +2,18 @@
 title: "BEAR"
 subtitle: "Benchmarks of Empirical Accuracy in Research"
 toc: false
+title-block: false
 ---
 
+::: {.bear-home-heading}
+::: {.bear-home-title}
+# BEAR
+
+Benchmarks of Empirical Accuracy in Research
+:::
+
+![](assets/bear_banner.png){.bear-home-logo fig-alt="BEAR silhouette"}
+:::
 
 
 ::: {.grid}
@@ -92,4 +102,3 @@ All credit is due to researchers who put together the metascientific datasets
 and people maintaining large scale repositories from which
 data are compiled here. Please see individual dataset pages for references and
 licensing information.
-

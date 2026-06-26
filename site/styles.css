@@ -46,6 +46,262 @@
   margin: 1rem auto;
 }
 
+.dataset-tag-legend {
+  border: 1px solid #d7dde8;
+  border-radius: 8px;
+  background: #f8fafc;
+  margin: 1.2rem 0 1.7rem 0;
+  padding: 0.85rem 1rem;
+}
+
+.dataset-tag-legend-title {
+  color: #243044;
+  font-size: 0.9rem;
+  font-weight: 700;
+  margin-bottom: 0.55rem;
+  text-transform: uppercase;
+}
+
+.dataset-hover-hint {
+  color: #64748b;
+  font-size: 0.76rem;
+  font-style: italic;
+  font-weight: 400;
+  text-transform: none;
+}
+
+.dataset-tag-legend-items,
+.dataset-tags {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  vertical-align: middle;
+}
+
+.dataset-tags-index {
+  margin-left: 0.35rem;
+  flex-wrap: nowrap;
+  gap: 0.18rem;
+}
+
+.dataset-tags-page {
+  margin: 0;
+}
+
+.dataset-page-tags {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin-top: -0.4rem;
+  margin-bottom: 0.9rem;
+}
+
+.dataset-tag-label {
+  color: #4b5563;
+  font-size: 0.84rem;
+  font-weight: 700;
+}
+
+[data-tooltip] {
+  cursor: help;
+  position: relative;
+}
+
+[data-tooltip]::after {
+  background: #172033;
+  border: 1px solid #334155;
+  border-radius: 6px;
+  box-shadow: 0 8px 20px rgba(23, 32, 51, 0.2);
+  color: #fff;
+  content: attr(data-tooltip);
+  font-size: 0.78rem;
+  font-weight: 400;
+  left: 50%;
+  line-height: 1.35;
+  opacity: 0;
+  padding: 0.55rem 0.65rem;
+  pointer-events: none;
+  position: absolute;
+  text-align: left;
+  top: calc(100% + 0.55rem);
+  transform: translateX(-50%) translateY(-0.2rem);
+  transition: opacity 120ms ease, transform 120ms ease;
+  visibility: hidden;
+  width: min(17rem, 75vw);
+  z-index: 20;
+}
+
+[data-tooltip]:hover::after,
+[data-tooltip]:focus::after {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+  visibility: visible;
+}
+
+.dataset-at-a-glance {
+  border-bottom: 1px solid #d7dde8;
+  border-top: 1px solid #d7dde8;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  margin: 0 0 1rem 0;
+  padding: 0.7rem 0;
+}
+
+.dataset-at-a-glance-item {
+  display: grid;
+  gap: 0.1rem;
+}
+
+.dataset-at-a-glance-item span {
+  color: #64748b;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.dataset-at-a-glance-item strong {
+  color: #243044;
+  font-size: 0.93rem;
+  font-weight: 600;
+}
+
+.model-summary {
+  border: 1px solid #d7dde8;
+  border-radius: 8px;
+  margin: 1.25rem 0;
+  overflow: hidden;
+}
+
+.model-summary table {
+  font-size: 0.9rem;
+  margin: 0;
+  width: 100%;
+}
+
+.model-summary-title {
+  background: #f8fafc;
+  border-bottom: 1px solid #d7dde8;
+  color: #243044;
+  font-size: 0.88rem;
+  font-weight: 700;
+  padding: 0.6rem 0.75rem;
+}
+
+.model-summary th {
+  background: #f1f5f9;
+  color: #334155;
+  font-size: 0.72rem;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.model-summary tbody th {
+  color: #334155;
+  font-size: 0.86rem;
+  font-weight: 600;
+  text-transform: none;
+  width: 72%;
+}
+
+.model-summary td,
+.model-summary th {
+  padding: 0.7rem 0.75rem;
+  vertical-align: top;
+}
+
+.model-summary td strong {
+  color: #172033;
+  font-size: 1rem;
+}
+
+.model-summary-details {
+  background: #f8fafc;
+  border: 1px solid #d7dde8;
+  border-radius: 8px;
+  color: #475569;
+  font-size: 0.87rem;
+  padding: 0.6rem 0.75rem;
+}
+
+.model-summary-details summary {
+  color: #275d9f;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.model-summary-details dl {
+  display: grid;
+  gap: 0.2rem 1rem;
+  grid-template-columns: max-content 1fr;
+  margin: 0.75rem 0 0 0;
+}
+
+.model-summary-details dt {
+  color: #243044;
+  font-weight: 700;
+}
+
+.model-summary-details dd {
+  margin: 0;
+}
+}
+
+.dataset-tag {
+  border: 1px solid transparent;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.72rem;
+  font-weight: 700;
+  line-height: 1;
+  padding: 0.28rem 0.55rem;
+  white-space: nowrap;
+}
+
+.dataset-tag-replication {
+  background: #fef3c7;
+  border-color: #f59e0b;
+  color: #78350f;
+}
+
+.dataset-tag-meta_analysis {
+  background: #e0f2fe;
+  border-color: #38bdf8;
+  color: #075985;
+}
+
+.dataset-tag-database {
+  background: #dcfce7;
+  border-color: #22c55e;
+  color: #14532d;
+}
+
+.dataset-tag-metascience_paper {
+  background: #fce7f3;
+  border-color: #f472b6;
+  color: #831843;
+}
+
+.dataset-tag-pubmed_scrape {
+  background: #ede9fe;
+  border-color: #8b5cf6;
+  color: #4c1d95;
+}
+
+.dataset-tag-random_sample {
+  background: #ffedd5;
+  border-color: #fb923c;
+  color: #7c2d12;
+}
+
+.dataset-tag-primary_outcome {
+  background: #ccfbf1;
+  border-color: #14b8a6;
+  color: #134e4a;
+}
+
 .selection-mixture-plot {
   width: min(100%, 1500px);
   margin: 1rem auto;
@@ -58,5 +314,10 @@
 @media (max-width: 700px) {
   .bear-metrics {
     grid-template-columns: 1fr;
+  }
+
+  .model-summary-details dl {
+    grid-template-columns: 1fr;
+    gap: 0.15rem;
   }
 }

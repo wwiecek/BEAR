@@ -30,10 +30,10 @@
 }
 
 .bear-home-logo {
-  flex: 0 1 11rem;
+  flex: 0 1 14rem;
   margin: 0;
-  max-height: 5.5rem;
-  max-width: 32%;
+  max-height: 7rem;
+  max-width: 38%;
   object-fit: contain;
 }
 
@@ -355,8 +355,8 @@
   }
 
   .bear-home-logo {
-    flex-basis: 6.5rem;
-    max-height: 3.75rem;
+    flex-basis: 8rem;
+    max-height: 4.75rem;
     max-width: 35%;
   }
 

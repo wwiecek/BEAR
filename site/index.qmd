@@ -2,7 +2,9 @@
 title: "BEAR"
 subtitle: "Benchmarks of Empirical Accuracy in Research"
 toc: false
-title-block: false
+format:
+  html:
+    title-block: false
 ---
 
 ::: {.bear-home-heading}

@@ -135,6 +135,16 @@ If the public `.rds` file has many columns, or preserves substantial
 source-specific information beyond the fields selected into `BEAR.rds`, add a
 dataset dictionary. Follow the ClinicalTrials.gov pattern:
 
+- inspect the saved public `.rds` and make a best-guess definition for every
+  column, including row unit, source, meaning, allowed values or units,
+  missingness, and interpretation notes
+- check source documentation, package docs, replication files, papers, online
+  appendices, and existing data dictionaries; replace guesses with sourced
+  definitions and record unresolved ambiguity
+- reconsider the public `data/` schema before finalising the dictionary:
+  decide which extra columns should remain in the full public dataset, which
+  should be renamed or collapsed, and which internal audit fields should stay
+  outside `data/`
 - keep the reader-facing prose in `doc/datasets/<dataset>.Rmd`
 - keep the hand-maintained dictionary CSV beside it as
   `doc/datasets/<dataset>_dictionary.csv`

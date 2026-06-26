@@ -274,18 +274,16 @@ public_cols <- c(
   "outcome_type", "outcome_title", "outcome_time_frame",
   "measurement_stratum_id", "measurement_title", "measurement_units",
   "measure_class", "scale", "effect", "b", "se", "z", "z_operator",
-  "p_sides", "linked_result_group_ids", "linked_group_codes",
+  "linked_result_group_ids", "linked_group_codes",
   "n_linked_groups", "author_group_pair_key", "method", "param_type",
   "estimate", "lower", "upper", "p_value", "p_value_modifier",
   "ci_percent", "ci_n_sides", "raw_measure", "raw_effect_family",
   "n_raw_overlap_matches",
-  "derivation_rule_id", "raw_event_t", "raw_event_c", "raw_n_t", "raw_n_c",
+  "raw_event_t", "raw_event_c", "raw_n_t", "raw_n_c",
   "raw_mean_t", "raw_mean_c", "raw_sd_t", "raw_sd_c",
-  "raw_group_pair_key", "raw_group_t_id", "raw_group_c_id",
-  "raw_group_t_title", "raw_group_c_title", "raw_group_t_role",
-  "raw_group_c_role", "direction_unknown", "raw_role_confidence",
-  "raw_pair_dependency_class",
-  "raw_multi_arm_trial"
+  "raw_group_t_id", "raw_group_c_id",
+  "raw_group_t_title", "raw_group_c_title",
+  "direction_unknown", "raw_multi_arm_trial"
 )
 
 public_trial_characteristics <- trial_characteristics %>%

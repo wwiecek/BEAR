@@ -72,7 +72,7 @@ dictionary_summary <- function(variable, data) {
     "effect_source", "study_type", "phase", "overall_status", "allocation",
     "intervention_model", "primary_purpose", "masking", "domain_primary",
     "intervention_type_primary", "lead_sponsor_class", "outcome_type",
-    "measure_class", "scale", "z_operator", "p_sides", "raw_measure",
+    "measure_class", "scale", "z_operator", "raw_measure",
     "raw_effect_family", "import_decision"
   )
   numeric_vars <- c(

@@ -9,6 +9,10 @@
   author-reported and raw-derived rows.
 - Added `direction_unknown` to the public file so raw-derived sign ambiguity is
   visible without interpreting role-confidence labels.
+- Removed public-only exposure of internal derivation and role-assignment
+  fields: `p_sides`, `derivation_rule_id`, `raw_group_pair_key`,
+  `raw_group_t_role`, `raw_group_c_role`, `raw_role_confidence`, and
+  `raw_pair_dependency_class`.
 
 ## 2026-06-18 author/raw merge pipeline
 

@@ -94,7 +94,6 @@ The summary column is computed from `clinicaltrialsgov.rds` when this dictionary
 | `se` | Standard error of the effect estimate where available. |  |
 | `z` | Signed z-value used in BEAR analyses. |  |
 | `z_operator` | Operator describing whether z is exact or bounded. | = 143,593 (94.9%); > 6,915 (4.6%); < 805 (0.5%) |
-| `p_sides` | Number of p-value sides assumed for the z-value derivation. | 2 151,313 (100.0%) |
 
 ### Author-reported analysis inputs
 
@@ -121,7 +120,6 @@ The summary column is computed from `clinicaltrialsgov.rds` when this dictionary
 | `raw_measure` | Raw endpoint effect measure selected for BEAR import. | missing 69,992 (46.3%); standardized_mean_difference 49,955 (33.0%); probit_difference 31,366 (20.7%) |
 | `raw_effect_family` | Raw endpoint outcome family. | missing 69,992 (46.3%); continuous 49,955 (33.0%); binary 31,366 (20.7%) |
 | `n_raw_overlap_matches` | Number of selected raw endpoint rows matching the same study, outcome, and result-group pair for an author-reported row. | median 0 [0, 0]; range 0-96; missing 81,321 |
-| `derivation_rule_id` | Rule used to derive the raw endpoint contrast. |  |
 | `raw_event_t` | Event count in the treatment or focal group for binary raw contrasts. |  |
 | `raw_event_c` | Event count in the comparator group for binary raw contrasts. |  |
 | `raw_n_t` | Analysis count in the treatment or focal group for raw contrasts. |  |
@@ -135,15 +133,10 @@ The summary column is computed from `clinicaltrialsgov.rds` when this dictionary
 
 | Variable | Definition | Summary |
 |:--|:--|:--|
-| `raw_group_pair_key` | Canonical result-group pair key for raw-derived contrasts. |  |
 | `raw_group_t_id` | AACT result-group identifier for the treatment or focal group. |  |
 | `raw_group_c_id` | AACT result-group identifier for the comparator group. |  |
 | `raw_group_t_title` | Title of the treatment or focal result group. |  |
 | `raw_group_c_title` | Title of the comparator result group. |  |
-| `raw_group_t_role` | Role assigned to the treatment or focal group. |  |
-| `raw_group_c_role` | Role assigned to the comparator group. |  |
 | `direction_unknown` | Whether treatment-comparator direction could not be inferred for the raw-derived contrast. | TRUE 22,174 (14.7%); missing 69,992 (46.3%) |
-| `raw_role_confidence` | Confidence level of the raw group-role assignment. |  |
-| `raw_pair_dependency_class` | Dependency class for the raw result-group pair within the study outcome. |  |
 | `raw_multi_arm_trial` | Whether the raw-derived contrast comes from a multi-arm trial. | TRUE 47,183 (31.2%); missing 69,992 (46.3%) |
 

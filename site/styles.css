@@ -30,11 +30,22 @@
 }
 
 .bear-home-logo {
-  flex: 0 1 14rem;
+  flex: 0 1 11.5rem;
+  height: 6rem;
   margin: 0;
-  max-height: 7rem;
   max-width: 38%;
+}
+
+.bear-home-logo p {
+  height: 100%;
+  margin: 0;
+}
+
+.bear-home-logo img {
+  height: 100%;
+  max-width: 100%;
   object-fit: contain;
+  width: auto;
 }
 
 .bear-metrics {

@@ -4,6 +4,10 @@ Read both files before making changes in `BEAR/`.
 ## Maintainer Notes
 - Assume scripts are run from the `BEAR` project root unless a local script says otherwise.
 - For new exploratory subfolders under `explore/`, include a minimal `README.md` and a `changelog.md`.
+- Before creating a new exploratory subfolder, ask whether it should be tracked
+  or ignored. By default, track BEAR-internal explorations and ignore external
+  metascience or secondary-output explorations; either way, keep folders clean
+  and lean, and do not track generated artifacts unless explicitly requested.
 - Keep `explore/README.md` up to date when starting new exploratory folders,
   including the folder's purpose and whether it is BEAR-internal or a
   metascience/secondary-output analysis.

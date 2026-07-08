@@ -1,0 +1,1652 @@
+% $ biblatex auxiliary file $
+% $ biblatex bbl format version 3.3 $
+% Do not modify the above lines!
+%
+% This is an auxiliary file used by the 'biblatex' package.
+% This file may safely be deleted. It will be recreated by
+% biber as required.
+%
+\begingroup
+\makeatletter
+\@ifundefined{ver@biblatex.sty}
+  {\@latex@error
+     {Missing 'biblatex' package}
+     {The bibliography requires the 'biblatex' package.}
+      \aftergroup\endinput}
+  {}
+\endgroup
+
+
+\refsection{0}
+  \datalist[entry]{nyt/global//global/global/global}
+    \entry{aquarius2025tackling}{article}{}{}
+      \name{author}{5}{}{%
+        {{hash=cf42b3642836d70ad7ea326cd5680dfa}{%
+           family={Aquarius},
+           familyi={A\bibinitperiod},
+           given={René},
+           giveni={R\bibinitperiod}}}%
+        {{hash=127f8f8055cb842c47a122cb7a60cbe3}{%
+           family={Bik},
+           familyi={B\bibinitperiod},
+           given={Elisabeth\bibnamedelima M},
+           giveni={E\bibinitperiod\bibinitdelim M\bibinitperiod}}}%
+        {{hash=5ff196a7fef0a0e90740f326a63db6da}{%
+           family={Bimler},
+           familyi={B\bibinitperiod},
+           given={David},
+           giveni={D\bibinitperiod}}}%
+        {{hash=00ab2610d49ffc80040909e0fb8e1fe2}{%
+           family={Oksvold},
+           familyi={O\bibinitperiod},
+           given={Morten\bibnamedelima P},
+           giveni={M\bibinitperiod\bibinitdelim P\bibinitperiod}}}%
+        {{hash=e4735efbef525c7d3b6bfc45b47761b5}{%
+           family={Patrick},
+           familyi={P\bibinitperiod},
+           given={Kevin},
+           giveni={K\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Taylor \& Francis}%
+      }
+      \strng{namehash}{5469b8453c411058215cf10a218c0c1a}
+      \strng{fullhash}{6ddb1219fd59366297d42fd9f79acdc1}
+      \strng{fullhashraw}{6ddb1219fd59366297d42fd9f79acdc1}
+      \strng{bibnamehash}{6ddb1219fd59366297d42fd9f79acdc1}
+      \strng{authorbibnamehash}{6ddb1219fd59366297d42fd9f79acdc1}
+      \strng{authornamehash}{5469b8453c411058215cf10a218c0c1a}
+      \strng{authorfullhash}{6ddb1219fd59366297d42fd9f79acdc1}
+      \strng{authorfullhashraw}{6ddb1219fd59366297d42fd9f79acdc1}
+      \field{sortinit}{A}
+      \field{sortinithash}{2f401846e2029bad6b3ecc16d50031e2}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Bioengineered}
+      \field{number}{1}
+      \field{title}{Tackling paper mills requires us to prevent future contamination and clean up the past--the case of the journal Bioengineered}
+      \field{volume}{16}
+      \field{year}{2025}
+      \field{pages}{2542668}
+      \range{pages}{1}
+    \endentry
+    \entry{arel2022quantitative}{article}{}{}
+      \name{author}{5}{}{%
+        {{hash=aae32d8b6485b0e4b4646f14206a319b}{%
+           family={{Arel-Bundock}},
+           familyi={A\bibinitperiod},
+           given={Vincent},
+           giveni={V\bibinitperiod}}}%
+        {{hash=6411724dfe9a538046943148b6f9c506}{%
+           family={Briggs},
+           familyi={B\bibinitperiod},
+           given={Ryan\bibnamedelima C.},
+           giveni={R\bibinitperiod\bibinitdelim C\bibinitperiod}}}%
+        {{hash=eedfae5972abcc50da1d8a4ff47c4912}{%
+           family={Doucouliagos},
+           familyi={D\bibinitperiod},
+           given={Hristos},
+           giveni={H\bibinitperiod}}}%
+        {{hash=635eb87cd1c8e07e56bf0cd028d3dfb0}{%
+           family={Mendoza\bibnamedelima Aviña},
+           familyi={M\bibinitperiod\bibinitdelim A\bibinitperiod},
+           given={Marco},
+           giveni={M\bibinitperiod}}}%
+        {{hash=2c622a2b3f29cd8d39fa5a74b2b2b4d1}{%
+           family={Stanley},
+           familyi={S\bibinitperiod},
+           given={Tom\bibnamedelima D.},
+           giveni={T\bibinitperiod\bibinitdelim D\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {The Institute for Replication (I4R)}%
+      }
+      \strng{namehash}{98fb783d6744cf87a097dbf2d1ff5a4d}
+      \strng{fullhash}{e1fbabb6378f4862f2f08d9abba2618b}
+      \strng{fullhashraw}{e1fbabb6378f4862f2f08d9abba2618b}
+      \strng{bibnamehash}{e1fbabb6378f4862f2f08d9abba2618b}
+      \strng{authorbibnamehash}{e1fbabb6378f4862f2f08d9abba2618b}
+      \strng{authornamehash}{98fb783d6744cf87a097dbf2d1ff5a4d}
+      \strng{authorfullhash}{e1fbabb6378f4862f2f08d9abba2618b}
+      \strng{authorfullhashraw}{e1fbabb6378f4862f2f08d9abba2618b}
+      \field{sortinit}{A}
+      \field{sortinithash}{2f401846e2029bad6b3ecc16d50031e2}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{I4R Discussion Paper Series}
+      \field{number}{6}
+      \field{title}{Quantitative {{Political Science Research}} Is {{Greatly Underpowered}}}
+      \field{year}{2022}
+    \endentry
+    \entry{askarov2023significance}{article}{}{}
+      \name{author}{4}{}{%
+        {{hash=0df49146190e14d5c57c16585b37799d}{%
+           family={Askarov},
+           familyi={A\bibinitperiod},
+           given={Zohid},
+           giveni={Z\bibinitperiod}}}%
+        {{hash=032143b70e2bc0d6a1f2d4e3fdfb61d8}{%
+           family={Doucouliagos},
+           familyi={D\bibinitperiod},
+           given={Anthony},
+           giveni={A\bibinitperiod}}}%
+        {{hash=eedfae5972abcc50da1d8a4ff47c4912}{%
+           family={Doucouliagos},
+           familyi={D\bibinitperiod},
+           given={Hristos},
+           giveni={H\bibinitperiod}}}%
+        {{hash=20f8419abcd3ed983e731a7ca388fa69}{%
+           family={Stanley},
+           familyi={S\bibinitperiod},
+           given={T\bibnamedelima D},
+           giveni={T\bibinitperiod\bibinitdelim D\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Oxford University Press}%
+      }
+      \strng{namehash}{5132ff803199b0f6bfc91b3629093ec5}
+      \strng{fullhash}{8c4d6af9fe32ec5bc72e39b1b3a6ee90}
+      \strng{fullhashraw}{8c4d6af9fe32ec5bc72e39b1b3a6ee90}
+      \strng{bibnamehash}{8c4d6af9fe32ec5bc72e39b1b3a6ee90}
+      \strng{authorbibnamehash}{8c4d6af9fe32ec5bc72e39b1b3a6ee90}
+      \strng{authornamehash}{5132ff803199b0f6bfc91b3629093ec5}
+      \strng{authorfullhash}{8c4d6af9fe32ec5bc72e39b1b3a6ee90}
+      \strng{authorfullhashraw}{8c4d6af9fe32ec5bc72e39b1b3a6ee90}
+      \field{sortinit}{A}
+      \field{sortinithash}{2f401846e2029bad6b3ecc16d50031e2}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Journal of the European Economic Association}
+      \field{number}{3}
+      \field{title}{The significance of data-sharing policy}
+      \field{volume}{21}
+      \field{year}{2023}
+      \field{pages}{1191\bibrangedash 1226}
+      \range{pages}{36}
+    \endentry
+    \entry{bak2022revisiting}{article}{}{}
+      \name{author}{5}{}{%
+        {{hash=26ddd6582eadc878c829760e403267e6}{%
+           family={Bak-Coleman},
+           familyi={B\bibinithyphendelim C\bibinitperiod},
+           given={Joseph},
+           giveni={J\bibinitperiod}}}%
+        {{hash=68aa9dbb084581ab9ae0f42f9954b064}{%
+           family={Mann},
+           familyi={M\bibinitperiod},
+           given={Richard},
+           giveni={R\bibinitperiod}}}%
+        {{hash=40a78e3e663a9519c51752f901b6b5de}{%
+           family={Bergstrom},
+           familyi={B\bibinitperiod},
+           given={Carl},
+           giveni={C\bibinitperiod}}}%
+        {{hash=759e2199563357892036b34eac8b01d6}{%
+           family={Gross},
+           familyi={G\bibinitperiod},
+           given={Kevin},
+           giveni={K\bibinitperiod}}}%
+        {{hash=ab212755ec8a4795e53e01bb49a6fd7c}{%
+           family={West},
+           familyi={W\bibinitperiod},
+           given={Jevin},
+           giveni={J\bibinitperiod}}}%
+      }
+      \strng{namehash}{f62dcf00b64d9e3ce4cdc5d379b80c4f}
+      \strng{fullhash}{0b6b1529d32434192ac8c0457b2ca0be}
+      \strng{fullhashraw}{0b6b1529d32434192ac8c0457b2ca0be}
+      \strng{bibnamehash}{0b6b1529d32434192ac8c0457b2ca0be}
+      \strng{authorbibnamehash}{0b6b1529d32434192ac8c0457b2ca0be}
+      \strng{authornamehash}{f62dcf00b64d9e3ce4cdc5d379b80c4f}
+      \strng{authorfullhash}{0b6b1529d32434192ac8c0457b2ca0be}
+      \strng{authorfullhashraw}{0b6b1529d32434192ac8c0457b2ca0be}
+      \field{sortinit}{B}
+      \field{sortinithash}{d7095fff47cda75ca2589920aae98399}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Center for Open Science}
+      \field{note}{\url{https://osf.io/preprints/socarxiv/rkyf7_v1}}
+      \field{title}{Revisiting the replication crisis without false positives}
+      \field{year}{2022}
+    \endentry
+    \entry{barnett2019examination}{article}{}{}
+      \name{author}{2}{}{%
+        {{hash=e17bf164417e9369c7e71cb1929a083f}{%
+           family={Barnett},
+           familyi={B\bibinitperiod},
+           given={Adrian\bibnamedelima Gerard},
+           giveni={A\bibinitperiod\bibinitdelim G\bibinitperiod}}}%
+        {{hash=7a7afda7d028b21af644ac0b9308123f}{%
+           family={Wren},
+           familyi={W\bibinitperiod},
+           given={Jonathan\bibnamedelima D},
+           giveni={J\bibinitperiod\bibinitdelim D\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {British Medical Journal Publishing Group}%
+      }
+      \strng{namehash}{1093b8b729a236286dcadb5be9c3ec2b}
+      \strng{fullhash}{1093b8b729a236286dcadb5be9c3ec2b}
+      \strng{fullhashraw}{1093b8b729a236286dcadb5be9c3ec2b}
+      \strng{bibnamehash}{1093b8b729a236286dcadb5be9c3ec2b}
+      \strng{authorbibnamehash}{1093b8b729a236286dcadb5be9c3ec2b}
+      \strng{authornamehash}{1093b8b729a236286dcadb5be9c3ec2b}
+      \strng{authorfullhash}{1093b8b729a236286dcadb5be9c3ec2b}
+      \strng{authorfullhashraw}{1093b8b729a236286dcadb5be9c3ec2b}
+      \field{sortinit}{B}
+      \field{sortinithash}{d7095fff47cda75ca2589920aae98399}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{BMJ Open}
+      \field{number}{11}
+      \field{title}{Examination of {CIs} in health and medical journals from 1976 to 2019: an observational study}
+      \field{volume}{9}
+      \field{year}{2019}
+      \field{pages}{e032506}
+      \range{pages}{-1}
+    \endentry
+    \entry{camerer2016evaluating}{article}{}{}
+      \true{moreauthor}
+      \true{morelabelname}
+      \name{author}{10}{}{%
+        {{hash=4bfca8f4e61b230f0fd4828850d02aa5}{%
+           family={Camerer},
+           familyi={C\bibinitperiod},
+           given={Colin\bibnamedelima F},
+           giveni={C\bibinitperiod\bibinitdelim F\bibinitperiod}}}%
+        {{hash=2fd683cab8187caea3b5f1435dd9bde9}{%
+           family={Dreber},
+           familyi={D\bibinitperiod},
+           given={Anna},
+           giveni={A\bibinitperiod}}}%
+        {{hash=16e58facf39ccdf2adc303acdf5f6e3e}{%
+           family={Forsell},
+           familyi={F\bibinitperiod},
+           given={Eskil},
+           giveni={E\bibinitperiod}}}%
+        {{hash=bea2c86ca06aeb0c28952637192f4cd6}{%
+           family={Ho},
+           familyi={H\bibinitperiod},
+           given={Teck-Hua},
+           giveni={T\bibinithyphendelim H\bibinitperiod}}}%
+        {{hash=253fc2b6d5ba9dc3d1b2ce59095ccaf7}{%
+           family={Huber},
+           familyi={H\bibinitperiod},
+           given={Jürgen},
+           giveni={J\bibinitperiod}}}%
+        {{hash=6b1cb24659ae7c9359506ba8c1221dd7}{%
+           family={Johannesson},
+           familyi={J\bibinitperiod},
+           given={Magnus},
+           giveni={M\bibinitperiod}}}%
+        {{hash=0ac284d493170ced62dace454ab75338}{%
+           family={Kirchler},
+           familyi={K\bibinitperiod},
+           given={Michael},
+           giveni={M\bibinitperiod}}}%
+        {{hash=c4cd8141f8b3b6938eab6d777a23c54b}{%
+           family={Almenberg},
+           familyi={A\bibinitperiod},
+           given={Johan},
+           giveni={J\bibinitperiod}}}%
+        {{hash=a16e716f654d99d81b576b24d427c2ab}{%
+           family={Altmejd},
+           familyi={A\bibinitperiod},
+           given={Adam},
+           giveni={A\bibinitperiod}}}%
+        {{hash=150bc776ea7a7d34b4d054c5e3d088af}{%
+           family={Chan},
+           familyi={C\bibinitperiod},
+           given={Taizan},
+           giveni={T\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {American Association for the Advancement of Science}%
+      }
+      \strng{namehash}{c3a816b44de79f0e30aa20bf4b2d9db5}
+      \strng{fullhash}{85d92ea12c3ca3e02886467b3b159360}
+      \strng{fullhashraw}{85d92ea12c3ca3e02886467b3b159360}
+      \strng{bibnamehash}{85d92ea12c3ca3e02886467b3b159360}
+      \strng{authorbibnamehash}{85d92ea12c3ca3e02886467b3b159360}
+      \strng{authornamehash}{c3a816b44de79f0e30aa20bf4b2d9db5}
+      \strng{authorfullhash}{85d92ea12c3ca3e02886467b3b159360}
+      \strng{authorfullhashraw}{85d92ea12c3ca3e02886467b3b159360}
+      \field{sortinit}{C}
+      \field{sortinithash}{4d103a86280481745c9c897c925753c0}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Science}
+      \field{number}{6280}
+      \field{title}{Evaluating replicability of laboratory experiments in economics}
+      \field{volume}{351}
+      \field{year}{2016}
+      \field{pages}{1433\bibrangedash 1436}
+      \range{pages}{4}
+    \endentry
+    \entry{chavalarias2016evolution}{article}{}{}
+      \name{author}{4}{}{%
+        {{hash=62f1eacd5fd4c3070356a3571cb90e71}{%
+           family={Chavalarias},
+           familyi={C\bibinitperiod},
+           given={David},
+           giveni={D\bibinitperiod}}}%
+        {{hash=49dde0a17130f144a61738c7268033f3}{%
+           family={Wallach},
+           familyi={W\bibinitperiod},
+           given={Joshua\bibnamedelima David},
+           giveni={J\bibinitperiod\bibinitdelim D\bibinitperiod}}}%
+        {{hash=b3bd2f52634d301b1df7453f1ce58835}{%
+           family={Li},
+           familyi={L\bibinitperiod},
+           given={Alvin\bibnamedelimb Ho\bibnamedelima Ting},
+           giveni={A\bibinitperiod\bibinitdelim H\bibinitperiod\bibinitdelim T\bibinitperiod}}}%
+        {{hash=03e697d9228cdc30ac73d1b71c8da689}{%
+           family={Ioannidis},
+           familyi={I\bibinitperiod},
+           given={John\bibnamedelimb P\bibnamedelima A},
+           giveni={J\bibinitperiod\bibinitdelim P\bibinitperiod\bibinitdelim A\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {American Medical Association}%
+      }
+      \strng{namehash}{72f50f46b72f383a06ace255e0c74b4e}
+      \strng{fullhash}{b393a7d43fc85b46da6b63810083f176}
+      \strng{fullhashraw}{b393a7d43fc85b46da6b63810083f176}
+      \strng{bibnamehash}{b393a7d43fc85b46da6b63810083f176}
+      \strng{authorbibnamehash}{b393a7d43fc85b46da6b63810083f176}
+      \strng{authornamehash}{72f50f46b72f383a06ace255e0c74b4e}
+      \strng{authorfullhash}{b393a7d43fc85b46da6b63810083f176}
+      \strng{authorfullhashraw}{b393a7d43fc85b46da6b63810083f176}
+      \field{sortinit}{C}
+      \field{sortinithash}{4d103a86280481745c9c897c925753c0}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Journal of the American Medical Association}
+      \field{number}{11}
+      \field{title}{Evolution of reporting P values in the biomedical literature, 1990-2015}
+      \field{volume}{315}
+      \field{year}{2016}
+      \field{pages}{1141\bibrangedash 1148}
+      \range{pages}{8}
+    \endentry
+    \entry{cochrane2025cdsr}{misc}{}{}
+      \name{author}{1}{}{%
+        {{hash=b6fb6b808e37129dd78e3153a9b1d267}{%
+           family={{Cochrane Collaboration}},
+           familyi={C\bibinitperiod}}}%
+      }
+      \strng{namehash}{b6fb6b808e37129dd78e3153a9b1d267}
+      \strng{fullhash}{b6fb6b808e37129dd78e3153a9b1d267}
+      \strng{fullhashraw}{b6fb6b808e37129dd78e3153a9b1d267}
+      \strng{bibnamehash}{b6fb6b808e37129dd78e3153a9b1d267}
+      \strng{authorbibnamehash}{b6fb6b808e37129dd78e3153a9b1d267}
+      \strng{authornamehash}{b6fb6b808e37129dd78e3153a9b1d267}
+      \strng{authorfullhash}{b6fb6b808e37129dd78e3153a9b1d267}
+      \strng{authorfullhashraw}{b6fb6b808e37129dd78e3153a9b1d267}
+      \field{sortinit}{C}
+      \field{sortinithash}{4d103a86280481745c9c897c925753c0}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Cochrane Database of Systematic Reviews}
+      \field{year}{2025}
+      \verb{urlraw}
+      \verb https://www.cochranelibrary.com/cdsr
+      \endverb
+      \verb{url}
+      \verb https://www.cochranelibrary.com/cdsr
+      \endverb
+    \endentry
+    \entry{costello2022decline}{article}{}{}
+      \name{author}{2}{}{%
+        {{hash=fbbbe70f7d180c5c5669f4b0a0787b9c}{%
+           family={Costello},
+           familyi={C\bibinitperiod},
+           given={Laura},
+           giveni={L\bibinitperiod}}}%
+        {{hash=0430bb1a72fad21afce86983064fd09a}{%
+           family={Fox},
+           familyi={F\bibinitperiod},
+           given={Jeremy\bibnamedelima W},
+           giveni={J\bibinitperiod\bibinitdelim W\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Wiley Online Library}%
+      }
+      \strng{namehash}{9f89487ffb85bfdd77064ce2461c9ffc}
+      \strng{fullhash}{9f89487ffb85bfdd77064ce2461c9ffc}
+      \strng{fullhashraw}{9f89487ffb85bfdd77064ce2461c9ffc}
+      \strng{bibnamehash}{9f89487ffb85bfdd77064ce2461c9ffc}
+      \strng{authorbibnamehash}{9f89487ffb85bfdd77064ce2461c9ffc}
+      \strng{authornamehash}{9f89487ffb85bfdd77064ce2461c9ffc}
+      \strng{authorfullhash}{9f89487ffb85bfdd77064ce2461c9ffc}
+      \strng{authorfullhashraw}{9f89487ffb85bfdd77064ce2461c9ffc}
+      \field{sortinit}{C}
+      \field{sortinithash}{4d103a86280481745c9c897c925753c0}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Ecology}
+      \field{number}{6}
+      \field{title}{Decline effects are rare in ecology}
+      \field{volume}{103}
+      \field{year}{2022}
+      \field{pages}{e3680}
+      \range{pages}{-1}
+    \endentry
+    \entry{cuijpers2024effects}{article}{}{}
+      \true{moreauthor}
+      \true{morelabelname}
+      \name{author}{3}{}{%
+        {{hash=6a9ec28202b0736eef540fc0642b9bb5}{%
+           family={Cuijpers},
+           familyi={C\bibinitperiod},
+           given={Pim},
+           giveni={P\bibinitperiod}}}%
+        {{hash=b5940dee8b48e005b2d411a4802aae65}{%
+           family={Harrer},
+           familyi={H\bibinitperiod},
+           given={Mathias},
+           giveni={M\bibinitperiod}}}%
+        {{hash=e6038208690cf619cc2a6011556bc24d}{%
+           family={Miguel},
+           familyi={M\bibinitperiod},
+           given={Clara},
+           giveni={C\bibinitperiod}}}%
+      }
+      \strng{namehash}{ba5901cf6e8f44b727cac237f103b931}
+      \strng{fullhash}{ba5901cf6e8f44b727cac237f103b931}
+      \strng{fullhashraw}{ba5901cf6e8f44b727cac237f103b931}
+      \strng{bibnamehash}{ba5901cf6e8f44b727cac237f103b931}
+      \strng{authorbibnamehash}{ba5901cf6e8f44b727cac237f103b931}
+      \strng{authornamehash}{ba5901cf6e8f44b727cac237f103b931}
+      \strng{authorfullhash}{ba5901cf6e8f44b727cac237f103b931}
+      \strng{authorfullhashraw}{ba5901cf6e8f44b727cac237f103b931}
+      \field{sortinit}{C}
+      \field{sortinithash}{4d103a86280481745c9c897c925753c0}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{JAMA Psychiatry}
+      \field{number}{6}
+      \field{title}{Cognitive behavior therapy for mental disorders in adults: A unified series of meta-analyses}
+      \field{volume}{82}
+      \field{year}{2025}
+      \field{pages}{563\bibrangedash 571}
+      \range{pages}{9}
+    \endentry
+    \entry{efron2016empirical}{article}{}{}
+      \name{author}{1}{}{%
+        {{hash=5470455fc7dceb3ccf6db38cb22a113d}{%
+           family={Efron},
+           familyi={E\bibinitperiod},
+           given={Bradley},
+           giveni={B\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Oxford University Press}%
+      }
+      \strng{namehash}{5470455fc7dceb3ccf6db38cb22a113d}
+      \strng{fullhash}{5470455fc7dceb3ccf6db38cb22a113d}
+      \strng{fullhashraw}{5470455fc7dceb3ccf6db38cb22a113d}
+      \strng{bibnamehash}{5470455fc7dceb3ccf6db38cb22a113d}
+      \strng{authorbibnamehash}{5470455fc7dceb3ccf6db38cb22a113d}
+      \strng{authornamehash}{5470455fc7dceb3ccf6db38cb22a113d}
+      \strng{authorfullhash}{5470455fc7dceb3ccf6db38cb22a113d}
+      \strng{authorfullhashraw}{5470455fc7dceb3ccf6db38cb22a113d}
+      \field{sortinit}{E}
+      \field{sortinithash}{8da8a182d344d5b9047633dfc0cc9131}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Biometrika}
+      \field{number}{1}
+      \field{title}{Empirical Bayes deconvolution estimates}
+      \field{volume}{103}
+      \field{year}{2016}
+      \field{pages}{1\bibrangedash 20}
+      \range{pages}{20}
+    \endentry
+    \entry{euctr2025}{misc}{}{}
+      \name{author}{1}{}{%
+        {{hash=9f2831a6ed564f3bdd343e1a055f6e66}{%
+           family={{European Medicines Agency}},
+           familyi={E\bibinitperiod}}}%
+      }
+      \strng{namehash}{9f2831a6ed564f3bdd343e1a055f6e66}
+      \strng{fullhash}{9f2831a6ed564f3bdd343e1a055f6e66}
+      \strng{fullhashraw}{9f2831a6ed564f3bdd343e1a055f6e66}
+      \strng{bibnamehash}{9f2831a6ed564f3bdd343e1a055f6e66}
+      \strng{authorbibnamehash}{9f2831a6ed564f3bdd343e1a055f6e66}
+      \strng{authornamehash}{9f2831a6ed564f3bdd343e1a055f6e66}
+      \strng{authorfullhash}{9f2831a6ed564f3bdd343e1a055f6e66}
+      \strng{authorfullhashraw}{9f2831a6ed564f3bdd343e1a055f6e66}
+      \field{sortinit}{E}
+      \field{sortinithash}{8da8a182d344d5b9047633dfc0cc9131}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{EU Clinical Trials Register}
+      \field{year}{2025}
+      \verb{urlraw}
+      \verb https://www.clinicaltrialsregister.eu/
+      \endverb
+      \verb{url}
+      \verb https://www.clinicaltrialsregister.eu/
+      \endverb
+    \endentry
+    \entry{garisto2025trump}{article}{}{}
+      \name{author}{1}{}{%
+        {{hash=2f4b98b1a0984483e81ec05e924f1ee8}{%
+           family={Garisto},
+           familyi={G\bibinitperiod},
+           given={Dan},
+           giveni={D\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Nature}%
+      }
+      \strng{namehash}{2f4b98b1a0984483e81ec05e924f1ee8}
+      \strng{fullhash}{2f4b98b1a0984483e81ec05e924f1ee8}
+      \strng{fullhashraw}{2f4b98b1a0984483e81ec05e924f1ee8}
+      \strng{bibnamehash}{2f4b98b1a0984483e81ec05e924f1ee8}
+      \strng{authorbibnamehash}{2f4b98b1a0984483e81ec05e924f1ee8}
+      \strng{authornamehash}{2f4b98b1a0984483e81ec05e924f1ee8}
+      \strng{authorfullhash}{2f4b98b1a0984483e81ec05e924f1ee8}
+      \strng{authorfullhashraw}{2f4b98b1a0984483e81ec05e924f1ee8}
+      \field{sortinit}{G}
+      \field{sortinithash}{32d67eca0634bf53703493fb1090a2e8}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Nature}
+      \field{number}{8077}
+      \field{title}{Trump order gives political appointees vast powers over research grants}
+      \field{volume}{644}
+      \field{year}{2025}
+      \field{pages}{585\bibrangedash 586}
+      \range{pages}{2}
+    \endentry
+    \entry{gelman2014beyond}{article}{}{}
+      \name{author}{2}{}{%
+        {{hash=1e1eb60e3b6e222217bf8e9b24070b28}{%
+           family={Gelman},
+           familyi={G\bibinitperiod},
+           given={Andrew},
+           giveni={A\bibinitperiod}}}%
+        {{hash=f34f8d7beadb3b443b64e32d7bfe9421}{%
+           family={Carlin},
+           familyi={C\bibinitperiod},
+           given={John},
+           giveni={J\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Sage Publications Sage CA: Los Angeles, CA}%
+      }
+      \strng{namehash}{8dfc0ba09672da6c3db67c012f3dd252}
+      \strng{fullhash}{8dfc0ba09672da6c3db67c012f3dd252}
+      \strng{fullhashraw}{8dfc0ba09672da6c3db67c012f3dd252}
+      \strng{bibnamehash}{8dfc0ba09672da6c3db67c012f3dd252}
+      \strng{authorbibnamehash}{8dfc0ba09672da6c3db67c012f3dd252}
+      \strng{authornamehash}{8dfc0ba09672da6c3db67c012f3dd252}
+      \strng{authorfullhash}{8dfc0ba09672da6c3db67c012f3dd252}
+      \strng{authorfullhashraw}{8dfc0ba09672da6c3db67c012f3dd252}
+      \field{sortinit}{G}
+      \field{sortinithash}{32d67eca0634bf53703493fb1090a2e8}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Perspectives on Psychological Science}
+      \field{number}{6}
+      \field{title}{Beyond power calculations: Assessing type {S} (sign) and type {M} (magnitude) errors}
+      \field{volume}{9}
+      \field{year}{2014}
+      \field{pages}{641\bibrangedash 651}
+      \range{pages}{11}
+    \endentry
+    \entry{gelman2000type}{article}{}{}
+      \name{author}{2}{}{%
+        {{hash=1e1eb60e3b6e222217bf8e9b24070b28}{%
+           family={Gelman},
+           familyi={G\bibinitperiod},
+           given={Andrew},
+           giveni={A\bibinitperiod}}}%
+        {{hash=a62464afee2a784490d87f9a7d3ef86f}{%
+           family={Tuerlinckx},
+           familyi={T\bibinitperiod},
+           given={Francis},
+           giveni={F\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Springer}%
+      }
+      \strng{namehash}{bb4a143ed8a32dce89ba317264e05fef}
+      \strng{fullhash}{bb4a143ed8a32dce89ba317264e05fef}
+      \strng{fullhashraw}{bb4a143ed8a32dce89ba317264e05fef}
+      \strng{bibnamehash}{bb4a143ed8a32dce89ba317264e05fef}
+      \strng{authorbibnamehash}{bb4a143ed8a32dce89ba317264e05fef}
+      \strng{authornamehash}{bb4a143ed8a32dce89ba317264e05fef}
+      \strng{authorfullhash}{bb4a143ed8a32dce89ba317264e05fef}
+      \strng{authorfullhashraw}{bb4a143ed8a32dce89ba317264e05fef}
+      \field{sortinit}{G}
+      \field{sortinithash}{32d67eca0634bf53703493fb1090a2e8}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Computational Statistics}
+      \field{number}{3}
+      \field{title}{Type S error rates for classical and Bayesian single and multiple comparison procedures}
+      \field{volume}{15}
+      \field{year}{2000}
+      \field{pages}{373\bibrangedash 390}
+      \range{pages}{18}
+    \endentry
+    \entry{greenland2017invited}{article}{}{}
+      \name{author}{1}{}{%
+        {{hash=c5b4c7113701e4de7900f78e0f2fd1fd}{%
+           family={Greenland},
+           familyi={G\bibinitperiod},
+           given={Sander},
+           giveni={S\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Oxford University Press}%
+      }
+      \strng{namehash}{c5b4c7113701e4de7900f78e0f2fd1fd}
+      \strng{fullhash}{c5b4c7113701e4de7900f78e0f2fd1fd}
+      \strng{fullhashraw}{c5b4c7113701e4de7900f78e0f2fd1fd}
+      \strng{bibnamehash}{c5b4c7113701e4de7900f78e0f2fd1fd}
+      \strng{authorbibnamehash}{c5b4c7113701e4de7900f78e0f2fd1fd}
+      \strng{authornamehash}{c5b4c7113701e4de7900f78e0f2fd1fd}
+      \strng{authorfullhash}{c5b4c7113701e4de7900f78e0f2fd1fd}
+      \strng{authorfullhashraw}{c5b4c7113701e4de7900f78e0f2fd1fd}
+      \field{sortinit}{G}
+      \field{sortinithash}{32d67eca0634bf53703493fb1090a2e8}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{American Journal of Epidemiology}
+      \field{number}{6}
+      \field{title}{The need for cognitive science in methodology}
+      \field{volume}{186}
+      \field{year}{2017}
+      \field{pages}{639\bibrangedash 645}
+      \range{pages}{7}
+    \endentry
+    \entry{harrer2022metapsydata}{manual}{}{}
+      \name{author}{3}{}{%
+        {{hash=b5940dee8b48e005b2d411a4802aae65}{%
+           family={Harrer},
+           familyi={H\bibinitperiod},
+           given={Mathias},
+           giveni={M\bibinitperiod}}}%
+        {{hash=6664068d246bd155b9b47af1bab061fe}{%
+           family={Karyotaki},
+           familyi={K\bibinitperiod},
+           given={Eirini},
+           giveni={E\bibinitperiod}}}%
+        {{hash=6a9ec28202b0736eef540fc0642b9bb5}{%
+           family={Cuijpers},
+           familyi={C\bibinitperiod},
+           given={Pim},
+           giveni={P\bibinitperiod}}}%
+      }
+      \strng{namehash}{652e90c50360c7ea249032039eaf9164}
+      \strng{fullhash}{652e90c50360c7ea249032039eaf9164}
+      \strng{fullhashraw}{652e90c50360c7ea249032039eaf9164}
+      \strng{bibnamehash}{652e90c50360c7ea249032039eaf9164}
+      \strng{authorbibnamehash}{652e90c50360c7ea249032039eaf9164}
+      \strng{authornamehash}{652e90c50360c7ea249032039eaf9164}
+      \strng{authorfullhash}{652e90c50360c7ea249032039eaf9164}
+      \strng{authorfullhashraw}{652e90c50360c7ea249032039eaf9164}
+      \field{sortinit}{H}
+      \field{sortinithash}{23a3aa7c24e56cfa16945d55545109b5}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{note}{R package}
+      \field{title}{metapsyData: Meta-Analytic Psychotherapy Databases}
+      \field{year}{2022}
+      \verb{urlraw}
+      \verb https://CRAN.R-project.org/package=metapsyData
+      \endverb
+      \verb{url}
+      \verb https://CRAN.R-project.org/package=metapsyData
+      \endverb
+    \endentry
+    \entry{hedges1984estimation}{article}{}{}
+      \name{author}{1}{}{%
+        {{hash=7d830e562fdeb21242e790204147b207}{%
+           family={Hedges},
+           familyi={H\bibinitperiod},
+           given={Larry\bibnamedelima V},
+           giveni={L\bibinitperiod\bibinitdelim V\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Sage Publications Sage CA: Thousand Oaks, CA}%
+      }
+      \strng{namehash}{7d830e562fdeb21242e790204147b207}
+      \strng{fullhash}{7d830e562fdeb21242e790204147b207}
+      \strng{fullhashraw}{7d830e562fdeb21242e790204147b207}
+      \strng{bibnamehash}{7d830e562fdeb21242e790204147b207}
+      \strng{authorbibnamehash}{7d830e562fdeb21242e790204147b207}
+      \strng{authornamehash}{7d830e562fdeb21242e790204147b207}
+      \strng{authorfullhash}{7d830e562fdeb21242e790204147b207}
+      \strng{authorfullhashraw}{7d830e562fdeb21242e790204147b207}
+      \field{extraname}{1}
+      \field{sortinit}{H}
+      \field{sortinithash}{23a3aa7c24e56cfa16945d55545109b5}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Journal of Educational Statistics}
+      \field{number}{1}
+      \field{title}{Estimation of effect size under nonrandom sampling: The effects of censoring studies yielding statistically insignificant mean differences}
+      \field{volume}{9}
+      \field{year}{1984}
+      \field{pages}{61\bibrangedash 85}
+      \range{pages}{25}
+    \endentry
+    \entry{hedges1992modeling}{article}{}{}
+      \name{author}{1}{}{%
+        {{hash=7d830e562fdeb21242e790204147b207}{%
+           family={Hedges},
+           familyi={H\bibinitperiod},
+           given={Larry\bibnamedelima V},
+           giveni={L\bibinitperiod\bibinitdelim V\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Institute of Mathematical Statistics}%
+      }
+      \strng{namehash}{7d830e562fdeb21242e790204147b207}
+      \strng{fullhash}{7d830e562fdeb21242e790204147b207}
+      \strng{fullhashraw}{7d830e562fdeb21242e790204147b207}
+      \strng{bibnamehash}{7d830e562fdeb21242e790204147b207}
+      \strng{authorbibnamehash}{7d830e562fdeb21242e790204147b207}
+      \strng{authornamehash}{7d830e562fdeb21242e790204147b207}
+      \strng{authorfullhash}{7d830e562fdeb21242e790204147b207}
+      \strng{authorfullhashraw}{7d830e562fdeb21242e790204147b207}
+      \field{extraname}{2}
+      \field{sortinit}{H}
+      \field{sortinithash}{23a3aa7c24e56cfa16945d55545109b5}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Statistical Science}
+      \field{number}{2}
+      \field{title}{Modeling publication selection effects in meta-analysis}
+      \field{volume}{7}
+      \field{year}{1992}
+      \field{pages}{246\bibrangedash 255}
+      \range{pages}{10}
+    \endentry
+    \entry{herold2025ctrdata}{article}{}{}
+      \name{author}{1}{}{%
+        {{hash=fdd351dbadff30493b54daea5b2ae9a0}{%
+           family={Herold},
+           familyi={H\bibinitperiod},
+           given={R.},
+           giveni={R\bibinitperiod}}}%
+      }
+      \strng{namehash}{fdd351dbadff30493b54daea5b2ae9a0}
+      \strng{fullhash}{fdd351dbadff30493b54daea5b2ae9a0}
+      \strng{fullhashraw}{fdd351dbadff30493b54daea5b2ae9a0}
+      \strng{bibnamehash}{fdd351dbadff30493b54daea5b2ae9a0}
+      \strng{authorbibnamehash}{fdd351dbadff30493b54daea5b2ae9a0}
+      \strng{authornamehash}{fdd351dbadff30493b54daea5b2ae9a0}
+      \strng{authorfullhash}{fdd351dbadff30493b54daea5b2ae9a0}
+      \strng{authorfullhashraw}{fdd351dbadff30493b54daea5b2ae9a0}
+      \field{sortinit}{H}
+      \field{sortinithash}{23a3aa7c24e56cfa16945d55545109b5}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Research Synthesis Methods}
+      \field{title}{Aggregating and analysing clinical trials data from multiple public registers using R package ctrdata}
+      \field{year}{2025}
+      \field{pages}{1\bibrangedash 33}
+      \range{pages}{33}
+      \verb{doi}
+      \verb 10.1017/rsm.2025.10061
+      \endverb
+    \endentry
+    \entry{wwc2025studyfindings}{misc}{}{}
+      \name{author}{1}{}{%
+        {{hash=125abe5773d0bdcca39c655838f4d3d1}{%
+           family={{Institute of Education Sciences}},
+           familyi={I\bibinitperiod}}}%
+      }
+      \strng{namehash}{125abe5773d0bdcca39c655838f4d3d1}
+      \strng{fullhash}{125abe5773d0bdcca39c655838f4d3d1}
+      \strng{fullhashraw}{125abe5773d0bdcca39c655838f4d3d1}
+      \strng{bibnamehash}{125abe5773d0bdcca39c655838f4d3d1}
+      \strng{authorbibnamehash}{125abe5773d0bdcca39c655838f4d3d1}
+      \strng{authornamehash}{125abe5773d0bdcca39c655838f4d3d1}
+      \strng{authorfullhash}{125abe5773d0bdcca39c655838f4d3d1}
+      \strng{authorfullhashraw}{125abe5773d0bdcca39c655838f4d3d1}
+      \field{sortinit}{I}
+      \field{sortinithash}{8d291c51ee89b6cd86bf5379f0b151d8}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{What Works Clearinghouse Study Findings}
+      \field{year}{2025}
+      \verb{urlraw}
+      \verb https://ies.ed.gov/ncee/wwc/studyfindings
+      \endverb
+      \verb{url}
+      \verb https://ies.ed.gov/ncee/wwc/studyfindings
+      \endverb
+    \endentry
+    \entry{ioannidis2005most}{article}{}{}
+      \name{author}{1}{}{%
+        {{hash=03e697d9228cdc30ac73d1b71c8da689}{%
+           family={Ioannidis},
+           familyi={I\bibinitperiod},
+           given={John\bibnamedelimb P\bibnamedelima A},
+           giveni={J\bibinitperiod\bibinitdelim P\bibinitperiod\bibinitdelim A\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Public Library of Science}%
+      }
+      \strng{namehash}{03e697d9228cdc30ac73d1b71c8da689}
+      \strng{fullhash}{03e697d9228cdc30ac73d1b71c8da689}
+      \strng{fullhashraw}{03e697d9228cdc30ac73d1b71c8da689}
+      \strng{bibnamehash}{03e697d9228cdc30ac73d1b71c8da689}
+      \strng{authorbibnamehash}{03e697d9228cdc30ac73d1b71c8da689}
+      \strng{authornamehash}{03e697d9228cdc30ac73d1b71c8da689}
+      \strng{authorfullhash}{03e697d9228cdc30ac73d1b71c8da689}
+      \strng{authorfullhashraw}{03e697d9228cdc30ac73d1b71c8da689}
+      \field{sortinit}{I}
+      \field{sortinithash}{8d291c51ee89b6cd86bf5379f0b151d8}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{PLoS Medicine}
+      \field{number}{8}
+      \field{title}{Why most published research findings are false}
+      \field{volume}{2}
+      \field{year}{2005}
+      \field{pages}{e124}
+      \range{pages}{-1}
+    \endentry
+    \entry{lang2025credible}{article}{}{}
+      \name{author}{1}{}{%
+        {{hash=ffc8200dad00583c74b36973725aadcb}{%
+           family={Lang},
+           familyi={L\bibinitperiod},
+           given={Kevin},
+           giveni={K\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {The University of Chicago Press}%
+      }
+      \strng{namehash}{ffc8200dad00583c74b36973725aadcb}
+      \strng{fullhash}{ffc8200dad00583c74b36973725aadcb}
+      \strng{fullhashraw}{ffc8200dad00583c74b36973725aadcb}
+      \strng{bibnamehash}{ffc8200dad00583c74b36973725aadcb}
+      \strng{authorbibnamehash}{ffc8200dad00583c74b36973725aadcb}
+      \strng{authornamehash}{ffc8200dad00583c74b36973725aadcb}
+      \strng{authorfullhash}{ffc8200dad00583c74b36973725aadcb}
+      \strng{authorfullhashraw}{ffc8200dad00583c74b36973725aadcb}
+      \field{sortinit}{L}
+      \field{sortinithash}{7c47d417cecb1f4bd38d1825c427a61a}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Journal of Labor Economics}
+      \field{number}{2}
+      \field{title}{How credible is the credibility revolution?}
+      \field{volume}{43}
+      \field{year}{2025}
+      \field{pages}{635\bibrangedash 663}
+      \range{pages}{29}
+      \verb{doi}
+      \verb 10.1086/732772
+      \endverb
+    \endentry
+    \entry{matusz2025threat}{article}{}{}
+      \name{author}{3}{}{%
+        {{hash=d757ea41febf4181fc45f97440b7e6a6}{%
+           family={Matusz},
+           familyi={M\bibinitperiod},
+           given={Pawel\bibnamedelima J},
+           giveni={P\bibinitperiod\bibinitdelim J\bibinitperiod}}}%
+        {{hash=77242efb6656cea4923ac6223ed622bf}{%
+           family={Abalkina},
+           familyi={A\bibinitperiod},
+           given={Anna},
+           giveni={A\bibinitperiod}}}%
+        {{hash=b522eda0ba6f658deaaaa81ed5d9d00a}{%
+           family={Bishop},
+           familyi={B\bibinitperiod},
+           given={Dorothy\bibnamedelimb V\bibnamedelima M},
+           giveni={D\bibinitperiod\bibinitdelim V\bibinitperiod\bibinitdelim M\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Wiley Online Library}%
+      }
+      \strng{namehash}{68b432472a6c709ab0f27a8cc9eb30a3}
+      \strng{fullhash}{68b432472a6c709ab0f27a8cc9eb30a3}
+      \strng{fullhashraw}{68b432472a6c709ab0f27a8cc9eb30a3}
+      \strng{bibnamehash}{68b432472a6c709ab0f27a8cc9eb30a3}
+      \strng{authorbibnamehash}{68b432472a6c709ab0f27a8cc9eb30a3}
+      \strng{authornamehash}{68b432472a6c709ab0f27a8cc9eb30a3}
+      \strng{authorfullhash}{68b432472a6c709ab0f27a8cc9eb30a3}
+      \strng{authorfullhashraw}{68b432472a6c709ab0f27a8cc9eb30a3}
+      \field{sortinit}{M}
+      \field{sortinithash}{4625c616857f13d17ce56f7d4f97d451}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Mind, Brain, and Education}
+      \field{number}{2}
+      \field{title}{The threat of paper mills to biomedical and social science journals: The case of the {Tanu.pro} paper mill in \emph{Mind, Brain, and Education}}
+      \field{volume}{19}
+      \field{year}{2025}
+      \field{pages}{90\bibrangedash 100}
+      \range{pages}{11}
+    \endentry
+    \entry{clinicaltrials2025}{misc}{}{}
+      \name{author}{1}{}{%
+        {{hash=c14e5247aa6c62f0530b770a763f0490}{%
+           family={{National Library of Medicine}},
+           familyi={N\bibinitperiod}}}%
+      }
+      \strng{namehash}{c14e5247aa6c62f0530b770a763f0490}
+      \strng{fullhash}{c14e5247aa6c62f0530b770a763f0490}
+      \strng{fullhashraw}{c14e5247aa6c62f0530b770a763f0490}
+      \strng{bibnamehash}{c14e5247aa6c62f0530b770a763f0490}
+      \strng{authorbibnamehash}{c14e5247aa6c62f0530b770a763f0490}
+      \strng{authornamehash}{c14e5247aa6c62f0530b770a763f0490}
+      \strng{authorfullhash}{c14e5247aa6c62f0530b770a763f0490}
+      \strng{authorfullhashraw}{c14e5247aa6c62f0530b770a763f0490}
+      \field{sortinit}{N}
+      \field{sortinithash}{22369a73d5f88983a108b63f07f37084}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{ClinicalTrials.gov}
+      \field{year}{2025}
+      \verb{urlraw}
+      \verb https://clinicaltrials.gov/
+      \endverb
+      \verb{url}
+      \verb https://clinicaltrials.gov/
+      \endverb
+    \endentry
+    \entry{neves2022most}{article}{}{}
+      \name{author}{3}{}{%
+        {{hash=7064d4c7c0ff52a9985f40f4a71822c5}{%
+           family={Neves},
+           familyi={N\bibinitperiod},
+           given={Kleber},
+           giveni={K\bibinitperiod}}}%
+        {{hash=8fd89fd00a5935aae23eac966dd50522}{%
+           family={Tan},
+           familyi={T\bibinitperiod},
+           given={Pedro\bibnamedelima B},
+           giveni={P\bibinitperiod\bibinitdelim B\bibinitperiod}}}%
+        {{hash=61d9d5e3b4112423c412d982c847b96d}{%
+           family={Amaral},
+           familyi={A\bibinitperiod},
+           given={Olavo\bibnamedelima B},
+           giveni={O\bibinitperiod\bibinitdelim B\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Public Library of Science San Francisco, CA USA}%
+      }
+      \strng{namehash}{e5fdfc01f8480a6822e73b662647a2e7}
+      \strng{fullhash}{e5fdfc01f8480a6822e73b662647a2e7}
+      \strng{fullhashraw}{e5fdfc01f8480a6822e73b662647a2e7}
+      \strng{bibnamehash}{e5fdfc01f8480a6822e73b662647a2e7}
+      \strng{authorbibnamehash}{e5fdfc01f8480a6822e73b662647a2e7}
+      \strng{authornamehash}{e5fdfc01f8480a6822e73b662647a2e7}
+      \strng{authorfullhash}{e5fdfc01f8480a6822e73b662647a2e7}
+      \strng{authorfullhashraw}{e5fdfc01f8480a6822e73b662647a2e7}
+      \field{sortinit}{N}
+      \field{sortinithash}{22369a73d5f88983a108b63f07f37084}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Plos One}
+      \field{number}{12}
+      \field{title}{Are most published research findings false in a continuous universe?}
+      \field{volume}{17}
+      \field{year}{2022}
+      \field{pages}{e0277935}
+      \range{pages}{-1}
+    \endentry
+    \entry{nuijten2020intelligence}{article}{}{}
+      \name{author}{5}{}{%
+        {{hash=fcd909bd06e2477c4fc1705da3bb2af4}{%
+           family={Nuijten},
+           familyi={N\bibinitperiod},
+           given={Michèle\bibnamedelima B.},
+           giveni={M\bibinitperiod\bibinitdelim B\bibinitperiod}}}%
+        {{hash=9fe3a7ff7e6b440c6e6e25211d2a84e6}{%
+           family={Van\bibnamedelima Assen},
+           familyi={V\bibinitperiod\bibinitdelim A\bibinitperiod},
+           given={Marcel\bibnamedelimb A.\bibnamedelimi L.\bibnamedelimi M.},
+           giveni={M\bibinitperiod\bibinitdelim A\bibinitperiod\bibinitdelim L\bibinitperiod\bibinitdelim M\bibinitperiod}}}%
+        {{hash=3787926b8f49986a3e3d5785bb2b2ebb}{%
+           family={Augusteijn},
+           familyi={A\bibinitperiod},
+           given={Hilde\bibnamedelimb E.\bibnamedelimi M.},
+           giveni={H\bibinitperiod\bibinitdelim E\bibinitperiod\bibinitdelim M\bibinitperiod}}}%
+        {{hash=96ca2df7e634bc88c6ef22863021503f}{%
+           family={Crompvoets},
+           familyi={C\bibinitperiod},
+           given={Elise\bibnamedelimb A.\bibnamedelimi V.},
+           giveni={E\bibinitperiod\bibinitdelim A\bibinitperiod\bibinitdelim V\bibinitperiod}}}%
+        {{hash=30dff31d79150ffe8fc6c105d00e402f}{%
+           family={Wicherts},
+           familyi={W\bibinitperiod},
+           given={Jelte\bibnamedelima M.},
+           giveni={J\bibinitperiod\bibinitdelim M\bibinitperiod}}}%
+      }
+      \strng{namehash}{3758920b7e249face9bd7ceb1745c724}
+      \strng{fullhash}{d52ef6e45b5ff2366315129fd74761b4}
+      \strng{fullhashraw}{d52ef6e45b5ff2366315129fd74761b4}
+      \strng{bibnamehash}{d52ef6e45b5ff2366315129fd74761b4}
+      \strng{authorbibnamehash}{d52ef6e45b5ff2366315129fd74761b4}
+      \strng{authornamehash}{3758920b7e249face9bd7ceb1745c724}
+      \strng{authorfullhash}{d52ef6e45b5ff2366315129fd74761b4}
+      \strng{authorfullhashraw}{d52ef6e45b5ff2366315129fd74761b4}
+      \field{sortinit}{N}
+      \field{sortinithash}{22369a73d5f88983a108b63f07f37084}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{shorttitle}
+      \field{issn}{2079-3200}
+      \field{journaltitle}{Journal of Intelligence}
+      \field{langid}{english}
+      \field{month}{10}
+      \field{number}{4}
+      \field{shorttitle}{Effect {{Sizes}}, {{Power}}, and {{Biases}} in {{Intelligence Research}}}
+      \field{title}{Effect {{Sizes}}, {{Power}}, and {{Biases}} in {{Intelligence Research}}: {{A Meta-Meta-Analysis}}}
+      \field{urlday}{18}
+      \field{urlmonth}{1}
+      \field{urlyear}{2026}
+      \field{volume}{8}
+      \field{year}{2020}
+      \field{urldateera}{ce}
+      \field{pages}{36}
+      \range{pages}{1}
+      \verb{doi}
+      \verb 10.3390/jintelligence8040036
+      \endverb
+    \endentry
+    \entry{opensciencecollaborationEstimatingReproducibilityPsychological2015a}{article}{}{}
+      \name{author}{1}{}{%
+        {{hash=cd8d680ea72648ba7746b4dbd9720ad2}{%
+           family={{Open Science Collaboration}},
+           familyi={O\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {American Association for the Advancement of Science}%
+      }
+      \strng{namehash}{cd8d680ea72648ba7746b4dbd9720ad2}
+      \strng{fullhash}{cd8d680ea72648ba7746b4dbd9720ad2}
+      \strng{fullhashraw}{cd8d680ea72648ba7746b4dbd9720ad2}
+      \strng{bibnamehash}{cd8d680ea72648ba7746b4dbd9720ad2}
+      \strng{authorbibnamehash}{cd8d680ea72648ba7746b4dbd9720ad2}
+      \strng{authornamehash}{cd8d680ea72648ba7746b4dbd9720ad2}
+      \strng{authorfullhash}{cd8d680ea72648ba7746b4dbd9720ad2}
+      \strng{authorfullhashraw}{cd8d680ea72648ba7746b4dbd9720ad2}
+      \field{sortinit}{O}
+      \field{sortinithash}{2cd7140a07aea5341f9e2771efe90aae}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Science}
+      \field{number}{6251}
+      \field{title}{Estimating the reproducibility of psychological science}
+      \field{volume}{349}
+      \field{year}{2015}
+      \field{pages}{aac4716}
+      \range{pages}{-1}
+    \endentry
+    \entry{rodriguez2022psymetadata}{article}{}{}
+      \name{author}{2}{}{%
+        {{hash=fe81fca3771b5e3c14f9d849089cdd0c}{%
+           family={Rodriguez},
+           familyi={R\bibinitperiod},
+           given={Josue\bibnamedelima E.},
+           giveni={J\bibinitperiod\bibinitdelim E\bibinitperiod}}}%
+        {{hash=bb161d996a922f40e42acc8df9b8e14b}{%
+           family={Williams},
+           familyi={W\bibinitperiod},
+           given={Donald\bibnamedelima R.},
+           giveni={D\bibinitperiod\bibinitdelim R\bibinitperiod}}}%
+      }
+      \strng{namehash}{2077bcd982f44b03c1b0df3cba059b94}
+      \strng{fullhash}{2077bcd982f44b03c1b0df3cba059b94}
+      \strng{fullhashraw}{2077bcd982f44b03c1b0df3cba059b94}
+      \strng{bibnamehash}{2077bcd982f44b03c1b0df3cba059b94}
+      \strng{authorbibnamehash}{2077bcd982f44b03c1b0df3cba059b94}
+      \strng{authornamehash}{2077bcd982f44b03c1b0df3cba059b94}
+      \strng{authorfullhash}{2077bcd982f44b03c1b0df3cba059b94}
+      \strng{authorfullhashraw}{2077bcd982f44b03c1b0df3cba059b94}
+      \field{sortinit}{R}
+      \field{sortinithash}{5e1c39a9d46ffb6bebd8f801023a9486}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Journal of Open Psychology Data}
+      \field{title}{psymetadata: An R Package Containing Open Datasets from Meta-Analyses in Psychology}
+      \field{year}{2022}
+      \verb{doi}
+      \verb 10.5334/jopd.61
+      \endverb
+    \endentry
+    \entry{schwab2024cochrane}{manual}{}{}
+      \name{author}{1}{}{%
+        {{hash=4833d5d4bfe183aced2ef04fe06b3e51}{%
+           family={Schwab},
+           familyi={S\bibinitperiod},
+           given={Simon},
+           giveni={S\bibinitperiod}}}%
+      }
+      \strng{namehash}{4833d5d4bfe183aced2ef04fe06b3e51}
+      \strng{fullhash}{4833d5d4bfe183aced2ef04fe06b3e51}
+      \strng{fullhashraw}{4833d5d4bfe183aced2ef04fe06b3e51}
+      \strng{bibnamehash}{4833d5d4bfe183aced2ef04fe06b3e51}
+      \strng{authorbibnamehash}{4833d5d4bfe183aced2ef04fe06b3e51}
+      \strng{authornamehash}{4833d5d4bfe183aced2ef04fe06b3e51}
+      \strng{authorfullhash}{4833d5d4bfe183aced2ef04fe06b3e51}
+      \strng{authorfullhashraw}{4833d5d4bfe183aced2ef04fe06b3e51}
+      \field{sortinit}{S}
+      \field{sortinithash}{b164b07b29984b41daf1e85279fbc5ab}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{note}{R package}
+      \field{title}{cochrane: Import Data from the Cochrane Database of Systematic Reviews (CDSR)}
+      \field{year}{2024}
+      \verb{urlraw}
+      \verb https://github.com/schw4b/cochrane
+      \endverb
+      \verb{url}
+      \verb https://github.com/schw4b/cochrane
+      \endverb
+    \endentry
+    \entry{simmonsFalsePositivePsychologyUndisclosed2011}{article}{}{}
+      \name{author}{3}{}{%
+        {{hash=f3ff1bcf3fe7c2fc5b52221e1395aec0}{%
+           family={Simmons},
+           familyi={S\bibinitperiod},
+           given={Joseph\bibnamedelima P},
+           giveni={J\bibinitperiod\bibinitdelim P\bibinitperiod}}}%
+        {{hash=6e304c8a472f89f00cf305880a345f82}{%
+           family={Nelson},
+           familyi={N\bibinitperiod},
+           given={Leif\bibnamedelima D},
+           giveni={L\bibinitperiod\bibinitdelim D\bibinitperiod}}}%
+        {{hash=4a557b269a909c0560985e798a1584f6}{%
+           family={Simonsohn},
+           familyi={S\bibinitperiod},
+           given={Uri},
+           giveni={U\bibinitperiod}}}%
+      }
+      \strng{namehash}{1467e6b06a4536fde866b5a4842ec576}
+      \strng{fullhash}{1467e6b06a4536fde866b5a4842ec576}
+      \strng{fullhashraw}{1467e6b06a4536fde866b5a4842ec576}
+      \strng{bibnamehash}{1467e6b06a4536fde866b5a4842ec576}
+      \strng{authorbibnamehash}{1467e6b06a4536fde866b5a4842ec576}
+      \strng{authornamehash}{1467e6b06a4536fde866b5a4842ec576}
+      \strng{authorfullhash}{1467e6b06a4536fde866b5a4842ec576}
+      \strng{authorfullhashraw}{1467e6b06a4536fde866b5a4842ec576}
+      \field{sortinit}{S}
+      \field{sortinithash}{b164b07b29984b41daf1e85279fbc5ab}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Psychological Science}
+      \field{number}{11}
+      \field{title}{False-positive psychology: Undisclosed flexibility in data collection and analysis allows presenting anything as significant}
+      \field{volume}{22}
+      \field{year}{2011}
+      \field{pages}{1359\bibrangedash 1366}
+      \range{pages}{8}
+    \endentry
+    \entry{stephens2017false}{article}{}{}
+      \name{author}{1}{}{%
+        {{hash=b6392ab77144d0d73f3f35bd39da607c}{%
+           family={Stephens},
+           familyi={S\bibinitperiod},
+           given={Matthew},
+           giveni={M\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Oxford University Press}%
+      }
+      \strng{namehash}{b6392ab77144d0d73f3f35bd39da607c}
+      \strng{fullhash}{b6392ab77144d0d73f3f35bd39da607c}
+      \strng{fullhashraw}{b6392ab77144d0d73f3f35bd39da607c}
+      \strng{bibnamehash}{b6392ab77144d0d73f3f35bd39da607c}
+      \strng{authorbibnamehash}{b6392ab77144d0d73f3f35bd39da607c}
+      \strng{authornamehash}{b6392ab77144d0d73f3f35bd39da607c}
+      \strng{authorfullhash}{b6392ab77144d0d73f3f35bd39da607c}
+      \strng{authorfullhashraw}{b6392ab77144d0d73f3f35bd39da607c}
+      \field{sortinit}{S}
+      \field{sortinithash}{b164b07b29984b41daf1e85279fbc5ab}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Biostatistics}
+      \field{number}{2}
+      \field{title}{False discovery rates: a new deal}
+      \field{volume}{18}
+      \field{year}{2017}
+      \field{pages}{275\bibrangedash 294}
+      \range{pages}{20}
+    \endentry
+    \entry{szucs2017empirical}{article}{}{}
+      \name{author}{2}{}{%
+        {{hash=3bcceac8d58d433674e190a78803303a}{%
+           family={Szucs},
+           familyi={S\bibinitperiod},
+           given={Denes},
+           giveni={D\bibinitperiod}}}%
+        {{hash=03e697d9228cdc30ac73d1b71c8da689}{%
+           family={Ioannidis},
+           familyi={I\bibinitperiod},
+           given={John\bibnamedelimb P.\bibnamedelimi A.},
+           giveni={J\bibinitperiod\bibinitdelim P\bibinitperiod\bibinitdelim A\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Public Library of Science}%
+      }
+      \strng{namehash}{379148ef871a699c8b5ffe5122bc6f3c}
+      \strng{fullhash}{379148ef871a699c8b5ffe5122bc6f3c}
+      \strng{fullhashraw}{379148ef871a699c8b5ffe5122bc6f3c}
+      \strng{bibnamehash}{379148ef871a699c8b5ffe5122bc6f3c}
+      \strng{authorbibnamehash}{379148ef871a699c8b5ffe5122bc6f3c}
+      \strng{authornamehash}{379148ef871a699c8b5ffe5122bc6f3c}
+      \strng{authorfullhash}{379148ef871a699c8b5ffe5122bc6f3c}
+      \strng{authorfullhashraw}{379148ef871a699c8b5ffe5122bc6f3c}
+      \field{sortinit}{S}
+      \field{sortinithash}{b164b07b29984b41daf1e85279fbc5ab}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{PLoS Biology}
+      \field{number}{3}
+      \field{title}{Empirical assessment of published effect sizes and power in the recent cognitive neuroscience and psychology literature}
+      \field{volume}{15}
+      \field{year}{2017}
+      \field{pages}{e2000797}
+      \range{pages}{-1}
+      \verb{doi}
+      \verb 10.1371/journal.pbio.2000797
+      \endverb
+    \endentry
+    \entry{tversky1971}{article}{}{}
+      \name{author}{2}{}{%
+        {{hash=031d0d5f9391d970f6f089af958f701d}{%
+           family={Tversky},
+           familyi={T\bibinitperiod},
+           given={Amos},
+           giveni={A\bibinitperiod}}}%
+        {{hash=d0dcea81f8587e7d56bb5dbe34a39d6c}{%
+           family={Kahneman},
+           familyi={K\bibinitperiod},
+           given={Daniel},
+           giveni={D\bibinitperiod}}}%
+      }
+      \strng{namehash}{e03b8c64a28ec0d8081c6f4ded219ba3}
+      \strng{fullhash}{e03b8c64a28ec0d8081c6f4ded219ba3}
+      \strng{fullhashraw}{e03b8c64a28ec0d8081c6f4ded219ba3}
+      \strng{bibnamehash}{e03b8c64a28ec0d8081c6f4ded219ba3}
+      \strng{authorbibnamehash}{e03b8c64a28ec0d8081c6f4ded219ba3}
+      \strng{authornamehash}{e03b8c64a28ec0d8081c6f4ded219ba3}
+      \strng{authorfullhash}{e03b8c64a28ec0d8081c6f4ded219ba3}
+      \strng{authorfullhashraw}{e03b8c64a28ec0d8081c6f4ded219ba3}
+      \field{sortinit}{T}
+      \field{sortinithash}{9af77f0292593c26bde9a56e688eaee9}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Psychological Bulletin}
+      \field{title}{Belief in the law of small numbers}
+      \field{volume}{76}
+      \field{year}{1971}
+      \field{pages}{105\bibrangedash 110}
+      \range{pages}{6}
+    \endentry
+    \entry{tyner2026investigating}{article}{}{}
+      \true{moreauthor}
+      \true{morelabelname}
+      \name{author}{3}{}{%
+        {{hash=0efb8fe77267c90fd36371df825062d8}{%
+           family={Tyner},
+           familyi={T\bibinitperiod},
+           given={Andrew\bibnamedelima H.},
+           giveni={A\bibinitperiod\bibinitdelim H\bibinitperiod}}}%
+        {{hash=0bb26c5b43116dc1da58d64feee3b744}{%
+           family={Abatayo},
+           familyi={A\bibinitperiod},
+           given={Anna\bibnamedelima Lou},
+           giveni={A\bibinitperiod\bibinitdelim L\bibinitperiod}}}%
+        {{hash=9b00154fbd099394f8c3e68becc31a54}{%
+           family={Daley},
+           familyi={D\bibinitperiod},
+           given={Mason},
+           giveni={M\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Nature Publishing Group}%
+      }
+      \strng{namehash}{b78cf9a70d7ce515cabe4f3d932e7a32}
+      \strng{fullhash}{b78cf9a70d7ce515cabe4f3d932e7a32}
+      \strng{fullhashraw}{b78cf9a70d7ce515cabe4f3d932e7a32}
+      \strng{bibnamehash}{b78cf9a70d7ce515cabe4f3d932e7a32}
+      \strng{authorbibnamehash}{b78cf9a70d7ce515cabe4f3d932e7a32}
+      \strng{authornamehash}{b78cf9a70d7ce515cabe4f3d932e7a32}
+      \strng{authorfullhash}{b78cf9a70d7ce515cabe4f3d932e7a32}
+      \strng{authorfullhashraw}{b78cf9a70d7ce515cabe4f3d932e7a32}
+      \field{sortinit}{T}
+      \field{sortinithash}{9af77f0292593c26bde9a56e688eaee9}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Nature}
+      \field{title}{Investigating the replicability of the social and behavioural sciences}
+      \field{volume}{652}
+      \field{year}{2026}
+      \field{pages}{143\bibrangedash 150}
+      \range{pages}{8}
+      \verb{doi}
+      \verb 10.1038/s41586-025-10078-y
+      \endverb
+    \endentry
+    \entry{zwet2022proposal}{article}{}{}
+      \name{author}{2}{}{%
+        {{hash=85b2f01c82c4da1d6e4d770ae6e5d2bd}{%
+           family={{van Zwet}},
+           familyi={v\bibinitperiod},
+           given={Erik},
+           giveni={E\bibinitperiod}}}%
+        {{hash=1e1eb60e3b6e222217bf8e9b24070b28}{%
+           family={Gelman},
+           familyi={G\bibinitperiod},
+           given={Andrew},
+           giveni={A\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Taylor \& Francis}%
+      }
+      \strng{namehash}{46989c21e7cbb015a9b211f90a89bab6}
+      \strng{fullhash}{46989c21e7cbb015a9b211f90a89bab6}
+      \strng{fullhashraw}{46989c21e7cbb015a9b211f90a89bab6}
+      \strng{bibnamehash}{46989c21e7cbb015a9b211f90a89bab6}
+      \strng{authorbibnamehash}{46989c21e7cbb015a9b211f90a89bab6}
+      \strng{authornamehash}{46989c21e7cbb015a9b211f90a89bab6}
+      \strng{authorfullhash}{46989c21e7cbb015a9b211f90a89bab6}
+      \strng{authorfullhashraw}{46989c21e7cbb015a9b211f90a89bab6}
+      \field{sortinit}{v}
+      \field{sortinithash}{afb52128e5b4dc4b843768c0113d673b}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{American Statistician}
+      \field{number}{1}
+      \field{title}{A proposal for informative default priors scaled by the standard error of estimates}
+      \field{volume}{76}
+      \field{year}{2022}
+      \field{pages}{1\bibrangedash 9}
+      \range{pages}{9}
+    \endentry
+    \entry{vanzwet2022large}{article}{}{}
+      \name{author}{2}{}{%
+        {{hash=85b2f01c82c4da1d6e4d770ae6e5d2bd}{%
+           family={{van Zwet}},
+           familyi={v\bibinitperiod},
+           given={Erik},
+           giveni={E\bibinitperiod}}}%
+        {{hash=942e9fae4198598f9ad5d703ebd0f333}{%
+           family={Goodman},
+           familyi={G\bibinitperiod},
+           given={Steven\bibnamedelima N},
+           giveni={S\bibinitperiod\bibinitdelim N\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Wiley Online Library}%
+      }
+      \strng{namehash}{d98c3c64c058de6cbd52671b15ff5c1a}
+      \strng{fullhash}{d98c3c64c058de6cbd52671b15ff5c1a}
+      \strng{fullhashraw}{d98c3c64c058de6cbd52671b15ff5c1a}
+      \strng{bibnamehash}{d98c3c64c058de6cbd52671b15ff5c1a}
+      \strng{authorbibnamehash}{d98c3c64c058de6cbd52671b15ff5c1a}
+      \strng{authornamehash}{d98c3c64c058de6cbd52671b15ff5c1a}
+      \strng{authorfullhash}{d98c3c64c058de6cbd52671b15ff5c1a}
+      \strng{authorfullhashraw}{d98c3c64c058de6cbd52671b15ff5c1a}
+      \field{sortinit}{v}
+      \field{sortinithash}{afb52128e5b4dc4b843768c0113d673b}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Statistics in Medicine}
+      \field{number}{16}
+      \field{title}{How large should the next study be? Predictive power and sample size requirements for replication studies}
+      \field{volume}{41}
+      \field{year}{2022}
+      \field{pages}{3090\bibrangedash 3101}
+      \range{pages}{12}
+    \endentry
+    \entry{van2021statistical}{article}{}{}
+      \name{author}{3}{}{%
+        {{hash=85b2f01c82c4da1d6e4d770ae6e5d2bd}{%
+           family={{van Zwet}},
+           familyi={v\bibinitperiod},
+           given={Erik},
+           giveni={E\bibinitperiod}}}%
+        {{hash=4833d5d4bfe183aced2ef04fe06b3e51}{%
+           family={Schwab},
+           familyi={S\bibinitperiod},
+           given={Simon},
+           giveni={S\bibinitperiod}}}%
+        {{hash=4971ea16a9a5bff50baab1fe43d121b7}{%
+           family={Senn},
+           familyi={S\bibinitperiod},
+           given={Stephen},
+           giveni={S\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Wiley Online Library}%
+      }
+      \strng{namehash}{4ae6f5d214e1249cae5f9c943e4ea97c}
+      \strng{fullhash}{4ae6f5d214e1249cae5f9c943e4ea97c}
+      \strng{fullhashraw}{4ae6f5d214e1249cae5f9c943e4ea97c}
+      \strng{bibnamehash}{4ae6f5d214e1249cae5f9c943e4ea97c}
+      \strng{authorbibnamehash}{4ae6f5d214e1249cae5f9c943e4ea97c}
+      \strng{authornamehash}{4ae6f5d214e1249cae5f9c943e4ea97c}
+      \strng{authorfullhash}{4ae6f5d214e1249cae5f9c943e4ea97c}
+      \strng{authorfullhashraw}{4ae6f5d214e1249cae5f9c943e4ea97c}
+      \field{sortinit}{v}
+      \field{sortinithash}{afb52128e5b4dc4b843768c0113d673b}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Statistics in Medicine}
+      \field{number}{27}
+      \field{title}{The statistical properties of RCTs and a proposal for shrinkage}
+      \field{volume}{40}
+      \field{year}{2021}
+      \field{pages}{6107\bibrangedash 6117}
+      \range{pages}{11}
+    \endentry
+    \entry{yang2023publication}{article}{}{}
+      \name{author}{9}{ul=2}{%
+        {{hash=dd78f1424c9eb54d4d23b7e048889134}{%
+           family={Yang},
+           familyi={Y\bibinitperiod},
+           given={Yefeng},
+           giveni={Y\bibinitperiod}}}%
+        {{hash=10bba9e50e63a4781e9d14c0d524c30a}{%
+           family={Sánchez-Tójar},
+           familyi={S\bibinithyphendelim T\bibinitperiod},
+           given={Alfredo},
+           giveni={A\bibinitperiod}}}%
+        {{hash=0283e1b1cc8e3b76de5f478e1f2290b8}{%
+           family={O’Dea},
+           familyi={O\bibinitperiod},
+           given={Rose\bibnamedelima E},
+           giveni={R\bibinitperiod\bibinitdelim E\bibinitperiod}}}%
+        {{hash=0e282ed0ea23370e832ccaa9942a6aec}{%
+           family={Noble},
+           familyi={N\bibinitperiod},
+           given={Daniel\bibnamedelimb W\bibnamedelima A},
+           giveni={D\bibinitperiod\bibinitdelim W\bibinitperiod\bibinitdelim A\bibinitperiod}}}%
+        {{hash=b344c0d0733f0922ce536e5f210ae74f}{%
+           family={Koricheva},
+           familyi={K\bibinitperiod},
+           given={Julia},
+           giveni={J\bibinitperiod}}}%
+        {{hash=ec96200f2504e90ae745c67a5c4ea644}{%
+           family={Jennions},
+           familyi={J\bibinitperiod},
+           given={Michael\bibnamedelima D},
+           giveni={M\bibinitperiod\bibinitdelim D\bibinitperiod}}}%
+        {{hash=eabed64df1256f56d5b097ea82a15b56}{%
+           family={Parker},
+           familyi={P\bibinitperiod},
+           given={Timothy\bibnamedelima H},
+           giveni={T\bibinitperiod\bibinitdelim H\bibinitperiod}}}%
+        {{hash=970162d1219328d76b5de925f97549bc}{%
+           family={Lagisz},
+           familyi={L\bibinitperiod},
+           given={Malgorzata},
+           giveni={M\bibinitperiod}}}%
+        {{hash=737589ed49865a9515f816d50029418d}{%
+           family={Nakagawa},
+           familyi={N\bibinitperiod},
+           given={Shinichi},
+           giveni={S\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Springer}%
+      }
+      \strng{namehash}{2e3088abff5a60cc0fa5beae318dc651}
+      \strng{fullhash}{a2d2dce13a3af050587e945ef7bbfe76}
+      \strng{fullhashraw}{a2d2dce13a3af050587e945ef7bbfe76}
+      \strng{bibnamehash}{a2d2dce13a3af050587e945ef7bbfe76}
+      \strng{authorbibnamehash}{a2d2dce13a3af050587e945ef7bbfe76}
+      \strng{authornamehash}{2e3088abff5a60cc0fa5beae318dc651}
+      \strng{authorfullhash}{a2d2dce13a3af050587e945ef7bbfe76}
+      \strng{authorfullhashraw}{a2d2dce13a3af050587e945ef7bbfe76}
+      \field{sortinit}{Y}
+      \field{sortinithash}{fd67ad5a9ef0f7456bdd9aab10fe1495}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{BMC Biology}
+      \field{number}{1}
+      \field{title}{Publication bias impacts on effect size, statistical power, and magnitude (type {M}) and sign (type {S}) errors in ecology and evolutionary biology}
+      \field{volume}{21}
+      \field{year}{2023}
+      \field{pages}{71}
+      \range{pages}{1}
+    \endentry
+    \entry{yang2024large}{article}{}{}
+      \name{author}{4}{ul=2}{%
+        {{hash=dd78f1424c9eb54d4d23b7e048889134}{%
+           family={Yang},
+           familyi={Y\bibinitperiod},
+           given={Yefeng},
+           giveni={Y\bibinitperiod}}}%
+        {{hash=2aa923d5467d7884ccdb1fabc53ed564}{%
+           family={Zwet},
+           familyi={Z\bibinitperiod},
+           given={Erik\bibnamedelima van},
+           giveni={E\bibinitperiod\bibinitdelim v\bibinitperiod}}}%
+        {{hash=b60d4061f65d141074504b4cd110ad6d}{%
+           family={Ignatiadis},
+           familyi={I\bibinitperiod},
+           given={Nikolaos},
+           giveni={N\bibinitperiod}}}%
+        {{hash=737589ed49865a9515f816d50029418d}{%
+           family={Nakagawa},
+           familyi={N\bibinitperiod},
+           given={Shinichi},
+           giveni={S\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Nature Publishing Group UK London}%
+      }
+      \strng{namehash}{8c0d8aa9cb2b43ba498ea9e46718034b}
+      \strng{fullhash}{118540d6f4ecdd49e75b4cdb33dc4206}
+      \strng{fullhashraw}{118540d6f4ecdd49e75b4cdb33dc4206}
+      \strng{bibnamehash}{118540d6f4ecdd49e75b4cdb33dc4206}
+      \strng{authorbibnamehash}{118540d6f4ecdd49e75b4cdb33dc4206}
+      \strng{authornamehash}{8c0d8aa9cb2b43ba498ea9e46718034b}
+      \strng{authorfullhash}{118540d6f4ecdd49e75b4cdb33dc4206}
+      \strng{authorfullhashraw}{118540d6f4ecdd49e75b4cdb33dc4206}
+      \field{sortinit}{Y}
+      \field{sortinithash}{fd67ad5a9ef0f7456bdd9aab10fe1495}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Nature Ecology \& Evolution}
+      \field{title}{A large-scale in silico replication of ecological and evolutionary studies}
+      \field{year}{2024}
+      \field{pages}{1\bibrangedash 5}
+      \range{pages}{5}
+    \endentry
+  \enddatalist
+  \missing{anthropic}
+  \missing{miske2026}
+  \missing{senn2002cross}
+  \missing{thomas2021clinicaldevelopment}
+  \missing{tyner2026}
+\endrefsection
+\endinput
+

@@ -48,3 +48,11 @@ explore/reports/*.pdf
 paper/bear_lists.Rdata
 .Rprofile
 changelog.md
+Rplots.pdf
+data_scrap
+paper/old
+paper/datasets.pdf
+paper/optimism.pdf
+results/old
+results/mixture_plots_hash.rds
+results/selection_mixture_plot.png

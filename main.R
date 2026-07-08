@@ -46,5 +46,5 @@ source("workflow/calculate_psr.R")
 
 source("workflow/write_outputs.R")
 # output: results/site_metrics.rds, site/_site_metrics.md,
-# results/selection_mixture_plot.png, site/assets/selection_mixture_plot.png,
+# site/assets/selection_mixture_plot.png,
 # results/mixture_plots/, README.md

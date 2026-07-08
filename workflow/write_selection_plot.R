@@ -11,9 +11,7 @@ source("R/mix.R")
 source("R/fit_density_calc.R")
 source("R/plot_mixture.R")
 
-output_path <- "results/selection_mixture_plot.png"
 site_output_path <- "site/assets/selection_mixture_plot.png"
-dir.create(dirname(output_path), showWarnings = FALSE, recursive = TRUE)
 dir.create(dirname(site_output_path), showWarnings = FALSE, recursive = TRUE)
 
 load_bear_mixture_inputs(exclude = NULL)
@@ -71,7 +69,7 @@ selection_plot <- patchwork::wrap_plots(plots, ncol = 5) +
         axis.text = element_text(size = 8 * 0.75))
 
 ggsave(
-  filename = output_path,
+  filename = site_output_path,
   plot = selection_plot,
   width = 17.5 * 1.2,
   height = rows * panel_height_cm,
@@ -79,8 +77,4 @@ ggsave(
   dpi = 300
 )
 
-copied <- file.copy(from = output_path, to = site_output_path, overwrite = TRUE)
-if(!copied) stop("Failed to copy selection plot to ", site_output_path)
-
-message("Wrote ", n_panels, " selection panels to ", output_path,
-        " and ", site_output_path, ".")
+message("Wrote ", n_panels, " selection panels to ", site_output_path, ".")

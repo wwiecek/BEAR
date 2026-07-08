@@ -14,7 +14,7 @@ for continuous outcomes as standardised mean differences and for dichotomous out
 as probit-transformed effects.
 Only efficacy outcomes are retained.
 The distributed `BEAR.rds` file includes a smaller analysis subset with about
-38,000 rows: the first comparison and first outcome from each review, restricted
+36,000 rows: the first comparison and first outcome from each review, restricted
 to efficacy outcomes. The processed `data/Cochrane.rds` file is larger and is
 available for users who want to make different selection decisions. It contains
 760,486 result rows, representing 90,042 review-study pairs across 6,619
@@ -23,6 +23,8 @@ Cochrane reviews.
 On processing side, we cleaned up study years, categorised measures (risk ratio, odds ratio, mean difference etc.) and experimental designs, especially an "RCT" flag (based on scanning of abstracts of each review for inclusion criteria). Most studies in CDSR are RCTs but some reviews also allowed quasi-experimental studies, which prevented us from categorising many studies. We also classify outcome rows into `efficacy`, `safety`, `dropouts`, and `bias` based on the comparison, outcome, and subgroup labels.
 
 Unlike in most of the other datasets in BEAR, we filter CDSR data heavily. First, we only use the outcome and comparison of each review that are coded as "1", as that is most likely the primary outcome and most relevant comparison. Secondly, we keep only rows classified as `efficacy`, excluding likely safety, dropout, and bias-related outcomes based on comparison, outcome, and subgroup labels. Thirdly, we only use studies with continuous and dichotomous outcomes, removing rows where effect estimates are based on instrumental variables or based on individual patient data. Lastly, we remove rows where measure of effect is unknown (retaining: OR, RR, Peto OR, mean difference, standardised mean difference, and risk difference) and rows where there are zero subjects.
+
+A large proportion of CDSR rows have binary outcomes with no events in both arms or all events in both arms. In the BEAR analysis subset before this exclusion, 2,371 of 26,619 binary rows (8.9%) had zero events in both arms or all events in both arms. Such rows can bias estimation of publication bias in metascientific investigations because they can lead to zero-inflated distributions of test statistics. They remain available in the processed source file `data/Cochrane.rds`, but are excluded from the main analysis dataset `BEAR.rds`.
 
 **Additional grouping variable:**
 we retained a "source data type" variable to distinguish estimates from published, unpublished, "sought", and mixed data sources. We also retain an `outcome_group` variable in the processed Cochrane data.

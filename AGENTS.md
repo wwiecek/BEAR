@@ -4,6 +4,9 @@ Read both files before making changes in `BEAR/`.
 ## Maintainer Notes
 - Assume scripts are run from the `BEAR` project root unless a local script says otherwise.
 - For new exploratory subfolders under `explore/`, include a minimal `README.md` and a `changelog.md`.
+- Keep `explore/README.md` up to date when starting new exploratory folders,
+  including the folder's purpose and whether it is BEAR-internal or a
+  metascience/secondary-output analysis.
 - When the user wants to compare exploratory approaches, keep prior versions and add a new versioned script instead of rewriting in place.
 - Put process-specific helper code under `process/`; reserve `R/` for reusable project-wide helpers.
 - When adding or materially changing a dataset, consult `doc/adding_new_datasets.md`

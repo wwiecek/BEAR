@@ -46,3 +46,5 @@ pdf/
 explore/stan_mixtures/*.rds
 explore/reports/*.pdf
 paper/bear_lists.Rdata
+.Rprofile
+changelog.md

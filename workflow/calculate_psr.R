@@ -10,11 +10,42 @@ source("R/paper_selection.R")
 
 # Calculate performance of datasets.
 mfl <- load_all_mixtures()
-set.seed(20260626)
-df_psr <- lapply(mfl, powsignrep) %>% bind_rows(.id = "dataset")
+
+psr_draw_n <- 2e5
+
+dataset_seed <- function(dataset, z_star) {
+  chars <- utf8ToInt(paste0(dataset, "|", z_star))
+  sum(chars * seq_along(chars)) %% .Machine$integer.max
+}
+
+with_seed <- function(seed, expr) {
+  had_seed <- exists(".Random.seed", envir = .GlobalEnv, inherits = FALSE)
+  if(had_seed)
+    old_seed <- get(".Random.seed", envir = .GlobalEnv)
+  on.exit({
+    if(had_seed)
+      assign(".Random.seed", old_seed, envir = .GlobalEnv)
+    else if(exists(".Random.seed", envir = .GlobalEnv, inherits = FALSE))
+      rm(".Random.seed", envir = .GlobalEnv)
+  }, add = TRUE)
+  set.seed(seed)
+  force(expr)
+}
+
+df_psr <- imap_dfr(
+  mfl,
+  ~ with_seed(dataset_seed(.y, 0),
+              powsignrep(.x, N = psr_draw_n)),
+  .id = "dataset"
+)
 # now only keeping significant results 
 # (power columns won't make sense/won't change!----but I do not use them)
-df_psr196 <- lapply(mfl, powsignrep, z_star = 1.959) %>% bind_rows(.id = "dataset")
+df_psr196 <- imap_dfr(
+  mfl,
+  ~ with_seed(dataset_seed(.y, 1.959),
+              powsignrep(.x, z_star = 1.959, N = psr_draw_n)),
+  .id = "dataset"
+)
 
 # Erik: I’d like to put the following in Table 2
 # 

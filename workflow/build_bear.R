@@ -279,7 +279,10 @@ dtlist[["Cochrane"]] <- readRDS("data/Cochrane.rds") %>%
     # First comparison and first outcome is most likely to be the primary outcome of interest in a given review
     # THIS REMOVES 95% OF DATA! YOu may want to construct it differently for future analyses
     comparison.nr == 1, outcome.nr == 1,
-    outcome_group == "efficacy") %>%
+    outcome_group == "efficacy",
+    outcome.flag != "DICH" |
+      !((events1 == 0 & events2 == 0) |
+          (events1 == total1 & events2 == total2))) %>%
   # I do a little bit extra recoding for BEAR, but no essential changes
   transmute(
     metaid = id,

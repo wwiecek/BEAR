@@ -35,12 +35,12 @@ Here is a short summary of what’s included in BEAR:
 
 | Dataset | Domain | Values | Meta-analyses | Studies | Values/study | Significant |
 |:---|:---|---:|---:|---:|---:|---:|
-| Cochrane\* | medicine & health | 38,058 | 5,871 | 29,327 | 1.3 | 31.1% |
+| Cochrane\* | medicine & health | 35,687 | 5,780 | 27,513 | 1.3 | 33.1% |
 | EUDRA | clinical trials | 8,650 | \- | 8,650 | 1.0 | 41.4% |
 | Metapsy | psychotherapy | 4,395 | 20 | 1,494 | 2.9 | 48.4% |
 | Nuijten et al | intelligence | 2,439 | \- | 1,913 | 1.3 | 52.9% |
 | What Works Clearing. | education | 12,045 | \- | 1,408 | 8.6 | 33.4% |
-| clinicaltrials.gov | clinical trials | 41,367 | \- | 16,597 | 2.5 | 48.4% |
+| clinicaltrials.gov | clinical trials | 60,470 | \- | 23,060 | 2.6 | 40.6% |
 | psymetadata | psychology | 8,514 | \- | 721 | 11.8 | 35.8% |
 
 ### Metascience datasets
@@ -63,7 +63,7 @@ Here is a short summary of what’s included in BEAR:
 | Dataset | Domain | Values | Meta-analyses | Studies | Values/study | Significant |
 |:---|:---|---:|---:|---:|---:|---:|
 | Many Labs 2 | psychology | 1,592 | 28 | 128 | 12.4 | 41.4% |
-| OpenSciCollab | psychology | 97 | \- | 97 | 1.0 | 35.1% |
+| OpenSciCollab replications | psychology | 97 | \- | 97 | 1.0 | 35.1% |
 | SCORE replications | social & behavioural sciences | 267 | \- | 163 | 1.6 | 64.4% |
 
 ### PubMed/Medline scraped data
@@ -90,8 +90,8 @@ additional columns that store values from original studies.
 
 | Category     | Datasets | Studies | Meta-analyses |  Values | Significant |
 |:-------------|---------:|--------:|--------------:|--------:|------------:|
-| curated      |        8 |  30,860 |               | 109,207 |       46.2% |
-| meta         |        9 |  59,408 |         7,768 | 202,635 |       42.4% |
+| curated      |        8 |  37,323 |               | 128,310 |       42.9% |
+| meta         |        9 |  57,594 |         7,677 | 200,264 |       42.9% |
 | replications |        3 |     388 |            28 |   1,956 |       44.2% |
 | scrape       |        4 | 155,322 |               | 165,653 |       69.0% |
 
@@ -151,34 +151,34 @@ significance, replication, correct sign) in `workflow/calculate_psr.R`
 
 # Results of mixture modelling
 
-| dataset              | omega |  PoS | PoS_80 | replication | sign |
-|:---------------------|------:|-----:|-------:|------------:|-----:|
-| Sladekova et al      |  0.82 | 0.54 |   0.40 |        0.53 | 0.86 |
-| Nuijten et al        |  0.85 | 0.48 |   0.29 |        0.47 | 0.88 |
-| Askarov et al        |  0.70 | 0.48 |   0.29 |        0.46 | 0.88 |
-| SCORE, all claims    |  0.12 | 0.47 |   0.27 |        0.45 | 0.88 |
-| Metapsy              |  0.73 | 0.43 |   0.22 |        0.41 | 0.86 |
-| Lang                 |  0.24 | 0.43 |   0.23 |        0.41 | 0.86 |
-| Arel-Bundock et al   |  0.64 | 0.40 |   0.20 |        0.38 | 0.85 |
-| Costello and Fox     |  0.74 | 0.39 |   0.24 |        0.38 | 0.79 |
-| Yang et al           |  0.73 | 0.37 |   0.22 |        0.36 | 0.78 |
-| Szucs and Ioannidis  |  0.35 | 0.35 |   0.14 |        0.33 | 0.84 |
-| ctgov / EU CTR       |  0.50 | 0.35 |   0.21 |        0.33 | 0.76 |
-| psymetadata          |  0.66 | 0.32 |   0.20 |        0.30 | 0.72 |
-| Brodeur et al        |  0.67 | 0.32 |   0.14 |        0.30 | 0.82 |
-| What Works Clearing. |  0.88 | 0.32 |   0.17 |        0.30 | 0.75 |
-| Cochrane             |  0.70 | 0.23 |   0.10 |        0.21 | 0.69 |
-| Bartos et al         |  0.81 | 0.23 |   0.08 |        0.20 | 0.74 |
-| SCORE replications   |  0.70 | 0.50 |   0.33 |        0.49 | 0.88 |
-| SCORE original       |  0.04 | 0.48 |   0.28 |        0.46 | 0.88 |
-| Many Labs 2          |  0.83 | 0.37 |   0.29 |        0.35 | 0.71 |
-| OpenSciCollab        |  1.05 | 0.36 |   0.22 |        0.34 | 0.80 |
-| OSC original         |  0.03 | 0.30 |   0.09 |        0.27 | 0.82 |
-| Many Labs original   |  0.06 | 0.24 |   0.13 |        0.22 | 0.73 |
-| Chavalarias et al    |  0.15 | 0.52 |   0.33 |        0.50 | 0.89 |
-| Head et al           |  0.24 | 0.46 |   0.26 |        0.44 | 0.87 |
-| Jager and Leek       |  0.18 | 0.45 |   0.25 |        0.43 | 0.87 |
-| Barnett and Wren     |  0.08 | 0.30 |   0.11 |        0.28 | 0.81 |
+| dataset                     | omega |  PoS | PoS_80 | replication | sign |
+|:----------------------------|------:|-----:|-------:|------------:|-----:|
+| Sladekova et al             |  0.82 | 0.54 |   0.40 |        0.52 | 0.86 |
+| Nuijten et al               |  0.85 | 0.48 |   0.29 |        0.47 | 0.88 |
+| Askarov et al               |  0.70 | 0.48 |   0.29 |        0.46 | 0.88 |
+| SCORE, all claims           |  0.12 | 0.47 |   0.27 |        0.45 | 0.88 |
+| Metapsy                     |  0.73 | 0.43 |   0.22 |        0.41 | 0.87 |
+| Lang                        |  0.24 | 0.42 |   0.23 |        0.41 | 0.86 |
+| Arel-Bundock et al          |  0.64 | 0.40 |   0.20 |        0.38 | 0.85 |
+| Costello and Fox            |  0.74 | 0.39 |   0.24 |        0.37 | 0.79 |
+| Yang et al                  |  0.73 | 0.37 |   0.22 |        0.35 | 0.78 |
+| Szucs and Ioannidis         |  0.35 | 0.35 |   0.14 |        0.33 | 0.84 |
+| clinicaltrials.gov + EU CTR |  0.56 | 0.33 |   0.20 |        0.32 | 0.74 |
+| psymetadata                 |  0.66 | 0.32 |   0.20 |        0.30 | 0.72 |
+| What Works Clearing.        |  0.88 | 0.32 |   0.17 |        0.30 | 0.75 |
+| Brodeur et al               |  0.67 | 0.32 |   0.14 |        0.30 | 0.82 |
+| Cochrane                    |  0.82 | 0.28 |   0.12 |        0.26 | 0.77 |
+| Bartos et al                |  0.81 | 0.23 |   0.08 |        0.20 | 0.74 |
+| SCORE replications          |  0.70 | 0.51 |   0.33 |        0.49 | 0.88 |
+| SCORE original              |  0.04 | 0.48 |   0.28 |        0.46 | 0.88 |
+| Many Labs 2                 |  0.83 | 0.37 |   0.29 |        0.35 | 0.71 |
+| OpenSciCollab replications  |  1.05 | 0.36 |   0.23 |        0.35 | 0.80 |
+| OSC original                |  0.03 | 0.30 |   0.09 |        0.27 | 0.82 |
+| Many Labs original          |  0.06 | 0.24 |   0.13 |        0.22 | 0.73 |
+| Chavalarias et al           |  0.15 | 0.52 |   0.32 |        0.50 | 0.89 |
+| Head et al                  |  0.24 | 0.46 |   0.26 |        0.44 | 0.87 |
+| Jager and Leek              |  0.18 | 0.45 |   0.25 |        0.44 | 0.87 |
+| Barnett and Wren            |  0.08 | 0.30 |   0.11 |        0.28 | 0.81 |
 
 `omega` is relative publication probability based on crossing of the
 \|z\|=1.96 threshold; `PoS` is probability of significance (assurance)

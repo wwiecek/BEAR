@@ -74,6 +74,7 @@
  % \endlocaldefs
 
 \DeclareMathOperator{\SNR}{\mathrm{SNR}}
+\DeclareMathOperator{\PoS}{\mathrm{PoS}}
 \DeclareMathOperator{\normal}{\mathrm{normal}}
 \DeclareMathOperator{\MVN}{\mathrm{MVN}}
 \DeclareMathOperator{\uniform}{\mathrm{uniform}}
@@ -104,7 +105,7 @@
 \usepackage[style=authoryear-comp,indexing=cite]{biblatex}
 \ExecuteBibliographyOptions{sortlocale=general,maxnames=12,maxcitenames=3,parentracker=true,sortcites=false,uniquename=false,dashed=false,hyperref=true}
 \uspunctuation
-\addbibresource{references.bib}
+\addbibresource{../doc/references.bib}
 \renewbibmacro{in:}{}
 
 
@@ -192,7 +193,7 @@ The second group consists of six corpora that can be thought of as representativ
 
 For comparison, we also include a third group which has the studies that were studies that were selected for replication in two notable large scale replication efforts: Open Science Collaboration replications in psychology \parencite{opensciencecollaborationEstimatingReproducibilityPsychological2015a} and SCORE replications in the social and behavioural sciences \parencite{tyner2026investigating}. We will discuss these sets of studies together with the second group because they have very similar properties. 
 
-\input{table1.tex}
+\input{tables/table1.tex}
 
 While we do some data processing of our own, all of data collection and the vast majority of data processing was already done by the creators of the datasets we reference. Most of them already include $z$-values or effect sizes and standard errors, but in some cases we make calculations ourselves (for example, from $p$-values or counts for binary data); calculation details are in Appendix \ref{app:datasets}. 
 
@@ -336,22 +337,22 @@ The right panel of Figure~\ref{fig:pos_gap} displays the probabilities of succes
 
 \begin{figure}
 \centering
-\includegraphics[width=1\textwidth]{fig/mixtures_plot_collection_groups.pdf}
+\includegraphics[width=1\textwidth]{figures/mixtures_plot_collection_groups.pdf}
 \caption{Histograms of absolute $z$-values across 14 non-replication corpora with fitted curves overlaid on top. The solid curves are densities, fitted using mixtures of half-normal distributions and conditioning on publication. Dashed curves are the unconditional ``corrected'' distributions, scaled to match the solid curve in region $|z| > 1.96$. Blue: curated sets; red: representative domain samples.}\label{fig:zmixtures}
 \end{figure}
 
 \begin{figure}
 \centering
-\includegraphics[width=1\textwidth]{fig/mixtures_plot_replication_projects.pdf}
+\includegraphics[width=1\textwidth]{figures/mixtures_plot_replication_projects.pdf}
 \caption{Histograms of absolute $z$-values for the SCORE and OSC original-study and replication-study distributions. Only the unconditional ``corrected'' mixture density is shown. Grey panels show original studies; yellow panels show replication studies.}\label{fig:replication_mixtures}
 \end{figure}
 
 
-\input{table2.tex}
+\input{tables/table2.tex}
 
 \begin{figure}
 \centering
-\includegraphics[width=.9\textwidth]{fig/pos_gap.pdf}
+\includegraphics[width=.9\textwidth]{figures/pos_gap.pdf}
 \vspace{-.2in}
 \caption{Left panel: ``survival curves'' of the probability of significance: $1 - (\mbox{CDF of PoS})$ for each of the 16 corpora. Right panel: conditional probabilities that the observed direction of the effect matches the true direction (top set of curves) and the conditional probability of ``successful'' replication (bottom set). Colors distinguish curated sets, representative domain samples, and replication efforts.}\label{fig:pos_gap}
 \end{figure}
@@ -490,20 +491,20 @@ If $z_\text{repl}$ is the $z$-value of an exact replication study, then the cond
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=16.5cm]{fig/gap_plot_all.pdf}
+\includegraphics[width=16.5cm]{figures/gap_plot_all.pdf}
 \caption{Relationship between absolute $z$-values and the probability that the direction of the observed effect matches the true direction (blue curves) and the probability of ``successful replication'' (red curves). The vertical line is $\overline{\mathrm{PoS}}$. }
 \label{fig:gap_plot_all}
 \end{figure}
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=1\linewidth]{fig/mixtures_plot_subsets.pdf}
+    \includegraphics[width=1\linewidth]{figures/mixtures_plot_subsets.pdf}
     \vspace{-.2in}
     \caption{Subsets of interventional treatment studies from {\tt clinicaltrials.gov}, broken down by phase (top row) and from Cochrane database (bottom row), grouped by specialty (out of 19 included in the dataset): two with lowest $\overline{\mathrm{PoS}}$ on the left and two with the highest on the right. The peaks in the histograms at $|z| = 1.96, 2.58, 3.29$ are due to trials reporting (two-sided) $p<0.05, p<0.01, p<0.001$.}
     \label{fig:subsets}
 \end{figure}
 
-\input{table3.tex}
+\input{tables/table3.tex}
 
 \clearpage
 \section{Datasets included in BEAR}\label{app:datasets}

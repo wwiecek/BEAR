@@ -53,6 +53,9 @@ explore/**/*.png
 explore/**/*.csv
 explore/**/*.csv.gz
 explore/**/*.txt
+explore/blog_*/
+explore/production_function/
+explore/white_paper_graphs/
 paper/bear_lists.Rdata
 .Rprofile
 changelog.md

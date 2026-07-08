@@ -260,6 +260,7 @@ fit_mixture_df <- function(df, ...) fit_mixture(z = df$z,
 
 # Prepare BEAR z values for mixture work while leaving stored inputs unchanged.
 prepare_mixture_z <- function(z, operator = NULL, z_star = 25,
+                              z0_bound = 0.5,
                               report = FALSE) {
   if(is.null(operator))
     operator <- rep("=", length(z))
@@ -267,10 +268,11 @@ prepare_mixture_z <- function(z, operator = NULL, z_star = 25,
   z <- abs(z)
 
   ind <- which(z==0)
-  z[ind] <- 0.5
+  z[ind] <- z0_bound
   operator[ind] <- "<"
   if(report && length(ind) > 0)
-    message(paste("Changed", length(ind), "'z = 0' cases to 'z < 0.5' to avoid zero likelihood"))
+    message(paste("Changed", length(ind), "'z = 0' cases to 'z <",
+                  z0_bound, "' to avoid zero likelihood"))
 
   ind <- which(z > z_star)
   z[ind] <- z_star
@@ -285,10 +287,12 @@ prepare_mixture_z <- function(z, operator = NULL, z_star = 25,
 fit_mixture <- function(z,
                         operator,
                         z_star = 25,
+                        z0_bound = 0.5,
                         mode = "constr",
                         ...){
   mode <- match.arg(mode, c("constr", "unconstr"))
-  prepared <- prepare_mixture_z(z, operator, z_star, report = TRUE)
+  prepared <- prepare_mixture_z(z, operator, z_star,
+                                z0_bound = z0_bound, report = TRUE)
 
   optimise <- if(mode == "unconstr") optimise_mixture_unconstr else optimise_mixture
   fit <- optimise(z = prepared$z, z_operator = prepared$operator, ...)

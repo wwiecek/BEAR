@@ -68,6 +68,7 @@ plot_bear_mixture_panel <- function(dataset,
 plot_mixture_v4 <- function(fit, dt, nm = "", col = "black", color_map = NULL, 
                             xmax = 10, bin_width = 0.245, ymax = 0.6, 
                             annotate = "psr", meanpwr = NULL,
+                            z0_bound = 0.5,
                             show_corrected = FALSE,
                             align_corrected_above_threshold = FALSE,
                             exact_only = FALSE,
@@ -85,7 +86,7 @@ plot_mixture_v4 <- function(fit, dt, nm = "", col = "black", color_map = NULL,
   exact_source_z <- abs(dt$z[dt$z_operator == "="])
   exact_source_z <- exact_source_z[!is.na(exact_source_z)]
 
-  prepared <- prepare_mixture_z(dt$z, dt$z_operator)
+  prepared <- prepare_mixture_z(dt$z, dt$z_operator, z0_bound = z0_bound)
   dt$z <- prepared$z
   dt$z_operator <- prepared$operator
 

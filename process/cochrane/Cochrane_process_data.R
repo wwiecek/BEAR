@@ -8,16 +8,10 @@ library(metafor)
 source("process/cochrane/Cochrane_helpers.R")
 source("process/cochrane/Cochrane_rct_score.R")
 
-manifest_path <- Sys.getenv(
-  "BEAR_COCHRANE_MANIFEST",
-  "data_raw/Cochrane/data/cdsr_interventions_19nov2025.csv"
-)
-rm5_dir <- Sys.getenv("BEAR_COCHRANE_RM5_DIR", "data/Cochrane/rm5")
-checkpoint_path <- Sys.getenv(
-  "BEAR_COCHRANE_CHECKPOINT",
-  "data_raw/Cochrane/data/cdsr_rm5_results.rds"
-)
-output_path <- Sys.getenv("BEAR_COCHRANE_OUTPUT", "data/Cochrane.rds")
+manifest_path <- "data_raw/Cochrane/data/cdsr_interventions_19nov2025.csv"
+rm5_dir <- "data/Cochrane/rm5"
+checkpoint_path <- "data_raw/Cochrane/data/cdsr_rm5_results.rds"
+output_path <- "data/Cochrane.rds"
 
 dir_create(path_dir(checkpoint_path))
 dir_create(path_dir(output_path))

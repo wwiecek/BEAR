@@ -1,61 +1,89 @@
-# Cochrane RM5 Workflow
+# Cochrane/CDSR download and processing workflow
 
-## Obtaining list of meta-analyses to process
+This workflow builds `data/Cochrane.rds` from Cochrane intervention reviews. It
+has two stages: download and parse each review's RM5 file, then convert the
+study-level results into the format used by BEAR. Run all commands from the BEAR
+project root.
 
-Open the [Cochrane Library Advanced Search][cochrane-search]. Run a search with
-no search terms, select **Cochrane Reviews** under **Content type**, and exclude
-protocols on the results page. Select all results, choose **Export selected
-citation(s)**, include abstracts, and download the results as an Excel-compatible
-CSV file.
+## Obtaining the list of reviews
 
-Save the export under `data_raw/Cochrane/data/` with the snapshot date in its
-name, for example `cdsr_interventions_19nov2025.csv`. Check that it contains
-`DOI`, `Abstract`, and `Cochrane Review Group Code` columns. The download script
-requires only `DOI`; the other two fields provide RCT and specialty annotations.
+This step is semi-manual, but straightforward. Go to:
 
-[cochrane-search]: https://onlinelibrary.wiley.com/cochranelibrary/search
+https://www.cochranelibrary.com/cdsr/reviews
 
-Run these scripts from the BEAR project root. A fresh download requires a CSV
-manifest with a column named `DOI` or `doi`. Review ID, abstract, and review
-group columns are optional; the workflow derives `CD######` identifiers from
-DOIs and leaves unavailable annotations missing.
+Select **Interventions** only, then **Select all**. There were 9,177 intervention
+reviews on 9 July 2026. Export all selected reviews as CSV and include abstracts.
+The export can take some time to prepare.
 
-Downloading or parsing RM5 files requires the `cochrane` package:
+Save the CSV under `data_raw/Cochrane/data/` with the snapshot date in its name,
+for example `cdsr_interventions_09jul2026.csv`. Check that it contains `DOI`,
+`Abstract`, and `Cochrane Review Group Code` columns. Only `DOI` is required for
+the download; the other two fields are used later to classify likely RCT-only
+reviews and add review-group metadata.
+
+## Configure the scripts
+
+Downloading and parsing RM5 files requires the `cochrane` package:
 
 ```r
 remotes::install_github("schw4b/cochrane")
 ```
 
-To download and parse reviews with a current manifest:
+The input and output paths are local variables near the top of each script:
+
+| Variable | Used by | Purpose and default |
+|---|---|---|
+| `manifest_path` | Download and processing | CSV exported from CDSR. The download script reads its DOI list; the processing script also reads abstracts and review-group codes when available. Defaults to `data_raw/Cochrane/data/cdsr_interventions_19nov2025.csv`. |
+| `rm5_dir` | Download and processing | Directory containing one downloaded `*StatsDataOnly.rm5` file per review. Defaults to `data/Cochrane/rm5`. |
+| `checkpoint_path` | Download and processing | Parsed, resumable RDS checkpoint. The download script updates it; the processing script reads it, or creates it from existing RM5 files if it is absent. Defaults to `data_raw/Cochrane/data/cdsr_rm5_results.rds`. |
+| `output_path` | Processing only | Final processed dataset, `data/Cochrane.rds` by default. |
+
+The checked-in values reproduce the November 2025 data cut. To use a newer
+CDSR export, edit `manifest_path`, `rm5_dir`, and `checkpoint_path` in both
+scripts before running them. Keep the values identical across the two scripts.
+Use new, dated RM5 and checkpoint paths for a new data cut; otherwise the
+download script will intentionally reuse the existing files and checkpoint.
+Change `output_path` in `Cochrane_process_data.R` only if the processed dataset
+should be saved somewhere other than `data/Cochrane.rds`.
+
+## Downloading and parsing reviews
+
+After checking the paths at the top of the script, run:
 
 ```sh
-BEAR_COCHRANE_MANIFEST=/path/to/current_cdsr_manifest.csv \
 Rscript --vanilla process/cochrane/Cochrane_download_data.R
 ```
 
-The downloader writes RM5 files to `data/Cochrane/rm5` and a resumable parsed
-checkpoint to `data_raw/Cochrane/data/cdsr_rm5_results.rds`. It skips existing
-RM5 files, saves every 20 reviews, and sleeps after download attempts to avoid
-placing unnecessary load on Cochrane.
+`Cochrane_download_data.R` derives each `CD######` review identifier from its
+DOI, downloads the corresponding RM5 file, and parses it into the checkpoint.
+It skips RM5 files already on disk, resumes from reviews already recorded in
+the checkpoint, saves progress every 20 reviews, and pauses between download
+attempts to avoid placing unnecessary load on Cochrane.
 
-To process an existing checkpoint or local RM5 files:
+Failed downloads or parses are retained in the checkpoint with an error message.
+This makes the run auditable and allows a later run to continue without
+repeating successful work. Failed rows are also treated as completed when
+resuming; remove a failed row from the checkpoint before intentionally retrying
+that DOI.
+
+## Building the processed dataset
+
+After the download stage, run:
 
 ```sh
 Rscript --vanilla process/cochrane/Cochrane_process_data.R
 ```
 
-If the checkpoint is absent, the processor finds `*StatsDataOnly.rm5` files,
-parses them, and creates the checkpoint. No manifest is required in this mode.
-When a manifest is available, abstracts support likely-RCT classification and
-review-group codes supply specialty metadata; both annotations remain missing
-otherwise. The final processed dataset is `data/Cochrane.rds`.
+`Cochrane_process_data.R` reads the checkpoint, expands the review data to
+study-level result rows, cleans study years, classifies outcomes, and adds the
+optional review annotations from the manifest. It recalculates continuous
+effects as standardized mean differences and binary effects on the probit
+scale, then saves `data/Cochrane.rds`.
 
-All three paths can be overridden:
+If the checkpoint is absent but RM5 files are available,
+`Cochrane_process_data.R` parses those files and creates the checkpoint first.
+The manifest is optional in this case, although the RCT and review-group
+annotations will be missing.
 
-- `BEAR_COCHRANE_MANIFEST`
-- `BEAR_COCHRANE_RM5_DIR`
-- `BEAR_COCHRANE_CHECKPOINT`
-- `BEAR_COCHRANE_OUTPUT` (defaults to `data/Cochrane.rds`)
-
-Full refreshes should remain resumable and polite. Do not delete checkpoints or
-existing RM5 files unless a clean re-download is specifically required.
+Full refreshes should remain resumable. Do not delete the checkpoint or existing
+RM5 files unless a clean re-download is specifically required.

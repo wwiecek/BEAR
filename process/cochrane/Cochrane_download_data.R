@@ -6,15 +6,9 @@ library(fs)
 
 source("process/cochrane/Cochrane_helpers.R")
 
-manifest_path <- Sys.getenv(
-  "BEAR_COCHRANE_MANIFEST",
-  "data_raw/Cochrane/data/cdsr_interventions_19nov2025.csv"
-)
-rm5_dir <- Sys.getenv("BEAR_COCHRANE_RM5_DIR", "data/Cochrane/rm5")
-checkpoint_path <- Sys.getenv(
-  "BEAR_COCHRANE_CHECKPOINT",
-  "data_raw/Cochrane/data/cdsr_rm5_results.rds"
-)
+manifest_path <- "data_raw/Cochrane/data/cdsr_interventions_19nov2025.csv"
+rm5_dir <- "data/Cochrane/rm5"
+checkpoint_path <- "data_raw/Cochrane/data/cdsr_rm5_results.rds"
 sleep_sec <- 3
 
 dir_create(rm5_dir)
@@ -23,7 +17,7 @@ dir_create(path_dir(checkpoint_path))
 if (!file_exists(manifest_path)) {
   stop(
     "No Cochrane DOI manifest found at: ", manifest_path, ".\n",
-    "Set BEAR_COCHRANE_MANIFEST to a CSV with at least a DOI column.\n",
+    "Set manifest_path to a CSV with at least a DOI column.\n",
     paste0(
       "Existing RM5 files can still be parsed by ",
       "process/cochrane/Cochrane_process_data.R."

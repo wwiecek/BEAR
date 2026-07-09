@@ -1,5 +1,20 @@
 # Cochrane RM5 Workflow
 
+## Obtaining list of meta-analyses to process
+
+Open the [Cochrane Library Advanced Search][cochrane-search]. Run a search with
+no search terms, select **Cochrane Reviews** under **Content type**, and exclude
+protocols on the results page. Select all results, choose **Export selected
+citation(s)**, include abstracts, and download the results as an Excel-compatible
+CSV file.
+
+Save the export under `data_raw/Cochrane/data/` with the snapshot date in its
+name, for example `cdsr_interventions_19nov2025.csv`. Check that it contains
+`DOI`, `Abstract`, and `Cochrane Review Group Code` columns. The download script
+requires only `DOI`; the other two fields provide RCT and specialty annotations.
+
+[cochrane-search]: https://onlinelibrary.wiley.com/cochranelibrary/search
+
 Run these scripts from the BEAR project root. A fresh download requires a CSV
 manifest with a column named `DOI` or `doi`. Review ID, abstract, and review
 group columns are optional; the workflow derives `CD######` identifiers from

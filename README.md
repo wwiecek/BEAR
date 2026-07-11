@@ -39,7 +39,7 @@ Here is a short summary of what’s included in BEAR:
 | EUDRA | clinical trials | 8,650 | \- | 8,650 | 1.0 | 41.4% |
 | Metapsy | psychotherapy | 4,395 | 20 | 1,494 | 2.9 | 48.4% |
 | Nuijten et al | intelligence | 2,439 | \- | 1,913 | 1.3 | 52.9% |
-| What Works Clearing. | education | 12,045 | \- | 1,408 | 8.6 | 33.4% |
+| What Works Clearing. | education | 7,080 | \- | 1,402 | 5.0 | 34.2% |
 | clinicaltrials.gov | clinical trials | 60,470 | \- | 23,060 | 2.6 | 40.6% |
 | psymetadata | psychology | 8,514 | \- | 721 | 11.8 | 35.8% |
 
@@ -90,7 +90,7 @@ additional columns that store values from original studies.
 
 | Category     | Datasets | Studies | Meta-analyses |  Values | Significant |
 |:-------------|---------:|--------:|--------------:|--------:|------------:|
-| curated      |        8 |  37,323 |               | 128,310 |       42.9% |
+| curated      |        8 |  37,317 |               | 123,345 |       43.3% |
 | meta         |        9 |  57,594 |         7,677 | 200,264 |       42.9% |
 | replications |        3 |     388 |            28 |   1,956 |       44.2% |
 | scrape       |        4 | 155,322 |               | 165,653 |       69.0% |
@@ -163,9 +163,9 @@ significance, replication, correct sign) in `workflow/calculate_psr.R`
 | Costello and Fox            |  0.74 | 0.39 |   0.24 |        0.37 | 0.79 |
 | Yang et al                  |  0.73 | 0.37 |   0.22 |        0.35 | 0.78 |
 | Szucs and Ioannidis         |  0.35 | 0.35 |   0.14 |        0.33 | 0.84 |
+| What Works Clearing.        |  0.92 | 0.34 |   0.18 |        0.32 | 0.77 |
 | clinicaltrials.gov + EU CTR |  0.56 | 0.33 |   0.20 |        0.32 | 0.74 |
 | psymetadata                 |  0.66 | 0.32 |   0.20 |        0.30 | 0.72 |
-| What Works Clearing.        |  0.88 | 0.32 |   0.17 |        0.30 | 0.75 |
 | Brodeur et al               |  0.67 | 0.32 |   0.14 |        0.30 | 0.82 |
 | Cochrane                    |  0.82 | 0.28 |   0.12 |        0.26 | 0.77 |
 | Bartos et al                |  0.81 | 0.23 |   0.08 |        0.20 | 0.74 |

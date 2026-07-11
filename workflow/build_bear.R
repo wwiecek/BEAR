@@ -110,7 +110,14 @@ dtlist[["ArelBundock"]] <-
 
 # using data from WWC website directly
 dtlist[["WWC"]] <- readRDS("data/WWC.rds") %>%
-  filter(method %in% c("RCT", "quasi")) %>%
+  filter(
+    method %in% c("RCT", "quasi"),
+    Study_Rating %in% c(
+      "Meets WWC standards without reservations",
+      "Meets WWC standards with reservations"
+    ),
+    !Is_Subgroup
+  ) %>%
   transmute(
     metaid = NA,
     studyid = study_id,

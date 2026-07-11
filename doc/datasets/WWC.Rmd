@@ -10,12 +10,17 @@ flat files are available at <https://ies.ed.gov/ncee/wwc/studyfindings>. Per per
 
 **Data collection:**
 The WWC source data have 13,054 findings (data rows) across 1,908 reviews.
+Each row is one finding, so a single source paper can contribute multiple rows.
 The dataset includes effect sizes, but not standard errors, as well as p-values
 reported by the studies and p-values re-calculated by the WWC reviewers. After
-BEAR processing and filtering, 12,045 findings are retained.
+BEAR processing and filtering, the main BEAR dataset retains 7,080 findings.
 
 **Data processing:**
 We retained only RCTs and quasi-experimental studies (98% of data altogether).
+We removed a few rows where the results were flagged as not meeting WWC
+standards or as ineligible for review.
+We also removed rows marked by WWC as subgroup measures to avoid treating
+subgroup analyses as independent focal findings.
 Where available, we preferred effect sizes and p-values calculated by WWC to
 the ones reported by the studies. We replaced p-values that were equal to zero
 (this occurred in 3% of the dataset) with truncated p-value (i.e. assumed
@@ -24,4 +29,6 @@ two-sided tests. We then applied the sign of the reported effect size, so
 z-values are signed where the effect size is non-zero.
 
 **Additional grouping variable:**
-"outcome domain" variable (e.g. "academic achievement", "alphabetics")
+BEAR uses a citation-derived author-year identifier as `studyid`, so findings
+from the same source paper share a study ID. Outcome domain is retained as
+`subset`.

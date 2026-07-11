@@ -33,6 +33,30 @@ wwc_studies  <- read_csv("data_raw/WWC/WWC_17May2025/Studies.csv")
 # two-sided p -> |z|
 z_from_p <- function(p) qnorm(p / 2, lower.tail = FALSE)
 
+make_study_ids <- function(citation, publication_date) {
+  author <- str_extract(citation, "^[^,;]+") %>%
+    str_replace_all("[^A-Za-z0-9]+", "") %>%
+    str_to_title()
+  year <- str_extract(citation, "\\((18|19|20)[0-9]{2}\\)") %>%
+    str_extract("(18|19|20)[0-9]{2}") %>%
+    coalesce(str_extract(publication_date, "\\d{4}"))
+  base_id <- if_else(
+    !is.na(author) & author != "" & !is.na(year),
+    paste0(author, year),
+    paste0("WWCStudy", as.integer(factor(citation)))
+  )
+  id_lookup <- tibble(citation, base_id) %>%
+    distinct() %>%
+    arrange(base_id, citation) %>%
+    group_by(base_id) %>%
+    mutate(
+      suffix = if(n() == 1) "" else paste0("_", row_number()),
+      study_id = paste0(base_id, suffix)
+    ) %>%
+    ungroup()
+  id_lookup$study_id[match(citation, id_lookup$citation)]
+}
+
 wwc_cleaned <- wwc_findings %>%
   inner_join( transmute(wwc_studies,
                         ReviewID,
@@ -67,9 +91,11 @@ wwc_cleaned <- wwc_findings %>%
     
     # publication year: grab a 4-digit year if present
     year = as.integer(str_extract(Publication_Date, "\\d{4}")),
-    # truncating strings would not work here, mind, so it's best to just make our own IDs, 
-    # even if we lose some information
-    study_id = as.character(as.numeric(factor(Citation)))
+    study_id = make_study_ids(Citation, Publication_Date)
+  ) %>%
+  transmute(
+    StudyID, Citation, Publication_Date, Study_Design, Study_Rating,
+    Outcome_Domain, Is_Subgroup, method, b, pval, ss, year, study_id
   ) 
 
 saveRDS(wwc_cleaned, "data/WWC.rds")

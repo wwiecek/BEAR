@@ -116,6 +116,11 @@ when calculable. Binary rows use a probit-scale difference when calculable.
 `derived/raw_endpoint_nonselected_scales.rds` retains non-selected raw scales
 for validation and later sensitivity analyses.
 
+For estimates derived by us from raw outcome data, the standardized mean
+difference estimator is Hedges' g. For studies where authors supply outcome
+data, it is simply `SMD`, because the reported estimator is not generally
+identifiable.
+
 `derived/clinicaltrialsgov_merged_candidates.rds` is the auditable final merge
 candidate before public trimming. `data/clinicaltrialsgov.rds` is the public
 BEAR-facing copy after retaining author and selected raw rows separately,

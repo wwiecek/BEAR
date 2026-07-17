@@ -88,6 +88,7 @@ The summary column is computed from `clinicaltrialsgov.rds` when this dictionary
 | Variable | Definition | Summary |
 |:--|:--|:--|
 | `measure_class` | Effect-size family used by BEAR summaries. | Standardized Mean Difference 49,955 (33.0%); Probit Difference 31,366 (20.7%); missing 24,211 (16.0%); Mean Difference 17,588 (11.6%); Geometric Ratio 7,079 (4.7%); remaining 21,114 (14.0%) |
+| `measure_detailed` | Clarifies the estimator where this is known. SMDs derived by us from raw outcome data are Hedges' g; where authors supply outcome data, the measure remains `SMD` because the reported estimator is not generally identifiable. |  |
 | `scale` | Scale of the stored effect size. | raw 53,099 (35.1%); smd 49,955 (33.0%); probit 31,366 (20.7%); log 16,893 (11.2%) |
 | `effect` | Effect estimate used for BEAR-facing analysis. |  |
 | `b` | Effect estimate used for z-value calculations where available. |  |
@@ -139,4 +140,3 @@ The summary column is computed from `clinicaltrialsgov.rds` when this dictionary
 | `raw_group_c_title` | Title of the comparator result group. |  |
 | `direction_unknown` | Whether treatment-comparator direction could not be inferred for the raw-derived contrast. | TRUE 22,174 (14.7%); missing 69,992 (46.3%) |
 | `raw_multi_arm_trial` | Whether the raw-derived contrast comes from a multi-arm trial. | TRUE 47,183 (31.2%); missing 69,992 (46.3%) |
-

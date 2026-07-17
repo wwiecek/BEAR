@@ -22,6 +22,11 @@ readRDS("data_raw/Metapsy/data/Metapsy_Jan2026.rds") %>%
     if (all(c("study", ".g", ".g_se") %in% colnames(df))) {
       ret <- df[, c("study", ".g", ".g_se", "ss"), drop = FALSE]
       ret$measure <- measure
+      ret$measure_detailed <- if (measure == "Hedges' g") {
+        "SMD (Hedges' g)"
+      } else {
+        "SMD (from log odds ratio)"
+      }
       if(!is.null(df$year))
         ret$year <- df$year
       else #this happens in suicide-psyctr

@@ -232,7 +232,7 @@ dtlist[["Metapsy"]] <- readRDS("data/Metapsy.rds") %>%
     metaid = metaid,
     studyid = study,
     method = "RCT", #Metapsy only includes RCTs
-    measure = measure, #usually Hedges' g
+    measure = "SMD",
     year = year,
     z = .g/.g_se, #I lazily used .g for effect sizes, in one case they're SMD
     b = .g,
@@ -409,7 +409,9 @@ dtlist[["clinicaltrials"]] <- readRDS("data/clinicaltrialsgov.rds") %>%
             year = year,
             subset = tolower(phase),
             method = "RCT",
-            measure = measure_class,
+            measure = if_else(
+              measure_class == "Standardized Mean Difference", "SMD", measure_class
+            ),
             z = z,
             z_operator = z_operator,
             b = b,
@@ -534,8 +536,8 @@ dtlist[["Bartos"]] <- readRDS("data/Bartos.rds") %>%
   transmute(
     metaid = as.character(meta_id),
     studyid = as.character(id), #these are unique (=same number of IDs as rows in the dataset)
-    method = NA,
-    measure = effect_size_type,
+    method = "RCT",
+    measure = "SMD",
     z = effect_size/standard_error,
     z_operator = "=",
     b = effect_size,
@@ -553,7 +555,7 @@ dtlist[["Bartos"]] <- readRDS("data/Bartos.rds") %>%
 dtlist[["Szucs"]] <- readRDS("data/Szucs.rds") %>%
   filter(subset == "Cognitive neuroscience") %>%
   transmute(
-    metaid, studyid, method, measure, subset, field,
+    metaid, studyid, method = NA_character_, measure, subset, field,
     z, z_operator, p, b, se, ss,
     source
   )

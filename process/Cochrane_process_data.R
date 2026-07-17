@@ -162,12 +162,15 @@ cdsr <- rbind(
     escalc(m1i=mean1,sd1i=sd1,n1i=total1,
            m2i=mean2,sd2i=sd2,n2i=total2,measure="SMD",
            data=., append=TRUE) %>% 
-    as_tibble() %>% mutate(measure = "SMD"),
+    as_tibble() %>% mutate(
+      measure = "SMD",
+      measure_detailed = "SMD (Hedges' g)"
+    ),
   dplyr::filter(studies_long, outcome.flag=="DICH") %>% 
     escalc(ai=events1,n1i=total1,
            ci=events2,n2i=total2,measure="PBIT",
            data=.,append=TRUE) %>% 
-    as_tibble() %>% mutate(measure = "probit")
+    as_tibble() %>% mutate(measure = "probit", measure_detailed = "probit")
 ) %>% 
   mutate(z = yi/sqrt(vi))
 

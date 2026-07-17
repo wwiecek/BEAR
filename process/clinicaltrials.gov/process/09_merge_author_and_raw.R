@@ -273,7 +273,7 @@ public_cols <- c(
   "has_industry_sponsor",
   "outcome_type", "outcome_title", "outcome_time_frame",
   "measurement_stratum_id", "measurement_title", "measurement_units",
-  "measure_class", "scale", "effect", "b", "se", "z", "z_operator",
+  "measure_class", "measure_detailed", "scale", "effect", "b", "se", "z", "z_operator",
   "linked_result_group_ids", "linked_group_codes",
   "n_linked_groups", "author_group_pair_key", "method", "param_type",
   "estimate", "lower", "upper", "p_value", "p_value_modifier",
@@ -316,7 +316,14 @@ public <- merged %>%
     ),
     primary_purpose = coalesce(primary_purpose, str_to_upper(primary_purpose_trial)),
     masking = coalesce(masking, str_to_upper(masking_trial)),
-    year = coalesce(year, primary_completion_year, results_first_posted_year)
+    year = coalesce(year, primary_completion_year, results_first_posted_year),
+    measure_detailed = case_when(
+      measure_class == "Standardized Mean Difference" &
+        effect_source == "raw_derived" ~ "SMD (Hedges' g)",
+      measure_class == "Standardized Mean Difference" &
+        effect_source == "author_reported" ~ "SMD",
+      TRUE ~ measure_class
+    )
   ) %>%
   select(all_of(public_cols))
 
@@ -325,7 +332,15 @@ stopifnot(
         "se", "z_operator", "raw_event_t", "raw_event_c", "raw_n_t",
         "raw_n_c", "raw_mean_t", "raw_mean_c", "raw_sd_t", "raw_sd_c") %in%
         names(public)),
-  !anyDuplicated(names(public))
+  !anyDuplicated(names(public)),
+  all(public$measure_detailed[which(
+    public$measure_class == "Standardized Mean Difference" &
+      public$effect_source == "raw_derived"
+  )] == "SMD (Hedges' g)"),
+  all(public$measure_detailed[which(
+    public$measure_class == "Standardized Mean Difference" &
+      public$effect_source == "author_reported"
+  )] == "SMD")
 )
 
 saveRDS(public, out_path)

@@ -1,29 +1,29 @@
-dataset,replication,meta_analysis,database,metascience_paper,pubmed_scrape,targeted,random_sample,primary_outcome,workflow_classification,summary_group
-ArelBundock,FALSE,TRUE,FALSE,TRUE,FALSE,TRUE,FALSE,FALSE,meta,Metascience datasets
-Askarov,FALSE,TRUE,FALSE,TRUE,FALSE,TRUE,FALSE,FALSE,meta,Metascience datasets
-Bartos,FALSE,TRUE,FALSE,TRUE,FALSE,TRUE,FALSE,FALSE,meta,Metascience datasets
-BarnettWren,FALSE,FALSE,FALSE,FALSE,TRUE,FALSE,TRUE,FALSE,scrape,PubMed/Medline scraped data
-Brodeur,FALSE,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,FALSE,curated,Metascience datasets
-Lang,FALSE,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,TRUE,curated,Metascience datasets
-Chavalarias,FALSE,FALSE,FALSE,FALSE,TRUE,FALSE,TRUE,FALSE,scrape,PubMed/Medline scraped data
-ctgov_euctr,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,TRUE,TRUE,curated,Databases
-clinicaltrials,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,TRUE,TRUE,curated,Databases
-Cochrane,FALSE,TRUE,TRUE,FALSE,FALSE,TRUE,FALSE,TRUE,meta,Databases
-CostelloFox,FALSE,TRUE,FALSE,TRUE,FALSE,TRUE,FALSE,FALSE,meta,Metascience datasets
-euctr,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,TRUE,TRUE,curated,Databases
-Head,FALSE,FALSE,FALSE,FALSE,TRUE,FALSE,TRUE,FALSE,scrape,PubMed/Medline scraped data
-JagerLeek,FALSE,FALSE,FALSE,FALSE,TRUE,FALSE,TRUE,FALSE,scrape,PubMed/Medline scraped data
-ManyLabs2,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,replications,Replication efforts
-SCORE original,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,replications,Replication efforts
-Many Labs original,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,replications,Replication efforts
-OSC original,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,replications,Replication efforts
-Metapsy,FALSE,TRUE,TRUE,FALSE,FALSE,TRUE,FALSE,FALSE,meta,Databases
-Nuijten,FALSE,TRUE,TRUE,FALSE,FALSE,TRUE,FALSE,FALSE,meta,Databases
-OSC,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,replications,Replication efforts
-SCORE_claims,FALSE,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,FALSE,curated,Metascience datasets
-SCORE_replications,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,replications,Replication efforts
-psymetadata,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,FALSE,FALSE,curated,Databases
-Sladekova,FALSE,TRUE,FALSE,TRUE,FALSE,TRUE,FALSE,FALSE,meta,Metascience datasets
-WWC,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,FALSE,FALSE,curated,Databases
-Yang,FALSE,TRUE,FALSE,TRUE,FALSE,TRUE,FALSE,FALSE,meta,Metascience datasets
-Szucs,FALSE,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,FALSE,curated,Metascience datasets
+dataset,replication,meta_analysis,database,metascience_paper,pubmed_scrape,targeted,random_sample,primary_outcome,rct,workflow_classification,summary_group
+ArelBundock,FALSE,TRUE,FALSE,TRUE,FALSE,TRUE,FALSE,FALSE,FALSE,meta,Metascience datasets
+Askarov,FALSE,TRUE,FALSE,TRUE,FALSE,TRUE,FALSE,FALSE,FALSE,meta,Metascience datasets
+Bartos,FALSE,TRUE,FALSE,TRUE,FALSE,TRUE,FALSE,FALSE,TRUE,meta,Metascience datasets
+BarnettWren,FALSE,FALSE,FALSE,FALSE,TRUE,FALSE,TRUE,FALSE,FALSE,scrape,PubMed/Medline scraped data
+Brodeur,FALSE,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,FALSE,TRUE,curated,Metascience datasets
+Lang,FALSE,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,TRUE,FALSE,curated,Metascience datasets
+Chavalarias,FALSE,FALSE,FALSE,FALSE,TRUE,FALSE,TRUE,FALSE,FALSE,scrape,PubMed/Medline scraped data
+ctgov_euctr,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,TRUE,TRUE,TRUE,curated,Databases
+clinicaltrials,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,TRUE,TRUE,TRUE,curated,Databases
+Cochrane,FALSE,TRUE,TRUE,FALSE,FALSE,TRUE,FALSE,TRUE,TRUE,meta,Databases
+CostelloFox,FALSE,TRUE,FALSE,TRUE,FALSE,TRUE,FALSE,FALSE,FALSE,meta,Metascience datasets
+euctr,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,TRUE,TRUE,TRUE,curated,Databases
+Head,FALSE,FALSE,FALSE,FALSE,TRUE,FALSE,TRUE,FALSE,FALSE,scrape,PubMed/Medline scraped data
+JagerLeek,FALSE,FALSE,FALSE,FALSE,TRUE,FALSE,TRUE,FALSE,FALSE,scrape,PubMed/Medline scraped data
+ManyLabs2,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,replications,Replication efforts
+SCORE original,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,replications,Replication efforts
+Many Labs original,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,replications,Replication efforts
+OSC original,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,TRUE,replications,Replication efforts
+Metapsy,FALSE,TRUE,TRUE,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,meta,Databases
+Nuijten,FALSE,TRUE,TRUE,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,meta,Databases
+OSC,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,TRUE,replications,Replication efforts
+SCORE_claims,FALSE,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,FALSE,FALSE,curated,Metascience datasets
+SCORE_replications,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,replications,Replication efforts
+psymetadata,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,curated,Databases
+Sladekova,FALSE,TRUE,FALSE,TRUE,FALSE,TRUE,FALSE,FALSE,FALSE,meta,Metascience datasets
+WWC,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,curated,Databases
+Yang,FALSE,TRUE,FALSE,TRUE,FALSE,TRUE,FALSE,FALSE,FALSE,meta,Metascience datasets
+Szucs,FALSE,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,FALSE,FALSE,curated,Metascience datasets

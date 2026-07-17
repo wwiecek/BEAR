@@ -14,6 +14,7 @@ Rows use the dataset keys consumed by `R/settings.R`.
 | `targeted` | logical | Data collection deliberately targeted eligible studies, reviews, trials, or datasets from a defined source or topic. This is similar to the previous `curated` idea, but records the sampling/data-collection design rather than the downstream BEAR workflow class. |
 | `random_sample` | logical | Data collection is best described as a random or quasi-random sample of studies, papers, trials, or records from journals, registries, PubMed/MEDLINE, or a discipline-wide frame. |
 | `primary_outcome` | logical | BEAR rows are restricted to primary/focal outcomes, endpoints, or author-emphasized principal estimates, rather than a broader set of reported analyses. |
+| `rct` | logical | Contains exclusively or primarily randomised controlled studies. |
 | `workflow_classification` | character | Legacy BEAR workflow class used by plots and summaries: `meta`, `curated`, `scrape`, or `replications`. |
 | `summary_group` | character | Website and README display group. Values should match `bear_data_summary_group_levels` in `R/settings.R`. |
 

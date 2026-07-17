@@ -112,7 +112,7 @@ bear_df_classes <- read.csv(dataset_classification_file, stringsAsFactors = FALS
 
 bear_class_cols <- c("replication", "meta_analysis", "database",
                      "metascience_paper", "pubmed_scrape", "targeted",
-                     "random_sample", "primary_outcome",
+                     "random_sample", "primary_outcome", "rct",
                      "workflow_classification", "summary_group")
 bear_dataset_classes <- lapply(bear_df_classes[bear_class_cols], setNames,
                                nm = bear_df_classes$dataset)

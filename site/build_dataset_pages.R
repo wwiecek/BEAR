@@ -29,12 +29,12 @@ html_escape <- function(x) {
 dataset_tag_metadata <- data.frame(
   column = c("replication", "meta_analysis", "database",
              "metascience_paper", "pubmed_scrape", "random_sample",
-             "primary_outcome"),
+             "primary_outcome", "rct"),
   label = c("replication", "meta analysis", "database",
             "metascience paper", "PubMed", "random sample",
-            "primary outcome"),
+            "primary outcome", "RCT"),
   index_label = c("replication", "meta", "database", "metascience",
-                  "PubMed", "random", "primary"),
+                  "PubMed", "random", "primary", "RCT"),
   description = c(
     "Direct replication project or matched original/replication records.",
     "Organized around meta-analyses, systematic reviews, or reusable meta-analytic datasets.",
@@ -42,7 +42,8 @@ dataset_tag_metadata <- data.frame(
     "Assembled for a metascience paper or project studying research practice.",
     "Built primarily from PubMed, MEDLINE, PubMed Central, or biomedical journal records.",
     "Random or quasi-random sample of papers, trials, records, or studies.",
-    "Restricted to primary, focal, or author-emphasized outcomes."
+    "Restricted to primary, focal, or author-emphasized outcomes.",
+    "Contains exclusively or primarily randomised controlled studies."
   ),
   stringsAsFactors = FALSE
 )

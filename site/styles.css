@@ -341,6 +341,12 @@
   color: #134e4a;
 }
 
+.dataset-tag-rct {
+  background: #fee2e2;
+  border-color: #f87171;
+  color: #7f1d1d;
+}
+
 .selection-mixture-plot {
   width: min(100%, 1500px);
   margin: 1rem auto;

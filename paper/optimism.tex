@@ -74,7 +74,6 @@
  % \endlocaldefs
 
 \DeclareMathOperator{\SNR}{\mathrm{SNR}}
-\DeclareMathOperator{\PoS}{\mathrm{PoS}}
 \DeclareMathOperator{\normal}{\mathrm{normal}}
 \DeclareMathOperator{\MVN}{\mathrm{MVN}}
 \DeclareMathOperator{\uniform}{\mathrm{uniform}}
@@ -105,7 +104,7 @@
 \usepackage[style=authoryear-comp,indexing=cite]{biblatex}
 \ExecuteBibliographyOptions{sortlocale=general,maxnames=12,maxcitenames=3,parentracker=true,sortcites=false,uniquename=false,dashed=false,hyperref=true}
 \uspunctuation
-\addbibresource{../doc/references.bib}
+\addbibresource{references.bib}
 \renewbibmacro{in:}{}
 
 
@@ -120,7 +119,7 @@ Erik van Zwet\thanks{Department of Biomedical Data Sciences, Leiden University M
 \vspace{.1in}
 }
 
-\date{2 Apr 2026}
+\date{1 Jul 2026}
 
 \maketitle
 
@@ -132,42 +131,42 @@ We then provide a modeling framework that allows us to move away from the usual 
 
 After adjusting for publication bias, we find two patterns that hold across all datasets and their various subsets: (1) statistical significance alone does not imply a high probability of successful replication, but (2) it does imply a high probability that the direction of the observed effect was correct. 
 
-We conclude that replication rate is a poor measure of the quality of a field of research and argue that an attitude of global scientific pessimism based on low replication rates is misguided. Instead, we favor a more optimistic view of scientific research based on the ability to identify the direction of effects. This optimism is not naive about the many challenges science continues to face such as questionable research practices (QRPs), paper mills, fake AI papers, and such. 
+We conclude that replication rate is a poor measure of the quality of a field of research and argue that an attitude of global scientific pessimism based on low replication rates is misguided. Instead, we favor a more optimistic view of scientific research based on the ability to identify the direction of effects. This optimism is not naive as we recognize the many challenges science continues to face such as questionable research practices (QRPs), paper mills, fake AI papers, and such. 
 
 \end{abstract}
 
 \section{Studying the quality of empirical science}\label{introduction}
 
-The replication crisis has made us aware that there's a wide range of quality in the life and behavioral sciences, even considering subsets such as particular research areas and papers published in top journals.  This makes sense; if we roughly measure the quality of a study by its signal-to-noise ratio (the true effect size divided by its standard error), then we have some control over the denominator (by taking more or better measurements) but less control over the numerator. It's the nature of research to be uncertain and it's the duty of researchers to pursue all avenues, studying effects which might turn out to be null or highly context-dependent.
+The replication crisis has made us aware that there's a wide range of quality of studies in the life and behavioral sciences, even considering subsets such as particular research areas and papers published in top journals.  This makes sense; if we roughly measure the quality of a study by its signal-to-noise ratio (the true effect size divided by its standard error), then we have some control over the denominator (by taking more or better measurements) but less control over the numerator. It's the nature of research to be uncertain and it's the duty of researchers to pursue all avenues, studying effects which might turn out to be null or highly context-dependent.
 
-A key turning point in the replication crisis was the recognition and refutation of the false intuition that you can tell whether a study is good or not (tell whether a result is strong or not) using a statistical significance threshold.  Beyond the problems with any sharp threshold, even seemingly clear distinctions such as, for example, $p < 0.01$ compared to $p > 0.2$ do not discriminate well between high and low signal-to-noise ratios,\footnote{The two-sided $p$-values of 0.01 and 0.2 correspond to absolute $z$-values of 2.58 and 1.28, respectively. These are about equally likely when the signal-to-noise ratio is $(2.58+1.28)/2=1.93$. This signal-to-noise ratio corresponds to a little under 50\% power, as $\Pr(|z| \geq 1.96 \mid \text{SNR}=1.93) = 0.49$.} and a similar problem arises not just with $p$-values but also with Bayes factors and other measures of quality of evidence. 
+A key turning point in the replication crisis was the recognition and refutation of the false intuition that you can tell whether a study is good or not (tell whether a result is strong or not) using a statistical significance threshold.  Beyond the problems with any sharp threshold, even seemingly clear distinctions such as, for example, $p < 0.01$ compared to $p > 0.2$ do not discriminate well. This is not a problem that is specific to $p$-values. Rather, the problem is that a single study rarely -- if ever -- provides definitive evidence. Thus, similar problems arise not just with $p$-values but also with Bayes factors and other measures of evidence. 
 
-But this should not be taken as a negative verdict on statistically-based science as a whole. To study this, we have created an extensive open-source database of empirical research results and focus here on 16 publicly available corpora in diverse fields.  Our optimistic finding is that, in these corpora, most results seem to be correct in sign.  Our remaining pessimism stems from clear signs of selection in analysis and reporting of results in some of the corpora, which points toward the need for real replication---not in the hope of confirming significance but to understand effects, and to minimize selection in all phases of the process.
+But this should not be taken as a negative verdict on statistically-based science as a whole. To study this, we have created an extensive open-source database of empirical research results and focus here on 16 publicly available corpora in diverse fields.  Our optimistic finding is that, in these corpora, most statistically significant results seem to be correct in sign.  Our remaining pessimism stems from clear signs of selection in analysis and reporting of results in some of the corpora, which points toward the need for real replication---not in the hope of confirming significance but to understand effects, and to minimize selection in all phases of the process.
 
-It is well known to most that you shouldn't rely on a single study; replication and, ultimately, meta-analysis are the way to go.  But then many people are still dismayed when results ``fail to replicate".  One point of the present paper is that apparent replication rates in a research area can be low even when most studies are finding true effects. Hence apparent low replication rates should not be taken as implying that most of science is wrong.
+It is well known to most that you shouldn't rely on a single study and that replication and, ultimately, meta-analysis are the way to go.  But then many people are still dismayed when results ``fail to replicate''.  One point of the present paper is that replication rates in a research area can be low even when most studies are finding true effects. Hence low replication rates should not be taken as implying that most of science is wrong.
 
 \subsection{Going beyond the characterization of scientific claims as true or false}
 
 In an influential paper, \textcite{ioannidis2005most} viewed empirical research as ``a $2 \times 2$ table in which research findings are compared against the gold standard of true relationships in a scientific field.''
 %Assuming statistical tests are done at significance level $\alpha=0.05$ (two-sided), Ioannidis characterizes a research field in terms of the ratio of the number of ``true relationships'' to ``no relationships'' $R$ and the power, $1 - \beta$, the probability of obtaining a statistically significant result conditional on there being a true relationship. He proceeds to derive expressions for the $2 \times 2$ table of proportions of true and false positive and negative findings, which is also sometimes called the confusion matrix. Among these proportions, he emphasizes the  positive predictive value (PPV), the post-study probability of a research finding being true, conditional on its estimate achieving formal statistical significance. He finds $\mathit{PPV} = (1 - \beta)R/(R - \beta R + 0.05)$ and concludes that a research finding is more likely true than false if $(1 - \beta)R > 0.05$.
 
-This $2 \times 2$ model is implicitly accepted in the meta-scientific literature, which tends to focus on statistical significance and replication rates \parencite{simmonsFalsePositivePsychologyUndisclosed2011, opensciencecollaborationEstimatingReproducibilityPsychological2015a, camerer2016evaluating}. In particular, low replication rates are taken by many as evidence of published empirical research being full of null claims and hence not credible as a whole, a position with political influence; see, for example, \textcite{garisto2025trump}.
+This $2 \times 2$ model is implicitly accepted in the meta-scientific literature, which tends to focus on statistical significance and replication rates \parencite{simmonsFalsePositivePsychologyUndisclosed2011, opensciencecollaborationEstimatingReproducibilityPsychological2015a, camerer2016evaluating}. In particular, low replication rates are taken by many as evidence of published empirical research being full of null claims and hence not credible as a whole, a position with political influence, see for example \textcite{garisto2025trump}.
 
 We understand that the $2 \times 2$ model was always intended as an instructive simplification, introduced for the purpose of explaining that in an area of research where the power is low and there are few true relationships, many statistically significant results may not be true. However, far-reaching conclusions from this model have been made about the actual state of scientific research, in particular the claim that more than half of all published research findings are false.
 
-We have two main criticisms of the $2 \times 2$ model. First, we disagree with the notion that the primary goal of scientific study is to separate ``no relationships'' or nulls from ``true relationships.''  Effects of interest are rarely exactly zero, and even if they are, they will no longer be zero if one takes leakage, expectation effects, dropout, etc. into account. But apart from that, with finite data, it is simply not possible to distinguish effects that are zero from those that are small.
+We have two main criticisms of the $2 \times 2$ model. First, we disagree with the notion that the primary goal of scientific study is to separate ``no relationships'' (or ``nulls'') from ``true relationships.''  Effects of interest are rarely exactly zero, and even if they are, they will no longer be zero if one takes leakage, expectation effects, dropout, etc. into account. But apart from that, with finite data, it is simply not possible to distinguish effects that are zero from those that are small.
 
-Our second criticism is that the $2 \times 2$ model is not a realistic representation of empirical research. The key feature of the $2 \times 2$ model is that the PoS (or equivalently, the absolute value of the SNR) of the studies in some area of research take only two values; $\PoS=0.05$ ($\SNR=0$) for the null studies and some other value, for example $\PoS=0.8$ ($|\SNR|=2.8$), for the non-null studies. That is simply not possible. All researchers would have to know the true effect (if there is an effect) to be able to design studies to have either $\PoS=0.05$ or $\PoS=0.8$.
+Our second criticism is that the $2 \times 2$ model is not a realistic representation of empirical research. The key feature of the $2 \times 2$ model is that the probability that a study from some area of research reaches statistical significance only takes two values: 5\% for the null-studies and some other, much larger probability (like 80\%) for the non-null studies. That is simply not possible. Researchers would have to know the true effect (if one exists) to be able to design their studies to have either 5\% or 80\% probability of reaching significance. In reality, researchers do not know how large the true effect is, and, moreover, the design of studies is also based on external considerations such as time, money and the availability of participants. 
 
-Here we make an effort to build more realistic statistical models of scientific research. We have compiled a database of corpora from medicine, economics, psychology, psychotherapy, ecology, evolution, political science, education, and more. Our models allow us to draw some tentative conclusions about concepts such as bias, coverage and replication.
+Here we make an effort to build more realistic statistical models of scientific research. We have compiled a database of corpora from medicine, economics, psychology, psychotherapy, ecology, evolution, political science, education, and more.
 
-In this paper we make two contributions. First, we make a large number of results from empirical research easily accessible in a new database, Benchmarks of Empirical Accuracy in Research (BEAR). We do not contribute any new data, but we process the available data to make them ready for meta-scientific research. We provide clear documentation and all data are available under open source license at \url{https://github.com/wwiecek/BEAR/}. We will continue to add new datasets as they become available.
+Concretely, we make two contributions. First, we make a large number of results from empirical research easily accessible in a new database, Benchmarks of Empirical Accuracy in Research (BEAR). We do not contribute any new data, but we process the available data to make them ready for meta-scientific research. We provide clear documentation and all data are available under open source license at \url{https://github.com/wwiecek/BEAR/}. We will continue to add new datasets as they become available.
 
 Second, we extend the meta-scientific model of \textcite{stephens2017false,van2021statistical,zwet2022proposal}  to account for truncation and publication bias. This model allows us to study measures of research quality that are insensitive to whether effects are exactly zero or merely very small, such as the probability of correctly identifying the direction of an effect and the probability of replication \parencite{greenland2017invited, gelman2014beyond, gelman2000type}. 
 
 \subsection{Summary of findings}
 
-We estimate from our analysis that statistical significance usually implies a high probability that the direction of the observed effect is correct, but that it does not imply a high probability that a hypothetical exact replication study would reach statistical significance. In other words, it is expected that true findings (in the sense of correctly identifying the direction of an effect) will often not replicate. Similar conclusions were reached by \textcite{bak2022revisiting} and \textcite{neves2022most} on the basis of simulations and data from replication studies.
+We conclude from our analyses that statistical significance usually implies a high probability that the direction of the observed effect is correct, but that it does not imply a high probability that a hypothetical exact replication study would reach statistical significance. In other words, it is expected that true findings (in the sense of correctly identifying the direction of an effect) will often not replicate. Similar conclusions were reached by \textcite{bak2022revisiting} and \textcite{neves2022most} on the basis of simulations and data from replication studies.
 
 The scientific process is far from perfect, and questionable research practices, paper mills, and outright fraud are serious concerns \parencite{aquarius2025tackling,matusz2025threat}. But the mere fact that many studies have low probability of reaching statistical significance and therefore fail to replicate does not imply that most published research findings are false. 
 
@@ -189,24 +188,21 @@ We have compiled a large number of empirical results from a variety of sources i
 
 We distinguish three groups among our datasets. The first group contains eight curated sets. These include meta-analytic or systematic-review collections in intelligence research \parencite{nuijten2020intelligence}, economics \parencite{askarov2023significance}, psychotherapy \parencite{cuijpers2024effects}, political science \parencite{arel2022quantitative}, ecology and evolution \parencite{costello2022decline,yang2024large}, psychology \parencite{rodriguez2022psymetadata}, and medicine through the Cochrane Database of Systematic Reviews \parencite{schwab2024cochrane,cochrane2025cdsr}. We also include education intervention results from the What Works Clearinghouse \parencite{wwc2025studyfindings}. Where the source is meta-analytic, BEAR treats the rows as collections of individual studies, while retaining meta-analysis identifiers for other uses.
 
-The second group consists of six corpora that can be thought of as representative samples of studies or results within research domains: SCORE dataset of claims in the social and behavioural sciences \parencite{tyner2026investigating}, main results from top economics papers \parencite{lang2025credible}, text-mined $t$-tests in cognitive neuroscience \parencite{szucs2017empirical}, clinical trial registry results from \texttt{clinicaltrials.gov} and EU CTR \parencite{clinicaltrials2025, euctr2025}, and text-mined $p$-values \parencite{chavalarias2016evolution} and confidence intervals \parencite{barnett2019examination} in biomedical journals.
+The second group consists of six corpora that can be thought of as representative samples of studies or results within research domains: SCORE dataset of scientific claims in the social and behavioral sciences \parencite{tyner2026}, main results from top economics papers \parencite{lang2025credible}, text-mined $t$-tests in cognitive neuroscience \parencite{szucs2017empirical}, clinical trial registry results from \texttt{clinicaltrials.gov} and EU CTR \parencite{clinicaltrials2025, euctr2025}, and text-mined $p$-values \parencite{chavalarias2016evolution} and confidence intervals \parencite{barnett2019examination} in biomedical journals.
 
-For comparison, we also include a third group which has the studies that were studies that were selected for replication in two notable large scale replication efforts: Open Science Collaboration replications in psychology \parencite{opensciencecollaborationEstimatingReproducibilityPsychological2015a} and SCORE replications in the social and behavioural sciences \parencite{tyner2026investigating}. We will discuss these sets of studies together with the second group because they have very similar properties. 
+For comparison, we also include a third group which has the studies that that were selected for replication in two notable large scale replication projects: Open Science Collaboration replications in psychology \parencite{opensciencecollaborationEstimatingReproducibilityPsychological2015a} and SCORE replications in the social and behavioural sciences \parencite{tyner2026}. 
 
-\input{tables/table1.tex}
+\input{table1.tex}
 
-While we do some data processing of our own, all of data collection and the vast majority of data processing was already done by the creators of the datasets we reference. Most of them already include $z$-values or effect sizes and standard errors, but in some cases we make calculations ourselves (for example, from $p$-values or counts for binary data); calculation details are in Appendix \ref{app:datasets}. 
+While we do some data processing of our own, all of the data collection and almost all of the data processing was already done by the creators of the datasets we reference. Most of these datasets already include $z$-values or effect sizes and standard errors, but in some cases we do some conversions to $z$-values ourselves (for example, from $p$-values or $2 \times 2$ tables of counts). The details of these calculations are in the Appendix \ref{app:datasets}. 
 
-Note that we can only identify the main claim in each study in two sets: \textcite{lang2025credible} and clinical trial registries. 
-In most cases we have one or several estimates per study, see Table \ref{tab:dataset_summary}, but it can be as high as 50 $z$-values per study in the case of \textcite{arel2022quantitative}, which aimed to collect all tests reported by economics papers. Data are also heterogeneous in terms of fraction of $|z|$-values that exceed 1.96: from 0.31 in case of the Cochrane database, up to almost 90\% in SCORE and PubMed surveys.
+We can only identify the main claim in each study in two sets: the main results from top economics papers \textcite{lang2025credible} and the primary outcomes of  clinical trials from \textcite{clinicaltrials2025} and \textcite{euctr2025}.  In most cases we have just one or several $z$-values per study, see Table \ref{tab:dataset_summary}. In the case of \textcite{arel2022quantitative} which aimed to collect all tests reported by economics papers, there can be as many as 50. Data are also heterogeneous in terms of the proportion of $z$-values that exceed 1.96 in magnitude: from 0.31 in case of the Cochrane database, up to almost 90\% in SCORE and PubMed surveys.
 
 % Our consolidated database has, for each published estimate, the data source, $z$-value, $p$-value, effect size estimate, standard error, sample sizes, year of publication, study type (e.g., randomized trial, observational study), measure type (e.g., difference of means, log risk ratio), and some categorization into fields of study and subgroups (e.g., medical field, clinical study phase). The current version of BEAR is a single table with xx rows. 
 
 % In some cases we have access to summary data from which we can calculate effect estimates ourselves, but in most datasets we do not know the underlying method of calculation. Where only $p$-values are available, we assume they are two-sided and calculate the $z$-value as $z = \Phi^{-1}(1 - p/2)$. In four of the datasets, the $p$-values or $z$-values are truncated if researchers reported only $p < 0.05$, $p < 0.001$, etc. We account for this in our statistical model. 
 
 \section{Statistical model}
-
-We extend the model of \textcite{stephens2017false,van2021statistical,zwet2022proposal} to account for the truncation and publication bias which are conspicuously present in some of our datasets. The main goal is to estimate a latent distribution of the signal-to-noise ratios across a field of research and then use this distribution to derive various aspects of the sampling distribution of replication results.
 
 \subsection{Signal-to-noise ratios}
  
@@ -220,13 +216,17 @@ The probability of statistical significance (PoS) depends on the true effect and
 \begin{equation}
 \text{PoS}(\text{SNR})=\Pr(|z| \geq 1.96 \mid \text{SNR}) = \Phi(-1.96 - |\text{SNR}|) + 1 - \Phi(1.96 - |\text{SNR}|). \label{eq:power}
 \end{equation}
-For example, if the $\text{SNR}=2.8$ (or $-2.8$), then the PoS is 80\%. Averaging the PoS over the distribution of the SNR in a field of research, we obtain the ``assurance''  which we denote by $\overline{\text{PoS}}$. It is the proportion of studies for that field that reaches the 5\% level of statistical significance.  We can also consider  $\text{Pr}(|\text{SNR}| \geq 2.8) = \text{Pr}(\text{PoS(SNR)} \geq 0.8)$, which is the proportion of studies for which the power relative to the true effect size is 80\% or more.
+For example, if the SNR is 2.8 (or $-2.8$), then the PoS is 80\%. Averaging the PoS over the distribution of the SNR in a field of research, we obtain the ``assurance''  which we denote by $\overline{\text{PoS}}$. It is the proportion of studies for that field that reaches the 5\% level of statistical significance.  We can also consider  $\text{Pr}(|\text{SNR}| \geq 2.8) = \text{Pr}(\text{PoS(SNR)} \geq 0.8)$, which is the proportion of studies for which the PoS is 80\% or more.
 
-The inherent variability of $p$-values can be most easily understood by considering SNRs and $z$-values. Suppose a study has 80\% power. In that case, the sampling distribution of the $z$-value is normal with mean 2.8 and unit variance. So, both $z=0.8 \ (p=0.42)$ and $z=4.8 \ (p=1.6 \cdot 10^{-6})$ can easily occur. 
+In the introduction, we mentioned that $p$-values do not discriminate well between reliable and unreliable results because they are inherently variable. This can be most easily understood by considering SNRs and $z$-values. Suppose a study has 80\% probability of reaching statistical significance. In that case, the SNR is 2.8 and the sampling distribution of the $z$-value is normal with mean 2.8 and unit variance. Now, both $z=0.8$ and $z=4.8$ can easily occur because both are two standard deviations from the mean. These $z$-values correspond to $p=0.42$ and $p=1.6 \cdot 10^{-6}$, respectively. Many would consider these $p$-values to be worlds apart.
 
 \subsection{A model for the distribution of signal-to-noise ratios in a corpus}
 
-We will use maximum likelihood to estimate the distribution of SNRs given a sample of absolute $z$-values. Our assumptions imply that $z$-values are equal to SNRs plus independent standard normal errors. We can therefore obtain the distribution of the absolute SNRs by deconvolution of the standard normal error component from the distribution of the absolute $z$-values \parencite{efron2016empirical,stephens2017false}. 
+If a study has a large signal-to-noise ratio (SNR) it means that the statistical uncertainty of the effect estimate is relatively small compared to the size of the effect. Conversely, a small SNR means that the study is ``noisy'' in the sense that the statistical uncertainty makes it very difficult to discern the effect. To study the quality of the studies in a particular corpus, we will estimate the (latent) distribution of the SNRs.  
+
+To do this, we will extend the model of \textcite{stephens2017false,van2021statistical,zwet2022proposal} to account for the truncation and publication bias which are conspicuously present in some of our datasets. 
+
+Our assumptions imply that $z$-values are equal to SNRs plus independent standard normal errors. If we would observe the $z$-values without selection, we can estimate their distribution. We can then derive the distribution of the SNRs by a process of \emph{deconvolution}, that is, by removing the standard normal error component \parencite{efron2016empirical,stephens2017false}. 
 
 We construct the likelihood in four stages. First, we introduce a mixture distribution for the absolute $z$-values. Then, we add a parameter to account for publication bias. Next, we account for the fact that reported values are sometimes truncated. Finally, we weight the observations according to the number of $z$-values per study.
 
@@ -243,7 +243,7 @@ f_\text{SNR}(x \mid p,\sigma) = f(x \mid p,\sqrt{\sigma^2 -1}).
 \end{equation}
 
 To account for publication bias, we introduce a simple selection component in the likelihood. We follow \textcite{hedges1984estimation,hedges1992modeling} and define $\omega$ as the relative risk that a result with $|z|<1.96$ is observed compared to a result with $|z| \geq 1.96$
-\begin{equation}
+\begin{equation}\label{eq:omega}
 \omega \;=\;
 \frac{\Pr(\text{result is published} \mid |z| <1.96)}
      {\Pr(\text{result is published} \mid |z| \ge1.96)}.
@@ -267,25 +267,30 @@ The $z$-value is sometimes left or right truncated, most often at 1.96, but also
 \begin{align*}
 &f(\tilde{z},\delta \mid p,\sigma, \omega, \text{pub})= \\
 &\begin{cases}
-\omega\,f(\tilde{z}\mid p,\sigma)/ C(p,\sigma,\omega)         & \delta=\texttt{"="},\; \tilde{z}<1.96,\\[4pt]
-      f(\tilde{z}\mid p,\sigma)/C(p,\sigma,\omega)              & \delta=\texttt{"="},\; \tilde{z}\ge 1.96,\\[6pt]
-\omega\,F(\tilde{z}\mid p,\sigma)/ C(p,\sigma,\omega)            & \delta=\texttt{"<"},\; \tilde{z}< 1.96,\\[4pt]
-(\omega\,F(1.96\mid p,\sigma)+F(\tilde{z}\mid p,\sigma)-F(1.96\mid p,\sigma))/ C(p,\sigma,\omega)          & \delta=\texttt{"<"},\; \tilde{z}\ge  1.96,\\[6pt]
-(1-F(\tilde{z}\mid p,\sigma))/ C(p,\sigma,\omega)          & \delta=\texttt{">"},\; \tilde{z}\ge 1.96,\\[4pt]
+\omega\,f(\tilde{z}\mid p,\sigma)/ C(p,\sigma,\omega)         
+    & \delta=\texttt{"="},\; \tilde{z}<1.96,\\[4pt]
+f(\tilde{z}\mid p,\sigma)/C(p,\sigma,\omega)              
+    & \delta=\texttt{"="},\; \tilde{z}\ge 1.96,\\[6pt]
+\omega\,F(\tilde{z}\mid p,\sigma)/ C(p,\sigma,\omega)
+    & \delta=\texttt{"<"},\; \tilde{z}< 1.96,\\[4pt]
+(\omega\,F(1.96\mid p,\sigma)+F(\tilde{z}\mid p,\sigma)-F(1.96\mid p,\sigma))/ C(p,\sigma,\omega)
+    & \delta=\texttt{"<"},\; \tilde{z}\ge  1.96,\\[6pt]
+(1-F(\tilde{z}\mid p,\sigma))/ C(p,\sigma,\omega)
+    & \delta=\texttt{">"},\; \tilde{z}\ge 1.96,\\[4pt]
 ((1-F(1.96\mid p,\sigma))+\omega\,(F(1.96\mid p,\sigma)-F(\tilde{z}\mid p,\sigma)))/ C(p,\sigma,\omega)
-                                               & \delta=\texttt{">"},\; \tilde{z}<  1.96.
+    & \delta=\texttt{">"},\; \tilde{z}<  1.96.
 \end{cases}
 \end{align*}
 \noindent
 The first two rows cover the case without truncation. Rows three and four are left censoring (statements such as $p > 0.05$), and  rows five and six deal with right censoring (e.g., $p < 0.001$). We also introduce artificial censoring when $z$-values are reported to be exactly zero, by treating them as $|z| < 0.5$.
 
-Most of the datasets have multiple $z$-values per study. To prevent studies with many $z$-values from dominating the likelihood, we weight observations by $w_j$, the inverse of the number of $z$-values originating from study $j$. This does not account for the dependence among $z$-values from the same study but that does not concern us because we do not attempt to quantify the uncertainty of our estimates.  The reason is that our datasets are so large that the sampling uncertainty which determines standard errors and confidence intervals, is negligible compared to model uncertainty. The full weighted log likelihood is  
+Most of the datasets have multiple $z$-values per study. To prevent studies with many $z$-values from dominating the likelihood, we weight observations by $w_j$ which is the inverse of the number of $z$-values originating from study $j$. This does not account for the dependence among $z$-values from the same study but that does not concern us because we do not attempt to quantify the uncertainty of our estimates.  The reason is that our datasets are so large that the sampling uncertainty which determines standard errors and confidence intervals, is negligible compared to model uncertainty. The full weighted log likelihood is  
 \begin{equation}
 \ell(p,\sigma, \omega)
 = \sum_{j=1}^{n} w_j \log f(\tilde{z_j},\delta_j \mid p,\sigma, \omega, \text{pub}).               \label{eq:loglik}
 \end{equation}
 \noindent
-Even for large datasets, numerical optimization of this log likelihood is feasible, taking just minutes.  For the paper fits, we cap the fitting input at 50,000 rows per corpus, using study-level thinning as described in the Data section.
+Even for large datasets, numerical optimization of this log likelihood is feasible, taking just minutes.  For very large collections of $z$-values, we cap the sample size  at 50,000, using study-level thinning as described in the Data section.
 
 The estimated distribution of the $z$-values without publication bias is $f(z \mid \hat p,\hat \sigma)$ as defined in (\ref{eq:mixture}) and consequently the estimated distribution of the SNRs is
 \begin{equation}
@@ -310,97 +315,103 @@ All the computations that yielded the results reported in the next section are d
 
 \section{Results}
 
-Figure~\ref{fig:zmixtures} displays the histograms of the observed absolute $z$-statistics of our 14 non-replication corpora. The solid curves are the fitted mixtures of half-normal distributions conditional on publication, and the dashed curves are the ``corrected'' unconditional distributions. We find that the estimated distributions generally track the histogram well and conclude that our model is appropriate for our purpose of quantifying large-scale properties of research areas. The first eight panels are curated sets and the next six are representative domain samples, arranged within groups by their estimated assurances $\overline{\text{PoS}}$. Figure~\ref{fig:replication_mixtures} compares the original-study and replication-study distributions for SCORE and OSC. 
+\subsection{Distributions of $z$-values}
 
-Mixtures of half-normal densities are necessarily decreasing. Apart from the effects of publication bias, we also see this feature in the histograms. We claim that this is typical of large collections of $z$-values. To further support this claim, we have broken down the Cochrane data by 19 medical specialties and the data from {\tt clinicaltrials.gov} by trial phase, see Figure~\ref{fig:subsets}. Again, we see decreasing distributions of absolute $z$-values.
+Figure~\ref{fig:zmixtures} displays the histograms of the observed absolute $z$-statistics of our 8 curated sets and 6 representative domain samples, arranged by their estimated assurances $\overline{\text{PoS}}$.
+The solid curves are the fitted mixtures of half-normal distributions conditional on publication. The discontinuities (``jumps'') of the densities at $|z|=1.96$ are a feature of Hedges' selection model. The dashed curves are the ``corrected'' unconditional distributions. We find that the estimated distributions generally track the histograms well and conclude that our model is appropriate for our purpose of quantifying large-scale properties of research areas. 
 
-The discontinuities (``jumps'') of the densities at $|z|=1.96$ are a feature of Hedges' selection model. It is tempting to focus on the extent of publication bias, which may in principle be quantified by the estimated relative risk of publication $\hat \omega$ as reported in Table~\ref{tab:results_summary_table2}. However, there are several reasons why we must resist that temptation. Many studies in our datasets have multiple outcomes, and we do not know which of them drive publication decisions. Moreover, while Hedges' single-parameter selection model is useful for adjusting our estimates of the distributions of the $z$-statistics, it seems too limited for reliably quantifying and comparing the extent of publication bias across fields of research. This is also not the goal of our study.
+Figure~\ref{fig:replication_mixtures} compares the distributions of the observed $z$-values of the original studies and their replications from SCORE and OSC replication projects \parencite{opensciencecollaborationEstimatingReproducibilityPsychological2015a,tyner2026}. 
 
-The main difference between the distributions of the $z$-values is their widths. A wider distribution of $z$-values implies a wider distribution of SNRs. In other words, the studies in that research area tend to have larger absolute SNRs. Since the PoS is an increasing function of the absolute SNR, this also means that a higher proportion of results will reach statistical significance. 
+Mixtures of half-normal densities are necessarily decreasing. Apart from the effects of publication bias, we also observe this feature in the histograms. We claim that this is typical of large collections of $z$-values. To further support this claim, we have broken down the Cochrane data by 19 medical specialties and the data from {\tt clinicaltrials.gov} by trial phase, see Figure~\ref{fig:subsets}. Again, we see decreasing distributions of absolute $z$-values.
 
-The two columns in Table~\ref{tab:results_summary_table2} that are labeled ``Significance'' report the observed proportions of significant results and the estimated (``corrected'') assurances in the 16 corpora. Recall that the assurance $\overline{\text{PoS}}$ is the proportion of significant results, adjusted for publication bias; see (\ref{eq:power}).
+Another common feature of the histograms is the selection on statistical significance which is especially severe in the 6 domain samples. Apart from the selection on significance, the main difference between the distributions of the $z$-values is their width. A wider distribution of $z$-values implies a wider distribution of SNRs. In other words, the studies in that research area tend to have larger absolute SNRs; they tend to be less noisy. Since the PoS is an increasing function of the absolute SNR, this also means that a higher proportion of results will reach statistical significance. 
 
-The assurance is strictly less than the raw proportion of significant results, unless $\hat{\omega}=1$ so there is no discernible publication bias. Across the 16 corpora, the estimated assurances range from 0.23 to 0.52.  The estimated assurance of phase 3 clinical trials in Figure~\ref{fig:subsets} matches the estimated success rates (probability of moving to regulatory approval following trial) in phase 3 trials in drug development reported by \textcite{thomas2021clinicaldevelopment}.
+\subsection{Quantitative Results}
+
+We report the quantitative characteristics of the corpora in Table~\ref{tab:results_summary_table2}. The first column has the estimated Hedges' relative risk of publication $\hat \omega$, as defined in (\ref{eq:omega}). We find a clear divide between studies in terms of these relative risks, which we can also observe in Figure~\ref{fig:zmixtures}. We find much less selection on significance in the curated datasets, with $\hat \omega > 0.66$ across all eight sets, than in the domain-representative samples, where $\hat \omega$ ranges from 0.08 for \textcite{barnett2019examination} to 0.50 for clinical trial registries. However, we must be careful not to over-interpret this result. The corpus of \textcite{barnett2019examination} is based on confidence intervals, and it is possible that non-significant results were actually reported, just not with the associated confidence intervals. 
+
+In light of the replication crisis in science, it is tempting to focus on these estimates of the extent of publication bias. However, there are several reasons why we must be very cautious. Many studies in our datasets have multiple outcomes, and we do not know which of them drive publication decisions. Moreover, while Hedges' single-parameter selection model is useful for adjusting our estimates of the distributions of the $z$-statistics, it seems too limited for reliably quantifying and comparing the extent of publication bias across fields of research. This is also not the goal of our study.
+
+The next two columns in Table~\ref{tab:results_summary_table2} which are labeled ``Significance'' report proportions of significant results in the 16 corpora before and after adjustment for publication bias. We may refer to the adjusted proportion as the ``assurance'' and denote it by $\overline{\text{PoS}}$, as defined in (\ref{eq:power}).  Note that the adjusted proportion is strictly less than the raw proportion, unless $\hat{\omega}=1$ which would mean that there is no discernible publication bias. Across the 16 corpora, the estimated assurances range from {\color{red} 0.23 to 0.52}.  The estimated assurance of phase 3 clinical trials in Figure~\ref{fig:subsets} matches the estimated success rates (probability of moving to regulatory approval following trial) in phase 3 trials in drug development reported by \textcite{thomas2021clinicaldevelopment}.
 
 By transforming the distribution of the signal-to-noise ratios, we obtain the full distribution of the PoS within each dataset. The left panel of Figure~\ref{fig:pos_gap} displays the complementary cumulative distribution functions (survival functions) of the PoS in the 16 datasets. In other words, it shows what proportions of studies in each dataset ``survive'' to achieve a given level of power. We find that between 10\% and 33\% of studies achieve 80\% PoS; see Table~\ref{tab:results_summary_table3}. 
 
-Since the great majority of studies are targeted at reaching 80\% power, the proportion of studies that reach 80\% PoS may be tentatively interpreted as the proportions of studies where the assumptions of the sample size calculation were true. In general, this proportion is low. However, sample size calculations are not supposed to be aimed at the true effect (which is never known) but at the effect one would not want to miss \parencite{senn2002cross}. In that sense, a low proportion of studies with 80\% PoS just means that it is hard to come up with interventions that have large effects. Pressures of time, money, and logistics also can drive down sample sizes.  
+Since the great majority of studies are targeted at reaching 80\% power, the proportion of studies that reach 80\% PoS may be tentatively interpreted as the proportions of studies where the assumptions of the sample size calculation were true. In general, this proportion is low. However, sample size calculations are not supposed to be aimed at the true effect (which is never known) but at the effect one would not want to miss \parencite{senn2002cross}. In that sense, a low proportion of studies with 80\% PoS may simply mean that it is hard to come up with interventions that have meaningful effects. Pressures of time, money, and logistics also drive down sample sizes.  
 
-The three columns in Table~\ref{tab:results_summary_table2} that are labeled ``Successful replication'' report what would happen if a randomly selected study from a particular corpus would be replicated exactly. We show the probability of obtaining a statistically significant result in the same direction both unconditionally and conditionally on the original study having $|z|=1.96$ or $|z|\geq 1.96$; see equation (\ref{eq:repl}). We find that if a result is marginally statistically significant at the 5\% level (i.e., $|z|=1.96$) then the probability of ``successful replication'' is never much more than the base rate, and often even less. This will be a surprise to those who think of statistical significance as a stand-in for replication. This phenomenon is {\em not} a consequence of many studies having low SNRs (low PoS). If all the studies had higher SNRs, then the assurance would be higher but observing $|z|=1.96$ would be even less impressive.
+The three columns in Table~\ref{tab:results_summary_table2} that are labeled ``Successful replication'' report what would happen if a randomly selected study from a particular corpus would be replicated exactly. Exact replications are not possible in practice, so we should think of these as ``in silico'' replications. We show the probability of obtaining a statistically significant result in the same direction both unconditionally and conditionally on the original study having $|z|=1.96$ or $|z|\geq 1.96$; see equation (\ref{eq:repl}). We find that if a result is marginally statistically significant at the 5\% level (i.e., $|z|=1.96$) then the probability of ``successful replication'' is never much more than the base rate, and often even less. This will be a surprise to those who think of statistical significance as a stand-in for replication. This phenomenon is {\em not} a consequence of many studies having low SNRs (low PoS). If all the studies had higher SNRs, then the assurance would be higher but observing $|z|=1.96$ would be even less impressive.
 
-The three columns that are labeled ``Correct sign'' report
-the estimated proportion of studies where the observed effect has the correct direction (sign). Again, we also condition on $|z|=1.96$ or $|z|\geq 1.96$, cf as defined in equation (\ref{eq:sign}).
-
-If we focus on the case where $|z|=1.96$ then we find a large difference between the probabilities of successful replication and the correct sign. Across the 16 corpora, the estimated probability of replication ranges from 27\% to 44\% while the estimated probability of correct sign ranges from 82\% to 97\%. 
+Finally, the three columns that are labeled ``Correct sign'' report the estimated proportion of studies where the observed effect has the correct direction (sign). Again, we also condition on $|z|=1.96$ or $|z|\geq 1.96$, as defined in equation (\ref{eq:sign}). If we focus on the case where $|z|=1.96$ then we find a large difference between the probabilities of successful replication and the correct sign. Across the 16 corpora, the estimated probability of replication ranges from 27\% to 44\% while the estimated probability of correct sign ranges from 82\% to 97\%. 
 
 The right panel of Figure~\ref{fig:pos_gap} displays the probabilities of successful replication and correct sign conditional on the observed absolute $z$-value, see also Figure~\ref{fig:gap_plot_all}.  The probability of correct sign is always much higher than the probability of successful replication.
 
 \begin{figure}
 \centering
-\includegraphics[width=1\textwidth]{figures/mixtures_plot_collection_groups.pdf}
+\includegraphics[width=1\textwidth]{fig/mixtures_plot_collection_groups.pdf}
 \caption{Histograms of absolute $z$-values across 14 non-replication corpora with fitted curves overlaid on top. The solid curves are densities, fitted using mixtures of half-normal distributions and conditioning on publication. Dashed curves are the unconditional ``corrected'' distributions, scaled to match the solid curve in region $|z| > 1.96$. Blue: curated sets; red: representative domain samples.}\label{fig:zmixtures}
 \end{figure}
 
 \begin{figure}
 \centering
-\includegraphics[width=1\textwidth]{figures/mixtures_plot_replication_projects.pdf}
-\caption{Histograms of absolute $z$-values for the SCORE and OSC original-study and replication-study distributions. Only the unconditional ``corrected'' mixture density is shown. Grey panels show original studies; yellow panels show replication studies.}\label{fig:replication_mixtures}
+\includegraphics[width=1\textwidth]{fig/mixtures_plot_replication_projects.pdf}
+\caption{Histograms of absolute $z$-values for the SCORE and OSC original-study and replication-study distributions. Only the unconditional ``corrected'' mixture density is shown. Gray panels show original studies; yellow panels show replication studies.}\label{fig:replication_mixtures}
 \end{figure}
 
 
-\input{tables/table2.tex}
+\input{table2.tex}
 
 \begin{figure}
 \centering
-\includegraphics[width=.9\textwidth]{figures/pos_gap.pdf}
+\includegraphics[width=.9\textwidth]{fig/pos_gap.pdf}
 \vspace{-.2in}
 \caption{Left panel: ``survival curves'' of the probability of significance: $1 - (\mbox{CDF of PoS})$ for each of the 16 corpora. Right panel: conditional probabilities that the observed direction of the effect matches the true direction (top set of curves) and the conditional probability of ``successful'' replication (bottom set). Colors distinguish curated sets, representative domain samples, and replication efforts.}\label{fig:pos_gap}
 \end{figure}
-
-The estimated relative probability of reporting, $\hat \omega$, can be as low as 0.08. However, Figure~\ref{fig:zmixtures} highlights a clear divide: we find much less selection on significance in the curated datasets, with $\hat \omega > 0.66$ across all eight sets, than in the domain-representative samples, where $\hat \omega$ ranges from 0.08 for \textcite{barnett2019examination} to 0.50 for clinical trial registries. However, we must be careful not to over-interpret this result. The corpus of \textcite{barnett2019examination} is based on confidence intervals, and it is possible that non-significant results were actually reported, just not with the associated confidence intervals. 
 
 
 \section{Discussion}
 
 \subsection{An alternative to the binary model of scientific discovery}
 
-The  $2 \times 2$ model \parencite{ioannidis2005most} is often taken to be a reasonable, if simplified, description of scientific research. According to this model, the probabilities of significance (PoS) of the ``true relationships'' and ``no relationships'' are well separated. The PoS of ``no relationships'' is 5\% by the design of the statistical test, and the PoS of ``relationships'' is much larger by the design of the experiment. If the ratio of ``true relationships'' to ``no relationships'' is not too low, then we can reliably separate them. That is, the positive predictive value (the conditional probability of a true relationship given statistical significance) and the negative predictive value (the conditional probability of no relationship given non-significance) are both high. Moreover, the conditional probability of successful replication (reaching statistical significance again in an exact replication study) is also high.
+The  $2 \times 2$ model \parencite{ioannidis2005most} is often taken to be a reasonable, if simplified, description of scientific research. According to this model, the probabilities of significance (PoS) of the ``true relationships'' and ``no relationships'' are well separated. The PoS of ``no relationships'' is 5\% by the design of the statistical test, and the PoS of ``relationships'' is (or, at least, should be) much larger by the design of the experiment. If the ratio of ``true relationships'' to ``no relationships'' is not too low, then we can reliably separate them. That is, the positive predictive value (the conditional probability of a true relationship given statistical significance) and the negative predictive value (the conditional probability of no relationship given non-significance) are both high. Moreover, the conditional probability of successful replication (reaching statistical significance again in an exact replication study) is also high. Failure to replicate may then be taken as strong evidence that there is actually no relationship.
 
-We have developed an alternative statistical model that goes beyond the $2\times 2$ framework by allowing the PoS to range continuously from 0.05 to 1 and uses Hedges' model to adjust for selective reporting. We also allow for truncation. We fit our model to sixteen corpora across diverse fields collected from publicly available sources.
-
-The model fits well; see Figures~\ref{fig:zmixtures} and \ref{fig:subsets}. In contrast, the $2 \times 2$ model does not fit our data, as we observe no clear separation between the probability of statistical significance for ``true relationships'' and ``no relationships.''
-
-
+We have developed an alternative statistical model that goes beyond the $2\times 2$ framework by allowing the PoS to range continuously from 0.05 to 1. We allow for truncation and used Hedges' model to adjust for selective reporting. We fitted our model to sixteen corpora across diverse fields collected from publicly available sources, see Figures~\ref{fig:zmixtures} and \ref{fig:subsets}.
 
 \subsection{What our meta-analysis says about effect sizes and replication rates}
 
-There are four notable features that hold across all the datasets of empirical research we collected. 
+We will discuss four notable features that hold across all the datasets of empirical research we collected. 
 
-First, the absolute $z$-values have a decreasing density, which suggests that the absolute SNRs also have a decreasing density. In other words, studies with low SNRs are more common than those with high SNRs. We do find that there are considerable differences between research domains in the widths of these distributions which means that the studies in some areas tend to have higher SNRs than in other areas. 
+First, apart from the effects of the selection on significance, the absolute $z$-values in all the corpora have a decreasing density. This suggests that the absolute SNRs also have a decreasing density. In other words, studies with low SNRs are more common than those with high SNRs. Why do these different corpora, coming from many different experiments in different fields, show similar distributions of the absolute $z$-values? We tentatively ascribe this to a sort of anthropic principle \parencite{anthropic} whereby researchers respond to the pressures of time, money, and logistics on one side and the goal to reach statistical significance on the other, by making their studies just about large enough to have a fair chance at reaching statistical significance, but not larger. We do find that there are considerable differences between research domains in the widths of these distributions which means that the studies in some areas tend to have higher SNRs (be less noisy) than in other areas. 
 
-Second, the probability of significance (PoS) tends to be low and only a small minority of studies achieve 80\% power. 
+Second, the probability of significance (PoS) tends to be low and only a small minority of studies achieve 80\% power. It seems that the effect of a treatment or intervention relative to the standard deviation of the outcome is often quite small. To reach a PoS of 80\% would require a sample size which is larger than what is available or affordable. Under such circumstances, researchers will use some optimistic effect size for their sample size calculation, and go ahead with the study. We agree that it may be better to do a small study than to do no study at all. 
 
-Third, reaching statistical significance does not imply a high probability of replication, see Figure~\ref{fig:pos_gap} and Figure~\ref{fig:gap_plot_all}. Even at $p = 0.001$ ($|z|=3.29$) replication is far from assured. 
+Third, reaching statistical significance does not imply a high probability of replication, see Figure~\ref{fig:pos_gap} and Figure~\ref{fig:gap_plot_all}. Even at $p = 0.001$ ($|z|=3.29$) a statistically significant replication is far from assured. This is not difficult to understand. The majority of studies have low PoS, but, for example, 1 in 5 studies with a PoS of only 20\% will reach statistical significance. Conversely, many studies that have reached statistical significance have a low PoS and will not reach statistical significance upon replication.
 
-Fourth, statistical significance {\em does} imply that the sign of the effect is likely correct. 
+Fourth, statistical significance {\em does} imply that the sign of the effect is likely correct. In other words, the so-called ``type III error'' (rejecting the null hypothesis in the wrong direction) is small. This is very important because it means that wrong conclusions from significant results are relatively rare. If that would not be the case, scientific progress would at best be slow.
 
-\subsection{Understanding the literature on meta-replications}
+These conclusions are especially relevant for a hypothetical new study which is comparable to those in our corpora. If such a study is preregistered and no questionable research practices are committed, then a $z$-value in the range of 2 to 3, would imply roughly a 90\% chance of getting the correct sign. Then, if that new study were repeated, we would expect about 50\% probability of reaching statistical significance again, see Figure \ref{fig:pos_gap}. 
 
-A low replication rate does not mean that studies in a field can not be trusted.  As shown in Table \ref{fig:pos_gap}, even in high-quality corpora expected probabilities of successful replication are below 50\%, as low as 20\%. But we still estimate that over 70-90\% of estimates have the correct sign. We believe that replication studies are valuable as long as these two statistical properties are understood.  
+Unfortunately, much research is not preregistered and publication bias, researcher degrees of freedom, paper mills and outright fraud are major concerns. So, we are {\em not} saying that any statistically significant result that appears in print has a high probability of pointing in the right direction. If we have good reasons to doubt the study design or integrity of the analysis, we should use that information. In other words, not every result should be treated as a typical draw from our corpora. Our qualified optimism extends only to research for which we do not have decisive reasons to distrust.
 
-We are not saying that any study that appears in print has a high replication probability; however, if an experiment comparable to those in our corpus is done on a new topic, and it reaches a preregistered $z$-score in the range of 2 to 3, we would expect roughly a 90\% chance of getting the correct sign and a 50\% probability of statistically significant replication, as shown in Figure \ref{fig:pos_gap}b.
 
-However, a lot of research is still not preregistered and we should be concerned about researcher degrees of freedom and forking paths. Our model does not quantify this aspect of researchers' behavior. However, we note a useful, albeit pessimistic, heuristic for judging performance of an average study, which is to ignore claims of statistical significance. For example, \textcite{opensciencecollaborationEstimatingReproducibilityPsychological2015a} reported success with 36 out of 100 replication studies in psychology. 97 out of 100 original results were statistically significant. Per Table \ref{tab:results_summary_table2} we find that conditioning on $|z| > 1.96$ we would expect higher replication rates, 58-78\%, in all corpora, including in the replication project. On the other hand, the observed replication rate is close to the unconditional replication probability in Table \ref{tab:results_summary_table2}.
+% \subsection{Understanding the literature on meta-replications}
 
-Our interpretation of \textcite{miske2026,tyner2026} . . . 
+% As shown in Table \ref{fig:pos_gap}, even in high-quality corpora expected probabilities of successful replication
 
-\subsection{Understanding our findings using the anthropic principle}
 
-Our approach is meta-scientific in that it is based on a global analysis of large corpora of published results. 
-Why do these different corpora, coming from many different experiments in different fields, show similar distributions of the SNR? We tentatively ascribe this to a sort of anthropic principle \parencite{anthropic} whereby researchers respond to the pressures of time, money, and logistics on one side and the goal to reach statistical significance on the other, by making their studies just about large enough to assess the direction of the effect of interest, but not larger. 
+% A low replication rate does not mean that studies in a field can not be trusted.  As shown in Table \ref{fig:pos_gap}, even in high-quality corpora expected probabilities of successful replication are below 50\%, as low as 20\%. But we still estimate that over 70-90\% of estimates have the correct sign. We believe that replication studies are valuable as long as these two statistical properties are understood.  
 
-That said, these incentives do not apply in all areas, and there are subfields of science that are plagued by questionable research practices and increasingly influenced by paper mills and fraudulent research. 
-If we have good prior reasons to doubt the study design or integrity of the analysis, we should use that information. In other words, not every result should be treated as an typical draw from the broad reference class. Our qualified optimism extends only to research for which we do not have decisive reasons to distrust.
+% To be clear, we are not saying that any statistically significant result that appears in print has a high probability of pointing in the right direction. However, if a new experiment comparable to those in our corpus is done, and it reaches a preregistered $z$-value in the range of 2 to 3, we would expect roughly a 90\% chance of getting the correct sign. Still, if that new study were repeated, we would expect only 50\% probability of reaching statistical significance again. This is illustrated in Figure \ref{fig:pos_gap}.
+
+% However, a lot of research is still not preregistered and we should be concerned about publication bias, researcher degrees of freedom and forking paths. Our model does not quantify this aspect of researchers' behavior. However, we note a useful, albeit pessimistic, heuristic for judging performance of an average study, which is to ignore claims of statistical significance. For example, \textcite{opensciencecollaborationEstimatingReproducibilityPsychological2015a} reported success with 36 out of 100 replication studies in psychology. 97 out of 100 original results were statistically significant. Per Table \ref{tab:results_summary_table2} we find that conditioning on $|z| > 1.96$ we would expect higher replication rates, 58-78\%, in all corpora, including in the replication project. On the other hand, the observed replication rate is close to the unconditional replication probability in Table \ref{tab:results_summary_table2}.
+
+% Our interpretation of \textcite{miske2026,tyner2026}. 
+
+% \subsection{Understanding our findings using the anthropic principle}
+
+% Our approach is meta-scientific in that it is based on a global analysis of large corpora of published results. 
+% Why do these different corpora, coming from many different experiments in different fields, show similar distributions of the SNR? We tentatively ascribe this to a sort of anthropic principle \parencite{anthropic} whereby researchers respond to the pressures of time, money, and logistics on one side and the goal to reach statistical significance on the other, by making their studies just about large enough to assess the direction of the effect of interest, but not larger. 
+
+% That said, these incentives do not apply in all areas, and there are subfields of science that are plagued by questionable research practices and increasingly influenced by paper mills and fraudulent research. 
+% If we have good prior reasons to doubt the study design or integrity of the analysis, we should use that information. In other words, not every result should be treated as an typical draw from the broad reference class. Our qualified optimism extends only to research for which we do not have decisive reasons to distrust.
 
 
 \subsection{Reasons for qualified optimism about empirical research}
@@ -411,9 +422,11 @@ If we have good prior reasons to doubt the study design or integrity of the anal
 % WW: This is a repeat of previous subsection
 %We find that statistical significance usually implies a high probability that the direction of the observed effect is correct, but that it does not imply a high probability that an exact replication study will be significant again.
 
-The standard practice in empirical research is that if a result reaches a statistical significance threshold, it is treated as real and the corresponding estimate is taken at face value. Results that are not significant are presented as a null findings or, at best, scenarios where there is not enough information to draw any conclusions. Indeed, it can be viewed as scandalous when a statistically significant published result does not replicate \parencite{tversky1971}. 
+The standard practice in empirical research is that if a result reaches a statistical significance threshold, it is treated as real and the corresponding estimate is taken at face value. Results that are not significant are presented as a null findings or, at best, scenarios where there is not enough information to draw any conclusions. It is then considered scandalous when a statistically significant published result does not replicate \parencite{tversky1971}. 
 
-One way to summarize our result is to say that empirical research often leads to true findings---in the sense of correctly identifying the direction of an effect---that do not replicate in the sense of achieving statistically significant result in the same direction as the original study.  Therefore, failure to replicate should not be taken to mean that the original result was a fluke or a fake. The pessimism in much of the meta-scientific literature reflects a one-sided interpretation of Figure~\ref{fig:pos_gap} and Figure~\ref{fig:gap_plot_all} focusing only on the low replication rates. This skewed view has serious consequences as it may lead to dangerous nihilism among policy makers \parencite{garisto2025trump}. With our study, we hope to rectify it.
+One way to summarize our results is to say that empirical research often leads to true findings---in the sense of correctly identifying the direction of an effect---that do not replicate in the sense of achieving statistically significant result in the same direction as the original study.  Therefore, failure to replicate should not be taken to mean that the original result was a fluke or a fake. The pessimism in much of the meta-scientific literature reflects a one-sided interpretation of Figure~\ref{fig:pos_gap} and Figure~\ref{fig:gap_plot_all} focusing only on the low replication rates. This skewed view has serious consequences as it may lead to dangerous nihilism among policy makers \parencite{garisto2025trump}. With our study, we hope to rectify it.
+
+We emphasize one last time that our optimism does not extend to studies where we have reason for distrust.
 
 %WW: I think these next two paragraphs are very good points, but not sure where best to fit them and I think the current flow is good
 %This should not come as a surprise, as the difference between ``significant'' and ``not significant'' is not itself statistically significant \parencite{gelman2006difference}. 
@@ -424,7 +437,7 @@ One way to summarize our result is to say that empirical research often leads to
 %The bad news is that most studies have less than 80\% probability of significance (power relative to the true effect size); the good news is that, even though average probabilities of significance range from 20\% to 50\%, replications are likely to go in the right direction, with estimated average type S error rates in our corpora in the range of 1\%--3\%. 
 
 \section{Acknowledgments}
-We thank all the compilers of the corpora and the authors of the original studies for their great effort. In particular, we are grateful to Frantisek Bartos, Ryan Briggs, Chris Doucouliagos, Chris Mead, Martina Sladekova, and Tom Stanley for helping us understand the datasets (we do not mean to suggest that they necessarily agree with our conclusions).  We thank the U.S. Office of Naval Research for partial support of this work.
+We acknowledge the creators of the corpora and the authors of the original studies for their great effort. In particular, we are grateful to Frantisek Bartos, Ryan Briggs, Chris Doucouliagos, Chris Mead, Martina Sladekova, and Tom Stanley for helping us understand the datasets. Of course, the conclusions we draw from the datasets are entirely our own. We thank the U.S. Office of Naval Research for partial support of this work.
 
 % This is now leading into the follow-up paper---thinking at the level of individual studies?
 
@@ -491,20 +504,20 @@ If $z_\text{repl}$ is the $z$-value of an exact replication study, then the cond
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=16.5cm]{figures/gap_plot_all.pdf}
+\includegraphics[width=16.5cm]{fig/gap_plot_all.pdf}
 \caption{Relationship between absolute $z$-values and the probability that the direction of the observed effect matches the true direction (blue curves) and the probability of ``successful replication'' (red curves). The vertical line is $\overline{\mathrm{PoS}}$. }
 \label{fig:gap_plot_all}
 \end{figure}
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=1\linewidth]{figures/mixtures_plot_subsets.pdf}
+    \includegraphics[width=1\linewidth]{fig/mixtures_plot_subsets.pdf}
     \vspace{-.2in}
     \caption{Subsets of interventional treatment studies from {\tt clinicaltrials.gov}, broken down by phase (top row) and from Cochrane database (bottom row), grouped by specialty (out of 19 included in the dataset): two with lowest $\overline{\mathrm{PoS}}$ on the left and two with the highest on the right. The peaks in the histograms at $|z| = 1.96, 2.58, 3.29$ are due to trials reporting (two-sided) $p<0.05, p<0.01, p<0.001$.}
     \label{fig:subsets}
 \end{figure}
 
-\input{tables/table3.tex}
+\input{table3.tex}
 
 \clearpage
 \section{Datasets included in BEAR}\label{app:datasets}

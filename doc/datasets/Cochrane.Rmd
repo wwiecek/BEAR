@@ -1,15 +1,15 @@
 ## Cochrane Database of Systematic Reviews (CDSR)
 
-Trials with data available at CDSR, <https://www.cochranelibrary.com/> [@cochrane2025cdsr]
+Trials with results available in CDSR, <https://www.cochranelibrary.com/> [@cochrane2025cdsr].
 
 **Snapshot date:**
 20 November 2025
 
 **Data collection:**
-using R package `cochrane` [@schwab2024cochrane] we merged data from 8,726 records of reviews in CDSR and merged them into a single file `cdsr_interventions_19nov2025.csv` (63 MB).
+Using the R package `cochrane` [@schwab2024cochrane], we combined data from 8,726 CDSR review records into a single file, `cdsr_interventions_19nov2025.csv` (63 MB).
 
 **Data processing:**
-minimal processing with extensive filtering. Final BEAR effect sizes are recalculated
+Processing was minimal, but filtering was extensive. Final BEAR effect sizes are recalculated
 for continuous outcomes as standardised mean differences and for dichotomous outcomes
 as probit-transformed effects.
 Only efficacy outcomes are retained.
@@ -20,13 +20,16 @@ available for users who want to make different selection decisions. It contains
 760,486 result rows, representing 90,042 review-study pairs across 6,619
 Cochrane reviews.
 
-On processing side, we cleaned up study years, categorised measures (risk ratio, odds ratio, mean difference etc.) and experimental designs, especially an "RCT" flag (based on scanning of abstracts of each review for inclusion criteria). Most studies in CDSR are RCTs but some reviews also allowed quasi-experimental studies, which prevented us from categorising many studies. We also classify outcome rows into `efficacy`, `safety`, `dropouts`, and `bias` based on the comparison, outcome, and subgroup labels.
+During processing, we cleaned up study years and categorised measures (risk ratio, odds ratio, mean difference, etc.) and experimental designs. In particular, we created an "RCT" flag by scanning each review abstract for its inclusion criteria. Most studies in CDSR are RCTs, but some reviews also allowed quasi-experimental studies, so we could not classify many studies. We also classify outcome rows into `efficacy`, `safety`, `dropouts`, and `bias` based on the comparison, outcome, and subgroup labels.
 
-Unlike in most of the other datasets in BEAR, we filter CDSR data heavily. First, we only use the outcome and comparison of each review that are coded as "1", as that is most likely the primary outcome and most relevant comparison. Secondly, we keep only rows classified as `efficacy`, excluding likely safety, dropout, and bias-related outcomes based on comparison, outcome, and subgroup labels. Thirdly, we only use studies with continuous and dichotomous outcomes, removing rows where effect estimates are based on instrumental variables or based on individual patient data. Lastly, we remove rows where measure of effect is unknown (retaining: OR, RR, Peto OR, mean difference, standardised mean difference, and risk difference) and rows where there are zero subjects.
+Unlike in most of the other datasets in BEAR, we filter CDSR data heavily. First, we use only the outcome and comparison from each review coded as "1", as these are most likely to be the primary outcome and most relevant comparison. Secondly, we keep only rows classified as `efficacy`, excluding likely safety, dropout, and bias-related outcomes based on comparison, outcome, and subgroup labels. Thirdly, we use only studies with continuous and dichotomous outcomes, removing rows where effect estimates are based on instrumental variables or individual patient data. Lastly, we remove rows where the effect measure is unknown (retaining OR, RR, Peto OR, mean difference, standardised mean difference, and risk difference) and rows with no participants.
 
-A large proportion of CDSR rows have binary outcomes with no events in both arms or all events in both arms. In the BEAR analysis subset before this exclusion, 2,371 of 26,619 binary rows (8.9%) had no events or all events in both arms: 2,247 rows (8.4%) had no events in either arm and 124 rows (0.5%) had all participants experiencing the event in both arms.
+A large proportion of CDSR rows have binary outcomes with no events in either arm or events in all participants in both arms. In the BEAR analysis subset before this exclusion, 2,371 of 26,619 binary rows (8.9%) met one of these conditions: 2,247 rows (8.4%) had no events in either arm and 124 rows (0.5%) had all participants experiencing the event in both arms.
 
 Zero-event studies may be important for some metascientific analyses, but for modelling the distribution of z-values they are unhelpful. With these rows included, the empirical distribution has extra observations at or near zero, and the normal approximation is poor. Because of this peak at zero, including these non-significant studies has the counter-intuitive effect of increasing the estimated degree of selection: the fitted distribution has a steeper drop-off between zero and the conventional significance threshold at 1.96. These observations remain available in the processed source file `data/Cochrane.rds`, but are not retained in the main analysis dataset `BEAR.rds`.
 
-**Additional grouping variable:**
-we retained a "source data type" variable to distinguish estimates from published, unpublished, "sought", and mixed data sources. We also retain an `outcome_group` variable in the processed Cochrane data.
+**Study characteristics:**
+
+- The source flags 69% of retained rows as RCTs; the remaining 31% have an unknown design.
+- Continuous outcomes are standardised mean differences and binary outcomes are probit differences.
+- Records are grouped by Cochrane specialty and source data type (published, unpublished, sought, or mixed); the processed data also retain outcome group.

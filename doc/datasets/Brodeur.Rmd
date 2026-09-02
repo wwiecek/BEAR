@@ -7,8 +7,8 @@
 are preregistration and pre-analysis plans associated with reduced p-hacking and publication bias in economics?
 
 **Data collection:**
-manually extracted test statistics from articles identified as RCT studies in
-leading economics journals published 2018-2021. Extraction was performed
+The authors manually extracted test statistics from articles identified as RCT studies in
+leading economics journals published between 2018 and 2021. Extraction was performed
 table by table. They collected coefficients of interest from results tables,
 excluding constants, balance checks, robustness checks, regression controls,
 and placebo tests. Each source row corresponds to a single reported test
@@ -21,10 +21,10 @@ The paper-level preregistration coding matches the source article counts:
 without one.
 
 **Data availability:**
-replication data file `merged.dta` may be downloaded from <https://dataverse.harvard.edu/file.xhtml?fileId=7884702&version=1.0>
+The replication data file `merged.dta` may be downloaded from <https://dataverse.harvard.edu/file.xhtml?fileId=7884702&version=1.0>.
 
 **Data processing:**
-the authors’ reported z-statistics were used directly and the reported
+The authors' reported z-statistics were used directly and the reported
 coefficients and standard errors were retained. The source `zstat` field stores
 unsigned magnitudes, so we apply the sign of the reported coefficient when
 available. We retain RCT rows and use the source `zstat` field because the
@@ -32,3 +32,9 @@ alternative `myz` field is not populated for all publication years in the
 replication file. We also retain a grouping variable distinguishing not
 preregistered studies, preregistered studies without a PAP, and preregistered
 studies with a PAP.
+
+**Study characteristics:**
+
+- All estimates come from RCTs.
+- There is no information on effect-size measure (e.g. SMD vs ratio).
+- Studies can be grouped by their preregistration and pre-analysis plan status.

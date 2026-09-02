@@ -4,20 +4,20 @@
 @klein2018manylabs.
 
 **Snapshot date:**
-Jan 2026
+January 2026
 
 **Research question:**
 replications of 28 classic and contemporary effects in psychology, with the
 same effects tested across many samples and research sites.
 
 **Data availability:**
-the authors make their replication package available through OSF
-(<https://osf.io/fanre/>). We use the paper-included Many Labs 2 analyses from
-the key table and the site-level aggregated replication results from the public
+The authors make their replication package available through OSF
+(<https://osf.io/fanre/>). We use the Many Labs 2 analyses included in the
+paper's key table and the replication results aggregated by site from the public
 data package.
 
 **Data processing:**
-we retained the 28 preregistered analyses included in the paper. Each row is a
+We retained the 28 preregistered analyses included in the paper. Each row is a
 site-level replication estimate for one analysis, so the dataset has many more
 rows than analyses. We use the Many Labs 2 analysis identifier as `metaid`.
 Thus, a single finding such as `Kay.1` contributes one BEAR row for each
@@ -34,5 +34,8 @@ statistic as `z` and derived the implied standard error. Original-study effects
 were matched by analysis where available and stored separately from the
 replication estimates.
 
-**Additional grouping variable:**
-primary or secondary analysis designation.
+**Study characteristics:**
+
+- The source contains multi-site replications of psychology experiments; BEAR does not classify randomisation for individual rows.
+- The retained effect measure is the correlation scale.
+- Analyses are grouped as primary or secondary.

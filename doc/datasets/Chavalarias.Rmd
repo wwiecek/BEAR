@@ -7,20 +7,23 @@
 reporting of p-values in the biomedical literature
 
 **Data collection:**
-the authors used large-scale text mining of MEDLINE abstracts and PubMed full texts: 4.5mln p-values in 1.6mln MEDLINE abstracts; 3.4mln p-values in 385k PubMed full-text articles.
+The authors used large-scale text mining of MEDLINE abstracts and PubMed full texts: 4.5 million p-values in 1.6 million MEDLINE abstracts, and 3.4 million p-values in 385,000 PubMed full-text articles.
 
 **Data availability:**
-the extracted p-value dataset is publicly available <https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/6FMTT3> (about 6GB of data)
-As per the hosting platform: this dataset is released under the Creative Commons Attribution-NonCommercial 4.0 International License.
+The extracted p-value dataset is publicly available at <https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/6FMTT3> (about 6 GB of data).
+According to the hosting platform, this dataset is released under the Creative Commons Attribution-NonCommercial 4.0 International Licence.
 
 **Data processing:**
-unsigned z-values were derived from p-values assuming two-sided tests. P-value
+Unsigned z-values were derived from p-values assuming two-sided tests. P-value
 truncation operators were processed by collapsing variants such as `<<`, `<<<`,
 `<=`, `less than`, and `=<` into `<`. We dropped 0.7% of rows where p-values did
-not have a “plain” format and 0.08% of rows where truncation could not be
+not have a "plain" format and 0.08% of rows where truncation could not be
 unambiguously classified.
 For the distributed version of BEAR 50,000 studies are selected at random, with
 one row per study, in order to keep the file size manageable.
 
-**Additional variables used:**
-source indicator (abstract versus full text).
+**Study characteristics:**
+
+- There is no information on study design (i.e. we cannot distinguish, for example, between prospective and retrospective studies or between RCTs and observational studies).
+- There is no information on effect-size measure (e.g. SMD vs ratio).
+- Studies can be grouped by whether they were extracted from a MEDLINE abstract or PMC full text.

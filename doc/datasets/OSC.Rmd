@@ -8,17 +8,22 @@ replications of a quasi-random sample of 100 experiments in psychology.
 
 **Data collection:**
 The authors make a comprehensive dataset of results available with their paper.
-In BEAR we did not use the original studies, since all studies in that set
-have p < 0.05, only replications.
+BEAR includes only the replications because all original studies in that set
+have $p < 0.05$.
 
 **Data availability:**
-The data file `rpp_data.csv` is available as part of the repository for the paper <https://osf.io/ytpuq/overview> under a CC0 1.0 Universal license.
+The data file `rpp_data.csv` is available in the paper's repository, <https://osf.io/ytpuq/overview>, under a CC0 1.0 Universal licence.
 
 **Data processing:**
 We derived z-values from the replication p-values assuming two-sided p-values
-(we use the replication p-value column, not the original-study p-value). We
+(we use the p-value column for the replication, not the p-value for the original study). We
 applied the sign of the replication correlation, so z-values are signed where
 that correlation is available. We treated p-values recorded as exactly 0 as
 truncated and recorded this as a lower bound on z (z-operator `>`); otherwise
 we treated p-values as exact (z-operator `=`). We retained the replication
 sample size as `ss`.
+
+**Study characteristics:**
+
+- BEAR treats the replication studies as RCTs.
+- The retained effect measure is the replication correlation.

@@ -1,27 +1,28 @@
-## clinicaltrials.gov snapshot
+## ClinicalTrials.gov snapshot
 
-Trials which reported results at clinicaltrials.gov [@clinicaltrials2025]
+Trials that reported results at ClinicalTrials.gov [@clinicaltrials2025].
 
 **Snapshot date:**
 12 August 2025
 
 **Data source:**
 This is a set of flat files of studies obtained from the AACT downloads page
-(<https://aact.ctti-clinicaltrials.org/downloads/>; over 2GBs of data for
+(<https://aact.ctti-clinicaltrials.org/downloads/>; over 2 GB of data for
 relevant tables), with relevant columns extracted and joined by us before BEAR
 processing.
 
 **Data availability:**
-terms and conditions for ClinicalTrials.gov are at
+The terms and conditions for ClinicalTrials.gov are at
 <https://clinicaltrials.gov/about-site/terms-conditions>.
-We make distributions of derived effect sizes available in accordance with ToC's.
+We make distributions of derived effect sizes available in accordance with the terms and conditions.
 We only use publicly available data and do not imply any endorsement of this work
-by National Library of Medicine, ClinicalTrials.gov or AACT.
+by the National Library of Medicine, ClinicalTrials.gov or AACT.
 
 **Data processing:**
-extensive. There are some differences 
-between this full data table (`BEAR_data/clinicaltrialsgov.rds`) and what is retained for the main BEAR dataset. We 
-briefly discuss them below. Because of rich data structure, please refer to data dictionary for the full data table. 
+Processing was extensive. The full data table (`BEAR_data/clinicaltrialsgov.rds`)
+differs in some respects from the main BEAR dataset. We briefly discuss these
+differences here. Because of its rich structure, please refer to the data
+dictionary for the full data table.
 
 Briefly, BEAR targets primary outcome results for completed studies using two
 data sources:
@@ -31,21 +32,20 @@ data sources:
 alongside source data
 
 Where both (1) and (2) are available, we prefer (1), but also make (2)
-available in the full data table. In case (2) we use standardised mean differences for
-continuous data and probit for count.
+available in the full data table. For (2), we use standardised mean differences for
+continuous outcomes and probit differences for count outcomes.
 
-If working with full data set:
-variable `author_raw_overlap_key` can be used
+When working with the full dataset, variable `author_raw_overlap_key` can be used
 to link the two different calculations of the same effect; 
 variable `include_in_bear` identifies rows retained after applying this
-author-preferred rule. 
+rule preferring author-reported estimates.
 
-The main BEAR dataset keeps (1) randomized, (2) interventional studies with 
-(3) fewer than 20 candidate effect rows (see below).
+The main BEAR dataset keeps studies that (1) are randomised, (2) are interventional,
+and (3) have fewer than 20 candidate effect rows (see the description in this section).
 
 The full ClinicalTrials.gov table uses only completed studies but does not apply
 these three restrictions. It contains 151,313 rows from 27,446 studies;
-46.3% are author-reported and 53.7% are raw-derived. The randomized interventional 
+46.3% are author-reported and 53.7% are derived from raw data. The randomised interventional
 subset used in the main BEAR release contains 60,470 rows from 23,060 studies.
 
 Note that a single ClinicalTrials.gov
@@ -56,17 +56,23 @@ The median study contributes one outcome ID
 and two rows to the full data table. Studies with 20 or more candidate effect
 rows remain in the full data table but are excluded from the main BEAR build.
 
-In the full data table, some raw-derived rows have `direction_unknown == TRUE`, meaning that the control/reference arm could not be reliably inferred, so the sign should be treated 
+In the full data table, some rows derived from raw data have `direction_unknown == TRUE`, meaning that the control/reference arm could not be reliably inferred, so the sign should be treated
 as random.
-Users interested in controlled trials and/or signed z-values should filter the results
+Users interested in controlled trials or signed z-values should filter the results
 accordingly.
 
 See _Standard procedure for dealing with p-values and confidence intervals_ for
 how we created and chose the z-values based on p-values and confidence intervals.
 Briefly, we calculated z-values using two separate procedures (based on p-values
 and confidence intervals) and, if both were available, we made a judgement on
-which one was more appropriate using a pre-defined rule. ClinicalTrials.gov
+which one was more appropriate using a predefined rule. ClinicalTrials.gov
 reports the number of sides for confidence intervals but not for p-values, so we
 treated p-values as two-sided. We dropped rows only when `z` was missing. Notably,
 infinite z-values can arise when `p_value` is recorded as exactly 0, and these are
 retained because they are not missing.
+
+**Study characteristics:**
+
+- The main dataset includes only RCTs (parallel randomised studies).
+- Measures used by studies include standardised and unstandardised mean differences, probit differences, ratios, time-to-event measures, and more. Detailed information is available in the full dataset.
+- Trials can be further grouped by clinical trial phase.

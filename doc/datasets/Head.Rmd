@@ -7,13 +7,13 @@
 extent of p-hacking and its impact on meta-analyses.
 
 **Data collection:**
-PubMed papers that are open access, up to 2014. Authors used regular expressions to extract p-values from text of Abstract and Results, but not tables. Downloaded data has about 220,000 studies and about 2mln rows.
+The source comprises open-access PubMed papers published up to 2014. The authors used regular expressions to extract p-values from the text of the Abstract and Results sections, but not from tables. The downloaded data contain about 220,000 studies and about 2 million rows.
 
 **Data availability:**
-dataset available at <https://datadryad.org/dataset/doi:10.5061/dryad.79d43> under CC0 1.0 Universal licence.
+The dataset is available at <https://datadryad.org/dataset/doi:10.5061/dryad.79d43> under a CC0 1.0 Universal licence.
 
 **Data processing:**
-we followed the same minimal clean-up steps (e.g. removing values found in large supplementary sections) as the original paper and also attached PubMed IDs to the dataset using DOI look-up.
+We followed the same minimal clean-up steps (e.g. removing values found in large supplementary sections) as the original paper and also attached PubMed IDs to the dataset using DOI lookup.
 
 When constructing the BEAR dataset, we derived unsigned z-values from p-values.
 We treated p-values recorded as exactly 0 as truncated and set the z-operator
@@ -21,5 +21,8 @@ to `>`. We recoded all inequalities to sharp inequalities.
 For the distributed version of BEAR 50,000 studies are selected at random, with
 one row per study, in order to keep the file size manageable.
 
-**Additional variables used:**
-we use the "Abstract vs Results" variable for grouping
+**Study characteristics:**
+
+- The source does not classify study designs.
+- The retained measure is a text-mined p-value, converted to an unsigned z-value.
+- Records are grouped by whether they were extracted from the abstract or results text.

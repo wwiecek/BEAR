@@ -1,12 +1,12 @@
 ## What Works Clearinghouse (education)
 
-Large database of education effect sizes created by Institute of Education Sciences [@wwc2025studyfindings].
+Large database of education effect sizes created by the Institute of Education Sciences [@wwc2025studyfindings].
 
 **Snapshot date:**
 17 May 2025
 
 **Data availability:**
-flat files are available at <https://ies.ed.gov/ncee/wwc/studyfindings>. Per permissions and disclaimers section on that website: "Unless stated otherwise, all information on the U.S. Department of Education’s IES website … is in the public domain and may be reproduced, published, linked to, or otherwise used without permission from IES.”
+Flat files are available at <https://ies.ed.gov/ncee/wwc/studyfindings>. The Permissions and Disclaimers section of that website states: "Unless stated otherwise, all information on the U.S. Department of Education's IES website ... is in the public domain and may be reproduced, published, linked to, or otherwise used without permission from IES."
 
 **Data collection:**
 The WWC source data have 13,054 findings (data rows) across 1,908 reviews.
@@ -23,12 +23,13 @@ We also removed rows marked by WWC as subgroup measures to avoid treating
 subgroup analyses as independent focal findings.
 Where available, we preferred effect sizes and p-values calculated by WWC to
 the ones reported by the studies. We replaced p-values that were equal to zero
-(this occurred in 3% of the dataset) with truncated p-value (i.e. assumed
-$p < 10^{-16}$). We calculated z-values from these p-values under assumption of
+(this occurred in 3% of the dataset) with a truncated p-value (i.e. assumed
+$p < 10^{-16}$). We calculated z-values from these p-values under the assumption of
 two-sided tests. We then applied the sign of the reported effect size, so
 z-values are signed where the effect size is non-zero.
 
-**Additional grouping variable:**
-BEAR uses a citation-derived author-year identifier as `studyid`, so findings
-from the same source paper share a study ID. Outcome domain is retained as
-`subset`.
+**Study characteristics:**
+
+- The retained findings are 81% RCTs and 19% quasi-experimental studies.
+- BEAR retains reported effect sizes and p-values, without a harmonised effect-size measure.
+- Findings are grouped by outcome domain; a citation-derived author-year identifier links findings from the same source paper.

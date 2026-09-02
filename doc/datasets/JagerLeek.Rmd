@@ -7,12 +7,17 @@
 estimating science-wise false discovery rate.
 
 **Data collection:**
-authors used a custom program to extract p-values from scraped PubMed abstracts for papers published in 5 main medical journals 2000-2010. 15,653 p-values are available in 5,322 articles.
+The authors used a custom program to extract p-values from scraped PubMed abstracts for papers published in five leading medical journals between 2000 and 2010. The dataset contains 15,653 p-values from 5,322 articles.
 
 **Data availability:**
-the data file `pvalueData.rda` is available <https://github.com/jtleek/swfdr>  License for the programs in that repository is GNU GPL, although a license for the dataset is not stated, as far as we are aware.
+The data file `pvalueData.rda` is available from <https://github.com/jtleek/swfdr>. The programs in that repository are licensed under the GNU GPL, although, as far as we are aware, no licence is stated for the dataset.
 
 **Data processing:**
-there was only minimal processing. We derived unsigned z values from p-values assuming they were two-sided.
+There was only minimal processing. We derived unsigned z-values from p-values assuming they were two-sided.
 
-Notably, large proportion of p-values is truncated, almost always at 0.0001, 0.001, 0.01, or 0.05. As in all datasets, we retained information on truncation. We also treated p-values recorded as exactly 0 as truncated (z-operator `>`). We created a crude flag for RCTs by searching the paper titles for “randomized", "randomised" and "controlled”.
+Notably, a large proportion of p-values are truncated, almost always at 0.0001, 0.001, 0.01, or 0.05. As in all datasets, we retained information on truncation. We also treated p-values recorded as exactly 0 as truncated (z-operator `>`). We created a crude flag for RCTs by searching the paper titles for "randomized", "randomised" and "controlled".
+
+**Study characteristics:**
+
+- Study design is not systematically classified; 30% of rows have a title-based flag suggesting an RCT.
+- The retained measure is a p-value extracted from a PubMed abstract, converted to an unsigned z-value.

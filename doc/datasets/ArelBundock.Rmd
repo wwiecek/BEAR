@@ -7,31 +7,32 @@
 assess statistical power in political science research
 
 **Data availability:**
-replication package (zip file with date 20241010) can be found at 
-<https://osf.io/fgdet>. All data are in public domain.
+The replication package (a zip file dated 20241010) is available at
+<https://osf.io/fgdet>. All data are in the public domain.
 
 **Data description and source:**
-Authors searched for, and contacted authors of, meta-analysis articles across
-141 journals in political science. The resulting source dataset contains 16,649
+The authors searched for meta-analytic articles across 141 journals in
+political science and contacted their authors. The resulting source dataset contains 16,649
 hypothesis tests, grouped in 351 meta-analyses and reported in 46 peer-reviewed
 meta-analytic articles. 
 
 **Notes:**
-This is a collection of meta-analysis inputs rather than a direct
-extraction of all results from primary articles. The source combines a
-political-science search with an earlier Doucouliagos work, meaning that 
-some of this dataset will overlap with Askarov et al.
-However, the two articles cover different fields and therefore BEAR keeps the two
+This dataset collects meta-analysis inputs, rather than repeating data extraction
+from individual studies. It combines an earlier dataset from Doucouliagos et al with
+another search. Therefore, some of this dataset will overlap with Askarov et al.
+However, the two articles aim to cover different fields and BEAR keeps the two
 datasets separate.
 
 **Data processing:**
-using the same code as original authors (replication package that runs on makefiles),
-but skipping some additional processing that they've done for their paper.
-BEAR uses `question_id` as `metaid` (351 meta-analysis/research question groups)
+We used the same code as the original authors (a replication package that uses
+makefiles), but skipped some additional processing they performed for their paper.
+BEAR uses `question_id` as `metaid` (351 groups defined by meta-analysis or research question).
 Signed z-values were
 computed as reported estimates divided by their standard errors. We verified
-that the distributions of z-values matched with the article.
+that the distributions of z-values matched those in the article.
 
-**Additional variables used:** BEAR release includes meta-analytic article (46 papers).
-The dataset also includes `sample` field records whether a row
-comes from the Doucouliagos data collection or the later Briggs/Arel-Bundock data collection.
+**Study characteristics:**
+
+- We do not have information on the study design or measure of effect size.
+- The meta-analytic article, research question, and subfield of political science are retained as additional grouping variables.
+

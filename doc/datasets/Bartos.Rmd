@@ -4,19 +4,19 @@
 @bartos2025exercise, which builds on another analysis, @singh2025exercise.
 
 **Research question:**
-What is the effect of physical exercise on cognition, memory, and executive function; 
-with extra focus on selective reporting and heterogeneity.
+What is the effect of physical exercise on cognition, memory, and executive function,
+with a particular focus on selective reporting and heterogeneity?
 
 **Data availability:**
-Replication data are publicly available via 
-PsyArXiv  <https://osf.io/preprints/psyarxiv/qr8e2_v1> 
-under Creative Commons By Attribution 4.0 license.
+Replication data are publicly available through
+PsyArXiv <https://osf.io/preprints/psyarxiv/qr8e2_v1>
+under a Creative Commons Attribution 4.0 licence.
 
 **Data description and source:**
 Bartoš et al. (2025) extended the systematic review and
 meta-meta-analysis by Singh et al. (2025). Singh et al. compiled a set of 
 peer-reviewed systematic reviews with
-meta-analyses of randomized controlled trials 
+meta-analyses of randomised controlled trials
 that evaluated exercise effects on general cognition, memory, or
 executive function. Bartoš et al. extracted study-level effect
 sizes and standard errors, or information needed to compute them, from study
@@ -25,8 +25,11 @@ Their analysis included 2,239 effect-size estimates
 from 215 meta-analyses.
 
 **Data processing:**
-z-values were computed as effect size divided by its reported standard error. 
+Z-values were computed as the effect size divided by its reported standard error.
 No filtering or recoding beyond variable renaming was required.
 
-**Additional variables used:**
-None.
+**Study characteristics:**
+
+- All studies are RCTs.
+- The reported measures are standardised mean differences; in the dataset we also include a flag to differentiate Hedges' g from Cohen's d.
+- Outcomes can be grouped as executive function, general cognition, or memory.

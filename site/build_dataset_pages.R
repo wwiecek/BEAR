@@ -37,12 +37,12 @@ dataset_tag_metadata <- data.frame(
                   "PubMed", "random", "primary", "RCT"),
   description = c(
     "Direct replication project or matched original/replication records.",
-    "Organized around meta-analyses, systematic reviews, or reusable meta-analytic datasets.",
-    "Standing database, registry, clearinghouse, or package database.",
+    "Organised around meta-analyses, systematic reviews, or reusable meta-analytic datasets.",
+    "Database or registry of research.",
     "Assembled for a metascience paper or project studying research practice.",
     "Built primarily from PubMed, MEDLINE, PubMed Central, or biomedical journal records.",
-    "Random or quasi-random sample of papers, trials, records, or studies.",
-    "Restricted to primary, focal, or author-emphasized outcomes.",
+    "Random or quasi-random sample of papers, trials, records, or studies from a given field or group of journals.",
+    "Identifies primary outcomes in studies.",
     "Contains exclusively or primarily randomised controlled studies."
   ),
   stringsAsFactors = FALSE
@@ -153,8 +153,9 @@ plot_lines <- function(plot_rows) {
     plot_path <- file.path("../assets/mixture_plots", plot_row$plot_file)
     caption <- paste(
       "The fitted mixture model is shown over the empirical distribution of",
-      "absolute z-values. The solid line is a mixture of half-normals, with",
-      "selection. The dashed line shows the distribution without selection.",
+      "absolute z-values. The solid line is a mixture of half-normal",
+      "distributions with selection. The dashed line shows the distribution",
+      "without selection.",
       "If there are inequalities (e.g. studies reporting p < 0.05), the",
       "histogram resamples values from the appropriate set."
     )
@@ -242,7 +243,7 @@ model_summary_html <- function(plot_rows) {
     "the |z| = 1.96 threshold rather than above it. Values below one indicate ",
     "lower observation probability below the conventional two-sided significance threshold.</dd>",
     "<dt>Successful replication</dt><dd>The probability that an exact replication ",
-    "has the same sign and |z| greater than 1.96, conditional on the original ",
+    "has the same sign and a |z| greater than 1.96, conditional on the original ",
     "result having |z| greater than 1.96.</dd><dt>Correct sign</dt><dd>The probability that ",
     "the observed effect has the same direction as the true effect, conditional ",
     "on an original result with |z| greater than 1.96.</dd></dl></details>"

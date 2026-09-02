@@ -3,8 +3,8 @@ title: "Reproduce"
 ---
 
 The [GitHub repository](https://github.com/wwiecek/BEAR) contains the R
-workflow, dataset documentation, selected outputs, and fitted mixture
-model artifacts used by BEAR.
+workflow, dataset documentation, selected outputs, and fitted mixture-model
+artefacts used by BEAR.
 
 ## Main workflow
 
@@ -13,17 +13,17 @@ model artifacts used by BEAR.
 - `workflow/build_bear.R` stitches processed inputs into `BEAR.rds`.
 - `workflow/fit_mixtures.R` fits the mixture models used in downstream
   summaries.
-- `workflow/calculate_psr.R` calculates probability of significance,
+- `workflow/calculate_psr.R` calculates the probability of significance,
   replication, and sign summaries from fitted models, then refreshes the
-  dataset-level mixture plots used by this website.
+  mixture plots for each dataset used by this website.
 
 ## Data layers
 
 The repository contains code, documentation, and selected outputs. Large
-combined data artifacts are distributed through
+combined data artefacts are distributed through
 [GitHub Releases](https://github.com/wwiecek/BEAR/releases). Individual
-processed datasets can be fetched through the data submodule when deeper
-dataset-level work is needed.
+processed datasets can be fetched through the data submodule for work on
+individual datasets.
 
 ## Rerunning BEAR
 
@@ -34,15 +34,15 @@ To work only with the combined dataset, download `BEAR.rds` from
 curl -L -o BEAR.rds https://github.com/wwiecek/BEAR/releases/download/v2/BEAR.rds
 ```
 
-To work with individual processed datasets, initialize the data submodule:
+To work with individual processed datasets, initialise the data submodule:
 
 ```bash
 git submodule update --init --recursive
 ```
 
-This downloads the `data/` contents needed for deeper dataset-level work.
+This downloads the `data/` contents needed for work on individual datasets.
 Dataset-specific processing scripts live in `process/`. Once processed
-datasets are present, `workflow/build_bear.R` stitches `BEAR.rds`;
+datasets are present, `workflow/build_bear.R` builds `BEAR.rds`;
 `workflow/fit_mixtures.R` fits mixture models in `mixtures/`; and
 `workflow/calculate_psr.R` refreshes the PSR table and website mixture
 plots.

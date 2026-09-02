@@ -32,7 +32,7 @@ Benchmarks of Empirical Accuracy in Research
 Quantitative metascience drives important debates about research standards.
 Most of its crucial contributions have been
 based on analysing individual datasets, often painstakingly constructed by researchers.
-Thanks to their work we now have better understanding of replicability,
+Thanks to their work we now have a better understanding of replicability,
 publication bias, p-hacking,
 reporting practices, pre-registration, significance rates, and more.
 But many canonical findings of metascience are based on individual datasets,
@@ -43,7 +43,7 @@ each constructed in a specific way. How generalisable are these findings?
 ::: {.g-col-12 .g-col-md-6}
 ## Solution
 
-BEAR is an open-source database for metascience exploration
+BEAR is an open-source database for exploring metascience
 with over 20 datasets across many scientific fields and millions of data points.
 BEAR does not generate any new source data; it repackages publicly available datasets
 into a common structure to make research on replication, exchangeability,
@@ -67,9 +67,9 @@ or follow the [download instructions](getting-started.qmd) for the command line.
 BEAR combines curated registries of studies, random collections of articles in
 different disciplines, sets of meta-analyses, and direct replication projects.
 These are purposefully heterogeneous datasets of varying quality.
-The dataset covers many disciplines: economics, political science, biomedicine,
+The database covers many disciplines: economics, political science, biomedicine,
 clinical trials, ecology, evolution, education, neuroscience, and more.
-Head to [datasets section](datasets.qmd) to read about individual datasets.
+Head to the [Datasets section](datasets.qmd) to read about individual datasets.
 See [Documentation](documentation.qmd) for shared derivation rules, including
 the treatment of p-values and confidence intervals.
 :::
@@ -80,7 +80,7 @@ the treatment of p-values and confidence intervals.
 At a minimum BEAR contains z-values with clearly labelled identifiers for studies
 and meta-analyses. Where available, it also includes effect sizes, standard errors, sample sizes,
 methods (e.g. parallel RCT), measures (e.g. standardised mean difference, odds ratio),
-and additional covariates (e.g. year, pre-registration status, phase of clinical trial,
+and additional covariates (e.g. year, pre-registration status, phase of the clinical trial,
 journal, discipline).
 
 An optional model of signal-to-noise ratios (based on van Zwet et al)
@@ -100,14 +100,14 @@ to fit their own models.
 - [Datasets](datasets.qmd) for the current dataset index, basic results, and individual
   dataset descriptions.
 - [Documentation](documentation.qmd) for shared derivation rules and processing notes.
-- [Reproduce](reproduce.qmd) for more complete workflow of rebuilding the database
+- [Reproduce](reproduce.qmd) for a more complete workflow for rebuilding the database
   from individual data sources and modelling.
-- [GitHub repository](https://github.com/wwiecek/BEAR) to access code and dataset
+- [GitHub repository](https://github.com/wwiecek/BEAR) to access the code and datasets
   directly.
 
 ## Credits
 
-All credit is due to researchers who put together the metascientific datasets
-and people maintaining large scale repositories from which
+All credit is due to the researchers who assembled the metascientific datasets
+and maintain the large-scale repositories from which
 data are compiled here. Please see individual dataset pages for references and
 licensing information.

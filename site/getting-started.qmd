@@ -14,12 +14,12 @@ curl -L -o BEAR.rds \
 
 ## Access individual datasets
 
-The `BEAR.rds` dataset intentionally keeps those individual datasets opt-in so that the 
-main dataset remains small and easy to work with.
-In some cases the full dataset (e.g. millions of data points from PubMed scrape 
-studies) is only available in the file in `data/`.
+Individual datasets are deliberately omitted from `BEAR.rds` so that the main
+dataset remains small and easy to work with. Some full datasets (e.g. PubMed
+scrapes containing millions of data points) are available only as separate
+files in `data/`.
 
-If you only want to download some of the datasets, you can find them at 
+If you only want to download some datasets, you can find them at
 https://github.com/wwiecek/BEAR_data
 
 If you want all the individual datasets, clone the BEAR repository and then 

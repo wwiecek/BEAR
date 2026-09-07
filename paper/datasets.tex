@@ -1,4 +1,4 @@
-% Do not edit by hand, this is currently generated in GitHub repo
+% Do not edit by hand; generated from paper/datasets.Rmd.
 
 This appendix describes the 16 BEAR corpora used in the paper. The full
 BEAR database contains additional datasets documented elsewhere.
@@ -34,8 +34,25 @@ extract year labels from titles. We dropped some invalid rows (missing,
 non-finite, or non-positive standard errors). Signed z-values were
 computed as effect sizes divided by their standard errors.
 
-\textbf{Additional grouping variable:} name of the original psymetadata
-dataset.
+\textbf{Study characteristics:}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{psymetadata:} the primary-study design is not harmonised
+  across the imported datasets.
+\item
+  \textbf{psymetadata:} the effect-size measure is not harmonised across
+  the imported datasets.
+\item
+  \textbf{psymetadata:} records are grouped by original psymetadata
+  dataset.
+\item
+  \textbf{Nuijten:} the primary-study design is not classified.
+\item
+  \textbf{Nuijten:} BEAR retains the reported effect estimates and
+  standard errors without a harmonised effect-size measure.
+\end{itemize}
 
 \newpage
 
@@ -83,6 +100,20 @@ likely a lot of overlap between the two sets.
 reproducibility package. Signed z-values were computed as reported
 effect sizes divided by their standard errors.
 
+\textbf{Study characteristics:}
+
+\begin{itemize}
+\tightlist
+\item
+  The estimates are mainly observational (91\% of BEAR rows); 6\% are
+  mixed-design and 3\% are RCTs.
+\item
+  BEAR retains the reported estimates and standard errors, without a
+  harmonised effect-size measure.
+\item
+  Estimates are grouped as macroeconomics or microeconomics/other.
+\end{itemize}
+
 \newpage
 
 \subsection{Metapsy (psychotherapy)}\label{metapsy-psychotherapy}
@@ -104,8 +135,20 @@ requires attribution.
 with some cleaning (e.g.~to extract study dates from titles). Almost all
 estimates are Hedges' g, but for one of the databases
 (\texttt{total-response}) we converted log-odds ratios to SMD (dividing
-by \(\Pi/\sqrt{3}\) to scale SD of logistic regression). Signed z-values
-were computed as effect sizes divided by their standard errors.
+by \(\Pi/\sqrt{3}\) to scale SD of logistic regression) to keep a
+comparable scale. Signed z-values were computed as effect sizes divided
+by their standard errors.
+
+\textbf{Study characteristics:}
+
+\begin{itemize}
+\tightlist
+\item
+  The source contains RCTs of psychotherapeutic interventions.
+\item
+  Effects are mainly Hedges' g; a minority are standardised mean
+  differences.
+\end{itemize}
 
 \newpage
 
@@ -127,12 +170,12 @@ political science. The resulting source dataset contains 16,649
 hypothesis tests, grouped in 351 meta-analyses and reported in 46
 peer-reviewed meta-analytic articles.
 
-\textbf{Notes:} This is a collection of meta-analysis inputs rather than
-a direct extraction of all results from primary articles. The source
-combines a political-science search with an earlier Doucouliagos work,
-meaning that some of this dataset will overlap with Askarov et al.
-However, the two articles cover different fields and therefore BEAR
-keeps the two datasets separate.
+\textbf{Notes:} This dataset collects meta-analysis inputs, rather than
+repeating data extraction from individual studies. It combines an
+earlier dataset from Doucouliagos et al with another search. Therefore
+some of this dataset will overlap with Askarov et al. However, the two
+articles aim to cover different fields and BEAR keeps the two datasets
+separate.
 
 \textbf{Data processing:} using the same code as original authors
 (replication package that runs on makefiles), but skipping some
@@ -142,10 +185,19 @@ question groups) Signed z-values were computed as reported estimates
 divided by their standard errors. We verified that the distributions of
 z-values matched with the article.
 
-\textbf{Additional variables used:} BEAR release includes meta-analytic
-article (46 papers). The dataset also includes \texttt{sample} field
-records whether a row comes from the Doucouliagos data collection or the
-later Briggs/Arel-Bundock data collection.
+\textbf{Study characteristics:}
+
+\begin{itemize}
+\tightlist
+\item
+  The primary-study design is not classified.
+\item
+  BEAR retains the reported estimates and standard errors, without a
+  harmonised effect-size measure.
+\item
+  Meta-analytic article, research-question group, and political-science
+  subfield are retained for grouping.
+\end{itemize}
 
 \newpage
 
@@ -176,11 +228,27 @@ under CC BY 4.0 licence.
 
 \textbf{Data processing:} no additional data processing other than
 cleaning up study years. Signed z-values were computed as effect sizes
-divided by their standard errors. Note that the replication package for
-Yang et al does not include meta-analysis indicators.
+divided by their standard errors. For Yang et al, BEAR uses the source
+file names as meta-analysis identifiers.
 
-\textbf{Additional variables used:} we retained a measure variable
-(``lnRR'', ``SMD'', ``Zr'' or ``uncommon'')
+\textbf{Study characteristics:}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Costello and Fox:} the primary-study design is not classified.
+\item
+  \textbf{Costello and Fox:} effects are standardised mean differences,
+  log response ratios, Fisher's z correlations, or less common measures.
+\item
+  \textbf{Costello and Fox:} BEAR groups records as ecology, evolution,
+  or other ecology/evolution.
+\item
+  \textbf{Yang:} the primary-study design is not classified.
+\item
+  \textbf{Yang:} effects are standardised mean differences, log response
+  ratios, or Fisher's z correlations.
+\end{itemize}
 
 \newpage
 
@@ -200,22 +268,39 @@ is in the public domain and may be reproduced, published, linked to, or
 otherwise used without permission from IES.''
 
 \textbf{Data collection:} The WWC source data have 13,054 findings (data
-rows) across 1,908 reviews. The dataset includes effect sizes, but not
-standard errors, as well as p-values reported by the studies and
+rows) across 1,908 reviews. Each row is one finding, so a single source
+paper can contribute multiple rows. The dataset includes effect sizes,
+but not standard errors, as well as p-values reported by the studies and
 p-values re-calculated by the WWC reviewers. After BEAR processing and
-filtering, 12,045 findings are retained.
+filtering, the main BEAR dataset retains 7,080 findings.
 
 \textbf{Data processing:} We retained only RCTs and quasi-experimental
-studies (98\% of data altogether). Where available, we preferred effect
-sizes and p-values calculated by WWC to the ones reported by the
-studies. We replaced p-values that were equal to zero (this occurred in
-3\% of the dataset) with truncated p-value (i.e.~assumed
-\(p < 10^{-16}\)). We calculated z-values from these p-values under
-assumption of two-sided tests. We then applied the sign of the reported
-effect size, so z-values are signed where the effect size is non-zero.
+studies (98\% of data altogether). We removed a few rows where the
+results were flagged as not meeting WWC standards or as ineligible for
+review. We also removed rows marked by WWC as subgroup measures to avoid
+treating subgroup analyses as independent focal findings. Where
+available, we preferred effect sizes and p-values calculated by WWC to
+the ones reported by the studies. We replaced p-values that were equal
+to zero (this occurred in 3\% of the dataset) with truncated p-value
+(i.e.~assumed \(p < 10^{-16}\)). We calculated z-values from these
+p-values under assumption of two-sided tests. We then applied the sign
+of the reported effect size, so z-values are signed where the effect
+size is non-zero.
 
-\textbf{Additional grouping variable:} ``outcome domain'' variable
-(e.g.~``academic achievement'', ``alphabetics'')
+\textbf{Study characteristics:}
+
+\begin{itemize}
+\tightlist
+\item
+  The retained findings are 81\% RCTs and 19\% quasi-experimental
+  studies.
+\item
+  BEAR retains reported effect sizes and p-values, without a harmonised
+  effect-size measure.
+\item
+  Findings are grouped by outcome domain; a citation-derived author-year
+  identifier links findings from the same source paper.
+\end{itemize}
 
 \newpage
 
@@ -237,7 +322,7 @@ Final BEAR effect sizes are recalculated for continuous outcomes as
 standardised mean differences and for dichotomous outcomes as
 probit-transformed effects. Only efficacy outcomes are retained. The
 distributed \texttt{BEAR.rds} file includes a smaller analysis subset
-with about 38,000 rows: the first comparison and first outcome from each
+with about 36,000 rows: the first comparison and first outcome from each
 review, restricted to efficacy outcomes. The processed
 \texttt{data/Cochrane.rds} file is larger and is available for users who
 want to make different selection decisions. It contains 760,486 result
@@ -266,10 +351,40 @@ is unknown (retaining: OR, RR, Peto OR, mean difference, standardised
 mean difference, and risk difference) and rows where there are zero
 subjects.
 
-\textbf{Additional grouping variable:} we retained a ``source data
-type'' variable to distinguish estimates from published, unpublished,
-``sought'', and mixed data sources. We also retain an
-\texttt{outcome\_group} variable in the processed Cochrane data.
+A large proportion of CDSR rows have binary outcomes with no events in
+both arms or all events in both arms. In the BEAR analysis subset before
+this exclusion, 2,371 of 26,619 binary rows (8.9\%) had no events or all
+events in both arms: 2,247 rows (8.4\%) had no events in either arm and
+124 rows (0.5\%) had all participants experiencing the event in both
+arms.
+
+Zero-event studies may be important for some metascientific analyses,
+but for modelling the distribution of z-values they are unhelpful. With
+these rows included, the empirical distribution has extra observations
+at or near zero, and the normal approximation is poor. Because of this
+peak at zero, including these non-significant studies has the
+counter-intuitive effect of increasing the estimated degree of
+selection: the fitted distribution has a steeper drop-off between zero
+and the conventional significance threshold at 1.96. These observations
+remain available in the processed source file
+\texttt{data/Cochrane.rds}, but are not retained in the main analysis
+dataset \texttt{BEAR.rds}.
+
+\textbf{Study characteristics:}
+
+\begin{itemize}
+\tightlist
+\item
+  The source flags 69\% of retained rows as RCTs; the remaining 31\%
+  have an unknown design.
+\item
+  Continuous outcomes are standardised mean differences and binary
+  outcomes are probit differences.
+\item
+  Records are grouped by Cochrane specialty and source data type
+  (published, unpublished, sought, or mixed); the processed data also
+  retain outcome group.
+\end{itemize}
 
 \newpage
 
@@ -303,8 +418,19 @@ unambiguously classified. For the distributed version of BEAR 50,000
 studies are selected at random, with one row per study, in order to keep
 the file size manageable.
 
-\textbf{Additional variables used:} source indicator (abstract versus
-full text).
+\textbf{Study characteristics:}
+
+\begin{itemize}
+\tightlist
+\item
+  The source does not classify study designs.
+\item
+  The retained measure is a text-mined p-value, converted to an unsigned
+  z-value.
+\item
+  Records are grouped by whether they were extracted from a MEDLINE
+  abstract or PMC full text.
+\end{itemize}
 
 \newpage
 
@@ -346,8 +472,27 @@ agreement with the SCORE significant/nonsignificant coding, statistic
 provenance, exactness, available effect and standard error, and text
 order.
 
-\textbf{Additional grouping variables:} discipline and SCORE source
-indicator.
+\textbf{Study characteristics:}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{SCORE claims:} the underlying study design is not
+  systematically classified.
+\item
+  \textbf{SCORE claims:} measures include regression coefficients,
+  standardised mean differences, correlations, and variance-explained
+  statistics.
+\item
+  \textbf{SCORE replications:} BEAR does not retain a consistent
+  randomisation classification.
+\item
+  \textbf{SCORE replications:} the matched analyses use correlations
+  where available.
+\item
+  Both outputs are grouped by discipline and SCORE source (claim text or
+  replication).
+\end{itemize}
 
 \newpage
 
@@ -386,35 +531,22 @@ matching to the extracted-test table.
 \textbf{Notes:} Presumably there is a strong overlap with Brodeur in
 terms of selected papers, but with differences in extracted values.
 
-\newpage
+\textbf{Study characteristics:}
 
-\subsection{Open Science Collaboration 2015
-(psychology)}\label{open-science-collaboration-2015-psychology}
-
-\textbf{Reference:}
-\textcite{opensciencecollaborationEstimatingReproducibilityPsychological2015a}.
-
-\textbf{Research question:} replications of a quasi-random sample of 100
-experiments in psychology.
-
-\textbf{Data collection:} The authors make a comprehensive dataset of
-results available with their paper. In BEAR we did not use the original
-studies, since all studies in that set have p \textless{} 0.05, only
-replications.
-
-\textbf{Data availability:} The data file \texttt{rpp\_data.csv} is
-available as part of the repository for the paper
-\url{https://osf.io/ytpuq/overview} under a CC0 1.0 Universal license.
-
-\textbf{Data processing:} We derived z-values from the replication
-p-values assuming two-sided p-values (we use the replication p-value
-column, not the original-study p-value). We applied the sign of the
-replication correlation, so z-values are signed where that correlation
-is available. We treated p-values recorded as exactly 0 as truncated and
-recorded this as a lower bound on z (z-operator
-\texttt{\textgreater{}}); otherwise we treated p-values as exact
-(z-operator \texttt{=}). We retained the replication sample size as
-\texttt{ss}.
+\begin{itemize}
+\tightlist
+\item
+  The source classifies 38\% of retained estimates as RCTs;
+  difference-in-differences, instrumental-variables,
+  regression-discontinuity, OLS, matching, and mixed designs are also
+  represented.
+\item
+  BEAR retains the reported coefficients and standard errors, without a
+  harmonised effect-size measure.
+\item
+  Estimates are grouped by whether they came from the
+  Brodeur--Cook--Heyes source universe or the 2021 top-five additions.
+\end{itemize}
 
 \newpage
 
@@ -444,6 +576,17 @@ article text and did not mine tables.
 \textbf{Data processing:} we followed our default procedure for deriving
 z-values from t-values.
 
+\textbf{Study characteristics:}
+
+\begin{itemize}
+\tightlist
+\item
+  The source does not classify study designs.
+\item
+  The retained measure is a text-mined t-test, converted to a signed
+  z-value.
+\end{itemize}
+
 \newpage
 
 \subsection{clinicaltrials.gov
@@ -467,9 +610,57 @@ ToC's. We only use publicly available data and do not imply any
 endorsement of this work by National Library of Medicine,
 ClinicalTrials.gov or AACT.
 
-\textbf{Data processing:} extensive. We kept only studies where status
-was ``Completed'' and only rows of data where outcome type was
-``Primary''. We set year to the year of \texttt{completion\_date}.
+\textbf{Data processing:} extensive. There are some differences between
+this full data table (\texttt{BEAR\_data/clinicaltrialsgov.rds}) and
+what is retained for the main BEAR dataset. We briefly discuss them
+below. Because of rich data structure, please refer to data dictionary
+for the full data table.
+
+Briefly, BEAR targets primary outcome results for completed studies
+using two data sources:
+
+\begin{enumerate}
+\def\labelenumi{(\arabic{enumi})}
+\tightlist
+\item
+  Author-reported effect sizes
+\item
+  Effect sizes derived from raw outcome data (group means, counts),
+  alongside source data
+\end{enumerate}
+
+Where both (1) and (2) are available, we prefer (1), but also make (2)
+available in the full data table. In case (2) we use standardised mean
+differences for continuous data and probit for count.
+
+If working with full data set: variable
+\texttt{author\_raw\_overlap\_key} can be used to link the two different
+calculations of the same effect; variable \texttt{include\_in\_bear}
+identifies rows retained after applying this author-preferred rule.
+
+The main BEAR dataset keeps (1) randomized, (2) interventional studies
+with (3) fewer than 20 candidate effect rows (see below).
+
+The full ClinicalTrials.gov table uses only completed studies but does
+not apply these three restrictions. It contains 151,313 rows from 27,446
+studies; 46.3\% are author-reported and 53.7\% are raw-derived. The
+randomized interventional subset used in the main BEAR release contains
+60,470 rows from 23,060 studies.
+
+Note that a single ClinicalTrials.gov study can contribute several
+primary outcome IDs, and each primary outcome can contain many
+measurements. The full data table records this as
+\texttt{n\_effect\_rows\_per\_study} and
+\texttt{n\_outcomes\_per\_study}. The median study contributes one
+outcome ID and two rows to the full data table. Studies with 20 or more
+candidate effect rows remain in the full data table but are excluded
+from the main BEAR build.
+
+In the full data table, some raw-derived rows have
+\texttt{direction\_unknown\ ==\ TRUE}, meaning that the
+control/reference arm could not be reliably inferred, so the sign should
+be treated as random. Users interested in controlled trials and/or
+signed z-values should filter the results accordingly.
 
 See \emph{Standard procedure for dealing with p-values and confidence
 intervals} for how we created and chose the z-values based on p-values
@@ -482,6 +673,19 @@ treated p-values as two-sided. We dropped rows only when \texttt{z} was
 missing. Notably, infinite z-values can arise when \texttt{p\_value} is
 recorded as exactly 0, and these are retained because they are not
 missing.
+
+\textbf{Study characteristics:}
+
+\begin{itemize}
+\tightlist
+\item
+  The main BEAR extract contains randomised interventional trials only.
+\item
+  Measures include standardised and unstandardised mean differences,
+  probit differences, ratios, and time-to-event measures.
+\item
+  Trials are grouped by registry phase.
+\end{itemize}
 
 \newpage
 
@@ -517,8 +721,20 @@ dates were unavailable. We dropped rows only when \texttt{z} was
 missing; infinite z-values are retained. We harmonise phase labels to
 follow the same naming convention as ClinicalTrials.gov.
 
-\textbf{Additional variables used:} we retained phase labels and measure
-categorical variable (derived by us from the estimand label).
+\textbf{Study characteristics:}
+
+\begin{itemize}
+\tightlist
+\item
+  The registry extract does not retain a row-level randomisation
+  indicator, so BEAR does not classify the trial design.
+\item
+  Effect measures are classified from the reported estimand label,
+  including mean differences, hazard ratios, odds ratios, risk
+  differences, and risk ratios.
+\item
+  Trials are grouped by registry phase.
+\end{itemize}
 
 \newpage
 
@@ -562,6 +778,57 @@ for a 95\% CI, setting point estimate to half-point of the interval.
 For the distributed version of BEAR 50,000 studies are selected at
 random, with one row per study, in order to keep the file size
 manageable.
+
+\textbf{Study characteristics:}
+
+\begin{itemize}
+\tightlist
+\item
+  The source does not classify primary-study designs.
+\item
+  The retained effects are ratios, represented on the log-ratio scale
+  using reported confidence intervals.
+\end{itemize}
+
+\newpage
+
+\subsection{Open Science Collaboration 2015
+(psychology)}\label{open-science-collaboration-2015-psychology}
+
+\textbf{Reference:}
+\textcite{opensciencecollaborationEstimatingReproducibilityPsychological2015a}.
+
+\textbf{Research question:} replications of a quasi-random sample of 100
+experiments in psychology.
+
+\textbf{Data collection:} The authors make a comprehensive dataset of
+results available with their paper. In BEAR we did not use the original
+studies, since all studies in that set have p \textless{} 0.05, only
+replications.
+
+\textbf{Data availability:} The data file \texttt{rpp\_data.csv} is
+available as part of the repository for the paper
+\url{https://osf.io/ytpuq/overview} under a CC0 1.0 Universal license.
+
+\textbf{Data processing:} We derived z-values from the replication
+p-values assuming two-sided p-values (we use the replication p-value
+column, not the original-study p-value). We applied the sign of the
+replication correlation, so z-values are signed where that correlation
+is available. We treated p-values recorded as exactly 0 as truncated and
+recorded this as a lower bound on z (z-operator
+\texttt{\textgreater{}}); otherwise we treated p-values as exact
+(z-operator \texttt{=}). We retained the replication sample size as
+\texttt{ss}.
+
+\textbf{Study characteristics:}
+
+\begin{itemize}
+\tightlist
+\item
+  BEAR treats the replication studies as RCTs.
+\item
+  The retained effect measure is the replication correlation.
+\end{itemize}
 
 \newpage
 

@@ -1,27 +1,56 @@
 # Given a fitted mixture, calculate things such as power, significance, replication
 
-powsignrep <- function(fit, 
-                       ss_multiplier = 1, #for checking scaled 
+powsignrep <- function(fit,
+                       ss_multiplier = 1, #for checking scaled
                        z_star = 0, #only keep z values greater than ...
+                       z_threshold = 1.96,
                        N = 1e05) {
-  
-  snr <- sqrt(ss_multiplier)*rmix(N, p = fit$p, m = fit$m, s = fit$sigma_SNR)
-  z   <- snr + rnorm(N)
-  
-  # I can use this to create a subset of z-values > 1,96 etc
-  if(z_star > 0) {
-    z <- z[abs(z) > z_star]
-    while(length(z) < N) {
-      snr <- sqrt(ss_multiplier)*rmix(N, p = fit$p, m = fit$m, s = fit$sigma_SNR)
-      z_new   <- snr + rnorm(N)
-      z <- c(z, z_new[abs(z_new) > z_star])
-    }
-    z <- z[1:N]
+
+  draw_snr <- function(n) {
+    sqrt(ss_multiplier) * rmix(n, p = fit$p, m = fit$m, s = fit$sigma_SNR)
   }
-    
-  power    <- (1 - pnorm(1.96, snr, 1)) + pnorm(-1.96, snr, 1)
+
+  snr <- draw_snr(N)
+  z <- snr + rnorm(N)
+
+  # Draw directly from the mixture conditional on a significant original result.
+  if(z_star > 0) {
+    k <- length(fit$p)
+    p <- fit$p / sum(fit$p)
+    m <- sqrt(ss_multiplier) * fit$m
+    s2 <- ss_multiplier * if(length(fit$sigma_SNR) == 1) {
+      rep(fit$sigma_SNR^2, k)
+    } else {
+      fit$sigma_SNR^2
+    }
+    sp <- sqrt(s2 + 1)
+    pr_positive <- pnorm(z_star, m, sp, lower.tail = FALSE)
+    pr_negative <- pnorm(-z_star, m, sp)
+    component <- sample.int(k, N, replace = TRUE,
+                            prob = p * (pr_positive + pr_negative))
+    positive <- runif(N) < pr_positive[component] /
+      (pr_positive[component] + pr_negative[component])
+    cdf_lower <- pnorm(z_star, m[component], sp[component])
+    z <- ifelse(
+      positive,
+      qnorm(cdf_lower + runif(N) * (1 - cdf_lower), m[component], sp[component]),
+      qnorm(runif(N) * pr_negative[component], m[component], sp[component])
+    )
+    a <- s2[component] / (s2[component] + 1)
+    b <- m[component] / (s2[component] + 1)
+    snr <- rnorm(N, a * z + b, sqrt(a))
+  }
+
+  power <- (1 - pnorm(z_threshold, snr, 1)) + pnorm(-z_threshold, snr, 1)
   # Faster vectorised version of gap():
-  pr <- gap_vec(z, p = fit$p, m = fit$m, s_snr = fit$sigma_SNR)
+  pr <- gap_vec(
+    z,
+    p = fit$p,
+    m = fit$m,
+    s_snr = fit$sigma_SNR,
+    ss_multiplier = ss_multiplier,
+    z_threshold = z_threshold
+  )
   data.frame(snr, z, power, row.names = NULL) %>%
     mutate(sgn = pr$sgn, rep = pr$rep)
 }
@@ -29,11 +58,12 @@ powsignrep <- function(fit,
   
 # Vectorised version of gap() function written by chatGPT-5 to speed up
 # computation and verified by WW to produce the same results as old code
-gap_vec <- function(z, p, m, s_snr) {
+gap_vec <- function(z, p, m, s_snr, ss_multiplier = 1, z_threshold = 1.96) {
   z <- abs(as.numeric(z))
   k <- length(p)
   p <- p / sum(p)
-  s2 <- if (length(s_snr) == 1) rep(s_snr^2, k) else s_snr^2
+  m <- sqrt(ss_multiplier) * m
+  s2 <- ss_multiplier * if(length(s_snr) == 1) rep(s_snr^2, k) else s_snr^2
   sp <- sqrt(s2 + 1)
   a  <- s2 / (s2 + 1); b <- m / (s2 + 1)
   tau2 <- s2 / (s2 + 1); tau <- sqrt(tau2)
@@ -54,7 +84,7 @@ gap_vec <- function(z, p, m, s_snr) {
   SD_rep <- matrix(sd_rep, N, k, byrow = TRUE)
   SD_sgn <- matrix(tau, N, k, byrow = TRUE)
   
-  comp_rep <- pnorm(1.96, mean = mu, sd = SD_rep, lower.tail = FALSE)
+  comp_rep <- pnorm(z_threshold, mean = mu, sd = SD_rep, lower.tail = FALSE)
   
   list(
     sgn = rowSums(w * pnorm(0, mean = mu, sd = SD_sgn, lower.tail = FALSE)),
@@ -62,8 +92,15 @@ gap_vec <- function(z, p, m, s_snr) {
   )
 }
 
-gap_vec_fit <- function(z, fit) {
-  out <- gap_vec(z, p = fit$p, m = fit$m, s_snr = fit$sigma_SNR)
+gap_vec_fit <- function(z, fit, ss_multiplier = 1, z_threshold = 1.96) {
+  out <- gap_vec(
+    z,
+    p = fit$p,
+    m = fit$m,
+    s_snr = fit$sigma_SNR,
+    ss_multiplier = ss_multiplier,
+    z_threshold = z_threshold
+  )
   data.frame(sgn = out$sgn, rep = out$rep)
 }
 

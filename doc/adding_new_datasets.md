@@ -91,6 +91,15 @@ If an effect-size scale is heterogeneous, say so in the dataset documentation.
 Do not imply that raw `b` and `se` fields are directly comparable when they
 come from mixed source statistics.
 
+Explicitly decide and document the row unit, `studyid`, its uniqueness scope,
+`metaid` where applicable, `topic`, `subset`, `measure`, `effect_scale`, `method`,
+z derivation, `z_operator`, `ss` and `year`. State when metadata are unavailable.
+Use `topic` for what the research is about; use `subset` for sampling, provenance,
+reporting or analysis strata. Do not label an effect/row ID `studyid` when a
+genuine study-level identifier exists. Under **Study characteristics**, include
+**Study ID** and, where applicable, **Meta-analysis ID**, **Topic** and **Subset**
+bullets explaining construction and limitations.
+
 ## 6. Validate The Output
 
 Add validation checks that fail loudly when core assumptions are broken. Common
@@ -176,8 +185,8 @@ which local documentation or processing evidence the summary is based on.
 
 Review the root `README.md` when a new dataset changes the public description
 of the project. Update relevant README and changelog files when a folder's
-purpose, workflow, or interpretation changes. For every major update, add a
-concise entry to the root `changelog.md`.
+purpose, workflow, or interpretation changes. For major user-visible updates, add a concise entry to the current development
+section of `NEWS.md`; omit routine maintenance.
 
 ## 8. Run And Preserve Evidence
 

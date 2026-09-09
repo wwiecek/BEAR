@@ -2,4 +2,40 @@
 title: "Documentation"
 ---
 
+::: {.panel-tabset}
+
+# Data dictionary
+
+[]{#data-dictionary}
+
+{{< include ../doc/bear_data_dictionary.md >}}
+
+# Deriving z-values
+
+[]{#deriving-z-values}
+
 {{< include ../doc/p_value_and_ci_derivations.Rmd >}}
+
+:::
+
+<script>
+// Reveal the containing tab when following a link to a documentation section.
+function revealDocumentationAnchor() {
+  const target = document.getElementById(
+    decodeURIComponent(window.location.hash.slice(1))
+  );
+  const pane = target?.closest('[role="tabpanel"]');
+  if (!pane) return;
+  const tab = document.querySelector(`[aria-controls="${pane.id}"]`);
+  if (!tab) return;
+  if (!pane.classList.contains("active")) {
+    tab.addEventListener("shown.bs.tab", () => target.scrollIntoView(),
+                         { once: true });
+    bootstrap.Tab.getOrCreateInstance(tab).show();
+  } else {
+    target.scrollIntoView();
+  }
+}
+window.addEventListener("load", revealDocumentationAnchor);
+window.addEventListener("hashchange", revealDocumentationAnchor);
+</script>

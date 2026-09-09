@@ -5,11 +5,19 @@ source("../R/settings.R", local = TRUE)
 source("../R/site_dataset_config.R", local = TRUE)
 
 dictionary <- readLines("../doc/bear_data_dictionary.md", warn = FALSE)
-for (value in c(bear_measure_levels, bear_method_levels)) {
+for (value in c(bear_measure_levels, bear_method_levels, bear_effect_scale_levels)) {
   if (!any(startsWith(dictionary, paste0("| `", value, "` |"))))
     stop("Missing data dictionary entry: ", value)
 }
-stopifnot(file.exists("data-dictionary.qmd"))
+stopifnot(file.exists("documentation.qmd"), file.exists("../NEWS.md"))
+documentation <- readLines("documentation.qmd", warn = FALSE)
+stopifnot(any(grepl("panel-tabset", documentation, fixed = TRUE)),
+          any(grepl("../doc/bear_data_dictionary.md", documentation,
+                    fixed = TRUE)),
+          any(grepl("../doc/p_value_and_ci_derivations.Rmd", documentation,
+                    fixed = TRUE)))
+navbar <- readLines("_quarto.yml", warn = FALSE)
+stopifnot(!any(grepl("href: data-dictionary.qmd", navbar, fixed = TRUE)))
 
 dataset_sources <- list.files("../doc/datasets", pattern = "\\.Rmd$")
 dataset_pages <- list.files("datasets", pattern = "\\.qmd$")

@@ -76,7 +76,7 @@ dtlist[["Askarov"]] <- readRDS("data/Askarov.rds") %>%
     studyid = studyid,
     method = ifelse(EXPERIMENT == 1, "RCT", ifelse(mixed == 1, "mixed", "observational")),
     measure = NA,
-    subset = if_else(MACRO == 1, "macro", "micro/other"),
+    topic = if_else(MACRO == 1, "macro", "micro/other"),
     z = effectsize/standarderror,
     b = effectsize,
     se = standarderror,
@@ -103,7 +103,8 @@ dtlist[["ArelBundock"]] <-
     # in data/ArelBundock.rds.
     metaid = question_id,
     studyid = study_id,
-    field = subfield,
+    # Opaque source subfields are not promoted to public topics.
+    topic = NA_character_,
     method = NA,
     measure = NA,
     subset = meta_id,
@@ -132,7 +133,7 @@ dtlist[["WWC"]] <- readRDS("data/WWC.rds") %>%
     studyid = study_id,
     method = method,
     measure = NA,
-    subset = Outcome_Domain,
+    topic = Outcome_Domain,
     z = sign(b) * z_from_p(pval),
     z_operator = ifelse(pval == 1e-16, ">", "="),
     b = b,
@@ -140,12 +141,7 @@ dtlist[["WWC"]] <- readRDS("data/WWC.rds") %>%
     ss = ss,
     year = year
   ) %>%
-  filter(!is.na(z)) %>%
-  group_by(subset) %>%
-  mutate(subset_n = n()) %>%
-  ungroup() %>%
-  mutate(subset = if_else(subset_n < 50, "Other", subset)) %>%
-  select(-subset_n)
+  filter(!is.na(z))
 
 
 
@@ -201,7 +197,7 @@ dtlist[["CostelloFox"]] <-
       eff.size.measure == "log.odds.ratio" ~ "log",
       TRUE ~ NA_character_
     ),
-    subset = label_costello_source(meta.analysis.paper),
+    topic = label_costello_source(meta.analysis.paper),
     method = NA,
     z = z,
     b = eff.size,
@@ -249,10 +245,32 @@ dtlist[["Sladekova"]] <-
 
 # sort(table(unlist(lapply(readRDS("data/Metapsy.rds"), function(f) names(f)))), decreasing = TRUE)
 
+# Reviewed database subjects; the two cross-condition collections stay broad.
+metapsy_topics <- c(
+  `bodily-distress-psyctr` = "bodily distress",
+  `borderline-psyctr` = "borderline personality disorder",
+  `depression-anxiety-transdiagnostic` = "depression and anxiety",
+  `depression-childadol-psyctr` = "depression",
+  `depression-inpatients` = "depression", `depression-psyctr` = "depression",
+  `depression-psiloctr` = "depression",
+  `depression-selfguided-psyctr` = "depression",
+  `ed-psyctr` = "eating disorders", `gad-psyctr` = "generalised anxiety disorder",
+  `sad-psyctr` = "social anxiety disorder", `gambling-psyctr` = "gambling",
+  `grief-psyctr` = "grief", `ocd-psyctr` = "obsessive-compulsive disorder",
+  `panic-psyctr` = "panic disorder",
+  `peer-support` = "mental health (multiple conditions)",
+  `psychosis-psyctr` = "psychosis", `ptsd-psyctr` = "PTSD",
+  `suicide-psyctr` = "suicide",
+  `total-response` = "mental health (multiple conditions)"
+)
+stopifnot(all(unique(readRDS("data/Metapsy.rds")$metaid) %in%
+                names(metapsy_topics)))
+
 dtlist[["Metapsy"]] <- readRDS("data/Metapsy.rds") %>%
   transmute(
     metaid = metaid,
     studyid = study,
+    topic = unname(metapsy_topics[metaid]),
     method = "RCT", #Metapsy only includes RCTs
     measure = "SMD",
     year = year,
@@ -325,19 +343,14 @@ dtlist[["Cochrane"]] <- readRDS("data/Cochrane.rds") %>%
     z = z,
     b = yi,
     se = sqrt(vi),
-    subset = as.character(specialty),
+    topic = as.character(specialty),
     ss = total1 + total2,
-    group = case_when(
+    subset = case_when(
       study.data_source == "PUB" ~ "published",
       study.data_source == "UNPUB" ~ "unpublished",
       study.data_source == "SOUGHT" ~ "sought",
       study.data_source == "MIX" ~ "mixed"
     )) %>%
-  # There are some very small subcategories, I set them to NA instead
-  group_by(subset) %>%
-  mutate(n = n()) %>%
-  ungroup() %>%
-  mutate(subset = if_else(n < 50, NA_character_, subset)) %>%
   filter(!is.na(b))
 
 
@@ -450,6 +463,7 @@ dtlist[["clinicaltrials"]] <- readRDS("data/clinicaltrialsgov.rds") %>%
 dtlist[["Head"]] <- readRDS("data/Head.rds") %>%
   transmute(metaid = NA,
             studyid = pmid,
+            topic = Category,
             subset = case_when(
               section == "abstract" ~ "abstract",
               section == "results" ~ "full text/results",
@@ -568,7 +582,7 @@ dtlist[["Bartos"]] <- readRDS("data/Bartos.rds") %>%
     b = effect_size,
     se = standard_error,
     year = year,
-    subset = category, # why not!
+    topic = category,
     # There is also total m-a size: samples_size; ignoring
     ss = sample_size
   )
@@ -580,7 +594,8 @@ dtlist[["Bartos"]] <- readRDS("data/Bartos.rds") %>%
 dtlist[["Szucs"]] <- readRDS("data/Szucs.rds") %>%
   filter(subset == "Cognitive neuroscience") %>%
   transmute(
-    metaid, studyid, method = NA_character_, measure = NA_character_, subset, field,
+    metaid, studyid, method = NA_character_, measure = NA_character_,
+    topic = field,
     z, z_operator, p, b, se, ss,
     source
   )
@@ -609,14 +624,14 @@ dtlist[["SCORE_replications"]] <- score_replications %>%
   ) %>%
   transmute(
     metaid, studyid, method = NA_character_, measure,
-    z, z_operator, p, b, se, ss, year, source, subset,
+    z, z_operator, p, b, se, ss, year, source, topic = subset,
     orig.z, orig.z_operator, orig.p, orig.b, orig.se, orig.ss
   )
 
 dtlist[["SCORE_claims"]] <- readRDS("data/SCORE_all_claims.rds") %>%
   transmute(
     metaid, studyid, method = NA_character_, measure,
-    z, z_operator, p, b, se, ss, year, source, subset
+    z, z_operator, p, b, se, ss, year, source, topic = subset
   )
 
 
@@ -693,6 +708,7 @@ for (column in c("measure", "method", "effect_scale")) {
 }
 
 source("R/validate_bear_schema.R")
+bear <- bear %>% select(all_of(bear_schema_columns))
 check_bear_schema(bear)
 
 saveRDS(bear, "BEAR.rds")

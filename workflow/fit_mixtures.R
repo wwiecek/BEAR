@@ -33,11 +33,11 @@ original_bear_list <- list(
           z = orig.z,
           b = orig.b,
           se = orig.se,
-          year, field,
+          year, topic,
           ss = orig.ss,
           z_operator = ifelse(is.na(orig.z_operator), "=", orig.z_operator),
           p = orig.p,
-          outcome_group, group, n, source
+          outcome_group, source
         ) %>%
         calc_study_weights())
 

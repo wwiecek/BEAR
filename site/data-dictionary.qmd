@@ -2,4 +2,4 @@
 title: "Data dictionary"
 ---
 
-{{< include ../doc/bear_data_dictionary.md >}}
+The data dictionary is now part of [Documentation](documentation.qmd#data-dictionary).

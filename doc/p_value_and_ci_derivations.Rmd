@@ -1,9 +1,9 @@
-# Standard procedure for dealing with p-values and confidence intervals
+## Standard procedure for dealing with p-values and confidence intervals {#standard-procedure-for-dealing-with-p-values-and-confidence-intervals}
 
 Most datasets come with pre-computed effect sizes and standard errors. Some (especially databases of clinical trials and large sets of scraped studies) report p-values. Reporting in clinical trial databases is done by investigators, and the data-entry fields are not standardised, requiring more extensive clean-up and a procedure for deriving z-values.
 
 
-## Cleaning up data
+### Cleaning up data
 
 For confidence interval levels, we clean them up by setting values above 100 or below 0 to missing, and treating values below 1 as proportions rather than percentages by multiplying by 100. This means that, for example, 0.95 is treated as a 95% confidence interval. For missing values in the EU CTR database, we assume 95%.
 
@@ -11,7 +11,7 @@ In clinical trial datasets, we classify the effect measure by matching text to a
 
 
 
-## Confidence intervals
+### Confidence intervals
 
 When working with CIs, ratio measures were analysed on the log scale (if and only if lower bound, upper bound, and point estimate were all strictly positive) and non-ratio measures were always kept on the raw scale.
 
@@ -21,7 +21,7 @@ We computed a simple symmetry diagnostic for the confidence interval on the chos
 
 We also flagged potentially non-Wald intervals by matching text in the column describing the parameter type, if available, searching for keywords such as median, Hodges, posterior/Bayes, exact, Fieller, bootstrap, and permutation. Any row flagged this way was treated as unreliable for CI-based inference, regardless of its numeric properties.
 
-## p-values
+### p-values
 
 The default approach, used for several datasets that report p-values, especially those scraping data from PubMed/Medline, is to treat p-values as two-sided, using the upper-tail standard normal quantile corresponding to $p/2$. In EU CTR, when the result is marked as one-sided, we use the corresponding one-sided normal quantile instead; missing sidedness is treated as two-sided. ClinicalTrials.gov does not provide a separate p-value sidedness field, so its p-values are treated as two-sided.
 
@@ -31,6 +31,20 @@ For clinical trials databases (ClinicalTrials.gov and EU CTR), we sometimes foun
 
 To avoid dropping rows, we retained unsigned z-statistics when the sign could not be determined. If the sign of the effect was known, we applied it to the p-derived z; otherwise we used its absolute value.
 
-## Choice of a single z-value when multiple candidates are available
+### Choice of a single z-value when multiple candidates are available
 
 In situations where $z$ can be derived from both CIs and p-values, we choose a single "best" z-statistic per row as follows. We prefer the CI-derived $z$ when it looked like a plausible Wald interval on the chosen scale, meaning: (1) finite $z$ and standard error, (2) positive standard error, (3) not flagged as non-Wald by keyword search in the measure label, and (4) either missing symmetry information or symmetry above 0.8. Otherwise we used the p-derived z.
+
+### Bounded and infinite z-values
+
+For reported two-sided p-value bounds, $p<c$ gives a lower bound on $|z|$,
+and $p>c$ gives an upper bound. `z_operator` records this as `>` or `<`;
+`=` denotes a value treated as exact. The operator applies to the magnitude,
+including when the stored z-value is negative. For example, a stored value of
+$-1.96$ with operator `>` means a negative direction and magnitude greater than
+1.96, not $z>-1.96$.
+
+Exact zero p-values can produce infinite z-values. We retain infinities arising
+from valid source information, including boundary correlations; a missing or
+invalid input is distinct from an infinite derived value. The dataset-specific
+notes identify any source bounds or reporting conventions.

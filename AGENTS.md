@@ -61,3 +61,15 @@ Dataset prose under `doc/datasets/` is reused in both the stitched paper
 appendix and standalone website pages, so avoid location-dependent references
 such as "below" or "above"; refer to named sections instead.
 Keep `doc/datasets/*.Rmd` prose precise and concise, with minimum verbiage.
+
+## Release notes
+
+- When making a major user-visible change to `BEAR.rds`, adding or removing a
+  dataset, materially changing inclusion or processing, or adding a substantial
+  public feature, update the current development section of `NEWS.md`.
+- Keep entries concise and reader-facing. Omit routine refactoring, typo fixes,
+  paper-only changes and minor maintenance.
+- Accumulate changes under the current “in development” release, rather than
+  creating a heading for each commit. When tagging a release, replace
+  “in development” with its release date and start the next development heading
+  when appropriate.

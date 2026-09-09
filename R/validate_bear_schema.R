@@ -2,8 +2,8 @@
 
 bear_schema_columns <- c(
   "dataset", "metaid", "studyid", "method", "measure", "subset", "z",
-  "b", "se", "year", "field", "ss", "z_operator", "effect_scale", "p",
-  "outcome_group", "group", "n", "orig.z", "orig.z_operator", "orig.p",
+  "b", "se", "year", "topic", "ss", "z_operator", "effect_scale", "p",
+  "outcome_group", "orig.z", "orig.z_operator", "orig.p",
   "orig.b", "orig.se", "orig.ss", "source"
 )
 
@@ -15,8 +15,8 @@ check_bear_schema <- function(bear) {
     stop("BEAR columns do not match the expected schema.", call. = FALSE)
 
   character_columns <- c(
-    "dataset", "metaid", "studyid", "method", "measure", "subset", "field",
-    "z_operator", "effect_scale", "outcome_group", "group", "source"
+    "dataset", "metaid", "studyid", "method", "measure", "subset", "topic",
+    "z_operator", "effect_scale", "outcome_group", "source"
   )
   numeric_columns <- c(
     "z", "b", "se", "year", "ss", "p", "orig.z", "orig.p", "orig.b",
@@ -27,8 +27,6 @@ check_bear_schema <- function(bear) {
     stop("BEAR character columns have unexpected types.", call. = FALSE)
   if (!all(vapply(bear[numeric_columns], is.numeric, logical(1))))
     stop("BEAR numeric columns have unexpected types.", call. = FALSE)
-  if (!is.integer(bear$n))
-    stop("BEAR$n must be an integer column.", call. = FALSE)
   if (any(vapply(bear, is.list, logical(1))))
     stop("BEAR must not contain list columns.", call. = FALSE)
 

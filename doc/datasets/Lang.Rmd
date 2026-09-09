@@ -33,6 +33,13 @@ matching to the extracted-test table.
 **Notes:** The papers selected probably overlap substantially with those in Brodeur,
 but the extracted values differ.
 
+Method labels in `Lang.rds` are as reported by the author
+  and mix study designs, identification strategies and estimators. In
+  `BEAR.rds`, we omit some of these categories (OLS, matching, system GMM 
+  and IV–DID), affecting 203 estimates, since e.g. "OLS" may be used with 
+  experimental or observational data. The original labels remain available in 
+  `Lang.rds`.
+
 **Study characteristics:**
 
 - The source classifies 38% of retained estimates as RCTs; difference-in-differences, instrumental variables, regression discontinuity, OLS, matching, and mixed designs are also represented.

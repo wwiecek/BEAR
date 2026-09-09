@@ -1,3 +1,17 @@
+# Categories used in BEAR.rds; individual dataset files retain their coding.
+bear_measure_levels <- c(
+  "smd", "mean_difference", "median_difference", "percentage_difference",
+  "risk_difference", "probit_difference", "correlation", "response_ratio",
+  "odds_ratio", "risk_ratio", "hazard_ratio", "rate_ratio", "geometric_ratio",
+  "ratio", "regression_coefficient", "eta_squared", "partial_eta_squared", "other"
+)
+bear_effect_scale_levels <- c(
+  "raw", "log", "fisher_z", "smd", "absolute_smd", "probit"
+)
+bear_method_levels <- c(
+  "rct", "did", "iv", "rd", "quasi_experimental", "observational", "mixed"
+)
+
 bear_names <- c(
   "ArelBundock" = "Arel-Bundock et al",
   "Askarov" = "Askarov et al",

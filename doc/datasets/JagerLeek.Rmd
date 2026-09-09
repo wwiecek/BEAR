@@ -19,5 +19,6 @@ Notably, a large proportion of p-values are truncated, almost always at 0.0001, 
 
 **Study characteristics:**
 
-- Study design is not systematically classified; 30% of rows have a title-based flag suggesting an RCT.
-- The retained measure is a p-value extracted from a PubMed abstract, converted to an unsigned z-value.
+- Study design is not avaialble, but 30% of rows are flagged as RCTs based on scanning publication titles.
+- The extracted p-values are converted to z-values. 
+- We do not know the underlying effect measures.

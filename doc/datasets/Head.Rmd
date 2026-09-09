@@ -23,6 +23,7 @@ one row per study, in order to keep the file size manageable.
 
 **Study characteristics:**
 
-- The source does not classify study designs.
-- The retained measure is a text-mined p-value, converted to an unsigned z-value.
+- The dataset does not have study designs.
+- The extracted p-values are converted to z-values.
+- We do not know the underlying effect measures.
 - Records are grouped by whether they were extracted from the abstract or results text.

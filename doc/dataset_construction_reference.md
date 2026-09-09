@@ -6,6 +6,26 @@ This table records how source datasets selected studies or records, how source
 data were extracted before BEAR processing, and how extraction was validated.
 
 
+## Measure and method coding in BEAR.rds
+
+`workflow/build_bear.R` maps metadata to the categories in `R/settings.R`;
+individual `data/*.rds` files retain their coding. Definitions are in
+`doc/bear_data_dictionary.md`, included by the website's Data dictionary page.
+
+Lang's parenthetical labels are combined; OLS and three singleton method
+labels become missing (203 estimates). Costello–Fox's detailed labels identify
+regression coefficients, log odds ratios, mean differences and absolute SMDs;
+65 unresolved IRR rows remain Other with unknown scale. OSC's retained
+correlation is labelled explicitly, and Szucs's t-test label is removed from
+the effect-measure field. Shared aliases combine SMD and probit labels and
+separate correlation and response-ratio families from their transformations.
+Registry scales are retained, including raw/log variation within categories.
+
+These changes do not alter inclusion, numerical estimates or the dataset-level
+flags in `doc/dataset_classification.csv`. The method field describes individual
+estimates; the classification table describes whole datasets. The stitched
+appendix and website both use `doc/datasets/*.Rmd` for dataset-specific notes.
+
 ## Reference Table
 
 | BEAR dataset | Source family | Source selection of studies or records | Source extraction of data | extraction_mode | extraction_validation |

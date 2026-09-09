@@ -8,6 +8,7 @@ filter <- dplyr::filter
 
 dtlist <- list()
 source("R/helpers.R")
+source("R/settings.R")
 
 
 
@@ -41,6 +42,14 @@ dtlist[["Brodeur"]] <- readRDS("data/Brodeur.rds") %>%
 # Lang ------
 
 dtlist[["Lang"]] <- readRDS("data/Lang.rds") %>%
+  mutate(method = case_when(
+    method %in% c("RCT (DID)", "RCT (IV)") ~ "RCT",
+    method == "DID (matching)" ~ "DID",
+    method %in% c("RD (DID)", "RD (IV)") ~ "RD",
+    method %in% c("OLS", "matching", "SYSTEM-GMM", "IV-DID (matching)") ~
+      NA_character_,
+    TRUE ~ method
+  )) %>%
   transmute(
     metaid = NA,
     studyid = studyid,
@@ -179,7 +188,19 @@ dtlist[["CostelloFox"]] <-
   transmute(
     metaid = as.character(meta.analysis.id), #meta.analysis.paper has only 232 unique values, this has 466
     studyid = study2,
-    measure = grouped_es, #could use eff.size.measure for more info
+    measure = case_when(
+      grouped_es != "uncommon" ~ grouped_es,
+      eff.size.measure == "reg.slope" ~ "regression_coefficient",
+      eff.size.measure == "log.odds.ratio" ~ "odds_ratio",
+      eff.size.measure == "mean.diff" ~ "mean_difference",
+      eff.size.measure == "IRR" ~ "other",
+      TRUE ~ eff.size.measure
+    ),
+    effect_scale = case_when(
+      eff.size.measure == "abs.hedges.d" ~ "absolute_smd",
+      eff.size.measure == "log.odds.ratio" ~ "log",
+      TRUE ~ NA_character_
+    ),
     subset = label_costello_source(meta.analysis.paper),
     method = NA,
     z = z,
@@ -260,6 +281,7 @@ dtlist[["BarnettWren"]] <- readRDS("data/BarnettWren.rds") %>%
             studyid = pubmed,
             method = NA,
             measure = "ratio",
+            effect_scale = "log",
             z = b/se,
             b = b,
             se = se,
@@ -373,6 +395,7 @@ dtlist[["euctr"]] <- readRDS("data/euctr.rds") %>%
     year,
     subset = tolower(phase),
     measure = measure_class,
+    effect_scale = scale,
     method  = NA_character_,
     z, z_operator,
     b, se,
@@ -412,6 +435,7 @@ dtlist[["clinicaltrials"]] <- readRDS("data/clinicaltrialsgov.rds") %>%
             measure = if_else(
               measure_class == "Standardized Mean Difference", "SMD", measure_class
             ),
+            effect_scale = scale,
             z = z,
             z_operator = z_operator,
             b = b,
@@ -507,7 +531,7 @@ dtlist[["OSC"]] <- readRDS("data/OSC.rds") %>%
     metaid = NA,
     studyid = Study.Num,
     method = "RCT",
-    measure = NA,
+    measure = "r",
     z,
     z_operator = ifelse(p > 0, "=", ">"),
     p,
@@ -555,7 +579,7 @@ dtlist[["Bartos"]] <- readRDS("data/Bartos.rds") %>%
 dtlist[["Szucs"]] <- readRDS("data/Szucs.rds") %>%
   filter(subset == "Cognitive neuroscience") %>%
   transmute(
-    metaid, studyid, method = NA_character_, measure, subset, field,
+    metaid, studyid, method = NA_character_, measure = NA_character_, subset, field,
     z, z_operator, p, b, se, ss,
     source
   )
@@ -625,6 +649,47 @@ bear <- dtlist %>%
   lapply(function(x) {x$studyid <- as.character(x$studyid); x}) %>%
   lapply(filter, !is.na(z)) %>%
   bind_rows(.id = "dataset")
+
+# Harmonise metadata only after dataset selection and effect calculations.
+bear <- bear %>%
+  mutate(
+    effect_scale = coalesce(effect_scale, case_when(
+      measure == "Zr" ~ "fisher_z",
+      measure == "lnRR" ~ "log",
+      measure %in% c("SMD", "Standardized Mean Difference", "Cohen's d",
+                     "Hedges' g") ~ "smd",
+      measure %in% c("probit", "Probit Difference") ~ "probit"
+    )),
+    measure = recode(measure,
+      SMD = "smd", `Standardized Mean Difference` = "smd",
+      `Cohen's d` = "smd", `Hedges' g` = "smd",
+      Zr = "correlation", r = "correlation", lnRR = "response_ratio",
+      probit = "probit_difference", `Probit Difference` = "probit_difference",
+      beta = "regression_coefficient", Slope = "regression_coefficient",
+      `eta-squared` = "eta_squared", `partial eta-squared` = "partial_eta_squared",
+      `Mean Difference` = "mean_difference", `Median Difference` = "median_difference",
+      `Difference in Percentages` = "percentage_difference",
+      `Risk Difference` = "risk_difference", `Risk Ratio` = "risk_ratio",
+      `Odds Ratio` = "odds_ratio", `Hazard Ratio` = "hazard_ratio",
+      `Rate Ratio` = "rate_ratio", `Geometric Ratio` = "geometric_ratio",
+      `Other Ratio` = "ratio", Other = "other"
+    ),
+    effect_scale = coalesce(effect_scale, case_when(
+      measure %in% c("correlation", "regression_coefficient", "eta_squared",
+                     "partial_eta_squared", "mean_difference",
+                     "median_difference", "percentage_difference",
+                     "risk_difference") ~ "raw"
+    )),
+    method = recode(tolower(method), quasi = "quasi_experimental",
+                    unknown = NA_character_)
+  )
+
+for (column in c("measure", "method", "effect_scale")) {
+  allowed <- get(paste0("bear_", column, "_levels"))
+  unexpected <- setdiff(na.omit(bear[[column]]), allowed)
+  if (length(unexpected))
+    stop("Unrecognised ", column, ": ", paste(unexpected, collapse = ", "))
+}
 
 saveRDS(bear, "BEAR.rds")
 

@@ -17,10 +17,20 @@ The only additional processing was to clean up study years. Signed
 z-values were computed as effect sizes divided by their standard errors. For
 Yang et al, BEAR uses the source file names as meta-analysis identifiers.
 
+**Costello and Fox:**
+
+In `BEAR.rds`, we re-label the effect measures as SMD, response ratio and correlation. 
+  The individual dataset retains original coding from Yang et al (Zr, lnRR, SMD).
+
+**Yang:**
+
+In `BEAR.rds`, we code Fisher's z as "correlation" and lnRR as "response_ratio" 
+  for consistency with other datasets.
+
 **Study characteristics:**
 
 - **Costello and Fox:** the primary-study design is not classified.
-- **Costello and Fox:** effects are standardised mean differences, log response ratios, Fisher's z correlations, or less common measures.
+- **Costello and Fox:** effects are standardised mean differences, log response ratios, Fisher's z correlations, or less common measures. Less common measures include regression coefficients, log odds ratios and mean differences. Some standardised mean differences are recorded as absolute values.
 - **Costello and Fox:** BEAR groups records as ecology, evolution, or other ecology/evolution.
 - **Yang:** the primary-study design is not classified.
 - **Yang:** effects are standardised mean differences, log response ratios, or Fisher's z correlations.

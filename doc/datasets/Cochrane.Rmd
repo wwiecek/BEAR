@@ -30,6 +30,6 @@ Zero-event studies may be important for some metascientific analyses, but for mo
 
 **Study characteristics:**
 
-- The source flags 69% of retained rows as RCTs; the remaining 31% have an unknown design.
-- Continuous outcomes are standardised mean differences and binary outcomes are probit differences.
+- We review meta-analysis eligibility criteria to determine which meta-analyses included only randomised trials. This way, 69% of retained estimates are classified as RCTs; the remaining 31% could not be classified reliably, but many of them are also RCTs, since Cochrane meta-analyses typically include RCT or quasi-randomised evidence.
+- About 32% of estimates are standardised mean differences and 68% are differences between probit-transformed event proportions.
 - Records are grouped by Cochrane specialty and source data type (published, unpublished, sought, or mixed); the processed data also retain outcome group.

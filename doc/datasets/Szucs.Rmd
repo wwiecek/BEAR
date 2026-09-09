@@ -27,4 +27,6 @@ We followed our default procedure for deriving z-values from t-values.
 **Study characteristics:**
 
 - The source does not classify study designs.
-- The retained measure is a text-mined t-test, converted to a signed z-value.
+- The original dataset labels these results as coming from a t-test, but there 
+  is no additional information on what was the underlying measure.
+- The extracted t-tests are converted to signed z-values; the underlying effect measures are not classified.

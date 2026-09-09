@@ -23,6 +23,9 @@ truncated and recorded this as a lower bound on z (z-operator `>`); otherwise
 we treated p-values as exact (z-operator `=`). We retained the replication
 sample size as `ss`.
 
+In `BEAR.rds`, the measure is recorded as "correlation", based on the fact that 
+is the column from original dataset that we use.
+
 **Study characteristics:**
 
 - BEAR treats the replication studies as RCTs.

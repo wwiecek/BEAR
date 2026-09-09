@@ -16,6 +16,8 @@ website:
         text: Get data
       - href: datasets.qmd
         text: Datasets
+      - href: data-dictionary.qmd
+        text: Data dictionary
       - href: documentation.qmd
         text: Documentation
       - href: selection.qmd

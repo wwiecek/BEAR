@@ -15,6 +15,7 @@
 
 source("workflow/build_bear.R")
 # Output: BEAR.rds
+# Metadata categories: R/settings.R; dictionary: doc/bear_data_dictionary.md.
 
 
 # (2) post-process data to generate datasets for fitting mixtures

@@ -16,7 +16,7 @@ BEAR includes two SCORE outputs. The source dataset of replications has 548 rows
 filtering, 267 matched replication rows are retained. The source dataset for
 "all claims" has 3,066 rows for claims from the set of replicated papers (but no
 replications of these claims), where we select one statistic per claim; after
-BEAR processing and filtering, 1,946 claim rows are retained.
+BEAR processing and filtering, 1,942 claim rows are retained.
 
 **Data processing:**
 For the matched replication output, we used the package's converted correlation
@@ -38,8 +38,6 @@ exactness, the available effect and standard error, and text order.
 
 **Study characteristics:**
 
-- **SCORE claims:** the underlying study design is not systematically classified.
-- **SCORE claims:** measures include regression coefficients, standardised mean differences, correlations, and variance-explained statistics.
-- **SCORE replications:** BEAR does not retain a consistent randomisation classification.
-- **SCORE replications:** the matched analyses use correlations where available.
-- Both outputs are grouped by discipline and SCORE source (claim text or replication).
+- The underlying study design is not systematically classified in neither "claims" nor replications dataset.
+- Measures: SCORE "claims" dataset measures include regression coefficients, standardised mean differences, correlations, and variance-explained statistics; effect measure is unclassified for over 80% of data. SCORE replications use correlations where available.
+- Both outputs are grouped by discipline.

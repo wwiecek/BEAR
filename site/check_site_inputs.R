@@ -4,6 +4,13 @@ dataset_classification_file <- "../doc/dataset_classification.csv"
 source("../R/settings.R", local = TRUE)
 source("../R/site_dataset_config.R", local = TRUE)
 
+dictionary <- readLines("../doc/bear_data_dictionary.md", warn = FALSE)
+for (value in c(bear_measure_levels, bear_method_levels)) {
+  if (!any(startsWith(dictionary, paste0("| `", value, "` |"))))
+    stop("Missing data dictionary entry: ", value)
+}
+stopifnot(file.exists("data-dictionary.qmd"))
+
 dataset_sources <- list.files("../doc/datasets", pattern = "\\.Rmd$")
 dataset_pages <- list.files("datasets", pattern = "\\.qmd$")
 mixture_plots <- list.files("assets/mixture_plots", pattern = "\\.png$")

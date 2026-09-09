@@ -25,5 +25,5 @@ We harmonise phase labels to follow the same naming convention as ClinicalTrials
 **Study characteristics:**
 
 - The registry extract does not retain a row-level randomisation indicator, so BEAR does not classify the trial design.
-- Effect measures are classified from the reported estimand label, including mean differences, hazard ratios, odds ratios, risk differences, and risk ratios.
+- Effect measures are derived from reported estimand labels; about half of these are mean differences, hazard ratios, odds ratios, risk differences, or risk ratios. Another one third have other category (in `BEAR.rds` this is coded as "other"), and 23% have no measure.
 - Trials are grouped by registry phase.

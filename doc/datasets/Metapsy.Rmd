@@ -18,4 +18,4 @@ Signed z-values were computed as effect sizes divided by their standard errors.
 **Study characteristics:**
 
 - The source contains RCTs of psychotherapeutic interventions.
-- Effects are mainly Hedges' g; a minority are standardised mean differences.
+- Effects are standardised mean differences, mainly Hedges' g; a minority are converted from log odds ratios.

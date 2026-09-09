@@ -67,8 +67,9 @@ Keep `doc/datasets/*.Rmd` prose precise and concise, with minimum verbiage.
 - When making a major user-visible change to `BEAR.rds`, adding or removing a
   dataset, materially changing inclusion or processing, or adding a substantial
   public feature, update the current development section of `NEWS.md`.
-- Keep entries concise and reader-facing. Omit routine refactoring, typo fixes,
-  paper-only changes and minor maintenance.
+- Keep entries concise (80 characters is usually enough; a couple of lines for 
+  bigger changes; see NEWS.md for v3 for style to imitate) and reader-facing. 
+- Omit routine refactoring, typo fixes, paper-only changes and minor maintenance.
 - Accumulate changes under the current “in development” release, rather than
   creating a heading for each commit. When tagging a release, replace
   “in development” with its release date and start the next development heading

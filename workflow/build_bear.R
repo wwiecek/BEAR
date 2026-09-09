@@ -242,7 +242,8 @@ dtlist[["Sladekova"]] <-
          measure = "Zr",
          z = b/se,
          year = NA) %>%
-  filter(!is.na(metaid))
+  filter(!is.na(metaid)) %>%
+  transmute(metaid, studyid, method, measure, z, b, se, year, ss)
 
 # Metapsy -----
 
@@ -690,6 +691,9 @@ for (column in c("measure", "method", "effect_scale")) {
   if (length(unexpected))
     stop("Unrecognised ", column, ": ", paste(unexpected, collapse = ", "))
 }
+
+source("R/validate_bear_schema.R")
+check_bear_schema(bear)
 
 saveRDS(bear, "BEAR.rds")
 

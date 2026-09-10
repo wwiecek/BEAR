@@ -6,7 +6,11 @@ Studies included in _Metapsy_ (<https://www.metapsy.org/>), a set of living meta
 January 2026
 
 **Data availability:**
-Metapsy is maintained by an international collaboration led by Vrije Universiteit Amsterdam. Databases are available at <https://www.metapsy.org/> and through the R package `metapsyData` [@harrer2022metapsydata]. The Metapsy FAQ states that all data provided as part of the project are open access and that attribution is required.
+Metapsy is maintained by an international collaboration led by Vrije Universiteit 
+Amsterdam. Databases are available at <https://www.metapsy.org/> and through the 
+R package `metapsyData` [@harrer2022metapsydata]. The Metapsy FAQ states that all 
+data provided as part of the project are open access and that attribution is required.
+The source contains RCTs of psychotherapeutic interventions.
 
 **Data processing:**
 We merged 20 individual datasets in Metapsy and performed some cleaning (e.g. to extract
@@ -17,5 +21,11 @@ Signed z-values were computed as effect sizes divided by their standard errors.
 
 **Study characteristics:**
 
-- The source contains RCTs of psychotherapeutic interventions.
-- Effects are standardised mean differences, mainly Hedges' g; a minority are converted from log odds ratios.
+- **Sample size and year:** `ss` is the sum of `n_arm1` and `n_arm2` when both are supplied; `year` is the source year or a year parsed from the study label.
+
+- **Study ID:** we use the source `study` label within each database.
+- **Meta-analysis ID:** we use the Metapsy database identifier.
+- **Topic:** we use an explicit clinical-subject lookup; 
+  datasets `peer-support` and `total-response` are labelled as "mental health".
+- Effects are standardised mean differences, mainly Hedges' g; a minority are 
+  converted from log odds ratios.

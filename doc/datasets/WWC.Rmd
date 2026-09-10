@@ -6,17 +6,23 @@ Large database of education effect sizes created by the Institute of Education S
 17 May 2025
 
 **Data availability:**
-Flat files are available at <https://ies.ed.gov/ncee/wwc/studyfindings>. The Permissions and Disclaimers section of that website states: "Unless stated otherwise, all information on the U.S. Department of Education's IES website ... is in the public domain and may be reproduced, published, linked to, or otherwise used without permission from IES."
+Flat files are available at <https://ies.ed.gov/ncee/wwc/studyfindings>. The 
+Permissions and Disclaimers section of that website states: "Unless stated 
+otherwise, all information on the U.S. Department of Education's IES website ... 
+is in the public domain and may be reproduced, published, linked to, or otherwise 
+used without permission from IES."
 
 **Data collection:**
 The WWC source data have 13,054 findings (data rows) across 1,908 reviews.
 Each row is one finding, so a single source paper can contribute multiple rows.
 The dataset includes effect sizes, but not standard errors, as well as p-values
 reported by the studies and p-values re-calculated by the WWC reviewers. After
-BEAR processing and filtering, the main BEAR dataset retains 7,080 findings.
+BEAR processing and filtering, the main BEAR dataset includes 7,080 findings.
 
 **Data processing:**
-We retained only RCTs and quasi-experimental studies (98% of data altogether).
+We include only RCTs and quasi-experimental studies (98% of data altogether).
+Majority of these (about 80%) are RCTs.
+
 We removed a few rows where the results were flagged as not meeting WWC
 standards or as ineligible for review.
 We also removed rows marked by WWC as subgroup measures to avoid treating
@@ -30,6 +36,8 @@ z-values are signed where the effect size is non-zero.
 
 **Study characteristics:**
 
-- The retained findings are 81% RCTs and 19% quasi-experimental studies.
-- BEAR retains reported effect sizes and p-values, without a harmonised effect-size measure.
-- Findings are grouped by outcome domain; a citation-derived author-year identifier links findings from the same source paper.
+- **Study ID:** we use citation-derived author and year; we use the original 
+  `WWCStudy` as fall-back in some cases.
+- **Topic:** WWC dataset includes some useful topic classifications, but these 
+  are not included in `BEAR.rds` as they are either too granular or are overlapping 
+  flags for study categories

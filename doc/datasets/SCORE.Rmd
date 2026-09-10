@@ -13,10 +13,10 @@ The SCORE replication package is available at <https://osf.io/g5sny/>. The packa
 **Data description and source:**
 BEAR includes two SCORE outputs. The source dataset of replications has 548 rows:
 274 original claims and 274 matched replications. After BEAR processing and
-filtering, 267 matched replication rows are retained. The source dataset for
+filtering, 267 matched replication rows are included. The source dataset for
 "all claims" has 3,066 rows for claims from the set of replicated papers (but no
 replications of these claims), where we select one statistic per claim; after
-BEAR processing and filtering, 1,942 claim rows are retained.
+BEAR processing and filtering, 1,942 claim rows are included.
 
 **Data processing:**
 For the matched replication output, we used the package's converted correlation
@@ -38,6 +38,10 @@ exactness, the available effect and standard error, and text order.
 
 **Study characteristics:**
 
-- The underlying study design is not systematically classified in neither "claims" nor replications dataset.
-- Measures: SCORE "claims" dataset measures include regression coefficients, standardised mean differences, correlations, and variance-explained statistics; effect measure is unclassified for over 80% of data. SCORE replications use correlations where available.
-- Both outputs are grouped by discipline.
+- **Study ID:** we use the DOI/source-paper identifier in both outputs.
+- **Topic:** field of study (e.g. "political science") as classified by the authors.
+- The underlying study design is not systematically described.
+- Measures: SCORE "claims" dataset measures include regression coefficients, 
+  standardised mean differences, correlations, and variance-explained statistics; 
+  but the effect measure is unclassified for over 80% of data. SCORE replications 
+  use correlations where available.

@@ -7,7 +7,7 @@
 assess statistical power in political science research
 
 **Data availability:**
-The replication package (a zip file dated 20241010) is available at
+The replication package (a zip file dated `20241010`) is available at
 <https://osf.io/fgdet>. All data are in the public domain.
 
 **Data description and source:**
@@ -33,6 +33,6 @@ that the distributions of z-values matched those in the article.
 
 **Study characteristics:**
 
+- **Study ID:** we use author's study ID; for **meta-analysis ID** we use `question_id`.
+- `subset` column is the source `meta_id`
 - We do not have information on the study design or measure of effect size.
-- The meta-analytic article, research question, and subfield of political science are retained as additional grouping variables.
-

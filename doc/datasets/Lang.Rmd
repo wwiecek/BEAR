@@ -42,15 +42,20 @@ the latter two are available in about 95% of cases. (Using either coefficients o
 t-statistics to calculate z-values leads to practically identical results; we use 
 the latter.) We calculate the corresponding two-sided normal-approximation p-value.
 We retain some additional columns in `Lang.rds`. 
+
 We also pull DOIs for source articles using bibliographic metadata matching.
+These DOIs were obtained by us from Crossref, rather than supplied by Lang;
+the saved assignments are preserved when reprocessing the dataset.
+This is done automatically via Crossref. The matches are very good in almost all
+cases. For several edge cases we used LLM review to adjudicate.
 
 
 
 **Study characteristics:**
 
-- **Study ID:** `studyid` is `Lang_paper_` followed by Lang's `unique_paperid`; it
-  therefore identifies the source article rather than an individual hypothesis
-  test.
+- **Study ID:** `studyid` is `Lang_paper_` followed by Lang's `unique_paperid`,
+  but with a few minor corrections from us (see GitHub repository for details). 
+  Article DOIs are also available as an additional column in `Lang.rds`.
 - **Subset:** `subset` distinguishes observations drawn from the
   Brodeur--Cook--Heyes 2015/2018 source universe from Lang's 2021 top-five
   additions.

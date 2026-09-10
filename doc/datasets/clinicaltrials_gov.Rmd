@@ -37,7 +37,7 @@ continuous outcomes and probit differences for count outcomes.
 
 When working with the full dataset, variable `author_raw_overlap_key` can be used
 to link the two different calculations of the same effect; 
-variable `include_in_bear` identifies rows retained after applying this
+variable `include_in_bear` identifies rows included after applying this
 rule preferring author-reported estimates.
 
 The main BEAR dataset keeps studies that (1) are randomised, (2) are interventional,
@@ -69,12 +69,16 @@ which one was more appropriate using a predefined rule. ClinicalTrials.gov
 reports the number of sides for confidence intervals but not for p-values, so we
 treated p-values as two-sided. We dropped rows only when `z` was missing. Notably,
 infinite z-values can arise when `p_value` is recorded as exactly 0, and these are
-retained because they are not missing.
+included because they are not missing.
 
 
 **Study characteristics:**
 
+- **Study ID:** we use the ClinicalTrials.gov trial identifier (`nct_id`).
+- `subset` records trial phase.
 - We include only randomised interventional studies, including parallel, crossover and factorial designs.
-- Measures used by studies include standardised and unstandardised mean differences, probit differences, ratios, time-to-event measures, and more. Detailed information is available in the full dataset.
-- About half of all effects (by which we mean both reported and our derived estimates) are standardised mean differences, mean differences, or probit differences. Another 14% are hazard, odds, risk, geometric, or rate ratios; 5% have the other category (in `BEAR.rds` this is coded as "other"), and 20% have no measure.
-- Trials can be further grouped by clinical trial phase.
+- About half of all effects (by which we mean both reported and our derived 
+  estimates) are standardised mean differences, mean differences, or probit 
+  differences. Another 14% are hazard, odds, risk, geometric, or rate ratios; 
+  5% have the other category (in `BEAR.rds` this is coded as "other"), and 20% 
+  have no measure.

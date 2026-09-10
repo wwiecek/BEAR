@@ -133,7 +133,9 @@ dtlist[["WWC"]] <- readRDS("data/WWC.rds") %>%
     studyid = study_id,
     method = method,
     measure = NA,
-    topic = Outcome_Domain,
+    # WWC's broad topic flags are study-level and overlapping; they do not
+    # provide one defensible finding-level topic for the common schema.
+    topic = NA_character_,
     z = sign(b) * z_from_p(pval),
     z_operator = ifelse(pval == 1e-16, ">", "="),
     b = b,
@@ -574,14 +576,16 @@ dtlist[["OSC"]] <- readRDS("data/OSC.rds") %>%
 dtlist[["Bartos"]] <- readRDS("data/Bartos.rds") %>%
   transmute(
     metaid = as.character(meta_id),
-    studyid = as.character(id), #these are unique (=same number of IDs as rows in the dataset)
+    # The source's id is row-unique; no primary-RCT identifier is supplied.
+    studyid = as.character(id),
     method = "RCT",
     measure = "SMD",
     z = effect_size/standard_error,
     z_operator = "=",
     b = effect_size,
     se = standard_error,
-    year = year,
+    year = NA, # there is year column but that is year of the publication of meta-analysis! 
+               # not particularly useful for BEAR
     topic = category,
     # There is also total m-a size: samples_size; ignoring
     ss = sample_size

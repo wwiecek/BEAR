@@ -70,6 +70,8 @@ Keep `doc/datasets/*.Rmd` prose precise and concise, with minimum verbiage.
 - Keep entries concise (80 characters is usually enough; a couple of lines for 
   bigger changes; see NEWS.md for v3 for style to imitate) and reader-facing. 
 - Omit routine refactoring, typo fixes, paper-only changes and minor maintenance.
+- Do not add NEWS entries for minor metadata or documentation corrections.
+- Before making an addition check that it isn't already covered by existing bullet point
 - Accumulate changes under the current “in development” release, rather than
   creating a heading for each commit. When tagging a release, replace
   “in development” with its release date and start the next development heading

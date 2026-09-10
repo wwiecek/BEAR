@@ -12,7 +12,7 @@ Data and materials are available through OSF.
 
 **Data description and source:**
 The authors reanalysed 433 meta-analytic datasets from 90 psychology papers.
-BEAR represents the imported meta-analytic datasets as row-level effect sizes, assuming one row per study. 
+BEAR represents the imported meta-analytic datasets as row-level effect sizes, with approximate study groupings.
 
 **Data processing:**
 We use rows with available effect estimates and sampling variances. Effect
@@ -22,5 +22,8 @@ computed as transformed effect sizes divided by their standard errors.
 
 **Study characteristics:**
 
+- **Study ID:** we use DOI where available, then a descriptive label and year, 
+  then the label, and finally a row-specific ID. Overall labelling of studies in
+  this dataset is problematic.
+- **Meta-analysis ID:** we use the source filename to distinguish meta-analyses.
 - The designs of the primary studies are not classified.
-- The retained effects are correlations transformed to Fisher's z.

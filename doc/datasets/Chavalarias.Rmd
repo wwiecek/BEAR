@@ -24,6 +24,8 @@ one row per study, in order to keep the file size manageable.
 
 **Study characteristics:**
 
-- There is no information on study design (i.e. we cannot distinguish, for example, between prospective and retrospective studies or between RCTs and observational studies).
+- **Study ID:** we use the PubMed identifier (`PMID`).
+- `subset` distinguishes estimates obtained by authors from MEDLINE abstracts vs from PMC full text.
+- There is no information on study design (i.e. we cannot distinguish, for example, 
+  between prospective and retrospective studies or between RCTs and observational studies).
 - There is no information on effect-size measure (e.g. SMD vs ratio).
-- Studies can be grouped by whether they were extracted from a MEDLINE abstract or PMC full text.

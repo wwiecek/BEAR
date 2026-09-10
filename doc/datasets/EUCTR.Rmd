@@ -19,11 +19,16 @@ Where the data do not report whether a test is one- or two-sided, we assume two-
 The rest of the derivation of z-values follows the
 _Standard procedure for dealing with p-values and confidence intervals_. 
 We set `year` to the year of entry since completion dates were unavailable.
-We dropped rows only when `z` was missing; infinite z-values are retained.
+We dropped rows only when `z` was missing; infinite z-values are included.
 We harmonise phase labels to follow the same naming convention as ClinicalTrials.gov.
 
 **Study characteristics:**
 
-- The registry extract does not retain a row-level randomisation indicator, so BEAR does not classify the trial design.
+- **Sample size:** `ss` is the extracted endpoint sample size (`n`).
+
+- **Study ID:** we use the EudraCT trial identifier (`id`).
+- `subset` records trial phase.
+
+- The registry extract does not provide a row-level randomisation indicator, so BEAR does not classify the trial design.
 - Effect measures are derived from reported estimand labels; about half of these are mean differences, hazard ratios, odds ratios, risk differences, or risk ratios. Another one third have other category (in `BEAR.rds` this is coded as "other"), and 23% have no measure.
-- Trials are grouped by registry phase.
+- `subset` records registry phase.

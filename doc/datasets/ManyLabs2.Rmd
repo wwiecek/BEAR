@@ -17,7 +17,7 @@ paper's key table and the replication results aggregated by site from the public
 data package.
 
 **Data processing:**
-We retained the 28 preregistered analyses included in the paper. Each row is a
+We use the 28 preregistered analyses included in the paper. Each row is a
 site-level replication estimate for one analysis, so the dataset has many more
 rows than analyses. We use the Many Labs 2 analysis identifier as `metaid`.
 Thus, a single finding such as `Kay.1` contributes one BEAR row for each
@@ -26,7 +26,7 @@ scale reported for the same sample.
 The additional grouping variable distinguishes analyses designated as primary
 or secondary by the original authors.
 
-The retained effect-size measure is the correlation scale. We used the reported
+The effect-size measure is the correlation scale. We used the reported
 `r` estimate as `b`, its reported variance to compute `se` where available, and
 then computed `z = b / se`. For two analyses where the variance of `r` was not
 available but a signed equivalent test statistic was available, we used that
@@ -36,6 +36,9 @@ replication estimates.
 
 **Study characteristics:**
 
+- **Study ID:** we combine `study.source` and `source.Filename` to identify a replication site/sample.
+- **Meta-analysis ID:** we use `analysis.name`.
+- `subset` records the authors’ primary or secondary analysis classification.
+
 - The source contains multi-site replications of psychology experiments; BEAR does not classify randomisation for individual rows.
-- The retained effect measure is the correlation scale.
-- Analyses are grouped as primary or secondary.
+- The effect measure is the correlation scale.

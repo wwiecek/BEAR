@@ -7,12 +7,24 @@
 Impact of mandatory data sharing on (excessive) statistical significance in economics papers
 
 **Data availability:**
-The file `Mandatory data-sharing 30 Aug 2022.dta` may be downloaded from <https://github.com/anthonydouc/Datasharing/blob/master/Stata/>;
-the reproducibility package is available at <https://dataverse.harvard.edu/file.xhtml?fileId=7884702&version=1.0>.
+The file `Mandatory data-sharing 30 Aug 2022.dta` may be downloaded from 
+<https://github.com/anthonydouc/Datasharing/blob/master/Stata/>;
+the reproducibility package is available at 
+<https://dataverse.harvard.edu/file.xhtml?fileId=7884702&version=1.0>.
 
 **Data description and source:**
-The paper includes 64,000 economic estimates surveyed by Ioannidis et al. (2017) plus results of "searching through numerous databases, journal websites, and also an email survey of 109 authors known to have produced meta-analyses of economic topics. We cast the widest net possible to capture empirical economic estimates. Thus, some of the papers included in these meta-analyses were originally published in political science and psychology journals. Nevertheless, these meta-studies deal with economics topics." Later they note: "we collect 166,924 parameter estimates from 345 distinct research areas, of which
-20,121 were published in 24 of the leading general interest and field journals." The paper mentions 12,521 observations from before and 2,537 from after the introduction of data-sharing policies in 24 journals; the whole reproducibility dataset has 32 journals (the authors removed some smaller ones) and 22,172 rows.
+The paper includes 64,000 economic estimates surveyed by Ioannidis et al. (2017) 
+plus results of "searching through numerous databases, journal websites, and also 
+an email survey of 109 authors known to have produced meta-analyses of economic 
+topics. We cast the widest net possible to capture empirical economic estimates. 
+Thus, some of the papers included in these meta-analyses were originally published 
+in political science and psychology journals. Nevertheless, these meta-studies 
+deal with economics topics." Later they note: "we collect 166,924 parameter 
+estimates from 345 distinct research areas, of which
+20,121 were published in 24 of the leading general interest and field journals." 
+The paper mentions 12,521 observations from before and 2,537 from after the 
+introduction of data-sharing policies in 24 journals; the whole reproducibility 
+dataset has 32 journals (the authors removed some smaller ones) and 22,172 rows.
 
 **Notes:**
 The article by Askarov et al. starts from the Ioannidis-Stanley-Doucouliagos dataset,
@@ -27,6 +39,8 @@ effect sizes divided by their standard errors.
 
 **Study characteristics:**
 
+- **Study ID:** we use the source study identifier.
+- **Meta-analysis ID:** we use `filename`.
+- **Topic:** we use the source's flag to distinguish macroeconomics or microeconomics/other.
 - The estimates are mainly observational (91% of rows); 6% use mixed designs and 3% are RCTs.
 - We do not have access to the measure of effect size (e.g. ratio vs mean difference).
-- Estimates are grouped as macroeconomics or microeconomics/other.

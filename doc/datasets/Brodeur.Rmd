@@ -4,7 +4,8 @@
 @brodeur2024preregistration.
 
 **Research question:**
-are preregistration and pre-analysis plans associated with reduced p-hacking and publication bias in economics?
+are preregistration and pre-analysis plans associated with reduced p-hacking and 
+publication bias in economics?
 
 **Data collection:**
 The authors manually extracted test statistics from articles identified as RCT studies in
@@ -32,9 +33,16 @@ available. (We use RCT rows and the source `zstat` field because the
 alternative `myz` field in original data is not populated for all publication 
 years in the replication file.)
 
-**Study characteristics:**
+We obtained article DOIs by matching titles, authors, journals and publication
+years against Crossref metadata. The additional `doi` column contains the
+highest-ranked candidate; uncertain matches are flagged for review. These
+article identifiers are distinct from the trial-registration DOIs supplied
+with the source data. They do not replace the paper titles used as study IDs.
 
-- **Study ID:** we use the paper title
+
+**Study characteristics:**
+- **Study ID:** we use the paper title; we include `doi` as an additional column
+  in `Brodeur.rds`
 - `subset` records preregistration and pre-analysis-plan status, which was the
   focus of the original study.
 - All estimates come from RCTs.

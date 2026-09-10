@@ -30,6 +30,11 @@ No filtering or recoding beyond variable renaming was required.
 
 **Study characteristics:**
 
+- **Sample size and year:** `ss` is `sample_size`; `year` is the source meta-analysis year.
+- **Study ID:** we use `id` from original data, which is unique to each row and cannot group estimates within studies.
+- **Meta-analysis ID:** we use `meta_id`.
+- **Topic:** we use `category` in original data: executive function, general cognition or memory.
+
 - All studies are RCTs.
 - The reported measures are standardised mean differences; in the dataset we also include a flag to differentiate Hedges' g from Cohen's d.
 - Outcomes can be grouped as executive function, general cognition, or memory.

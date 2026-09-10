@@ -6,30 +6,79 @@ Trials with results available in CDSR, <https://www.cochranelibrary.com/> [@coch
 20 November 2025
 
 **Data collection:**
-Using the R package `cochrane` [@schwab2024cochrane], we combined data from 8,726 CDSR review records into a single file, `cdsr_interventions_19nov2025.csv` (63 MB).
+Using the R package `cochrane` [@schwab2024cochrane], we combined data from 
+8,726 CDSR review records into a single file, `cdsr_interventions_19nov2025.csv` (63 MB).
 
 **Data processing:**
-Processing was minimal, but filtering was extensive. Final BEAR effect sizes are recalculated
-for continuous outcomes as standardised mean differences and for dichotomous outcomes
-as probit-transformed effects.
-Only efficacy outcomes are retained.
-The distributed `BEAR.rds` file includes a smaller analysis subset with about
+There is some processing and extensive filtering.
+
+During processing, we cleaned up study years and categorised measures (risk ratio, 
+odds ratio, mean difference, etc.) and experimental designs. In particular, we 
+created an "RCT" flag by scanning each review abstract for its inclusion criteria. 
+Most studies in CDSR are RCTs, but some reviews also allowed quasi-experimental 
+studies, so we could not classify many studies. We also classify outcome rows 
+into `efficacy`, `safety`, `dropouts`, and `bias` based on the comparison, 
+outcome, and subgroup labels.
+
+To calculate effect sizes and z-values for BEAR, we used _metafor_ to calculate:
+standardised mean differences for continuous outcomes and probit model for dichotomous outcomes.
+We use probit to make effects cmoparable across continuous and binary data.
+
+Unlike in most of the other datasets in BEAR, we filter CDSR data heavily. 
+There are five important decisions:
+
+1. Use only the outcome and comparison from each review coded as "1", as these 
+are most likely to be the primary outcome and most relevant comparison. 
+2. Keep only rows classified as `efficacy`, excluding likely safety, dropout, 
+and bias-related outcomes based on comparison, outcome, and subgroup labels. 
+3. Use only studies with continuous and dichotomous outcomes, removing 
+rows where effect estimates are based on instrumental variables or individual 
+patient data. 
+4. Remove rows where the effect measure is unknown (keeping OR, RR, 
+Peto OR, mean difference, standardised mean difference, and risk difference) 
+and rows with no participants.
+5. Remove count data with no events or 100% event rate in both arms. (See below.)
+
+These processing steps are applied in the main dataset, `BEAR.rds`. Additional
+rows are still available to researchers in the individual dataset, `Cochrane.rds`.
+
+As a result, the distributed `BEAR.rds` file includes a smaller analysis subset with about
 36,000 rows: the first comparison and first outcome from each review, restricted
 to efficacy outcomes. The processed `data/Cochrane.rds` file is larger and is
 available for users who want to make different selection decisions. It contains
 760,486 result rows, representing 90,042 review-study pairs across 6,619
 Cochrane reviews.
 
-During processing, we cleaned up study years and categorised measures (risk ratio, odds ratio, mean difference, etc.) and experimental designs. In particular, we created an "RCT" flag by scanning each review abstract for its inclusion criteria. Most studies in CDSR are RCTs, but some reviews also allowed quasi-experimental studies, so we could not classify many studies. We also classify outcome rows into `efficacy`, `safety`, `dropouts`, and `bias` based on the comparison, outcome, and subgroup labels.
+A large proportion of CDSR rows have binary outcomes with no events in either 
+arm or events in all participants in both arms. In the BEAR analysis subset 
+before this exclusion, 2,371 of 26,619 binary rows (8.9%) met one of these 
+conditions: 2,247 rows (8.4%) had no events in either arm and 124 rows (0.5%) 
+had all participants experiencing the event in both arms.
 
-Unlike in most of the other datasets in BEAR, we filter CDSR data heavily. First, we use only the outcome and comparison from each review coded as "1", as these are most likely to be the primary outcome and most relevant comparison. Secondly, we keep only rows classified as `efficacy`, excluding likely safety, dropout, and bias-related outcomes based on comparison, outcome, and subgroup labels. Thirdly, we use only studies with continuous and dichotomous outcomes, removing rows where effect estimates are based on instrumental variables or individual patient data. Lastly, we remove rows where the effect measure is unknown (retaining OR, RR, Peto OR, mean difference, standardised mean difference, and risk difference) and rows with no participants.
+Zero-event studies may be important for some metascientific analyses, but for 
+modelling the distribution of z-values they are unhelpful. With these rows 
+included, the empirical distribution has extra observations at or near zero, 
+and the normal approximation is poor. Because of this peak at zero, including 
+these non-significant studies has the counter-intuitive effect of increasing 
+the estimated degree of selection: the fitted distribution has a steeper drop-off 
+between zero and the conventional significance threshold at 1.96. 
 
-A large proportion of CDSR rows have binary outcomes with no events in either arm or events in all participants in both arms. In the BEAR analysis subset before this exclusion, 2,371 of 26,619 binary rows (8.9%) met one of these conditions: 2,247 rows (8.4%) had no events in either arm and 124 rows (0.5%) had all participants experiencing the event in both arms.
-
-Zero-event studies may be important for some metascientific analyses, but for modelling the distribution of z-values they are unhelpful. With these rows included, the empirical distribution has extra observations at or near zero, and the normal approximation is poor. Because of this peak at zero, including these non-significant studies has the counter-intuitive effect of increasing the estimated degree of selection: the fitted distribution has a steeper drop-off between zero and the conventional significance threshold at 1.96. These observations remain available in the processed source file `data/Cochrane.rds`, but are not retained in the main analysis dataset `BEAR.rds`.
 
 **Study characteristics:**
 
-- We review meta-analysis eligibility criteria to determine which meta-analyses included only randomised trials. This way, 69% of retained estimates are classified as RCTs; the remaining 31% could not be classified reliably, but many of them are also RCTs, since Cochrane meta-analyses typically include RCT or quasi-randomised evidence.
-- About 32% of estimates are standardised mean differences and 68% are differences between probit-transformed event proportions.
-- Records are grouped by Cochrane specialty and source data type (published, unpublished, sought, or mixed); the processed data also retain outcome group.
+- **Sample size and year:** `ss` is the sum of the two arm totals; `year` is `study.year`.
+
+- **Study ID:** we use `study.name`.
+- **Meta-analysis ID:** we use the Cochrane review identifier (`id`).
+- **Topic:** we use the Cochrane specialty.
+- `subset` records study-data provenance: published, unpublished, sought or mixed.
+- `method`: We review meta-analysis eligibility criteria to determine which meta-analyses 
+  included only randomised trials. This classifies 69% of estimates as RCTs; the 
+  remaining 31% could not be classified reliably, although many are likely to be 
+  RCTs because Cochrane meta-analyses typically include RCT or quasi-randomised 
+  evidence.
+- `measure`: About 32% of estimates are standardised mean differences and 68% 
+  are differences between probit-transformed event proportions.
+- `topic` is Cochrane specialty and `subset` is source data type (published, 
+  unpublished, sought, or mixed); `outcome_group` is also available in the processed 
+  data.

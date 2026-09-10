@@ -14,6 +14,9 @@ The dataset is available at <https://datadryad.org/dataset/doi:10.5061/dryad.79d
 
 **Data processing:**
 We followed the same minimal clean-up steps (e.g. removing values found in large supplementary sections) as the original paper and also attached PubMed IDs to the dataset using DOI lookup.
+The article DOIs were supplied in the source data; we obtained the PubMed IDs
+through Europe PMC. Both identifiers are retained, with `doi` duplicating
+the source's `first.doi` field.
 
 When constructing the BEAR dataset, we derived unsigned z-values from p-values.
 We treated p-values recorded as exactly 0 as truncated and set the z-operator
@@ -23,7 +26,11 @@ one row per study, in order to keep the file size manageable.
 
 **Study characteristics:**
 
+- **Study ID:** we use the PubMed identifier (`pmid`).
+- **Topic:** we use the journal-level Field-of-Research classification (`Category`).
+- `subset` distinguishes abstract extraction from full text/results extraction.
+
 - The dataset does not have study designs.
 - The extracted p-values are converted to z-values.
 - We do not know the underlying effect measures.
-- Records are grouped by whether they were extracted from the abstract or results text.
+- `subset` distinguishes abstract extraction from results-text extraction.

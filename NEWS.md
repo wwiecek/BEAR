@@ -7,6 +7,7 @@ Additions:
 
 - Standardised `measure` and `method` columns; added `effect_scale` (for example, raw and log).
 - Added `topic` for dataset-specific subject classifications and removed the incomplete common `field` column.
+- Added a bunch of `doi` columns in different datasets so that it's easier to find the source articles.
 
 Dataset-specific updates:
 

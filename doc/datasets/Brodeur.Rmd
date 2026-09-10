@@ -9,32 +9,34 @@ are preregistration and pre-analysis plans associated with reduced p-hacking and
 **Data collection:**
 The authors manually extracted test statistics from articles identified as RCT studies in
 leading economics journals published between 2018 and 2021. Extraction was performed
-table by table. They collected coefficients of interest from results tables,
+by researchers. They collected coefficients of interest from results tables,
 excluding constants, balance checks, robustness checks, regression controls,
-and placebo tests. Each source row corresponds to a single reported test
+and placebo tests. Each row of data corresponds to a single reported test
 statistic, linked to a paper-level identifier. Unlike most other sources in
 BEAR, this means the source data have dozens of estimates per paper. The
 paper reports 314 articles and 15,992 test statistics; the shared `merged.dta`
-file contains 16,390 estimates, of which 15,917 are RCT rows retained here.
-The paper-level preregistration coding matches the source article counts:
+file contains 16,390 estimates, of which 15,917 are rows from RCTs included here.
+The paper-level preregistration coding matches the counts reported in the article:
 83 preregistered articles, including 44 with a pre-analysis plan and 39
 without one.
 
 **Data availability:**
-The replication data file `merged.dta` may be downloaded from <https://dataverse.harvard.edu/file.xhtml?fileId=7884702&version=1.0>.
+The replication data file `merged.dta` may be downloaded from 
+<https://dataverse.harvard.edu/file.xhtml?fileId=7884702&version=1.0>.
 
 **Data processing:**
-The authors' reported z-statistics were used directly and the reported
-coefficients and standard errors were retained. The source `zstat` field stores
-unsigned magnitudes, so we apply the sign of the reported coefficient when
-available. We retain RCT rows and use the source `zstat` field because the
-alternative `myz` field is not populated for all publication years in the
-replication file. We also retain a grouping variable distinguishing not
-preregistered studies, preregistered studies without a PAP, and preregistered
-studies with a PAP.
+The authors' reported z-statistics were used directly, but the reported
+coefficients and standard errors are also available. The source `zstat` field 
+stores unsigned magnitudes, so we apply the sign of the reported coefficient when
+available. (We use RCT rows and the source `zstat` field because the
+alternative `myz` field in original data is not populated for all publication 
+years in the replication file.)
 
 **Study characteristics:**
 
+- **Study ID:** we use the paper title
+- `subset` records preregistration and pre-analysis-plan status, which was the
+  focus of the original study.
 - All estimates come from RCTs.
 - There is no information on effect-size measure (e.g. SMD vs ratio).
-- Studies can be grouped by their preregistration and pre-analysis plan status.
+- `subset` records preregistration and pre-analysis-plan status.

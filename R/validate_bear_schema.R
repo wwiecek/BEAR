@@ -36,9 +36,15 @@ check_bear_schema <- function(bear) {
       stop("BEAR contains an unrecognised ", column, ".", call. = FALSE)
   }
 
-  if (any(!is.na(bear$z_operator) &
-         !bear$z_operator %in% c("<", "=", ">")))
-    stop("BEAR contains an unrecognised z_operator.", call. = FALSE)
+  for (column in c("z_operator", "orig.z_operator")) {
+    if (any(!is.na(bear[[column]]) &
+           !bear[[column]] %in% c("<", "=", ">")))
+      stop("BEAR contains an unrecognised ", column, ".", call. = FALSE)
+  }
+  if ("field" %in% names(bear))
+    stop("BEAR must not contain the obsolete field column.", call. = FALSE)
+  if (!"topic" %in% names(bear))
+    stop("BEAR must contain topic.", call. = FALSE)
   if (!all(bear$dataset %in% names(bear_names)))
     stop("BEAR contains an unrecognised dataset.", call. = FALSE)
 

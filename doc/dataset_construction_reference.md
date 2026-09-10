@@ -1,30 +1,23 @@
 # Dataset Construction Reference
 
-This table is automatically created by an LLMs to improve data management.
+This reference records how each source selected studies or records, how its
+data were extracted before BEAR processing, and how the resulting input was
+checked. The dataset pages contain the reader-facing descriptions; this table
+is the maintainer reference for source construction and extraction.
 
-This table records how source datasets selected studies or records, how source
-data were extracted before BEAR processing, and how extraction was validated.
+## Common metadata coding
 
+`workflow/build_bear.R` maps source metadata to the common categories in
+`R/settings.R`. Definitions of the public columns are in
+`doc/bear_data_dictionary.md`; source-specific identifier, topic and subset
+conventions are described on the relevant dataset page. The stitched appendix
+and website use the same files under `doc/datasets/`.
 
-## Measure and method coding in BEAR.rds
-
-`workflow/build_bear.R` maps metadata to the categories in `R/settings.R`;
-individual `data/*.rds` files retain their coding. Definitions are in
-`doc/bear_data_dictionary.md`, included by the website's Data dictionary page.
-
-Lang's parenthetical labels are combined; OLS and three singleton method
-labels become missing (203 estimates). Costello–Fox's detailed labels identify
-regression coefficients, log odds ratios, mean differences and absolute SMDs;
-65 unresolved IRR rows remain Other with unknown scale. OSC's retained
-correlation is labelled explicitly, and Szucs's t-test label is removed from
-the effect-measure field. Shared aliases combine SMD and probit labels and
-separate correlation and response-ratio families from their transformations.
-Registry scales are retained, including raw/log variation within categories.
-
-These changes do not alter inclusion, numerical estimates or the dataset-level
-flags in `doc/dataset_classification.csv`. The method field describes individual
-estimates; the classification table describes whole datasets. The stitched
-appendix and website both use `doc/datasets/*.Rmd` for dataset-specific notes.
+The common `method`, `measure` and `effect_scale` fields standardise broad
+descriptions while preserving detailed source coding in the individual
+`data/*.rds` files. They do not make estimates comparable across datasets.
+The common `topic` field describes the subject of the research; `subset` is
+used for sampling, provenance, reporting or analysis groupings.
 
 ## Reference Table
 

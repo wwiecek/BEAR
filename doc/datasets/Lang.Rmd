@@ -4,44 +4,63 @@
 @lang2025credible.
 
 **Research question:**
-how frequently are statistically significant rejections of nulls in economics false positives?
+How frequently are statistically significant rejections of null hypotheses in recent empirical economics false positives?
 
 **Data collection:**
-This paper uses empirical papers published in the top five economics journals in 2021 and
-the Brodeur, Cook, and Heyes dataset of 2015 and 2018 articles in 25 leading economics journals.
-In each paper, research assistants checked abstracts and results text, kept
-estimates emphasized in abstracts or as principal results, used the authors'
-preferred specification when several specifications were used to test the same
-hypothesis, and excluded robustness checks or heterogeneity analyses unless
-heterogeneity was central to the article.
+Lang samples empirical articles from the top five economics journals in 2021 and
+also articles previously collected in Brodeur, Cook, and Heyes, who sampled articles 
+published in 2015 and 2018 in 25 leading economics journals. 
+(See also the "Brodeur" dataset in BEAR for more details.)
+The sample consists mainly of natural, laboratory, or field experiments, 
+excluding articles focused on theory, structural estimation, or econometric methods. 
 
-The source data contain 3,885 extracted hypothesis tests from 736 papers. The
-main sample in the Lang paper is the subset of 2,082 tests with $1.96 \leq |t| < 10$.
-The paper also reports one null per article: 736 t-values, but without row or paper identifiers.
-We do not use the latter.
+Lang re-extracted results from all articles rather than using the hypothesis
+tests extracted by Brodeur, Cook, and Heyes. Research assistants read the
+abstracts and results text and retained estimates emphasised in the abstract or
+described by the authors as principal results. When multiple specifications
+tested the same hypothesis, they retained the authors' preferred specification
+or the specification whose magnitude was used in subsequent analysis.
+Robustness checks and heterogeneity analyses were excluded unless the
+heterogeneity analysis was itself central to the article.
+
+The source data contain 3,885 extracted hypothesis tests from 736
+articles. Lang's main sample in the cited article restricts these to rejected null hypotheses with
+$1.96 \leq |t| < 10$, leaving 2,082 hypothesis tests from 663 articles.
+The dataset therefore does not identify one focal hypothesis per article. An
+article can contribute several hypothesis tests. However, 
+only one preferred specification is retained for each hypothesis.
+(Lang paper also reports analyses restricted to one null hypothesis per article. The
+supplementary material contains a separate vector with one t-statistic for each
+of the 736 articles, but this vector does not contain row or article identifiers
+that allow it to be linked directly to the 3,885-test table. We therefore do
+not use this in BEAR data.)
 
 **Data processing:**
-We use the full 3,885-test source table.
-We use supplied t-statistics (derounded by Lang)
-as the z-value and compute two-sided p-values
-from $|z|$. We add DOIs for source articles based on bibliographic
-metadata matching, and the reported or derounded coefficients and standard
-errors. The vector containing one t-value per article is not represented in the
-row-level BEAR data because its source file has no identifiers that would support
-matching to the extracted-test table.
+We use the 3,885 results. We use Lang's supplied, derounded t-statistic,
+derounded coefficient (`coef_dr` in the source data) and standard error (`se_dr`); 
+the latter two are available in about 95% of cases. (Using either coefficients or
+t-statistics to calculate z-values leads to practically identical results; we use 
+the latter.) We calculate the corresponding two-sided normal-approximation p-value.
+We retain some additional columns in `Lang.rds`. 
+We also pull DOIs for source articles using bibliographic metadata matching.
 
-**Notes:** The papers selected probably overlap substantially with those in Brodeur,
-but the extracted values differ.
 
-Method labels in `Lang.rds` are as reported by the author
-  and mix study designs, identification strategies and estimators. In
-  `BEAR.rds`, we omit some of these categories (OLS, matching, system GMM 
-  and IV–DID), affecting 203 estimates, since e.g. "OLS" may be used with 
-  experimental or observational data. The original labels remain available in 
-  `Lang.rds`.
 
 **Study characteristics:**
 
-- The source classifies 38% of retained estimates as RCTs; difference-in-differences, instrumental variables, regression discontinuity, OLS, matching, and mixed designs are also represented.
-- BEAR retains the reported coefficients and standard errors, without a harmonised effect-size measure.
-- Estimates are grouped by whether they came from the Brodeur--Cook--Heyes source universe or the 2021 additions from the top five journals.
+- **Study ID:** `studyid` is `Lang_paper_` followed by Lang's `unique_paperid`; it
+  therefore identifies the source article rather than an individual hypothesis
+  test.
+- **Subset:** `subset` distinguishes observations drawn from the
+  Brodeur--Cook--Heyes 2015/2018 source universe from Lang's 2021 top-five
+  additions.
+- **Method:** The `method` labels supplied with the Lang data mix study designs,
+  identification strategies, and estimators. Large majority of estimates are one of 
+  "RCT", "DID", "IV", "RD", and "OLS". 
+  `Lang.rds` retains the original method labels. When constructing `BEAR.rds`, we
+  collapse some label, e.g. `RCT (DID)` and `RCT (IV)` become `RCT`;
+  `DID (matching)` becomes `DID`; and `RD (DID)` and `RD (IV)` become `RD`. For
+  estimates labelled `OLS`, `matching`, `SYSTEM-GMM`, or `IV-DID (matching)`, we
+  retain the estimates but set `method` to missing.
+- The dataset does not have data on type of measure to allow us to classify estimates 
+  as in some other datasets in BEAR (e.g. risk risk vs standardised mean difference).

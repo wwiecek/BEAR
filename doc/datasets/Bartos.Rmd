@@ -41,4 +41,3 @@ No filtering or recoding beyond variable renaming was required.
   "general cognition" or "memory".
 - All studies are RCTs.
 - The reported measures are standardised mean differences; in the dataset we also include a flag to differentiate Hedges' g from Cohen's d.
-- Outcomes can be grouped as executive function, general cognition, or memory.

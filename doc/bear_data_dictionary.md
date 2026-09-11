@@ -70,7 +70,8 @@ that the author supplied no information or that a study is observational.
 | `did` | Difference-in-differences studies. |
 | `iv` | Instrumental variables estimation. |
 | `rd` | Regression discontinuity studies. |
-| `mixed` | Mixed designs or approaches, as classified in the source. |
+| `mixed` | Mixed observational and experimental research; used only by Askarov. |
+| `not rct, not mixed` | Neither source flag is set; used only by Askarov. May include quasi-experimental research. |
 | `NA` | Design or identification strategy not classified in BEAR. |
 
 Where source classifications are unavailable, BEAR also uses review eligibility

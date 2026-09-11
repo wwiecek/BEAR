@@ -74,7 +74,10 @@ dtlist[["Askarov"]] <- readRDS("data/Askarov.rds") %>%
   transmute(
     metaid = filename,
     studyid = studyid,
-    method = ifelse(EXPERIMENT == 1, "RCT", ifelse(mixed == 1, "mixed", "observational")),
+    method = case_when(
+      EXPERIMENT == 1 ~ "RCT", mixed == 1 ~ "mixed",
+      EXPERIMENT == 0 & mixed == 0 ~ "not RCT, not mixed",
+      TRUE ~ NA_character_),
     measure = NA,
     topic = if_else(MACRO == 1, "macro", "micro/other"),
     z = effectsize/standarderror,

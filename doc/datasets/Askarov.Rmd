@@ -42,5 +42,8 @@ effect sizes divided by their standard errors.
 - **Study ID:** we use the source study identifier.
 - **Meta-analysis ID:** we use `filename`.
 - **Topic:** we use the source's flag to distinguish macroeconomics or microeconomics/other.
-- The estimates are mainly observational (91% of rows); 6% use mixed designs and 3% are RCTs.
+- **Method:** The source flags experimental and mixed observational/experimental
+  research. We label estimates with neither flag set as "not RCT, not mixed".
+  This category may include quasi-experimental research, which the source does
+  not separately identify.
 - We do not have access to the measure of effect size (e.g. ratio vs mean difference).

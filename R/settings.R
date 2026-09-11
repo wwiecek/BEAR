@@ -9,7 +9,10 @@ bear_effect_scale_levels <- c(
   "raw", "log", "fisher_z", "smd", "absolute_smd", "probit"
 )
 bear_method_levels <- c(
-  "rct", "did", "iv", "rd", "quasi_experimental", "observational", "mixed"
+  "rct", "did", "iv", "rd", "quasi_experimental", "observational", 
+  #used in Askarov only
+  "mixed",
+  "not rct, not mixed" 
 )
 
 bear_names <- c(

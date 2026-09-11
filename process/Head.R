@@ -2,6 +2,7 @@
 # https://datadryad.org/dataset/doi:10.5061/dryad.79d43
 # accessed by WW June 2025
 library(tidyverse)
+source("R/doi_lookup.R")
 
 # WW the original analysis file was not available, but a different raw data file that
 # seems to match it well is available, so I load that instead
@@ -43,8 +44,9 @@ d <- merge(d, journal.categories,by="journal.name")
 pmid <- readRDS("data_raw/Head/derived/doi2pmid_progress.rds")
 
 d %>% 
-  left_join(rename(pmid, first.doi = doi)) %>% 
+  join_identifiers(rename(pmid, first.doi = doi), "first.doi", "pmid") %>%
   select(journal.name, first.doi, pmid, p.value, operator, section, Category, year) %>% 
+  mutate(doi = first.doi) %>%
   saveRDS("data/Head.rds") #compression: 30x smaller than CSV
   # write_csv("data_raw/Head/derived/p_values_cleaned_ww.csv")
 

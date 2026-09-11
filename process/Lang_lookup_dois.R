@@ -1,138 +1,65 @@
-# Draft DOI lookup for Lang papers using Crossref metadata.
-# This is an audit/enrichment helper, not part of the canonical Lang processing.
-
+# Audit Lang's journal versions, including citations without separate titles.
+# Canonical processing applies the documented manual overrides after this lookup.
 library(tidyverse)
 library(httr2)
+source("process/Lang.R")
 
-input_path <- "data/Lang.rds"
-output_path <- "data_raw/Lang/derived/lang_doi_candidates.csv"
-crossref_mailto <- Sys.getenv("CROSSREF_MAILTO", unset = NA_character_)
-lookup_keys <- c("paper_id", "source_title", "citation", "journal", "year",
-                 "lang_source")
-
-clean_character_columns <- function(data) {
-  data %>%
-    mutate(across(where(is.character), ~ stringi::stri_trans_nfc(enc2utf8(.x))))
-}
-
-lang_papers <- readRDS(input_path) %>%
-  clean_character_columns() %>%
-  distinct(paper_id, source_title, citation, journal, year, lang_source) %>%
+journals <- read_csv("process/Lang_journals.csv", show_col_types = FALSE) %>%
+  mutate(journal_key = normalise_journal(journal)) %>%
+  select(journal_key, source_doi_pattern = doi_pattern)
+journal_names <- paste(c("American Economic Review", "Quarterly Journal of Economics",
+  "Review of Economic Studies", "Journal of Political Economy", "Econometrica"),
+  collapse = "|")
+papers <- lang %>%
+  distinct(paper_id, studyid, source_title, citation, journal, year, source_author1,
+           previous_doi = doi) %>%
   mutate(
-    query = case_when(
-      !is.na(source_title) ~ str_c(source_title, journal, year, sep = " "),
-      !is.na(citation) ~ citation,
-      TRUE ~ NA_character_
-    )
-  ) %>%
-  filter(!is.na(query))
+    citation_clean = str_replace_all(citation, fixed("¬†"), " "),
+    source_journal = coalesce(journal,
+      str_extract(citation_clean, regex(journal_names, ignore_case = TRUE))),
+    citation_title = str_remove(citation_clean, "^.*?\\([0-9]{4}\\)\\.?\\s*"),
+    citation_title = str_remove(citation_title,
+      regex(paste0("\\.?\\s*(?:The )?(?:", journal_names, ").*$"),
+            ignore_case = TRUE)),
+    source_title = coalesce(source_title,
+      str_remove(str_trim(citation_title), "[.]$")),
+    source_year = year,
+    source_author = coalesce(source_author1, str_extract(citation_clean, "^[^,]+")),
+    journal_key = normalise_journal(source_journal)) %>%
+  left_join(journals, by = "journal_key")
+stopifnot(nrow(papers) == 736L, !anyDuplicated(papers$paper_id),
+          !anyNA(papers$source_title), !anyNA(papers$source_journal),
+          !anyNA(papers$source_doi_pattern))
 
-normalise_text <- function(x) {
-  x %>%
-    str_to_lower() %>%
-    str_replace_all("[^a-z0-9 ]", " ") %>%
-    str_squish()
-}
-
-title_overlap <- function(source_title, candidate_title) {
-  if (is.na(source_title) || is.na(candidate_title)) return(NA_real_)
-  source_words <- str_split(normalise_text(source_title), " ")[[1]]
-  candidate_words <- str_split(normalise_text(candidate_title), " ")[[1]]
-  source_words <- source_words[nchar(source_words) > 2]
-  candidate_words <- candidate_words[nchar(candidate_words) > 2]
-  if (length(source_words) == 0) return(NA_real_)
-  mean(source_words %in% candidate_words)
-}
-
-lookup_crossref <- function(query, source_title = NA_character_) {
-  req <- request("https://api.crossref.org/works") %>%
-    req_url_query(`query.bibliographic` = query, rows = 3)
-
-  if (!is.na(crossref_mailto) && nzchar(crossref_mailto)) {
-    req <- req %>% req_url_query(mailto = crossref_mailto)
-  }
-
-  resp <- req %>%
-    req_user_agent("BEAR DOI lookup (https://github.com/wwiecek/BEAR)") %>%
-    req_timeout(30) %>%
-    req_perform()
-
-  items <- resp %>%
-    resp_body_json(simplifyVector = TRUE) %>%
-    pluck("message", "items")
-
-  if (length(items) == 0 || nrow(items) == 0) {
-    return(tibble(doi = NA_character_, crossref_score = NA_real_,
-                  candidate_title = NA_character_, title_overlap = NA_real_))
-  }
-
-  tibble(
-    doi = items$DOI,
-    crossref_score = items$score,
-    candidate_title = map_chr(items$title, ~if (length(.x)) .x[[1]] else NA_character_)
-  ) %>%
-    mutate(title_overlap = map2_dbl(rep(source_title, n()),
-                                    candidate_title, title_overlap)) %>%
-    slice_max(order_by = crossref_score, n = 1, with_ties = FALSE)
-}
-
-doi_candidates <- lang_papers %>%
+# Preserve the historical selections as the audit baseline, even on repeat runs.
+legacy <- read_csv("data_raw/Lang/derived/lang_doi_candidates.csv",
+                   show_col_types = FALSE) %>%
+  group_by(paper_id) %>% summarise(
+    legacy_doi = str_c(unique(doi), collapse = ";"),
+    legacy_weak_title = any(title_overlap < 0.9, na.rm = TRUE), .groups = "drop")
+papers <- papers %>% left_join(legacy, by = "paper_id") %>%
   mutate(
-    result = pmap(
-      list(query, source_title),
-      ~{
-        Sys.sleep(0.2)
-        tryCatch(
-          lookup_crossref(..1, ..2),
-          error = function(e) tibble(
-            doi = NA_character_,
-            crossref_score = NA_real_,
-            candidate_title = NA_character_,
-            title_overlap = NA_real_,
-            error = conditionMessage(e)
-          )
-        )
-      }
-    )
-  ) %>%
-  unnest(result) %>%
-  clean_character_columns()
-
-write_csv(doi_candidates, output_path)
-
-# Add the accepted Crossref DOI candidate back to the Lang row-level data.
-if (any(is.na(doi_candidates$doi))) {
-  stop("DOI lookup produced missing DOI candidates; review ",
-       output_path, " before updating ", input_path, call. = FALSE)
-}
-
-doi_lookup <- doi_candidates %>%
-  distinct(across(all_of(lookup_keys)), doi)
-
-if (nrow(doi_lookup) != nrow(doi_candidates)) {
-  stop("DOI candidate keys are not unique; review ", output_path,
-       " before updating ", input_path, call. = FALSE)
-}
-
-lang <- readRDS(input_path)
-lang_nrow <- nrow(lang)
-
-lang_with_doi <- lang %>%
-  select(-any_of("doi")) %>%
-  left_join(doi_lookup, by = lookup_keys)
-
-if (nrow(lang_with_doi) != lang_nrow) {
-  stop("DOI join changed Lang row count from ", lang_nrow, " to ",
-       nrow(lang_with_doi), call. = FALSE)
-}
-if (any(is.na(lang_with_doi$doi))) {
-  stop("DOI join left ", sum(is.na(lang_with_doi$doi)),
-       " Lang rows without DOI; review join keys before saving.",
-       call. = FALSE)
-}
-
-saveRDS(lang_with_doi, input_path)
-
-cat("Updated", input_path, "with DOI values for",
-    n_distinct(lang_with_doi$doi), "source articles across",
-    nrow(lang_with_doi), "Lang tests.\n")
+    legacy_prefix_mismatch = map2_lgl(legacy_doi, source_doi_pattern,
+      ~ !all(str_detect(str_split(.x, ";")[[1]], .y))),
+    query = str_c(source_title, source_journal, source_year, source_author, sep = " "))
+pending <- papers %>% filter(legacy_prefix_mismatch | legacy_weak_title |
+                              is.na(journal) | studyid %in% names(manual_dois))
+message("Journal-aware lookup: ", nrow(pending), " source paper IDs; ",
+        sum(papers$legacy_prefix_mismatch), " historical DOI-prefix mismatches")
+results <- lookup_identifiers(pending,
+  "data_raw/Lang/derived/crossref_journal_v2.rds")
+candidates <- pending %>%
+  left_join(results, by = c("query", "source_title", "source_journal",
+    "source_year", "source_author", "source_doi_pattern")) %>%
+  mutate(
+    doi_automatic = doi, automatic_status = status,
+    manual_doi = unname(manual_dois[studyid]),
+    doi = coalesce(manual_doi, doi),
+    status = if_else(!is.na(manual_doi), "matched", status),
+    assignment_method = if_else(!is.na(manual_doi), "manual", "journal_lookup"),
+    changed_from_legacy = doi != legacy_doi)
+write_csv(candidates, "data_raw/Lang/derived/lang_doi_journal_lookup.csv")
+write_csv(filter(candidates, status != "matched"),
+          "data_raw/Lang/derived/lang_doi_journal_review.csv")
+source("process/Lang.R")
+print(candidates %>% count(status, assignment_method, changed_from_legacy))

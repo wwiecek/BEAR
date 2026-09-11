@@ -3,8 +3,11 @@
 
 library(tidyverse)
 library(haven)
+source("R/doi_lookup.R")
 
 lang_path <- "data_raw/Lang/23259data/Data/cr_append.dta"
+doi_keys <- c("paper_id", "source_title", "citation", "journal", "year",
+              "lang_source")
 
 # Helpers -----
 
@@ -100,13 +103,70 @@ lang <- lang_raw %>%
     source_matlab_sample = matlab_sample
   )
 
+# Bibliographic hotfixes -----
+# Evidence and the distinction between source IDs and articles: Lang_doi_notes.md.
+# Keep raw files, original labels and every test; consolidate article IDs only.
+lang <- lang %>% mutate(
+  source_title_original = source_title,
+  studyid = case_when(
+    source_unique_paperid %in% 2:5 ~ "Lang_paper_2",
+    source_unique_paperid %in% 29:31 ~ "Lang_paper_29",
+    source_unique_paperid %in% 42:43 ~ "Lang_paper_42",
+    TRUE ~ paper_id),
+  source_title = case_when(
+    source_row %in% c(2052L, 2054L) ~
+      source_title[match(2043L, source_row)],
+    paper_id == "Lang_paper_223" ~
+      "Financial development and the choice of trade partners",
+    paper_id == "Lang_paper_324" ~ paste(
+      "Women's schooling and fertility under low female labor force",
+      "participation: Evidence from mobility restrictions in Israel"),
+    TRUE ~ source_title))
+
+# These adjudications override both old caches and subsequent automatic searches.
+manual_dois <- c(
+  Lang_paper_2 = "10.1257/aer.20191586",
+  Lang_paper_29 = "10.1093/qje/qjab016",
+  Lang_paper_42 = "10.1257/aer.20201238",
+  Lang_paper_100 = "10.1093/qje/qjab004",
+  Lang_paper_223 = "10.1016/j.jdeveco.2015.04.002",
+  Lang_paper_324 = "10.1016/j.jpubeco.2015.02.009",
+  Lang_paper_397 = "10.1257/app.20150245",
+  Lang_paper_472 = "10.1111/ecoj.12505",
+  Lang_paper_474 = "10.1111/ecoj.12448",
+  Lang_paper_530 = "10.1016/j.jdeveco.2018.07.008",
+  Lang_paper_597 = "10.1016/j.jinteco.2017.08.002",
+  Lang_paper_689 = "10.1093/qje/qjx040",
+  # Reviewed low-overlap cases: retain the correct, often shortened titles.
+  Lang_paper_208 = "10.1093/epolic/eiv015",
+  Lang_paper_279 = "10.3368/jhr.50.4.959",
+  Lang_paper_280 = "10.3368/jhr.50.4.1051",
+  Lang_paper_570 = "10.1016/j.jfineco.2018.01.008",
+  Lang_paper_581 = "10.3368/jhr.53.3.0115.6895r1",
+  Lang_paper_584 = "10.3368/jhr.53.2.0816-8112r1",
+  Lang_paper_585 = "10.3368/jhr.53.3.0215-6948r4",
+  Lang_paper_586 = "10.3368/jhr.53.4.1115.7494r1",
+  Lang_paper_589 = "10.3368/jhr.53.2.0115-6868r1",
+  Lang_paper_590 = "10.3368/jhr.53.3.0215-6963r1",
+  Lang_paper_591 = "10.3368/jhr.53.1.0215-6958r1",
+  Lang_paper_627 = "10.1016/j.jpubeco.2018.08.015",
+  Lang_paper_641 = "10.1016/j.jpubeco.2018.05.002",
+  Lang_paper_656 = "10.1016/j.jpubeco.2018.07.002")
+
 # Validate -----
 
 check_value("Full Lang source rows", nrow(lang), 3885)
 check_value("Full Lang source papers", n_distinct(lang$paper_id), 736)
+check_value("Distinct Lang articles", n_distinct(lang$studyid), 730)
+check_value("Droller rows", sum(lang$studyid == "Lang_paper_472"), 6)
+check_value("Jessoe rows", sum(lang$studyid == "Lang_paper_474"), 14)
+stopifnot(all(lang$paper_id[lang$source_row %in% c(2052L, 2054L)] ==
+                "Lang_paper_474"))
 check_value("Lang main sample rows", sum(lang$lang_main_sample), 2082)
 check_value("Lang main sample papers",
             n_distinct(lang$paper_id[lang$lang_main_sample]), 663)
+check_value("Lang main sample articles",
+            n_distinct(lang$studyid[lang$lang_main_sample]), 660)
 
 p_cut_counts <- map_int(c(.04, .03, .02, .01),
                         ~sum(lang$p < .x & lang$lang_main_sample))
@@ -123,15 +183,50 @@ if (anyDuplicated(lang$estimate_id) > 0) {
 
 # Save -----
 
+# Preserve current assignments, including independent manual corrections.
+if (file.exists("data/Lang.rds")) {
+  previous_lang <- readRDS("data/Lang.rds")
+  if ("doi" %in% names(previous_lang)) {
+    lang <- join_identifiers(lang, previous_lang, "estimate_id", "doi")
+  }
+}
+if (file.exists("data_raw/Lang/derived/lang_doi_lookup.csv")) {
+  lookup <- read_csv("data_raw/Lang/derived/lang_doi_lookup.csv",
+                     show_col_types = FALSE)
+  # Existing assignments may have been corrected since the mapping was written.
+  if ("doi" %in% names(lang)) {
+    lookup <- lookup %>% anti_join(filter(lang, !is.na(doi)), by = doi_keys)
+  }
+  lang <- join_identifiers(lang, lookup, doi_keys, "doi")
+} else if (!"doi" %in% names(lang) &&
+    file.exists("data_raw/Lang/derived/lang_doi_candidates.csv")) {
+  lookup <- read_csv("data_raw/Lang/derived/lang_doi_candidates.csv",
+                     show_col_types = FALSE)
+  lang <- join_identifiers(lang, lookup, doi_keys, "doi")
+}
+# Approved journal-version assignments supersede the historical lookup.
+if (file.exists("data_raw/Lang/derived/lang_doi_journal_lookup.csv")) {
+  lookup <- read_csv("data_raw/Lang/derived/lang_doi_journal_lookup.csv",
+                     show_col_types = FALSE) %>%
+    filter(status == "matched") %>% select(paper_id, doi)
+  stopifnot(!anyDuplicated(lookup$paper_id))
+  lang <- lang %>% left_join(rename(lookup, doi_journal = doi), by = "paper_id")
+  if (!"doi" %in% names(lang)) lang$doi <- NA_character_
+  lang <- lang %>% mutate(doi = coalesce(doi_journal, doi)) %>% select(-doi_journal)
+}
+if (!"doi" %in% names(lang)) lang$doi <- NA_character_
+lang <- lang %>% mutate(doi = coalesce(unname(manual_dois[studyid]), doi))
+stopifnot(n_distinct(lang$source_title[lang$studyid == "Lang_paper_474"]) == 1L)
 saveRDS(lang, "data/Lang.rds")
 
 # Validation summary -----
 
 cat("Lang validation summary\n")
 cat("Full source:", nrow(lang), "tests from", n_distinct(lang$paper_id),
-    "papers\n")
+    "source IDs;", n_distinct(lang$studyid), "articles\n")
 cat("Main sample:", sum(lang$lang_main_sample), "tests from",
-    n_distinct(lang$paper_id[lang$lang_main_sample]), "papers\n")
+    n_distinct(lang$paper_id[lang$lang_main_sample]), "source IDs;",
+    n_distinct(lang$studyid[lang$lang_main_sample]), "articles\n")
 
 cat("Year counts\n")
 print(lang %>% count(year, name = "tests") %>% arrange(year))

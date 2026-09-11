@@ -79,7 +79,47 @@ or `# Validate -----`. Use comments for non-obvious domain assumptions,
 compatibility repairs, parsing rules, and validation invariants. Do not
 narrate obvious code line by line.
 
-## 5. Lock The Schema
+## 5. Enrich Article Identifiers and Lock The Schema
+
+Article DOI and PMID enrichment is optional metadata work. It must not replace
+an existing `studyid`, trial-registration DOI, review DOI, or data-package DOI.
+Preserve source-supplied identifiers, name BEAR-obtained identifiers in the
+dataset prose, and use a distinct column where identifier types would otherwise
+be confused.
+
+The reusable functions are in `R/doi_lookup.R`. Load `tidyverse` and `httr2`,
+then source that file. `lookup_identifiers(papers, cache_path, provider)` takes
+one row per `query` and optional title, journal, year, author and DOI-pattern
+metadata. It supports Crossref title/citation-to-DOI searches and Europe PMC
+DOI-to-PMID or PMID-to-DOI searches. Deduplicate to one article per query
+before looking anything up.
+
+Run a lookup after the initial processing script has produced the metadata
+needed to identify articles. Save its checkpoint and any review table under
+`data_raw/<dataset>/derived/`; they are untracked. The canonical processor may
+then attach the accepted cached mapping with `join_identifiers()`, which rejects
+duplicate keys and conflicting identifiers while preserving the original rows.
+Normal processing and `main.R` must not make network requests. A missing cache
+should therefore leave the enrichment column absent or missing, unless a
+dataset has a separately documented reason to require an established mapping.
+
+Do not overwrite a checkpoint to refresh API results. Use a new cache path,
+compare the results, and review any disagreement. Crossref candidates should be
+checked against title, journal, year, author and article type; a resolvable DOI
+alone does not establish a correct match. Review weak or ambiguous candidates
+before attaching them. The helper records these checks and marks inconsistent
+Crossref candidates for review. It retries transient failures, but failed
+requests remain retryable rather than becoming permanent non-matches. Set
+`CROSSREF_MAILTO` to identify requests to Crossref's polite pool.
+
+For existing workflows, Lang's lookup includes accepted manual corrections and
+is not merely optional metadata; Head's source DOIs are retained and its lookup
+adds PMIDs; Brodeur's saved mapping adds article DOIs after its initial source
+processing. Run `Rscript --vanilla tests/test_doi_lookup.R` for the shared
+offline checks. Before a material enrichment, snapshot the dataset and mapping
+under `data_raw/doi_validation/` and verify that all pre-existing columns,
+their types, order and missingness are unchanged after reprocessing, apart from
+explicitly adjudicated corrections.
 
 Before saving, use `transmute()` or a narrow `select()` so the output schema
 is explicit. Include standard BEAR fields where they apply, such as dataset,

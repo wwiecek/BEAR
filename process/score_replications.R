@@ -71,6 +71,8 @@ original_long <- orig_outcomes %>%
     dataset = "SCORE",
     metaid = NA_character_,
     studyid = doi,
+    original_doi = doi,
+    doi = if_else(source == "original", doi, NA_character_),
     estimate_id = paste0(claim_id, "_original"),
     paper_id,
     claim_id,
@@ -141,6 +143,8 @@ replication_long <- main_replication_source %>%
     dataset = "SCORE",
     metaid = NA_character_,
     studyid = doi,
+    original_doi = doi,
+    doi = if_else(source == "original", doi, NA_character_),
     estimate_id = paste0(claim_id, "_replication"),
     paper_id,
     claim_id,
@@ -180,7 +184,7 @@ score_replications <- bind_rows(original_long, replication_long) %>%
   calc_study_weights() %>%
   arrange(paper_id, claim_id, source) %>%
   select(
-    dataset, metaid, studyid, estimate_id, paper_id, claim_id, report_id,
+    dataset, metaid, studyid, doi, original_doi, estimate_id, paper_id, claim_id, report_id,
     citation, journal, discipline, year, source, subset, measure, z, abs_z,
     z_operator, p, b, se, ss, weights, significant,
     replication_type, type_internal, z_source, z_from_coef, z_from_stat,

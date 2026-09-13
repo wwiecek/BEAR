@@ -1,6 +1,56 @@
 # Shared article identifier lookup; source after loading tidyverse and httr2.
 # Network results are checkpointed separately from canonical dataset processing.
 
+# Preserve balanced parentheses and angle brackets in legacy DOI suffixes.
+extract_doi <- function(x) {
+  doi <- str_extract(x, regex("10\\.\\d{4,9}/[^\\s\"]+",
+                              ignore_case = TRUE)) %>%
+    str_remove("[.,;]+$")
+  extra <- !is.na(doi) & str_count(doi, fixed(")")) >
+    str_count(doi, fixed("(")) & str_ends(doi, fixed(")"))
+  doi[extra] <- str_remove(doi[extra], "\\)$")
+  extra <- !is.na(doi) & str_count(doi, fixed(">")) >
+    str_count(doi, fixed("<")) & str_ends(doi, fixed(">"))
+  doi[extra] <- str_remove(doi[extra], ">$")
+  str_to_lower(doi)
+}
+
+# Europe PMC supports exact PMID queries in batches; cache every completed batch.
+lookup_pmids <- function(pmids, cache_path, batch_size = 100L) {
+  pmids <- unique(as.character(pmids[!is.na(pmids)]))
+  stopifnot(all(str_detect(pmids, "^\\d+$")), batch_size <= 1000L)
+  cache <- if (file.exists(cache_path)) readRDS(cache_path) else
+    tibble(query = character(), doi = character(), status = character())
+  stopifnot(!anyDuplicated(cache$query))
+  remaining <- setdiff(pmids, cache$query[cache$status != "error"])
+  batches <- split(remaining, ceiling(seq_along(remaining) / batch_size))
+  for (batch in batches) {
+    body <- request("https://www.ebi.ac.uk/europepmc/webservices/rest/search") %>%
+      req_url_query(query = paste0("SRC:MED AND (",
+        str_c("EXT_ID:", batch, collapse = " OR "), ")"),
+        format = "json", pageSize = batch_size, synonym = "false") %>%
+      identifier_request()
+    if (is.null(body$hitCount)) stop("Missing Europe PMC hit count")
+    found <- map_dfr(body$resultList$result, function(item) {
+      stopifnot(identical(item$source, "MED"), item$id %in% batch)
+      tibble(query = item$id, doi = pluck(item, "doi", .default = NA_character_),
+             candidate_title = pluck(item, "title", .default = NA_character_))
+    })
+    if (!nrow(found)) found <- tibble(query = character(), doi = character(),
+                                    candidate_title = character())
+    stopifnot(nrow(found) == body$hitCount, !anyDuplicated(found$query))
+    result <- tibble(query = batch) %>% left_join(found, by = "query") %>%
+      mutate(doi = extract_doi(doi), provider = "pmid_to_doi",
+        status = if_else(is.na(doi), "no_match", "matched"),
+        retrieved_at = format(Sys.time(), tz = "UTC"))
+    cache <- bind_rows(filter(cache, !query %in% batch), result)
+    dir.create(dirname(cache_path), recursive = TRUE, showWarnings = FALSE)
+    saveRDS(cache, cache_path)
+    message("PMIDs completed: ", sum(pmids %in% cache$query), " / ", length(pmids))
+  }
+  filter(cache, query %in% pmids)
+}
+
 normalise_text <- function(x) {
   x %>% str_to_lower() %>% str_replace_all("[^a-z0-9 ]", " ") %>%
     str_squish()
@@ -175,7 +225,8 @@ lookup_identifiers <- function(papers, cache_path, provider = "crossref") {
   for (i in seq_len(nrow(remaining))) {
     query <- remaining$query[i]
     source_title <- remaining$source_title[i]
-    Sys.sleep(0.25)
+    # Public Crossref list queries allow one request per second.
+    Sys.sleep(if (provider == "crossref") 1.1 else 0.25)
     result <- tryCatch({
       if (provider == "crossref") {
         args <- as.list(remaining[i, c("query", fields)])

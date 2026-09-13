@@ -118,7 +118,7 @@ score_all_claims <- score_all_claims_fragments %>%
   ) %>%
   calc_study_weights() %>%
   select(
-    dataset, metaid, studyid, estimate_id, paper_id, claim_id, report_id,
+    dataset, metaid, studyid, doi, estimate_id, paper_id, claim_id, report_id,
     citation, journal, discipline, year, source, subset, measure, z, abs_z,
     z_operator, p, b, se, ss, weights, significant,
     claim4_id, p_operator, coded_stat_evidence, stat_fragment, fragment_id,

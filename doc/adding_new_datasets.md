@@ -94,14 +94,38 @@ metadata. It supports Crossref title/citation-to-DOI searches and Europe PMC
 DOI-to-PMID or PMID-to-DOI searches. Deduplicate to one article per query
 before looking anything up.
 
-Run a lookup after the initial processing script has produced the metadata
-needed to identify articles. Save its checkpoint and any review table under
-`data_raw/<dataset>/derived/`; they are untracked. The canonical processor may
-then attach the accepted cached mapping with `join_identifiers()`, which rejects
-duplicate keys and conflicting identifiers while preserving the original rows.
-Normal processing and `main.R` must not make network requests. A missing cache
-should therefore leave the enrichment column absent or missing, unless a
-dataset has a separately documented reason to require an established mapping.
+For Crossref article searches with a source journal, pass every separately
+available field as `source_title`, `source_journal`, `source_year`,
+`source_author` and, where it is known, `source_doi_pattern`. The source journal
+activates journal-aware retrieval and ranking; the query is a search string, not
+a substitute for these fields. A full-reference or title-only search is a
+fallback when those fields cannot be recovered; describe it as such in the
+audit.
+
+For every feasible DOI or PMID enrichment, follow this sequence:
+
+1. Process the source data first, producing the article metadata needed for a
+   lookup.
+2. Run the lookup separately. Save its checkpoint and candidate/review table
+   under `data_raw/<dataset>/derived/`; these are untracked. Normal processing
+   and `main.R` must not make network requests.
+3. Produce a one-off Markdown review report from the flagged candidates and
+   hand it over with the relevant source data and processed `.rds` file. It
+   should state the review task and flag meanings, then list source metadata,
+   candidate metadata, proposed identifier and reasons for review. This is a
+   handover artefact, not a durable reporting workflow or script.
+4. Obtain human adjudications. Treat a candidate as unverified until this step.
+5. Incorporate accepted corrections explicitly in the relevant `process/`
+   script or a small dataset-specific mapping it reads. Preserve rejected and
+   unresolved candidates in the local review material. Add a concise
+   dataset-specific Markdown note under `process/` when the decisions or their
+   rationale need to be retained, as for Lang.
+
+The canonical processor may attach an accepted cached mapping with
+`join_identifiers()`, which rejects duplicate keys and conflicting identifiers
+while preserving the original rows. A missing cache should leave the enrichment
+column absent or missing, unless a dataset has a separately documented reason
+to require an established mapping.
 
 Do not overwrite a checkpoint to refresh API results. Use a new cache path,
 compare the results, and review any disagreement. Crossref candidates should be
@@ -112,10 +136,15 @@ Crossref candidates for review. It retries transient failures, but failed
 requests remain retryable rather than becoming permanent non-matches. Set
 `CROSSREF_MAILTO` to identify requests to Crossref's polite pool.
 
+Use `normalise_journal()` for journal comparisons in dataset-specific audits,
+not `normalise_text()`. The former handles the aliases used by the helper,
+including leading "The" and American Economic Journal abbreviations. A change
+to lookup metadata, ranking or journal normalisation requires a new cache path:
+never reuse a title-ranked cache as evidence for a metadata-aware lookup.
+
 For existing workflows, Lang's lookup includes accepted manual corrections and
 is not merely optional metadata; Head's source DOIs are retained and its lookup
-adds PMIDs; Brodeur's saved mapping adds article DOIs after its initial source
-processing. Run `Rscript --vanilla tests/test_doi_lookup.R` for the shared
+adds PMIDs. Run `Rscript --vanilla tests/test_doi_lookup.R` for the shared
 offline checks. Before a material enrichment, snapshot the dataset and mapping
 under `data_raw/doi_validation/` and verify that all pre-existing columns,
 their types, order and missingness are unchanged after reprocessing, apart from

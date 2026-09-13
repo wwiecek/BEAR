@@ -1,5 +1,6 @@
 library(tidyverse)
-readRDS("data_raw/Metapsy/data/Metapsy_Jan2026.rds") %>% 
+source("R/doi_lookup.R")
+metapsy <- readRDS("data_raw/Metapsy/data/Metapsy_Jan2026.rds") %>%
   lapply(function(df) {
     
     measure <- "Hedges' g"
@@ -21,6 +22,12 @@ readRDS("data_raw/Metapsy/data/Metapsy_Jan2026.rds") %>%
     
     if (all(c("study", ".g", ".g_se") %in% colnames(df))) {
       ret <- df[, c("study", ".g", ".g_se", "ss"), drop = FALSE]
+      ret$reference <- coalesce(!!!lapply(
+        c("full_ref", "full_reference", "reference"),
+        function(field) if (is.null(df[[field]])) NA_character_
+        else na_if(df[[field]], "")))
+      ret$doi <- coalesce(extract_doi(if (is.null(df$doi)) NA_character_
+                                    else df$doi), extract_doi(ret$reference))
       ret$measure <- measure
       ret$measure_detailed <- if (measure == "Hedges' g") {
         "SMD (Hedges' g)"
@@ -38,5 +45,10 @@ readRDS("data_raw/Metapsy/data/Metapsy_Jan2026.rds") %>%
     }
   }) %>% 
   bind_rows(.id = "metaid") %>% 
-  as_tibble() %>% 
-  saveRDS("data/Metapsy.rds")
+  as_tibble()
+if (file.exists("data_raw/Metapsy/derived/doi_mapping.rds")) {
+  metapsy <- join_identifiers(metapsy,
+    readRDS("data_raw/Metapsy/derived/doi_mapping.rds"), c("metaid", "study", "reference"), "doi")
+}
+metapsy <- select(metapsy, -reference)
+saveRDS(metapsy, "data/Metapsy.rds")

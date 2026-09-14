@@ -61,7 +61,12 @@ repair_mojibake <- function(x) {
 }
 
 normalise_text <- function(x) {
-  x %>% repair_mojibake() %>% stringi::stri_trans_general("Latin-ASCII") %>%
+  x %>% repair_mojibake() %>%
+    str_replace_all("&amp;", "&") %>%
+    str_replace_all("&", " and ") %>%
+    str_remove_all("</?[[:alnum:]]+[^>]*>") %>%
+    str_remove("^(retracted|withdrawn|expression of concern):\\s*") %>%
+    stringi::stri_trans_general("Latin-ASCII") %>%
     str_to_lower() %>%
     str_replace_all("\\bbehaviour\\b", "behavior") %>%
     str_replace_all("\\bbehavioural\\b", "behavioral") %>%
@@ -106,17 +111,32 @@ identifier_request <- function(req) {
     req_perform() %>% resp_body_json(simplifyVector = FALSE)
 }
 
+# Keep below Crossref's public (1/s) and polite-pool (3/s) list-query limits.
+crossref_delay <- function(mailto = Sys.getenv("CROSSREF_MAILTO")) {
+  if (nzchar(mailto)) 0.4 else 1.1
+}
+
 # Journal aliases are normalised for comparison, not written into source data.
 normalise_journal <- function(x) {
   normalise_text(x) %>%
     str_replace("^the ", "") %>%
+    str_replace_all("\\bj\\b", "journal") %>%
+    str_replace_all("\\bmed\\b", "medical") %>%
+    str_replace_all("\\bres\\b", "research") %>%
+    str_replace_all("\\bpsychiatry\\b", "psychiatry") %>%
+    str_replace_all("\\bpsychol\\b", "psychology") %>%
+    str_replace_all("\\bbehav\\b", "behavior") %>%
+    str_replace_all("\\bther\\b", "therapy") %>%
+    str_replace_all("\\bclin\\b", "clinical") %>%
+    str_replace_all("\\bint\\b", "international") %>%
+    str_replace_all("\\bbr\\b", "british") %>%
     str_replace("^aej\\b", "american economic journal") %>%
-    str_replace("^j dev econ\\b", "journal development economics") %>%
-    str_replace("^j econ\\b", "journal economic") %>%
-    str_replace("^j hum res\\b", "journal human resources") %>%
-    str_replace("^j public econ\\b", "journal public economics") %>%
-    str_replace("^econ j\\b", "economic journal") %>%
-    str_replace("^q j econ\\b", "quarterly journal economics") %>%
+    str_replace("^journal dev econ\\b", "journal development economics") %>%
+    str_replace("^journal econ\\b", "journal economic") %>%
+    str_replace("^journal hum res\\b", "journal human resources") %>%
+    str_replace("^journal public econ\\b", "journal public economics") %>%
+    str_replace("^econ journal\\b", "economic journal") %>%
+    str_replace("^q journal econ\\b", "quarterly journal economics") %>%
     str_replace_all("\\bof\\b", " ") %>% str_squish()
 }
 
@@ -172,7 +192,9 @@ crossref_candidates <- function(items, source_title = NA_character_,
     tibble(
       doi = pluck(item, "DOI", .default = NA_character_),
       crossref_score = pluck(item, "score", .default = NA_real_),
-      candidate_title = pluck(item, "title", 1, .default = NA_character_),
+      candidate_title = pluck(item, "title", 1, .default = NA_character_) %>%
+        str_replace_all("&amp;", "&") %>%
+        str_remove_all("</?[[:alnum:]]+[^>]*>"),
       candidate_journal = pluck(item, "container-title", 1,
                                 .default = NA_character_),
       candidate_year = as.integer(pluck(item, "published", "date-parts",
@@ -308,8 +330,7 @@ lookup_identifiers <- function(papers, cache_path, provider = "crossref") {
   for (i in seq_len(nrow(remaining))) {
     query <- remaining$query[i]
     source_title <- remaining$source_title[i]
-    # Public Crossref list queries allow one request per second.
-    Sys.sleep(if (provider == "crossref") 1.1 else 0.25)
+    Sys.sleep(if (provider == "crossref") crossref_delay() else 0.25)
     result <- tryCatch({
       if (provider == "crossref") {
         args <- as.list(remaining[i, c("query", fields)])

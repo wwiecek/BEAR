@@ -190,8 +190,8 @@ if (file.exists("data/Lang.rds")) {
     lang <- join_identifiers(lang, previous_lang, "estimate_id", "doi")
   }
 }
-if (file.exists("data_raw/Lang/derived/lang_doi_lookup.csv")) {
-  lookup <- read_csv("data_raw/Lang/derived/lang_doi_lookup.csv",
+if (file.exists("doi/Lang/lang_doi_lookup.csv")) {
+  lookup <- read_csv("doi/Lang/lang_doi_lookup.csv",
                      show_col_types = FALSE)
   # Existing assignments may have been corrected since the mapping was written.
   if ("doi" %in% names(lang)) {
@@ -199,14 +199,14 @@ if (file.exists("data_raw/Lang/derived/lang_doi_lookup.csv")) {
   }
   lang <- join_identifiers(lang, lookup, doi_keys, "doi")
 } else if (!"doi" %in% names(lang) &&
-    file.exists("data_raw/Lang/derived/lang_doi_candidates.csv")) {
-  lookup <- read_csv("data_raw/Lang/derived/lang_doi_candidates.csv",
+    file.exists("doi/Lang/lang_doi_candidates.csv")) {
+  lookup <- read_csv("doi/Lang/lang_doi_candidates.csv",
                      show_col_types = FALSE)
   lang <- join_identifiers(lang, lookup, doi_keys, "doi")
 }
 # Approved journal-version assignments supersede the historical lookup.
-if (file.exists("data_raw/Lang/derived/lang_doi_journal_lookup.csv")) {
-  lookup <- read_csv("data_raw/Lang/derived/lang_doi_journal_lookup.csv",
+if (file.exists("doi/Lang/lang_doi_journal_lookup.csv")) {
+  lookup <- read_csv("doi/Lang/lang_doi_journal_lookup.csv",
                      show_col_types = FALSE) %>%
     filter(status == "matched") %>% select(paper_id, doi)
   stopifnot(!anyDuplicated(lookup$paper_id))

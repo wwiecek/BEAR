@@ -54,7 +54,7 @@ The current DOI inventory and remaining work are recorded in
 `doc/doi_action_plan.md`. Optional network stages
 `process/Bartos_lookup_dois.R`, `process/Metapsy_lookup_dois.R` and
 `process/JagerLeek_lookup_dois.R` save mappings and audit tables under the
-corresponding `data_raw/<dataset>/derived/` directory. Rerun their existing
+corresponding `doi/<dataset>/` directory. Rerun their existing
 processing scripts to attach these mappings to `data/*.rds`; processing itself
 does not make network requests. Supplied DOIs are retained without a cache.
 

@@ -107,8 +107,9 @@ For every feasible DOI or PMID enrichment, follow this sequence:
 1. Process the source data first, producing the article metadata needed for a
    lookup.
 2. Run the lookup separately. Save its checkpoint and candidate/review table
-   under `data_raw/<dataset>/derived/`; these are untracked. Normal processing
-   and `main.R` must not make network requests.
+   under `doi/<dataset>/`. Normal processing and `main.R` must not make network
+   requests. Canonical processors may read these files if present, but must
+   create a missing `doi` or `pmid` column rather than require them.
 3. Produce a one-off Markdown review report from the flagged candidates and
    hand it over with the relevant source data and processed `.rds` file. It
    should state the review task and flag meanings, then list source metadata,
@@ -116,13 +117,14 @@ For every feasible DOI or PMID enrichment, follow this sequence:
    handover artefact, not a durable reporting workflow or script.
 4. Obtain human adjudications. Treat a candidate as unverified until this step.
 5. Incorporate accepted corrections explicitly in the relevant `process/`
-   script or a small dataset-specific mapping it reads. Preserve rejected and
-   unresolved candidates in the local review material. Add a concise
+   script or a small dataset-specific mapping under `doi/<dataset>/` that it
+   reads. Preserve rejected and unresolved candidates in the local review
+   material. Add a concise
    dataset-specific Markdown note under `process/` when the decisions or their
    rationale need to be retained, as for Lang.
 
-The canonical processor may attach a tracked, dataset-specific accepted mapping
-with `join_identifiers()`, which rejects duplicate keys and conflicting
+The canonical processor may attach a dataset-specific accepted mapping with
+`join_identifiers()`, which rejects duplicate keys and conflicting
 identifiers while preserving the original rows. Do not make canonical outputs
 depend on ignored lookup caches or review tables. A missing optional cache
 should leave the enrichment column absent or missing, unless a dataset has a
@@ -147,7 +149,7 @@ For existing workflows, Lang's lookup includes accepted manual corrections and
 is not merely optional metadata; Head's source DOIs are retained and its lookup
 adds PMIDs. Run `Rscript --vanilla tests/test_doi_lookup.R` for the shared
 offline checks. Before a material enrichment, snapshot the dataset and mapping
-under `data_raw/doi_validation/` and verify that all pre-existing columns,
+under `doi/validation/` and verify that all pre-existing columns,
 their types, order and missingness are unchanged after reprocessing, apart from
 explicitly adjudicated corrections.
 

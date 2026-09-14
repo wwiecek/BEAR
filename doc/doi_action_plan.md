@@ -1,6 +1,6 @@
 # DOI coverage and remaining enrichment
 
-Checked against all 23 local `data/*.rds` files on 12 September 2026.
+Checked against all 23 local `data/*.rds` files on 14 September 2026.
 Nine files now have a `doi` column. Coverage counts describe saved metadata,
 not a claim that every DOI has been manually verified. Source-supplied,
 screened lookup and review-publication identifiers are distinguished explicitly.
@@ -13,17 +13,17 @@ screened lookup and review-publication identifiers are distinguished explicitly.
 | `Askarov.rds` | No column | — | No DOI column; numeric source IDs need a crosswalk. |
 | `BarnettWren.rds` | No column | — | No DOI column; 419,234 distinct source PubMed identifiers retained. |
 | `Bartos.rds` | 2,166 / 2,239 | 87 | New: source and screened Crossref DOIs of meta-analyses; `doi_scope` makes this explicit. |
-| `Brodeur.rds` | 16,390 / 16,390 | 329 | Final title-level article DOI mapping, including 33 accepted version replacements, is tracked in `process/Brodeur_doi_map.csv` and validated against raw source values. `doinumber` is a separate registration identifier. |
+| `Brodeur.rds` | 16,390 / 16,390 | 329 | Final title-level article DOI mapping, including 33 accepted version replacements, is tracked in `doi/Brodeur/doi_map.csv` and validated against raw source values. `doinumber` is a separate registration identifier. |
 | `Chavalarias.rds` | No column | — | No DOI column; validate source identifier namespaces before conversion. |
 | `clinicaltrialsgov.rds` | No column | — | Registry identifiers retained; no article DOI enrichment planned. |
 | `Cochrane.rds` | 760,486 / 760,486 | 6,619 | Existing: review DOIs, not included primary-paper DOIs. |
 | `CostelloFox.rds` | No column | — | No DOI column; primary-study bibliography needed. |
 | `euctr.rds` | No column | — | Registry identifiers retained; no article DOI enrichment planned. |
-| `Head.rds` | 2,010,875 / 2,010,875 | 219,867 | Existing: source article DOIs; `doi` aliases `first.doi`; PMIDs also retained. |
+| `Head.rds` | 2,010,875 / 2,010,875 | 219,867 | Existing: source article DOIs; `doi` aliases `first.doi`; 2,005,687 PMIDs retained. |
 | `JagerLeek.rds` | 15,633 / 15,653 | 5,317 | New: Europe PMC DOI mapping; original `pubmedID` retained. |
 | `Lang.rds` | 3,885 / 3,885 | 730 | Existing: source, lookup and explicitly reviewed article DOIs. |
 | `ManyLabs2.rds` | No column | — | No DOI column; original-publication crosswalk needed. |
-| `Metapsy.rds` | 2,871 / 4,505 | 990 | New: source and screened Crossref article DOIs; joined by database, study label and exact reference. |
+| `Metapsy.rds` | 3,155 / 4,505 | 1,105 | Source, screened Crossref and reviewed article DOI mappings; joined by database, study label and exact reference. |
 | `OSC.rds` | No column | — | No DOI column; original and replication publications need separate treatment. |
 | `psymetadata.rds` | No column | — | No DOI column in the combined package output, including Nuijten. |
 | `SCORE_all_claims.rds` | 3,066 / 3,066 | 200 | New: source original-publication DOIs exposed separately from `studyid`. |
@@ -46,7 +46,7 @@ Unassigned includes weak candidates and records lacking enough metadata.
 | Output / source key | Eligible records | Source DOI records | Newly matched records | Unassigned | Weak candidates |
 |---|---:|---:|---:|---:|---:|
 | Bartos: distinct full references | 93 | 27 | 61 | 5 | 5 |
-| Metapsy: database, study label and exact reference | 1,995 | 529 | 808 | 658 | 374 |
+| Metapsy: database, study label and exact reference | 1,995 | 529 | 949 | 513 | 183 |
 | Jager–Leek: distinct PMIDs | 5,322 | 0 | 5,317 | 5 | 0 unresolved |
 | SCORE all claims: original papers | 200 | 200 | 0 | 0 | 0 |
 | SCORE matched output: original papers | 164 | 164 | 0 | 0 | 0 |
@@ -58,15 +58,21 @@ Unassigned includes weak candidates and records lacking enough metadata.
   a different title, journal and year. All five stay missing pending review.
 - **Metapsy:** the 1,995 reference records span 1,973 database/study keys and
   1,546 unscoped study labels. The dataset authors supplied a DOI for 529
-  reference records. Of the remaining records with a usable reference, our
-  Crossref lookups supplied 808 further DOI assignments that passed the
-  citation checks. Thus 1,337 reference records have an attached DOI; 374
-  Crossref candidates remain flagged and 284 records have neither a source DOI
-  nor a full reference. Source fields include `doi`, `full_ref`,
+  reference records. Metadata-aware Crossref searches supplied 949 further
+  assignments; reviewed mappings add four previously unassigned records. Thus
+  1,482 reference records have an attached DOI. Of the remaining 513, 173 have
+  a Crossref candidate retained for review and 330 have no accepted candidate.
+  Source fields include `doi`, `full_ref`,
   `full_reference` and `reference`. Eleven database/study keys have multiple
   references; joins include the exact reference to prevent assigning a DOI to
   a different publication. Legacy DOI suffixes containing angle brackets are
   preserved.
+
+  The current output has 3,155 DOI-bearing rows and 1,105 distinct DOIs. Eleven
+  reviewed mappings are tracked in `process/Metapsy_doi_map.csv`, including the
+  known replacement cases; known false-positive candidates remain missing. The
+  metadata-aware refresh uses `doi/Metapsy/crossref_references_v3.rds` and can
+  be resumed without replacing the established mapping.
 - **Jager–Leek:** exact PMID queries in Europe PMC were checked against source
   titles. Five title flags arose from research-group names appended to source
   titles; the article titles agree and the audit records this. Five PMIDs have
@@ -78,7 +84,7 @@ Crossref matches were screened using title, journal, author, year and article
 type. Passing these checks is not manual adjudication. Weak candidates were
 excluded from the attached mapping and retained with their evidence for review.
 The short handover and complete flagged-candidate tables are in
-[`data_raw/doi_validation/priority1_doi_review.md`](../data_raw/doi_validation/priority1_doi_review.md).
+[`doi/validation/priority1_doi_review.md`](../doi/validation/priority1_doi_review.md).
 
 ## Reproduce and validate
 
@@ -87,9 +93,9 @@ resume saved caches; the processors do not make network requests.
 
 | Lookup stage | Processor | Local mapping and audit directory |
 |---|---|---|
-| `process/Bartos_lookup_dois.R` | `process/Bartos.R` | `data_raw/Bartos/derived/` |
-| `process/Metapsy_lookup_dois.R` | `process/Metapsy_process.R` | `data_raw/Metapsy/derived/` |
-| `process/JagerLeek_lookup_dois.R` | `process/JagerLeek.R` | `data_raw/JagerLeek/derived/` |
+| `process/Bartos_lookup_dois.R` | `process/Bartos.R` | `doi/Bartos/` |
+| `process/Metapsy_lookup_dois.R` | `process/Metapsy_process.R` | `doi/Metapsy/` |
+| `process/JagerLeek_lookup_dois.R` | `process/JagerLeek.R` | `doi/JagerLeek/` |
 | None: supplied identifiers | `process/score_all_claims.R`, `process/score_replications.R` | Source SCORE package |
 
 The first three save `doi_mapping.rds` and `doi_lookup.csv`. Crossref checkpoints
@@ -114,12 +120,13 @@ that `normalise_text()` treats as mismatches. If source metadata or ranking
 rules change, save the results under a new cache path and compare them with the
 old lookup; do not reuse a title-ranked cache as a metadata-aware result.
 
-Validation confirmed unchanged row counts, row order and every pre-existing
-non-enrichment column in all five files, including statistical values, types,
-missingness and study IDs. Both DOI test scripts passed. The processors were
-also rerun to check that they reproduce identical saved objects, including the
-existing SCORE validation checks. The local validation table is
-`data_raw/doi_validation/priority1_validation.csv`.
+On 14 September 2026, the Bartoš, Metapsy, Jager–Leek, Lang, Brodeur and Head
+processors were rerun using the local files under `doi/`. All six reproduced
+their prior rows, schemas and non-identifier values. DOI assignments were
+unchanged; trimming Head DOI whitespace recovered 208 existing PMID matches,
+for 2,005,687 populated PMIDs. The shared DOI lookup tests passed. The local
+validation table is
+`doi/validation/priority1_validation.csv`.
 
 ## Remaining work
 

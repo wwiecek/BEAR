@@ -46,9 +46,22 @@ metapsy <- readRDS("data_raw/Metapsy/data/Metapsy_Jan2026.rds") %>%
   }) %>% 
   bind_rows(.id = "metaid") %>% 
   as_tibble()
-if (file.exists("data_raw/Metapsy/derived/doi_mapping.rds")) {
+doi_mapping <- if (file.exists("doi/Metapsy/doi_mapping.rds")) {
+  readRDS("doi/Metapsy/doi_mapping.rds")
+} else tibble(metaid = character(), study = character(),
+              reference = character(), doi = character())
+if (file.exists("process/Metapsy_doi_map.csv")) {
+  manual_mapping <- read_csv("process/Metapsy_doi_map.csv",
+                             show_col_types = FALSE)
+  stopifnot(!anyDuplicated(manual_mapping[c("metaid", "study", "reference")]))
+  doi_mapping <- doi_mapping %>% select(metaid, study, reference,
+                                         lookup_doi = doi) %>%
+    full_join(manual_mapping, by = c("metaid", "study", "reference")) %>%
+    mutate(doi = coalesce(doi, lookup_doi)) %>% select(-lookup_doi)
+}
+if (nrow(doi_mapping)) {
   metapsy <- join_identifiers(metapsy,
-    readRDS("data_raw/Metapsy/derived/doi_mapping.rds"), c("metaid", "study", "reference"), "doi")
+    doi_mapping, c("metaid", "study", "reference"), "doi")
 }
 metapsy <- select(metapsy, -reference)
 saveRDS(metapsy, "data/Metapsy.rds")

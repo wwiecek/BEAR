@@ -8,7 +8,7 @@ source("R/doi_lookup.R")
 load("data_raw/JagerLeek/data/pvalueData.rda")
 papers <- as_tibble(pvalueData) %>% distinct(pubmedID, title)
 results <- lookup_pmids(papers$pubmedID,
-  "data_raw/JagerLeek/derived/pmid_to_doi_v1.rds")
+  "doi/JagerLeek/pmid_to_doi_v1.rds")
 audit <- papers %>% mutate(query = as.character(pubmedID)) %>%
   left_join(results, by = "query") %>%
   mutate(title_overlap = map2_dbl(title, candidate_title, title_overlap),
@@ -19,7 +19,7 @@ audit <- papers %>% mutate(query = as.character(pubmedID)) %>%
          review = title_flag & is.na(review_note))
 stopifnot(all(str_starts(normalise_text(audit$title[!is.na(audit$review_note)]),
   fixed(normalise_text(audit$candidate_title[!is.na(audit$review_note)])))))
-write_csv(audit, "data_raw/JagerLeek/derived/doi_lookup.csv")
+write_csv(audit, "doi/JagerLeek/doi_lookup.csv")
 saveRDS(distinct(audit, pubmedID, doi),
-        "data_raw/JagerLeek/derived/doi_mapping.rds")
+        "doi/JagerLeek/doi_mapping.rds")
 print(count(audit, status, review))

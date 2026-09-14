@@ -16,8 +16,8 @@ exercise <- read_csv("data_raw/Bartos/data/data_processed.csv") %>%
 # The reference identifies the source meta-analysis, not a primary trial.
 exercise$doi <- extract_doi(exercise$reference)
 exercise$doi_scope <- "meta-analysis"
-if (file.exists("data_raw/Bartos/derived/doi_mapping.rds")) {
+if (file.exists("doi/Bartos/doi_mapping.rds")) {
   exercise <- join_identifiers(exercise,
-    readRDS("data_raw/Bartos/derived/doi_mapping.rds"), "reference", "doi")
+    readRDS("doi/Bartos/doi_mapping.rds"), "reference", "doi")
 }
 saveRDS(exercise, file = "data/Bartos.rds")

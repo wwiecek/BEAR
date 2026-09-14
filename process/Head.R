@@ -35,13 +35,18 @@ fixed.names <- as.character(d$folder.name[which(is.na(d$journal.name))])
 fixed.names <- gsub("_", " ", fixed.names)
 d$journal.name[which(is.na(d$journal.name))] <- fixed.names
 d$journal.name <- as.factor(d$journal.name)
+d$first.doi <- str_trim(d$first.doi)
 
 # now we add in the FoR categories 
 journal.categories$journal.name <- journal.categories$Abbreviation
 d <- merge(d, journal.categories,by="journal.name")
 
-# WW addition: join PMIDs created by grab_pmid.R and then write to new RDS
-pmid <- readRDS("data_raw/Head/derived/doi2pmid_progress.rds")
+# Optionally attach PMIDs recovered from the source DOIs. PMID 23359832
+# confirms the valid three-digit-prefix DOI 10.581/westjem.2012.1.6855.
+pmid <- if (file.exists("doi/Head/doi2pmid_progress.rds")) {
+  readRDS("doi/Head/doi2pmid_progress.rds") %>% mutate(doi = str_trim(doi))
+} else tibble(doi = character(), pmid = character())
+stopifnot(!anyDuplicated(pmid$doi))
 
 d %>% 
   join_identifiers(rename(pmid, first.doi = doi), "first.doi", "pmid") %>%

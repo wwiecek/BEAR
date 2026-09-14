@@ -32,7 +32,7 @@ stopifnot(nrow(papers) == 736L, !anyDuplicated(papers$paper_id),
           !anyNA(papers$source_doi_pattern))
 
 # Preserve the historical selections as the audit baseline, even on repeat runs.
-legacy <- read_csv("data_raw/Lang/derived/lang_doi_candidates.csv",
+legacy <- read_csv("doi/Lang/lang_doi_candidates.csv",
                    show_col_types = FALSE) %>%
   group_by(paper_id) %>% summarise(
     legacy_doi = str_c(unique(doi), collapse = ";"),
@@ -47,7 +47,7 @@ pending <- papers %>% filter(legacy_prefix_mismatch | legacy_weak_title |
 message("Journal-aware lookup: ", nrow(pending), " source paper IDs; ",
         sum(papers$legacy_prefix_mismatch), " historical DOI-prefix mismatches")
 results <- lookup_identifiers(pending,
-  "data_raw/Lang/derived/crossref_journal_v3.rds")
+  "doi/Lang/crossref_journal_v3.rds")
 candidates <- pending %>%
   left_join(results, by = c("query", "source_title", "source_journal",
     "source_year", "source_author", "source_doi_pattern")) %>%
@@ -58,8 +58,8 @@ candidates <- pending %>%
     status = if_else(!is.na(manual_doi), "matched", status),
     assignment_method = if_else(!is.na(manual_doi), "manual", "journal_lookup"),
     changed_from_legacy = doi != legacy_doi)
-write_csv(candidates, "data_raw/Lang/derived/lang_doi_journal_lookup.csv")
+write_csv(candidates, "doi/Lang/lang_doi_journal_lookup.csv")
 write_csv(filter(candidates, status != "matched"),
-          "data_raw/Lang/derived/lang_doi_journal_review.csv")
+          "doi/Lang/lang_doi_journal_review.csv")
 source("process/Lang.R")
 print(candidates %>% count(status, assignment_method, changed_from_legacy))

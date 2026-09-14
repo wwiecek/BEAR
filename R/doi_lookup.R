@@ -51,9 +51,26 @@ lookup_pmids <- function(pmids, cache_path, batch_size = 100L) {
   filter(cache, query %in% pmids)
 }
 
+repair_mojibake <- function(x) {
+  x <- enc2utf8(x)
+  str_replace_all(x, c(
+    "Ã¢ÂÂ" = "'", "Ã¢ÂÂ" = "'", "Ã¢??" = "'",
+    "â€™" = "'", "â€˜" = "'", "â€“" = "-", "â€”" = "-",
+    "Ã©" = "é", "Ã¨" = "è", "Ã«" = "ë", "Ã¶" = "ö",
+    "Ã¼" = "ü", "Ã±" = "ñ", "Ã§" = "ç", "Ã¥" = "å"))
+}
+
 normalise_text <- function(x) {
-  x %>% str_to_lower() %>% str_replace_all("[^a-z0-9 ]", " ") %>%
-    str_squish()
+  x %>% repair_mojibake() %>% stringi::stri_trans_general("Latin-ASCII") %>%
+    str_to_lower() %>%
+    str_replace_all("\\bbehaviour\\b", "behavior") %>%
+    str_replace_all("\\bbehavioural\\b", "behavioral") %>%
+    str_replace_all(c("\\borganised\\b" = "organized",
+                      "\\brecognised\\b" = "recognized",
+                      "\\bstandardised\\b" = "standardized",
+                      "\\brandomised\\b" = "randomized",
+                      "\\bprioritised\\b" = "prioritized")) %>%
+    str_replace_all("[^a-z0-9]", " ") %>% str_squish()
 }
 
 title_overlap <- function(source_title, candidate_title) {
@@ -61,8 +78,24 @@ title_overlap <- function(source_title, candidate_title) {
   words <- str_split(normalise_text(source_title), " ")[[1]]
   candidate <- str_split(normalise_text(candidate_title), " ")[[1]]
   words <- words[nchar(words) > 2]
-  if (!length(words)) return(NA_real_)
-  mean(words %in% candidate[nchar(candidate) > 2])
+  candidate <- candidate[nchar(candidate) > 2]
+  if (!length(words) || !length(candidate)) return(NA_real_)
+  mean(words %in% candidate)
+}
+
+title_similarity <- function(source_title, candidate_title) {
+  if (is.na(source_title) || is.na(candidate_title)) return(NA_real_)
+  source <- normalise_text(source_title)
+  candidate <- normalise_text(candidate_title)
+  if (!nzchar(source) || !nzchar(candidate)) return(NA_real_)
+  token_values <- c(title_overlap(source, candidate),
+                    title_overlap(candidate, source))
+  token <- if (all(is.na(token_values))) NA_real_ else
+    max(token_values, na.rm = TRUE)
+  compact <- str_remove_all(c(source, candidate), " ")
+  character <- 1 - as.numeric(adist(compact[1], compact[2])) /
+    max(nchar(compact))
+  max(token, character)
 }
 
 identifier_request <- function(req) {
@@ -77,26 +110,65 @@ identifier_request <- function(req) {
 normalise_journal <- function(x) {
   normalise_text(x) %>%
     str_replace("^the ", "") %>%
-    str_replace("^aej ", "american economic journal ")
+    str_replace("^aej\\b", "american economic journal") %>%
+    str_replace("^j dev econ\\b", "journal development economics") %>%
+    str_replace("^j econ\\b", "journal economic") %>%
+    str_replace("^j hum res\\b", "journal human resources") %>%
+    str_replace("^j public econ\\b", "journal public economics") %>%
+    str_replace("^econ j\\b", "economic journal") %>%
+    str_replace("^q j econ\\b", "quarterly journal economics") %>%
+    str_replace_all("\\bof\\b", " ") %>% str_squish()
+}
+
+crossref_years <- function(item) {
+  map_int(c("published", "published-print", "published-online", "issued"),
+          ~ as.integer(pluck(item, .x, "date-parts", 1, 1,
+                             .default = NA_integer_))) %>% unique()
+}
+
+author_names <- function(item) {
+  authors <- pluck(item, "author", .default = list())
+  if (!length(authors)) return(character())
+  map_chr(authors, function(author) {
+    str_squish(str_c(pluck(author, "given", .default = ""),
+                     pluck(author, "family", .default = ""), sep = " "))
+  })
+}
+
+author_matches <- function(source, candidates) {
+  if (is.na(source) || !nzchar(source) || !length(candidates)) return(NA)
+  source_words <- str_split(normalise_text(source), " ")[[1]]
+  any(map_lgl(candidates, function(candidate) {
+    candidate_words <- str_split(normalise_text(candidate), " ")[[1]]
+    length(candidate_words) > 0 &&
+      last(candidate_words) %in% source_words
+  }))
 }
 
 # With a journal, prefer consistent versions of record over search relevance.
 # Without publication metadata, retain the historical best-candidate behaviour.
 crossref_candidates <- function(items, source_title = NA_character_,
   source_journal = NA_character_, source_year = NA_integer_,
-  source_author = NA_character_, source_doi_pattern = NA_character_) {
+  source_author = NA_character_, source_doi_pattern = NA_character_,
+  source_doi = NA_character_) {
+  source_year <- as.integer(source_year)
   if (!is.list(items)) stop("Malformed Crossref items")
   if (!length(items)) return(tibble(
     doi = NA_character_, crossref_score = NA_real_,
     candidate_title = NA_character_, title_overlap = NA_real_,
     candidate_journal = NA_character_, candidate_year = NA_integer_,
     candidate_type = NA_character_, candidate_author = NA_character_,
+    candidate_authors = NA_character_, title_similarity = NA_real_,
+    candidate_years = NA_character_, year_distance = NA_integer_,
     journal_match = NA, year_match = NA, author_match = NA,
-    prefix_match = NA, title_match = NA, status = "no_match"))
+    prefix_match = NA, title_match = NA, decision = "no_match",
+    status = "no_match"))
   candidates <- map_dfr(items, function(item) {
     if (!is.list(item) || length(item$DOI) != 1L ||
         length(item$score) != 1L || !is.numeric(item$score) ||
         is.na(item$score)) stop("Malformed Crossref candidate")
+    authors <- author_names(item)
+    years <- crossref_years(item)
     tibble(
       doi = pluck(item, "DOI", .default = NA_character_),
       crossref_score = pluck(item, "score", .default = NA_real_),
@@ -106,48 +178,60 @@ crossref_candidates <- function(items, source_title = NA_character_,
       candidate_year = as.integer(pluck(item, "published", "date-parts",
                                        1, 1, .default = NA_integer_)),
       candidate_type = pluck(item, "type", .default = NA_character_),
-      candidate_author = pluck(item, "author", 1, "family",
-                               .default = NA_character_),
-      year_match = if (is.na(source_year)) NA else source_year %in%
-        map_int(c("published", "published-print", "published-online", "issued"),
-          ~ as.integer(pluck(item, .x, "date-parts", 1, 1,
-                             .default = NA_integer_)))
+      candidate_author = if (length(authors)) authors[[1]] else NA_character_,
+      candidate_authors = str_c(authors, collapse = "; "),
+      candidate_years = str_c(years[!is.na(years)], collapse = ";"),
+      year_distance = if (is.na(source_year) || !length(years) ||
+                          all(is.na(years))) NA_integer_ else
+        min(abs(source_year - years), na.rm = TRUE)
     )
   }) %>%
     mutate(title_overlap = map_dbl(candidate_title,
-                                   ~ title_overlap(source_title, .x))) %>%
+                                   ~ title_overlap(source_title, .x)),
+           title_similarity = map_dbl(candidate_title,
+                                      ~ title_similarity(source_title, .x))) %>%
     mutate(
       journal_match = normalise_journal(candidate_journal) ==
         normalise_journal(source_journal),
-      title_match = pmax(title_overlap,
-        map_dbl(candidate_title, ~ title_overlap(.x, source_title)),
-        na.rm = TRUE) >= 0.9,
-      author_match = map_lgl(candidate_author, function(author) {
-        if (is.na(source_author) || is.na(author)) return(NA)
-        str_detect(paste0(" ", normalise_text(source_author), " "),
-                   fixed(paste0(" ", normalise_text(author), " ")))
-      }),
+      title_match = title_similarity >= 0.88,
+      author_match = map_lgl(seq_len(n()), ~ author_matches(
+        source_author, str_split(candidate_authors[.x], fixed("; "))[[1]])),
+      year_match = if (is.na(source_year)) rep(NA, n()) else
+        year_distance == 0 | (candidate_type == "journal-article" &
+          coalesce(journal_match, FALSE) & coalesce(title_match, FALSE) &
+          year_distance <= 1),
       prefix_match = if (is.na(source_doi_pattern)) NA else
         str_detect(str_to_lower(doi), source_doi_pattern))
   if (is.na(source_journal)) {
     return(candidates %>% slice_max(crossref_score, n = 1, with_ties = FALSE) %>%
-      mutate(status = if_else(is.na(doi), "no_match", "matched")))
+      mutate(decision = if_else(is.na(doi), "no_match", "auto_accept"),
+             status = if_else(decision == "auto_accept", "matched", decision)))
   }
   candidates %>%
-    mutate(supported = coalesce(journal_match & title_match, FALSE) &
-      candidate_type == "journal-article" & coalesce(year_match, TRUE) &
-      coalesce(author_match, TRUE) & coalesce(prefix_match, TRUE)) %>%
-    arrange(desc(supported), desc(journal_match & title_match),
-            desc(journal_match), desc(title_match), desc(author_match),
-            desc(year_match), desc(prefix_match), desc(crossref_score)) %>%
+    mutate(bibliographic_match = coalesce(journal_match, FALSE) &
+      coalesce(title_match, FALSE) & candidate_type == "journal-article" &
+      coalesce(year_match, FALSE),
+      decision = case_when(
+        bibliographic_match ~ "auto_accept",
+        candidate_type != "journal-article" ~ "no_match",
+        !coalesce(journal_match, FALSE) ~ "no_match",
+        !coalesce(title_match, FALSE) ~ "no_match",
+        TRUE ~ "review")) %>%
+    arrange(desc(bibliographic_match), desc(journal_match),
+            desc(title_match), desc(year_match), desc(author_match),
+            desc(prefix_match), desc(crossref_score)) %>%
     slice_head(n = 1) %>%
-    mutate(status = if_else(supported, "matched", "review")) %>%
-    select(-supported)
+    mutate(decision = if_else(bibliographic_match & !is.na(source_doi) &
+        !is.na(doi) & str_to_lower(doi) != str_to_lower(source_doi),
+      "auto_accept_version_upgrade", decision),
+      status = if_else(str_detect(decision, "auto_accept"), "matched", decision)) %>%
+    select(-bibliographic_match)
 }
 
 lookup_crossref <- function(query, source_title = NA_character_,
   source_journal = NA_character_, source_year = NA_integer_,
-  source_author = NA_character_, source_doi_pattern = NA_character_) {
+  source_author = NA_character_, source_doi_pattern = NA_character_,
+  source_doi = NA_character_) {
   req <- request("https://api.crossref.org/works") %>%
     req_url_query(`query.bibliographic` = query,
                   rows = if (is.na(source_journal)) 3 else 20)
@@ -161,7 +245,8 @@ lookup_crossref <- function(query, source_title = NA_character_,
   body <- identifier_request(req)
   if (is.null(body$message$items)) stop("Missing Crossref items")
   crossref_candidates(body$message$items, source_title, source_journal,
-                      source_year, source_author, source_doi_pattern)
+                      source_year, source_author, source_doi_pattern,
+                      source_doi)
 }
 
 # Use the same first-result MED rule as the historical Head lookup.
@@ -196,7 +281,7 @@ lookup_epmc <- function(identifier, from = c("doi", "pmid")) {
 lookup_identifiers <- function(papers, cache_path, provider = "crossref") {
   stopifnot(provider %in% c("crossref", "doi_to_pmid", "pmid_to_doi"))
   fields <- c("source_title", "source_journal", "source_year", "source_author",
-              "source_doi_pattern")
+              "source_doi_pattern", "source_doi")
   papers <- papers %>% select(query, any_of(fields)) %>% distinct()
   for (field in setdiff(fields, names(papers))) papers[[field]] <- NA_character_
   papers <- papers %>% filter(!is.na(query), nzchar(query))
@@ -208,7 +293,7 @@ lookup_identifiers <- function(papers, cache_path, provider = "crossref") {
   if (provider == "crossref" && nrow(cache) &&
       any(!is.na(papers$source_journal))) {
     if (!all(c(fields, "lookup_version") %in% names(cache)) ||
-        any(cache$lookup_version != 2L)) {
+        any(cache$lookup_version != 3L)) {
       stop("Journal-aware lookup requires a new cache path")
     }
     # A query cannot silently reuse results scored against different metadata.
@@ -241,7 +326,7 @@ lookup_identifiers <- function(papers, cache_path, provider = "crossref") {
       mutate(empty, status = "error", error = conditionMessage(e))
     })
     result <- bind_cols(remaining[i, c("query", fields)],
-                        tibble(provider, lookup_version = 2L,
+                        tibble(provider, lookup_version = 3L,
                                retrieved_at = format(Sys.time(), tz = "UTC")),
                         result)
     cache <- bind_rows(filter(cache, .data$query != .env$query), result)

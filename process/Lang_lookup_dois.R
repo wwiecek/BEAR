@@ -47,7 +47,7 @@ pending <- papers %>% filter(legacy_prefix_mismatch | legacy_weak_title |
 message("Journal-aware lookup: ", nrow(pending), " source paper IDs; ",
         sum(papers$legacy_prefix_mismatch), " historical DOI-prefix mismatches")
 results <- lookup_identifiers(pending,
-  "data_raw/Lang/derived/crossref_journal_v2.rds")
+  "data_raw/Lang/derived/crossref_journal_v3.rds")
 candidates <- pending %>%
   left_join(results, by = c("query", "source_title", "source_journal",
     "source_year", "source_author", "source_doi_pattern")) %>%

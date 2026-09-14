@@ -121,11 +121,12 @@ For every feasible DOI or PMID enrichment, follow this sequence:
    dataset-specific Markdown note under `process/` when the decisions or their
    rationale need to be retained, as for Lang.
 
-The canonical processor may attach an accepted cached mapping with
-`join_identifiers()`, which rejects duplicate keys and conflicting identifiers
-while preserving the original rows. A missing cache should leave the enrichment
-column absent or missing, unless a dataset has a separately documented reason
-to require an established mapping.
+The canonical processor may attach a tracked, dataset-specific accepted mapping
+with `join_identifiers()`, which rejects duplicate keys and conflicting
+identifiers while preserving the original rows. Do not make canonical outputs
+depend on ignored lookup caches or review tables. A missing optional cache
+should leave the enrichment column absent or missing, unless a dataset has a
+separately documented reason to require an established mapping.
 
 Do not overwrite a checkpoint to refresh API results. Use a new cache path,
 compare the results, and review any disagreement. Crossref candidates should be

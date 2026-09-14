@@ -13,7 +13,7 @@ screened lookup and review-publication identifiers are distinguished explicitly.
 | `Askarov.rds` | No column | — | No DOI column; numeric source IDs need a crosswalk. |
 | `BarnettWren.rds` | No column | — | No DOI column; 419,234 distinct source PubMed identifiers retained. |
 | `Bartos.rds` | 2,166 / 2,239 | 87 | New: source and screened Crossref DOIs of meta-analyses; `doi_scope` makes this explicit. |
-| `Brodeur.rds` | 16,390 / 16,390 | 329 | Existing: legacy title-ranked Crossref candidates; the legacy audit flagged 154/329 records. A metadata-aware refresh uses a separate cache. `doinumber` is a separate registration identifier. |
+| `Brodeur.rds` | 16,390 / 16,390 | 329 | Final title-level article DOI mapping, including 33 accepted version replacements, is tracked in `process/Brodeur_doi_map.csv` and validated against raw source values. `doinumber` is a separate registration identifier. |
 | `Chavalarias.rds` | No column | — | No DOI column; validate source identifier namespaces before conversion. |
 | `clinicaltrialsgov.rds` | No column | — | Registry identifiers retained; no article DOI enrichment planned. |
 | `Cochrane.rds` | 760,486 / 760,486 | 6,619 | Existing: review DOIs, not included primary-paper DOIs. |
@@ -57,14 +57,16 @@ Unassigned includes weak candidates and records lacking enough metadata.
   Four remaining candidates have publication-year differences; the fifth has
   a different title, journal and year. All five stay missing pending review.
 - **Metapsy:** the 1,995 reference records span 1,973 database/study keys and
-  1,546 unscoped study labels. Source fields include `doi`, `full_ref`,
-  `full_reference` and `reference`. All 1,024 distinct missing-DOI references
-  were queried: 691 passed the citation checks and 333 remain flagged. These
-  correspond to 808 matched and 374 flagged scoped records. A further 284
-  records have neither a source DOI nor a full reference. Eleven database/study
-  keys have multiple references; joins include the exact reference to prevent
-  assigning a DOI to a different publication. Legacy DOI suffixes containing
-  angle brackets are preserved.
+  1,546 unscoped study labels. The dataset authors supplied a DOI for 529
+  reference records. Of the remaining records with a usable reference, our
+  Crossref lookups supplied 808 further DOI assignments that passed the
+  citation checks. Thus 1,337 reference records have an attached DOI; 374
+  Crossref candidates remain flagged and 284 records have neither a source DOI
+  nor a full reference. Source fields include `doi`, `full_ref`,
+  `full_reference` and `reference`. Eleven database/study keys have multiple
+  references; joins include the exact reference to prevent assigning a DOI to
+  a different publication. Legacy DOI suffixes containing angle brackets are
+  preserved.
 - **Jager–Leek:** exact PMID queries in Europe PMC were checked against source
   titles. Five title flags arose from research-group names appended to source
   titles; the article titles agree and the audit records this. Five PMIDs have

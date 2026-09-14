@@ -218,13 +218,11 @@ crossref_candidates <- function(items, source_title = NA_character_,
         !coalesce(title_match, FALSE) ~ "no_match",
         TRUE ~ "review")) %>%
     arrange(desc(bibliographic_match), desc(journal_match),
-            desc(title_match), desc(year_match), desc(author_match),
+            desc(title_similarity), desc(title_match), desc(year_match),
+            desc(author_match),
             desc(prefix_match), desc(crossref_score)) %>%
     slice_head(n = 1) %>%
-    mutate(decision = if_else(bibliographic_match & !is.na(source_doi) &
-        !is.na(doi) & str_to_lower(doi) != str_to_lower(source_doi),
-      "auto_accept_version_upgrade", decision),
-      status = if_else(str_detect(decision, "auto_accept"), "matched", decision)) %>%
+    mutate(status = if_else(str_detect(decision, "auto_accept"), "matched", decision)) %>%
     select(-bibliographic_match)
 }
 

@@ -19,9 +19,9 @@ papers <- readRDS("data_raw/Metapsy/data/Metapsy_Jan2026.rds") %>%
 
 # Retain established screened matches while refreshing only the original
 # residual review set. This cache uses corrected full-reference metadata.
-previous_lookup <- read_csv("doi/Metapsy/doi_lookup.csv", show_col_types = FALSE) %>%
+previous_lookup <- read_csv("doi/Metapsy/derived/doi_lookup.csv", show_col_types = FALSE) %>%
   mutate(retrieved_at = as.character(retrieved_at))
-review_keys <- read_csv("doi/Metapsy/doi_review.csv", show_col_types = FALSE) %>%
+review_keys <- read_csv("doi/Metapsy/derived/doi_review.csv", show_col_types = FALSE) %>%
   distinct(metaid, study, reference)
 stopifnot(nrow(review_keys) == 374L)
 pending <- papers %>% semi_join(review_keys,
@@ -29,14 +29,14 @@ pending <- papers %>% semi_join(review_keys,
   mutate(source_year = coalesce(reference_metadata(reference)$source_year,
                                 as.integer(str_extract(study, "(?:19|20)[[:digit:]]{2}"))))
 refreshed <- lookup_reference_dois(pending,
-  "doi/Metapsy/crossref_references_v3.rds") %>%
+  "doi/Metapsy/derived/crossref_references_v3.rds") %>%
   mutate(retrieved_at = as.character(retrieved_at),
          candidate_years = as.character(candidate_years))
 papers <- previous_lookup %>% anti_join(review_keys,
   by = c("metaid", "study", "reference")) %>%
   mutate(candidate_years = as.character(candidate_years)) %>%
   bind_rows(refreshed)
-write_csv(papers, "doi/Metapsy/doi_lookup.csv")
+write_csv(papers, "doi/Metapsy/derived/doi_lookup.csv")
 
 # A repeated author-year label can refer to different publications even within
 # one database. Keep the exact source reference in the mapping key.
@@ -44,6 +44,6 @@ mapping <- papers %>% select(metaid, study, reference, doi) %>% distinct()
 stopifnot(!anyDuplicated(mapping[c("metaid", "study", "reference")]))
 write_csv(papers %>% group_by(metaid, study) %>%
   filter(n_distinct(reference) > 1L) %>% ungroup(),
-  "doi/Metapsy/doi_multiple_references.csv")
-saveRDS(mapping, "doi/Metapsy/doi_mapping.rds")
+  "doi/Metapsy/derived/doi_multiple_references.csv")
+saveRDS(mapping, "doi/Metapsy/final/doi_mapping.rds")
 print(count(papers, doi_source, review))

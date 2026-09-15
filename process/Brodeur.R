@@ -8,8 +8,8 @@ df <- read_dta("data_raw/Brodeur/data/merged.dta", encoding = "latin1") %>%
                 ~ iconv(.x, from = "latin1", to = "UTF-8", sub = "")),
          source_doi = extract_doi(na_if(doinumber, "")),
          title_key = normalise_text(title))
-if (file.exists("doi/Brodeur/doi_map.csv")) {
-  doi_map <- read_csv("doi/Brodeur/doi_map.csv", show_col_types = FALSE)
+if (file.exists("doi/Brodeur/final/doi_map.csv")) {
+  doi_map <- read_csv("doi/Brodeur/final/doi_map.csv", show_col_types = FALSE)
   checked_map <- doi_map %>% left_join(
     df %>% distinct(title_key, journal, year, actual_source_doi = source_doi),
     by = c("title_key", "journal", "year"))

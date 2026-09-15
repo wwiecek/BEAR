@@ -43,8 +43,8 @@ d <- merge(d, journal.categories,by="journal.name")
 
 # Optionally attach PMIDs recovered from the source DOIs. PMID 23359832
 # confirms the valid three-digit-prefix DOI 10.581/westjem.2012.1.6855.
-pmid <- if (file.exists("doi/Head/doi2pmid_progress.rds")) {
-  readRDS("doi/Head/doi2pmid_progress.rds") %>% mutate(doi = str_trim(doi))
+pmid <- if (file.exists("doi/Head/derived/doi2pmid_progress.rds")) {
+  readRDS("doi/Head/derived/doi2pmid_progress.rds") %>% mutate(doi = str_trim(doi))
 } else tibble(doi = character(), pmid = character())
 stopifnot(!anyDuplicated(pmid$doi))
 

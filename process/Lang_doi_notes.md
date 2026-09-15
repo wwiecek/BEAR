@@ -5,9 +5,9 @@ Excellent title overlap did not distinguish journal articles from working
 papers, registry entries, reproductions or book chapters. This note supersedes
 `doc/lang_doi_manual_review.md` and incorporates the subsequent bibliographic
 review supplied by the maintainer. The old note and pre-correction dataset are
-archived locally under `doi/Lang/doi_review_20260910/`.
+archived locally under `doi/Lang/derived/`.
 
-## Explicit corrections in Lang.R
+## Explicit corrections
 
 | Source paper ID | Decision | Journal article DOI |
 |---|---|---|
@@ -39,7 +39,7 @@ cached automatic assignments, so subsequent lookup cannot undo them.
 
 ## Journal-version audit
 
-`Lang_lookup_dois.R` parses title, journal and first author from the 125
+`doi/Lang/lookup.R` parses title, journal and first author from the 125
 citation-only records for lookup without changing their source citations.
 `Lang_journals.csv` supplies journal-specific DOI patterns as an additional
 check, not a substitute for bibliographic matching. The shared lookup searches
@@ -51,13 +51,13 @@ The audit revisits all citation-only records, old title overlaps below 0.90,
 DOI-pattern mismatches and explicit manual cases. Historical candidates remain
 in `lang_doi_candidates.csv`; revised results and before/after DOIs are in
 `lang_doi_journal_lookup.csv`, with unresolved metadata flags in
-`lang_doi_journal_review.csv`, all under `doi/Lang/`.
+`derived/lang_doi_journal_review.csv`, all under `doi/Lang/`.
 
 The earlier review confirmed that the other fourteen low-overlap records were
 correct article matches: 208, 279, 280, 570, 581, 584–586, 589–591, 627, 641
 and 656. Title truncation, punctuation and source encoding explain those flags;
 they are not evidence for choosing a different publication.
-Their DOI assignments are also pinned in the manual override block.
+Their DOI assignments are also saved in the local final mapping.
 
 The journal-specific patterns identify 38 wrong-publication/version assignments,
 including paper 100, compared with 37 in the supplied report. The check also

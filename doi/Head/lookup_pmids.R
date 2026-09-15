@@ -4,8 +4,8 @@ library(tidyverse)
 library(httr2)
 source("R/doi_lookup.R")
 
-progress <- if (file.exists("doi/Head/doi2pmid_progress.rds")) {
-  readRDS("doi/Head/doi2pmid_progress.rds") %>% mutate(doi = str_trim(doi))
+progress <- if (file.exists("doi/Head/derived/doi2pmid_progress.rds")) {
+  readRDS("doi/Head/derived/doi2pmid_progress.rds") %>% mutate(doi = str_trim(doi))
 } else tibble(doi = character(), pmid = character())
 stopifnot(!anyDuplicated(progress$doi))
 head_dois <- read_csv("data_raw/Head/derived/p_values_cleaned_ww.csv",
@@ -15,10 +15,10 @@ pending <- head_dois %>% distinct(query = first.doi) %>%
   filter(!query %in% progress$doi)
 if (nrow(pending)) {
   results <- lookup_identifiers(pending,
-    "doi/Head/epmc.rds", "doi_to_pmid")
+    "doi/Head/derived/epmc.rds", "doi_to_pmid")
   additions <- results %>% filter(status != "error") %>%
     transmute(doi = str_trim(query), pmid)
   progress <- bind_rows(as_tibble(progress), additions)
-  saveRDS(progress, "doi/Head/doi2pmid_progress.rds")
-  write_csv(progress, "doi/Head/doi2pmid_progress.csv")
+  saveRDS(progress, "doi/Head/derived/doi2pmid_progress.rds")
+  write_csv(progress, "doi/Head/derived/doi2pmid_progress.csv")
 }

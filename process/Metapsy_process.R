@@ -46,12 +46,12 @@ metapsy <- readRDS("data_raw/Metapsy/data/Metapsy_Jan2026.rds") %>%
   }) %>% 
   bind_rows(.id = "metaid") %>% 
   as_tibble()
-doi_mapping <- if (file.exists("doi/Metapsy/doi_mapping.rds")) {
-  readRDS("doi/Metapsy/doi_mapping.rds")
+doi_mapping <- if (file.exists("doi/Metapsy/final/doi_mapping.rds")) {
+  readRDS("doi/Metapsy/final/doi_mapping.rds")
 } else tibble(metaid = character(), study = character(),
               reference = character(), doi = character())
-if (file.exists("process/Metapsy_doi_map.csv")) {
-  manual_mapping <- read_csv("process/Metapsy_doi_map.csv",
+if (file.exists("doi/Metapsy/final/manual_doi_map.csv")) {
+  manual_mapping <- read_csv("doi/Metapsy/final/manual_doi_map.csv",
                              show_col_types = FALSE)
   stopifnot(!anyDuplicated(manual_mapping[c("metaid", "study", "reference")]))
   doi_mapping <- doi_mapping %>% select(metaid, study, reference,

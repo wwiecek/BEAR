@@ -1,0 +1,7 @@
+# DOI lookup outputs, intermediate artefacts and final identifier mappings are
+# local and reproducible. Keep only durable scripts and Markdown review notes.
+*
+!.gitignore
+!**/
+!**/*.R
+!**/*.md

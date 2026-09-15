@@ -124,34 +124,10 @@ lang <- lang %>% mutate(
     TRUE ~ source_title))
 
 # These adjudications override both old caches and subsequent automatic searches.
-manual_dois <- c(
-  Lang_paper_2 = "10.1257/aer.20191586",
-  Lang_paper_29 = "10.1093/qje/qjab016",
-  Lang_paper_42 = "10.1257/aer.20201238",
-  Lang_paper_100 = "10.1093/qje/qjab004",
-  Lang_paper_223 = "10.1016/j.jdeveco.2015.04.002",
-  Lang_paper_324 = "10.1016/j.jpubeco.2015.02.009",
-  Lang_paper_397 = "10.1257/app.20150245",
-  Lang_paper_472 = "10.1111/ecoj.12505",
-  Lang_paper_474 = "10.1111/ecoj.12448",
-  Lang_paper_530 = "10.1016/j.jdeveco.2018.07.008",
-  Lang_paper_597 = "10.1016/j.jinteco.2017.08.002",
-  Lang_paper_689 = "10.1093/qje/qjx040",
-  # Reviewed low-overlap cases: retain the correct, often shortened titles.
-  Lang_paper_208 = "10.1093/epolic/eiv015",
-  Lang_paper_279 = "10.3368/jhr.50.4.959",
-  Lang_paper_280 = "10.3368/jhr.50.4.1051",
-  Lang_paper_570 = "10.1016/j.jfineco.2018.01.008",
-  Lang_paper_581 = "10.3368/jhr.53.3.0115.6895r1",
-  Lang_paper_584 = "10.3368/jhr.53.2.0816-8112r1",
-  Lang_paper_585 = "10.3368/jhr.53.3.0215-6948r4",
-  Lang_paper_586 = "10.3368/jhr.53.4.1115.7494r1",
-  Lang_paper_589 = "10.3368/jhr.53.2.0115-6868r1",
-  Lang_paper_590 = "10.3368/jhr.53.3.0215-6963r1",
-  Lang_paper_591 = "10.3368/jhr.53.1.0215-6958r1",
-  Lang_paper_627 = "10.1016/j.jpubeco.2018.08.015",
-  Lang_paper_641 = "10.1016/j.jpubeco.2018.05.002",
-  Lang_paper_656 = "10.1016/j.jpubeco.2018.07.002")
+manual_dois <- if (file.exists("doi/Lang/final/doi_adjudications.csv")) {
+  read_csv("doi/Lang/final/doi_adjudications.csv", show_col_types = FALSE) %>%
+    deframe()
+} else character()
 
 # Validate -----
 
@@ -190,8 +166,8 @@ if (file.exists("data/Lang.rds")) {
     lang <- join_identifiers(lang, previous_lang, "estimate_id", "doi")
   }
 }
-if (file.exists("doi/Lang/lang_doi_lookup.csv")) {
-  lookup <- read_csv("doi/Lang/lang_doi_lookup.csv",
+if (file.exists("doi/Lang/derived/lang_doi_lookup.csv")) {
+  lookup <- read_csv("doi/Lang/derived/lang_doi_lookup.csv",
                      show_col_types = FALSE)
   # Existing assignments may have been corrected since the mapping was written.
   if ("doi" %in% names(lang)) {
@@ -199,14 +175,14 @@ if (file.exists("doi/Lang/lang_doi_lookup.csv")) {
   }
   lang <- join_identifiers(lang, lookup, doi_keys, "doi")
 } else if (!"doi" %in% names(lang) &&
-    file.exists("doi/Lang/lang_doi_candidates.csv")) {
-  lookup <- read_csv("doi/Lang/lang_doi_candidates.csv",
+    file.exists("doi/Lang/derived/lang_doi_candidates.csv")) {
+  lookup <- read_csv("doi/Lang/derived/lang_doi_candidates.csv",
                      show_col_types = FALSE)
   lang <- join_identifiers(lang, lookup, doi_keys, "doi")
 }
 # Approved journal-version assignments supersede the historical lookup.
-if (file.exists("doi/Lang/lang_doi_journal_lookup.csv")) {
-  lookup <- read_csv("doi/Lang/lang_doi_journal_lookup.csv",
+if (file.exists("doi/Lang/derived/lang_doi_journal_lookup.csv")) {
+  lookup <- read_csv("doi/Lang/derived/lang_doi_journal_lookup.csv",
                      show_col_types = FALSE) %>%
     filter(status == "matched") %>% select(paper_id, doi)
   stopifnot(!anyDuplicated(lookup$paper_id))

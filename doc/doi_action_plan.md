@@ -13,7 +13,7 @@ screened lookup and review-publication identifiers are distinguished explicitly.
 | `Askarov.rds` | No column | — | No DOI column; numeric source IDs need a crosswalk. |
 | `BarnettWren.rds` | No column | — | No DOI column; 419,234 distinct source PubMed identifiers retained. |
 | `Bartos.rds` | 2,166 / 2,239 | 87 | New: source and screened Crossref DOIs of meta-analyses; `doi_scope` makes this explicit. |
-| `Brodeur.rds` | 16,390 / 16,390 | 329 | Final title-level article DOI mapping, including 33 accepted version replacements, is tracked in `doi/Brodeur/doi_map.csv` and validated against raw source values. `doinumber` is a separate registration identifier. |
+| `Brodeur.rds` | 16,390 / 16,390 | 329 | Final title-level article DOI mapping, including 33 accepted version replacements, is saved locally in `doi/Brodeur/final/doi_map.csv` and validated against raw source values. `doinumber` is a separate registration identifier. |
 | `Chavalarias.rds` | No column | — | No DOI column; validate source identifier namespaces before conversion. |
 | `clinicaltrialsgov.rds` | No column | — | Registry identifiers retained; no article DOI enrichment planned. |
 | `Cochrane.rds` | 760,486 / 760,486 | 6,619 | Existing: review DOIs, not included primary-paper DOIs. |
@@ -69,9 +69,9 @@ Unassigned includes weak candidates and records lacking enough metadata.
   preserved.
 
   The current output has 3,155 DOI-bearing rows and 1,105 distinct DOIs. Eleven
-  reviewed mappings are tracked in `process/Metapsy_doi_map.csv`, including the
+  reviewed mappings are saved in `doi/Metapsy/final/manual_doi_map.csv`, including the
   known replacement cases; known false-positive candidates remain missing. The
-  metadata-aware refresh uses `doi/Metapsy/crossref_references_v3.rds` and can
+  metadata-aware refresh uses `doi/Metapsy/derived/crossref_references_v3.rds` and can
   be resumed without replacing the established mapping.
 - **Jager–Leek:** exact PMID queries in Europe PMC were checked against source
   titles. Five title flags arose from research-group names appended to source
@@ -93,15 +93,16 @@ resume saved caches; the processors do not make network requests.
 
 | Lookup stage | Processor | Local mapping and audit directory |
 |---|---|---|
-| `process/Bartos_lookup_dois.R` | `process/Bartos.R` | `doi/Bartos/` |
-| `process/Metapsy_lookup_dois.R` | `process/Metapsy_process.R` | `doi/Metapsy/` |
-| `process/JagerLeek_lookup_dois.R` | `process/JagerLeek.R` | `doi/JagerLeek/` |
+| `doi/Bartos/lookup.R` | `process/Bartos.R` | `doi/Bartos/` |
+| `doi/Metapsy/lookup.R` | `process/Metapsy_process.R` | `doi/Metapsy/` |
+| `doi/JagerLeek/lookup.R` | `process/JagerLeek.R` | `doi/JagerLeek/` |
 | None: supplied identifiers | `process/score_all_claims.R`, `process/score_replications.R` | Source SCORE package |
 
-The first three save `doi_mapping.rds` and `doi_lookup.csv`. Crossref checkpoints
-are `crossref_references_v1.rds`; the PMID checkpoint is `pmid_to_doi_v1.rds`.
-Keep these local files: without a mapping, processors retain source DOIs only
-(or missing values for Jager–Leek). Use a new cache path for a deliberate refresh.
+The first three save `final/doi_mapping.rds` and `derived/doi_lookup.csv`.
+Crossref checkpoints are in `derived/`; the PMID checkpoint is likewise in
+`derived/`. These local files are ignored: without a mapping, processors retain
+source DOIs only (or missing values for Jager–Leek). Use a new cache path for a
+deliberate refresh.
 Run Crossref queries sequentially with the helper's delay to avoid rate limits.
 
 ## Metadata-aware Crossref lookups
@@ -126,7 +127,7 @@ their prior rows, schemas and non-identifier values. DOI assignments were
 unchanged; trimming Head DOI whitespace recovered 208 existing PMID matches,
 for 2,005,687 populated PMIDs. The shared DOI lookup tests passed. The local
 validation table is
-`doi/validation/priority1_validation.csv`.
+`doi/validation/derived/priority1_validation.csv`.
 
 ## Remaining work
 

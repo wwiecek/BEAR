@@ -106,29 +106,31 @@ For every feasible DOI or PMID enrichment, follow this sequence:
 
 1. Process the source data first, producing the article metadata needed for a
    lookup.
-2. Run the lookup separately. Save its checkpoint and candidate/review table
-   under `doi/<dataset>/`. Normal processing and `main.R` must not make network
-   requests. Canonical processors may read these files if present, but must
-   create a missing `doi` or `pmid` column rather than require them.
+2. Run the lookup separately. Keep its durable script under `doi/<dataset>/`,
+   its checkpoint and candidate/review table under `doi/<dataset>/derived/`,
+   and any accepted mapping under `doi/<dataset>/final/`. The latter two
+   directories are ignored. Normal processing and `main.R` must not make
+   network requests. Canonical processors may read these files if present, but
+   must create a missing `doi` or `pmid` column rather than require them.
 3. Produce a one-off Markdown review report from the flagged candidates and
    hand it over with the relevant source data and processed `.rds` file. It
    should state the review task and flag meanings, then list source metadata,
    candidate metadata, proposed identifier and reasons for review. This is a
    handover artefact, not a durable reporting workflow or script.
 4. Obtain human adjudications. Treat a candidate as unverified until this step.
-5. Incorporate accepted corrections explicitly in the relevant `process/`
-   script or a small dataset-specific mapping under `doi/<dataset>/` that it
-   reads. Preserve rejected and unresolved candidates in the local review
-   material. Add a concise
+5. Keep a durable adjudication script under `doi/<dataset>/` when one is
+   needed, and save its accepted mapping under `doi/<dataset>/final/`. Preserve
+   rejected and unresolved candidates in the local review material. Add a concise
    dataset-specific Markdown note under `process/` when the decisions or their
    rationale need to be retained, as for Lang.
 
 The canonical processor may attach a dataset-specific accepted mapping with
 `join_identifiers()`, which rejects duplicate keys and conflicting
 identifiers while preserving the original rows. Do not make canonical outputs
-depend on ignored lookup caches or review tables. A missing optional cache
-should leave the enrichment column absent or missing, unless a dataset has a
-separately documented reason to require an established mapping.
+depend on ignored DOI material when a committed `data/*.rds` already records
+the attached identifiers. A missing optional cache or mapping should leave the
+enrichment column absent or missing, unless a dataset has a separately
+documented reason to require an established mapping.
 
 Do not overwrite a checkpoint to refresh API results. Use a new cache path,
 compare the results, and review any disagreement. Crossref candidates should be

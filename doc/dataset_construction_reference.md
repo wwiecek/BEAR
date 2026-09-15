@@ -52,11 +52,12 @@ used for sampling, provenance, reporting or analysis groupings.
 
 The current DOI inventory and remaining work are recorded in
 `doc/doi_action_plan.md`. Optional network stages
-`process/Bartos_lookup_dois.R`, `process/Metapsy_lookup_dois.R` and
-`process/JagerLeek_lookup_dois.R` save mappings and audit tables under the
-corresponding `doi/<dataset>/` directory. Rerun their existing
-processing scripts to attach these mappings to `data/*.rds`; processing itself
-does not make network requests. Supplied DOIs are retained without a cache.
+`doi/Bartos/lookup.R`, `doi/Metapsy/lookup.R` and
+`doi/JagerLeek/lookup.R` save caches and audits in `derived/`, and mappings in
+`final/`, below their corresponding dataset directory. Those local artefacts
+are ignored; rerun the ordinary processing scripts to attach them to
+`data/*.rds`. Processing itself does not make network requests. Supplied DOIs
+are retained without a cache.
 
 Bartoš DOIs identify the cited meta-analyses (`doi_scope = "meta-analysis"`),
 not primary trials. Metapsy retains source DOIs and accepts bibliographic

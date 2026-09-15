@@ -17,7 +17,7 @@ papers <- papers %>% left_join(legacy_dois, by = c("title", "journal", "year"))
 papers <- papers %>% mutate(source_doi = legacy_doi)
 # Do not reuse legacy title-ranked candidates for metadata-aware rankings.
 results <- lookup_identifiers(papers,
-  "doi/Brodeur/crossref_journal_v3.rds")
+  "doi/Brodeur/derived/crossref_journal_v3.rds")
 papers <- papers %>% left_join(results, by = c("query", "source_title",
   "source_journal", "source_year", "source_author", "source_doi"))
 if (!"doi" %in% names(papers)) papers$doi <- NA_character_
@@ -62,8 +62,8 @@ papers <- papers %>%
 # The review table is a one-off Brodeur adjudication layer. It is deliberately
 # outside the generic matcher and is optional so the workflow remains usable
 # for a fresh lookup before manual review is complete.
-if (file.exists("doi/Brodeur/doi_decisions.csv")) {
-  decisions <- read_csv("doi/Brodeur/doi_decisions.csv", show_col_types = FALSE) %>%
+if (file.exists("doi/Brodeur/final/doi_decisions.csv")) {
+  decisions <- read_csv("doi/Brodeur/final/doi_decisions.csv", show_col_types = FALSE) %>%
     select(title, journal, year, manual_decision = decision,
            manual_doi = accepted_doi, manual_notes = notes)
   stopifnot(!anyDuplicated(decisions[c("title", "journal", "year")]))
@@ -80,11 +80,8 @@ if (file.exists("doi/Brodeur/doi_decisions.csv")) {
         manual_decision == "keep_legacy" ~ "manual_legacy_adjudication",
         TRUE ~ doi_selection))
 }
-write_csv(papers, "doi/Brodeur/brodeur_doi_lookup.csv")
-write_csv(filter(papers, review), "doi/Brodeur/doi_review.csv")
+write_csv(papers, "doi/Brodeur/derived/brodeur_doi_lookup.csv")
+write_csv(filter(papers, review), "doi/Brodeur/derived/doi_review.csv")
 # Metadata-supported updates are explicit above; all other legacy candidates stay.
-brodeur <- brodeur %>% select(-doi) %>%
-  join_identifiers(papers, c("title", "journal", "year"), "doi")
-saveRDS(brodeur, "data/Brodeur.rds")
 print(papers %>% count(status, review, doi_selection))
 print(papers %>% count(lang_comparison))

@@ -59,7 +59,7 @@ if (nrow(phase_panels) != 4 || nrow(cochrane_panels) != 4) {
 }
 
 ct_row <- wrap_plots(
-  pmap(phase_panels, ~ plot_subgroup_fit(..1, ..2, ymax = 0.4)),
+  pmap(phase_panels, ~ plot_subgroup_fit(..1, ..2, ymax = 0.6)),
   ncol = 4
 )
 

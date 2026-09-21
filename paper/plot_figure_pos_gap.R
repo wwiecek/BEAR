@@ -37,7 +37,9 @@ gg1 <- df_ecdf_smooth %>%
   ggplot(aes(x = value, y = 1 - ecdf, group = dataset, color = group)) +
   geom_vline(xintercept = 0.8, lty = "dashed", alpha = .5) +
   geom_line(linewidth = 0.5, alpha = 0.7) +
-  scale_x_continuous(breaks = c(0.05, 0.5, 0.8, 1)) +
+  scale_x_continuous(breaks = c(0, 0.5, 0.8, 1), limits = c(0, 1),
+                     expand = expansion(mult = 0)) +
+  scale_y_continuous(limits = c(0, 1), expand = expansion(mult = 0)) +
   scale_colour_manual(values = paper_group_colors) +
   labs(x = "PoS", y = "Proportion of studies achieving") +
   theme_bw(base_size = 12) +
@@ -58,8 +60,10 @@ gg2 <- map_dfr(names(mfl), ~{
   ) %>%
   ggplot(aes(z, prob, group = interaction(dataset, label), color = group)) +
   geom_line(alpha = 0.6, linewidth = 0.4) +
-  scale_y_continuous(breaks = seq(0, 1, 0.25), lim = c(0, 1)) +
-  scale_x_continuous(breaks = 0:5, lim = c(0, 5)) +
+  scale_y_continuous(breaks = seq(0, 1, 0.25), limits = c(0, 1),
+                     expand = expansion(mult = 0)) +
+  scale_x_continuous(breaks = 0:5, limits = c(0, 5),
+                     expand = expansion(mult = c(0, 0.05))) +
   scale_colour_manual(values = paper_group_colors) +
   labs(x = "|z|", y = "Probability") +
   theme_bw(base_size = 12) +

@@ -129,7 +129,8 @@ plot_mixture_v4 <- function(fit, dt, nm = "", col = "black", color_map = NULL,
     {if(show_corrected) geom_line(data = df, aes(x = x, y = corrected_plot), 
                                   linetype = "22", linewidth = 0.6,
                                   colour = corrected_colour)} +
-    coord_cartesian(xlim = c(-0.1, xmax + 0.1), ylim = c(0, ymax)) +
+    coord_cartesian(xlim = c(0, xmax + 0.1), ylim = c(0, ymax),
+                    expand = FALSE) +
     labs(x = NULL, y = NULL, title = nm) +
     theme_bw() +
     theme(plot.title = element_text(size = 8),

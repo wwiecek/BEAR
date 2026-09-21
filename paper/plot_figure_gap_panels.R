@@ -49,9 +49,11 @@ small_gap_plot <- function(fit, single = FALSE){
     geom_point(data = hit_df, size = 1) +
     {if(single) geom_text(aes(label = label), hjust = 1, size = 3.5)} +
     # scale_y_continuous(minor_breaks = seq(0,1,0.05), breaks = seq(0,1,0.1),lim=c(0,1)) +
-    scale_y_continuous(breaks = seq(0,1,0.25),lim=c(0,1)) +
+    scale_y_continuous(breaks = seq(0,1,0.25), limits = c(0,1),
+                       expand = expansion(mult = c(0, 0.05))) +
     scale_x_continuous(minor_breaks = seq(0,5,0.5),
-                       breaks = seq(0,5,1),lim=c(0,5)) +
+                       breaks = seq(0,5,1), limits = c(0,5),
+                       expand = expansion(mult = c(0, 0.05))) +
     labs(x = NULL, y = NULL) +
     theme_bw() +
     theme(legend.position = "none")

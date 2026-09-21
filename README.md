@@ -118,16 +118,16 @@ outputs), you need to grab a “submodule” repo that has contents of
     cd BEAR
     git submodule update --init --recursive --depth 1
 
-That will download about 100 MB of individual datasets. In other words,
-downloading all of the input data files is opt-in rather than part of
-this repo, to keep the repo size minimal.
+That will download about 100 MB of latest versions of individual
+datasets. In other words, downloading all of the input data files is
+opt-in rather than part of this repo, to keep the repo size minimal.
 
 \*\* (3) If you want to look at version control for BEAR datasets\*\* in
 the last line do
 
     git submodule update --init --recursive
 
-instead.
+instead. This will download full version control of BEAR datasets.
 
 \*\* (4) If you want to re-derive each of the datasets yourself\*\*, you
 can see all of data processing done for individual datasets in

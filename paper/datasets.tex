@@ -974,8 +974,8 @@ standardised, requiring more extensive clean-up and a procedure for
 deriving z-values. Lastly, in some cases datasets contain confidence
 intervals and effect sizes, but z- and p-values may be missing.
 
-\subsection{Note on data cleaning and default imputed
-values}\label{note-on-data-cleaning-and-default-imputed-values}
+\subsection{Data cleaning and default
+values}\label{data-cleaning-and-default-values}
 
 For confidence interval levels, we set implausible values to missing
 (e.g.~values above 100 or below 0) and standardise proportions and
@@ -989,29 +989,28 @@ additional information is stated.
 
 \subsection{Confidence intervals}\label{confidence-intervals}
 
-When working with CIs, ratio measures were analysed on the log scale (if
-lower bound, upper bound, and point estimate were all strictly positive)
-and non-ratio measures were always kept on the raw scale.
+When working with CIs, we analyse ratio measures on the log scale when
+the lower bound, upper bound, and point estimate are all strictly
+positive; we keep non-ratio measures on the raw scale.
 
-To derive SEs from confidence intervals, we first computed the critical
-value. To avoid undefined critical values (e.g.~when at 100\% or
-extremely close to it), we bounded the implied \(\alpha\) at a small
-value. We then computed two one-sided standard error estimates from the
-upper and lower bounds and used their average when both were finite.
+To derive SEs from confidence intervals, we first compute the critical
+value. To avoid undefined critical values (e.g.~at 100\% or extremely
+close to it), we bound the implied \(\alpha\) at a small value. We then
+compute two one-sided standard error estimates from the upper and lower
+bounds and use their average when both are finite.
 
-We computed a simple symmetry diagnostic for the confidence interval on
+We compute a simple symmetry diagnostic for the confidence interval on
 the chosen scale, defined as the smaller of the two half-widths divided
-by the larger. We treated intervals as ``symmetric enough'' only if this
-ratio exceeded 0.8. This arbitrary threshold affects when we use the
+by the larger. We treat intervals as ``symmetric enough'' only if this
+ratio exceeds 0.8. This arbitrary threshold affects when we use the
 CI-derived z-statistic; otherwise, we use a p-derived z-statistic where
 one is available.
 
-In datasets where additional information is present, we look for
-potentially non-Wald intervals by matching text in the column describing
-the parameter type. We search for keywords such as median, Hodges,
-posterior/Bayes, exact, Fieller, bootstrap, and permutation. For
-estimates that are flagged by this we prefer to derive z-value from
-p-value,
+Where additional information is available, we look for potentially
+non-Wald intervals by matching text in the parameter-type column. We
+search for keywords such as median, Hodges, posterior/Bayes, exact,
+Fieller, bootstrap, and permutation. For flagged estimates, we prefer to
+derive the z-value from the p-value.
 
 \subsection{p-values}\label{p-values}
 
@@ -1020,38 +1019,37 @@ derive the two-sided p-value from the t distribution and then derive the
 z-value (retaining the sign of the original t-statistic, if available).
 
 For clinical trials databases (ClinicalTrials.gov and EU CTR), we
-sometimes find ambiguity in how p-values were recorded. Some significant
-results have reported p-values close to 1, suggesting that authors
-reported the cumulative distribution, \(\Phi(z)\). Therefore, for each
-row we also calculated \(2\cdot\min\{p,1-p\}\). When a CI-derived
-z-value was available, we chose whichever p-value led to a z-value that
-was closest to the CI-derived z.
+sometimes find ambiguity in how p-values are recorded. Some significant
+results report p-values close to 1, suggesting that authors report the
+cumulative distribution, \(\Phi(z)\). Therefore, for each row we also
+calculate \(2\cdot\min\{p,1-p\}\). When a CI-derived z-value is
+available, we choose the p-value that gives the closest z-value.
 
 To avoid dropping rows, we retain unsigned z-statistics when the sign
-could not be determined. If the sign of the effect was known, we applied
-it to the p-derived z; otherwise we used its absolute value.
+cannot be determined. If the sign of the effect is known, we apply it to
+the p-derived z; otherwise, we use its absolute value.
 
 \subsection{Choice of a single z-value when multiple candidates are
 available}\label{choice-of-a-single-z-value-when-multiple-candidates-are-available}
 
 In situations where \(z\) can be derived from both CIs and p-values, we
 choose a single ``best'' z-statistic per row as follows. We prefer the
-CI-derived \(z\) when it looked like a plausible Wald interval on the
+CI-derived \(z\) when it looks like a plausible Wald interval on the
 chosen scale, meaning: (1) finite \(z\) and standard error, (2) positive
-standard error, (3) not flagged as non-Wald by keyword search in the
-measure label (see above), and (4) either missing symmetry information
-or symmetry above 0.8. Otherwise we used the p-derived z.
+standard error, (3) no non-Wald flag from a keyword search of the
+measure label, and (4) either missing symmetry information or symmetry
+above 0.8. Otherwise, we use the p-derived z.
 
 \subsection{Truncation and infinite
 z-values}\label{truncation-and-infinite-z-values}
 
 For reported two-sided p-value bounds, \(p<c\) gives a lower bound on
-\(|z|\). This inequality is recorded to BEAR. Importantly for some
-future modelling, the operator in BEAR data applies to the magnitude,
-including when the stored z-value is negative. For example, a stored
-value of \(-1.96\) with operator \texttt{\textgreater{}} means a
-negative direction and magnitude greater than 1.96, not \(z>-1.96\).
+\(|z|\). BEAR records this inequality using \texttt{z\_operator}. The
+operator applies to the magnitude, including when the stored z-value is
+negative. For example, a stored value of \(-1.96\) with operator
+\texttt{\textgreater{}} means a negative direction and magnitude greater
+than 1.96, not \(z>-1.96\).
 
 Exact zero p-values can produce infinite z-values. We retain infinities
-in BEAR source data, although note that in modelling signal-to-noise
-ratios these infinite values are truncated.
+in BEAR source data, although signal-to-noise models truncate these
+infinite values.

@@ -19,6 +19,7 @@ the databases (`total-response`) we converted log-odds ratios to SMD (dividing
 by $\Pi/\sqrt{3}$ to scale SD of logistic regression) to keep a comparable scale. 
 Signed z-values were computed as effect sizes divided by their standard errors.
 
+
 **Study characteristics:**
 
 - **Sample size and year:** `ss` is the sum of `n_arm1` and `n_arm2` when both are supplied; `year` is the source year or a year parsed from the study label.

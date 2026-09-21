@@ -19,8 +19,9 @@ Notably, a large proportion of p-values are truncated, almost always at 0.0001, 
 
 **Study characteristics:**
 
-- **Study ID:** we use the PubMed identifier (`pubmedID`).
-
-- Study design is not avaialble, but 30% of rows are flagged as RCTs based on scanning publication titles.
+- **Study ID:** we use the PubMed identifier (`pubmedID`). Additionally,
+  article DOIs were obtained from Europe PMC.
+- Study design is not avaialble, but 30% of rows are flagged as RCTs based on scanning 
+  publication titles.
 - The extracted p-values are converted to z-values. 
 - We do not know the underlying effect measures.

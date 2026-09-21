@@ -17,8 +17,8 @@ repo_root <- normalizePath(file.path(dirname(knitr::current_input()), ".."))
 knitr::opts_knit$set(root.dir = repo_root)
 ```
 
-This appendix describes the 16 BEAR corpora used in the paper. The full BEAR
-database contains additional datasets documented elsewhere.
+This appendix describes the 16 corpora used in the paper. Note that the full BEAR
+database contains additional datasets. More complete documentation is available online.
 
 ```{r stitch, echo=FALSE, results="asis", message=FALSE, warning=FALSE}
 suppressPackageStartupMessages(library(tidyverse))

@@ -10,7 +10,7 @@ Using the R package `cochrane` [@schwab2024cochrane], we combined data from
 8,726 CDSR review records into a single file, `cdsr_interventions_19nov2025.csv` (63 MB).
 
 **Data processing:**
-There is some processing and extensive filtering.
+We applied several processing steps and extensive filtering.
 
 During processing, we cleaned up study years and categorised measures (risk ratio, 
 odds ratio, mean difference, etc.) and experimental designs. In particular, we 
@@ -20,9 +20,10 @@ studies, so we could not classify many studies. We also classify outcome rows
 into `efficacy`, `safety`, `dropouts`, and `bias` based on the comparison, 
 outcome, and subgroup labels.
 
-To calculate effect sizes and z-values for BEAR, we used _metafor_ to calculate:
-standardised mean differences for continuous outcomes and probit model for dichotomous outcomes.
-We use probit to make effects cmoparable across continuous and binary data.
+To calculate effect sizes and z-values for BEAR, we used _metafor_ to calculate
+standardised mean differences for continuous outcomes and probit-transformed
+differences for dichotomous outcomes. This puts continuous and binary outcomes on
+a comparable scale.
 
 Unlike in most of the other datasets in BEAR, we filter CDSR data heavily. 
 There are five important decisions:
@@ -37,7 +38,8 @@ patient data.
 4. Remove rows where the effect measure is unknown (keeping OR, RR, 
 Peto OR, mean difference, standardised mean difference, and risk difference) 
 and rows with no participants.
-5. Remove count data with no events or 100% event rate in both arms. (See below.)
+5. Remove count data with no events or a 100% event rate in both arms (see the
+   discussion of zero-event studies).
 
 These processing steps are applied in the main dataset, `BEAR.rds`. Additional
 rows are still available to researchers in the individual dataset, `Cochrane.rds`.

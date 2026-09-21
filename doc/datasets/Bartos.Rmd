@@ -27,6 +27,8 @@ from 215 meta-analyses.
 **Data processing:**
 Z-values were computed as the effect size divided by its reported standard error.
 No filtering or recoding beyond variable renaming was required.
+DOIs were extracted from the supplied references or obtained through Crossref.
+They identify source meta-analyses, not the underlying primary trials.
 
 **Study characteristics:**
 

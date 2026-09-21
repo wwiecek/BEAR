@@ -2,33 +2,44 @@
 title: "Get data"
 ---
 
+I currently made BEAR dataset to work well with R workflow. If another format 
+would be useful in your work, please get in touch. This will be updated soon.
+
+
+**(1) I just want to get one large table of data (BEAR.rds)**
+
 The fastest way to use BEAR is to download the combined `BEAR.rds`
 dataset from [GitHub Releases](https://github.com/wwiecek/BEAR/releases).
 
-From a shell, the current release can be downloaded with:
+Alternatively, in command line do
 
-```bash
-curl -L -o BEAR.rds \
-  https://github.com/wwiecek/BEAR/releases/download/v2/BEAR.rds
+```
+curl -L -o BEAR.rds https://github.com/wwiecek/BEAR/releases/download/v2/BEAR.rds
 ```
 
-## Access individual datasets
+** (2) I want to re-generate BEAR.rds or work with inidivual datasets**
 
-Individual datasets are deliberately omitted from `BEAR.rds` so that the main
-dataset remains small and easy to work with. Some full datasets (e.g. PubMed
-scrapes containing millions of data points) are available only as separate
-files in `data/`.
+You can also re-generate that file yourself. To work with individual datasets or to do more manipulation of inputs, you need to take an additional step. After cloning this repo (which only includes code and outputs), you need to grab a "submodule" repo that has contents of `data/` folder. In command line you will need:
 
-If you only want to download some datasets, you can find them at
-https://github.com/wwiecek/BEAR_data
+```
+git clone https://github.com/wwiecek/BEAR
+cd BEAR
+git submodule update --init --recursive --depth 1
+```
 
-If you want all the individual datasets, clone the BEAR repository and then 
-initialise its `data/` submodule:
+That will download about 100 MB of individual datasets. In other words, downloading all of the input data files is opt-in rather than part of this repo, to keep the repo size minimal.
 
-```bash
+** (3) If you want to look at version control for BEAR datasets** in the last line do
+
+```
 git submodule update --init --recursive
 ```
 
+instead.
 
+
+** (4) If you want to re-derive each of the datasets yourself**, you can see all of data processing done for individual datasets in `process/`. For many datasets there is nil processing done by us, but for some there are extensive scripts to download and clean up data.
+
+Once datasets are present in `data/`, `BEAR.rds` is stiched together in script `workflow/build_bear.R` which does some of the processing described in [datasets documentation](doc/datasets.pdf).
 
 

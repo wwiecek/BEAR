@@ -13,13 +13,14 @@ from curated datasets across a diverse range of fields.
 This package includes our entire workflow (in R), documentation,
 results, and optional modelling of empirical research.
 
-- **Website:** <https://wwiecek.github.io/BEAR/>
+- **Website:** <https://witold.xyz/BEAR/>
 - **If you want to grab data only**, head to the GitHub Releases page
   and grab `BEAR.rds` [at this
   link](https://github.com/wwiecek/BEAR/releases).\*\*
 - If you want to do more data work with individual datasets, see
   *Downloading BEAR data* below.
-- To re-run everything, including modelling of data, see `main.R`.
+- To re-run code in this repo, including (optional) models, see
+  `main.R`.
 
 ![](doc/img/bear_banner.png)
 
@@ -52,7 +53,7 @@ Here is a short summary of what’s included in BEAR:
 | Bartos et al | exercise | 2,239 | 215 | 2,239 | 1.0 | 26.3% |
 | Brodeur et al | economics | 15,917 | \- | 328 | 48.5 | 35.7% |
 | Costello and Fox | ecology & evolution | 88,218 | 466 | 12,927 | 6.8 | 41.9% |
-| Lang | economics | 3,885 | \- | 736 | 5.3 | 57.6% |
+| Lang | economics | 3,885 | \- | 730 | 5.3 | 57.6% |
 | SCORE, all claims | social & behavioural sciences | 1,942 | \- | 159 | 12.2 | 74.9% |
 | Sladekova et al | psychology | 11,591 | 406 | 3,547 | 3.3 | 59.2% |
 | Szucs and Ioannidis | cognitive neuroscience | 16,887 | \- | 2,261 | 7.5 | 62.0% |
@@ -90,35 +91,48 @@ additional columns that store values from original studies.
 
 | Category     | Datasets | Studies | Meta-analyses |  Values | Significant |
 |:-------------|---------:|--------:|--------------:|--------:|------------:|
-| curated      |        8 |  37,317 |               | 123,345 |       43.3% |
+| curated      |        8 |  37,311 |               | 123,345 |       43.3% |
 | meta         |        9 |  57,594 |         7,677 | 200,264 |       42.9% |
 | replications |        3 |     388 |            28 |   1,956 |       44.2% |
 | scrape       |        4 | 155,322 |               | 165,653 |       69.0% |
 
 # Downloading BEAR data
 
-If you only want to grab data, head to the GitHub Releases page and grab
-`BEAR.rds` [at this link](https://github.com/wwiecek/BEAR/releases).
-Alternatively, in command line do
+\*\* (1) If you only want to grab data\*\*, head to the GitHub Releases
+page and grab `BEAR.rds` [at this
+link](https://github.com/wwiecek/BEAR/releases). Alternatively, in
+command line do
 
     curl -L -o BEAR.rds https://github.com/wwiecek/BEAR/releases/download/v2/BEAR.rds
+
+\*\* (2) I want to re-generate BEAR.rds or work with inidivual
+datasets\*\*
 
 You can also re-generate that file yourself. To work with individual
 datasets or to do more manipulation of inputs, you need to take an
 additional step. After cloning this repo (which only includes code and
 outputs), you need to grab a “submodule” repo that has contents of
-`data/` folder. In command line of this repository, do
+`data/` folder. In command line you will need:
 
-    git submodule update --init --recursive
+    git clone https://github.com/wwiecek/BEAR
+    cd BEAR
+    git submodule update --init --recursive --depth 1
 
 That will download about 100 MB of individual datasets. In other words,
 downloading all of the input data files is opt-in rather than part of
 this repo, to keep the repo size minimal.
 
-If you want to re-derive each of the datasets yourself, you can see all
-of data processing done for individual datasets in `process/`. For many
-datasets there is nil processing done by us, but for some there are
-extensive scripts to download and clean up data.
+\*\* (3) If you want to look at version control for BEAR datasets\*\* in
+the last line do
+
+    git submodule update --init --recursive
+
+instead.
+
+\*\* (4) If you want to re-derive each of the datasets yourself\*\*, you
+can see all of data processing done for individual datasets in
+`process/`. For many datasets there is nil processing done by us, but
+for some there are extensive scripts to download and clean up data.
 
 Once datasets are present in `data/`, `BEAR.rds` is stiched together in
 script `workflow/build_bear.R` which does some of the processing

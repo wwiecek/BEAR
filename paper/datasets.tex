@@ -1,7 +1,23 @@
-% Do not edit by hand; generated from paper/datasets.Rmd.
+% Paper-specific appendix, maintained by hand.
 This appendix describes the 16 corpora used in the paper. Note that the
 full BEAR database contains additional datasets. More complete
 documentation is available online.
+
+The analysis in the paper is based on the second release of the BEAR
+dataset (June 2026), available at
+\url{https://github.com/wwiecek/BEAR/releases/tag/v2}.
+
+\begingroup
+\setlength{\parskip}{0.35\baselineskip}
+\let\datasetsitemize\itemize
+\let\enddatasetsitemize\enditemize
+\renewenvironment{itemize}
+  {\datasetsitemize
+   \setlength{\itemsep}{0pt}
+   \setlength{\parsep}{0pt}
+   \setlength{\topsep}{0.25\baselineskip}
+   \setlength{\partopsep}{0pt}}
+  {\enddatasetsitemize}
 
 \newpage
 
@@ -22,10 +38,8 @@ psychology for teaching and demonstrations.
 intelligence research, which focused on power and small study effects.
 
 \textbf{Data availability:} 22 datasets are distributed with the
-\texttt{psymetadata} R package (CRAN). We do not use its Many Labs 2
-dataset, which we obtain from the original source and include
-separately. After excluding Many Labs 2 and separately representing the
-intelligence meta-meta-analysis, the remaining psychology datasets range
+\texttt{psymetadata} R package (CRAN). After separately representing the
+intelligence meta-meta-analysis, the psychology datasets used here range
 from 65 rows to over 1,000. The package is GPL-3; individual datasets
 originate from the cited source papers.
 
@@ -217,72 +231,42 @@ the distributions of z-values matched those in the article.
 
 \newpage
 
-\subsection{Costello and Fox 2022; Yang et al 2023, 2024 (ecology and
-evolution)}\label{costello-and-fox-2022-yang-et-al-2023-2024-ecology-and-evolution}
+\subsection{Costello and Fox 2022 (ecology and
+evolution)}\label{costello-and-fox-2022-ecology-and-evolution}
 
-\textbf{Reference:} These two datasets come from the same replication
-package and were processed using the shared pipeline in Yang et al.~2024
-\autocite{yang2024large}. The original references for the datasets are
-Yang et al.~2023 and Costello and Fox 2022
-\autocite{yang2023publication,costello2022decline}.
+\textbf{Reference:} \textcite{costello2022decline}.
 
-\textbf{Research question:} decline effects in ecology (Costello and
-Fox) and publication bias and performance of empirical research (Yang et
-al)
+\textbf{Research question:} decline effects in ecology and evolution.
 
 \textbf{Data collection:} Costello and Fox examined 466 meta-analyses
 identified by searching Web of Science. The reproducibility dataset
-includes 88,000 rows across 466 analyses in 232 papers. Subsequently,
-Yang et al.~removed duplicated studies and zeroes, discarding about 20\%
-of rows. Yang et al.~collected 102 meta-analyses published in relevant
-journals between 2010 and 2019, after removing records duplicated in the
-Costello and Fox dataset.
+includes 88,000 rows across 466 analyses in 232 papers.
 
-\textbf{Data availability:} The two datasets may be downloaded from
-\url{https://github.com/Yefeng0920/replication_EcoEvo_git/}. They are
+\textbf{Data availability:} The dataset may be downloaded from
+\url{https://github.com/Yefeng0920/replication_EcoEvo_git/}. It is
 available under a CC BY 4.0 licence.
 
-\textbf{Data processing:} The only additional processing was to clean up
-study years. Signed z-values were computed as effect sizes divided by
-their standard errors. For Yang et al, BEAR uses the source file names
-as meta-analysis identifiers.
-
-\textbf{Costello and Fox:}
-
-In \texttt{BEAR.rds}, we re-label the effect measures as SMD, response
-ratio and correlation. The individual dataset keeps the original Yang et
-al.~coding (Zr, lnRR, SMD).
-
-\textbf{Yang:}
-
-In \texttt{BEAR.rds}, we code Fisher's z as ``correlation'' and lnRR as
-``response\_ratio'' for consistency with other datasets.
+\textbf{Data processing:} We cleaned study years and computed signed
+z-values as effect sizes divided by their standard errors. In
+\texttt{BEAR.rds}, we re-label the effect measures as SMD, response
+ratio and correlation.
 
 \textbf{Study characteristics:}
 
 \begin{itemize}
 \item
-  \textbf{Study ID:} for Costello and Fox, we use \texttt{study2}; for
-  Yang, we use \texttt{study\_ID}.
+  \textbf{Study ID:} we use \texttt{study2}.
 \item
-  \textbf{Meta-analysis ID:} for Costello and Fox, we use
-  \texttt{meta.analysis.id}; for Yang, we use \texttt{meta\_id}.
+  \textbf{Meta-analysis ID:} we use \texttt{meta.analysis.id}.
 \item
-  \textbf{Topic:} for Costello and Fox, we use ecology, evolution or
-  other ecology/evolution. Yang has no topic classification.
+  \textbf{Topic:} ecology, evolution or other ecology/evolution.
 \item
-  \textbf{Costello and Fox:} the primary-study design is not classified.
+  The primary-study design is not classified.
 \item
-  \textbf{Costello and Fox:} effects are standardised mean differences,
-  log response ratios, Fisher's z correlations, or less common measures.
-  Less common measures include regression coefficients, log odds ratios
-  and mean differences. Some standardised mean differences are recorded
-  as absolute values.
-\item
-  \textbf{Yang:} the primary-study design is not classified.
-\item
-  \textbf{Yang:} effects are standardised mean differences, log response
-  ratios, or Fisher's z correlations.
+  Effects are standardised mean differences, log response ratios,
+  Fisher's z correlations, or less common measures. Less common measures
+  include regression coefficients, log odds ratios and mean differences.
+  Some standardised mean differences are recorded as absolute values.
 \end{itemize}
 
 \newpage
@@ -578,10 +562,9 @@ positives?
 \textbf{Data collection:} Lang samples empirical articles from the top
 five economics journals in 2021 and also articles previously collected
 in Brodeur, Cook, and Heyes, who sampled articles published in 2015 and
-2018 in 25 leading economics journals. (See also the ``Brodeur'' dataset
-in BEAR for more details.) The sample consists mainly of natural,
-laboratory, or field experiments, excluding articles focused on theory,
-structural estimation, or econometric methods.
+2018 in 25 leading economics journals. The sample consists mainly of
+natural, laboratory, or field experiments, excluding articles focused on
+theory, structural estimation, or econometric methods.
 
 Lang re-extracted results from all articles rather than using the
 hypothesis tests extracted by Brodeur, Cook, and Heyes. Research
@@ -1053,3 +1036,5 @@ than 1.96, not \(z>-1.96\).
 Exact zero p-values can produce infinite z-values. We retain infinities
 in BEAR source data, although signal-to-noise models truncate these
 infinite values.
+
+\endgroup

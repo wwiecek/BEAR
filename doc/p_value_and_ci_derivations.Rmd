@@ -1,28 +1,27 @@
-## Standard procedure for dealing with p-values and confidence intervals {#standard-procedure-for-dealing-with-p-values-and-confidence-intervals}
+# Standard procedure for dealing with p-values and confidence intervals {#standard-procedure-for-dealing-with-p-values-and-confidence-intervals}
 
 Most datasets in BEAR come with pre-computed effect sizes and standard errors. Some,
 especially databases of clinical trials and large sets of scraped studies, report 
 p-values. Moreover, reporting in clinical trial databases is done by investigators, 
 and the data-entry fields are not standardised, requiring more extensive clean-up 
-and a procedure for deriving z-values. In some cases datasets contain confidence
-intervals and effect sizes, but not z- or p-values.
-
-In this short appendix we outline the default approach to dealing with p-values
-and confidence intervals.
+and a procedure for deriving z-values. Lastly, in some cases datasets contain confidence
+intervals and effect sizes, but z- and p-values may be missing.
 
 
+## Note on data cleaning and default imputed values
 
-### Confidence intervals
+For confidence interval levels, we set implausible values to missing (e.g. values
+above 100 or below 0) and standardise proportions and percentages: investigators
+sometimes report 90 and sometimes 0.9 for a 90% confidence interval. In EU CTR,
+confidence levels can be missing, and we assume 95% by default. Some data state
+whether CIs or p-values are one- or two-sided. 
 
-For confidence interval levels, we do basic clean-up by setting implausible values 
-to missing (e.g. above 100 or below 0) and 
-and standardising proportions and percentages (sometimes investigators report "90", 
-sometimes "0.9" significance level).
-In EU CTR database significance level can be missing and we assume 95% by default.
-Some data state side-ness of tests or p-values (although crucially clinicaltrials.gov does not), 
-but if number of sides was missing, we assumed two-sided tests. 
-[state which datasets are affected here and summarise how common this 
-issue is]
+Similarly, when working with p-values we assume a two-sided test when no additional
+information is stated.
+
+
+
+## Confidence intervals
 
 When working with CIs, ratio measures were analysed on the log scale (if lower 
 bound, upper bound, and point estimate were all strictly positive) and non-ratio 
@@ -36,61 +35,59 @@ when both were finite.
 
 We computed a simple symmetry diagnostic for the confidence interval on the 
 chosen scale, defined as the smaller of the two half-widths divided by the 
-larger. We treated intervals as "symmetric enough" only if this ratio exceeded 
-0.8. This threshold is arbitrary and affects when we trust the CI-derived 
-z-statistic. [what is the point of doing this... if we do not trust the 
-CI-derived z-value, what do we do?]
+larger. We treated intervals as "symmetric enough" only if this ratio exceeded
+0.8. This arbitrary threshold affects when we use the CI-derived z-statistic;
+otherwise, we use a p-derived z-statistic where one is available.
 
-We also flagged potentially non-Wald intervals by matching text in the column 
-describing the parameter type, if available, searching for keywords such as median, 
-Hodges, posterior/Bayes, exact, Fieller, bootstrap, and permutation. Any row 
-flagged this way was treated as unreliable for CI-based inference, regardless 
-of its numeric properties. [what did we do with this information?]
-
+In datasets where additional information is present, we look for potentially non-Wald 
+intervals by matching text in the column describing the parameter type. 
+We search for keywords such as median, Hodges, posterior/Bayes, exact, Fieller, 
+bootstrap, and permutation. For estimates that are flagged by this we prefer to 
+derive z-value from p-value,
 
 
-### p-values
+
+## p-values
+
 
 When a source reports t-statistics and degrees of freedom, we first derive the 
-two-sided p-value from the t distribution as twice the upper-tail probability 
-beyond the absolute observed t-statistic. We then store the signed normal-equivalent 
-statistic by applying the sign of the t-statistic to the upper-tail standard normal 
-quantile corresponding to half that two-sided p-value.
+two-sided p-value from the t distribution and then derive the z-value (retaining the
+sign of the original t-statistic, if available).
 
 For clinical trials databases (ClinicalTrials.gov and EU CTR), we sometimes 
-found ambiguity in how p-values were recorded. Some significant results have 
+find ambiguity in how p-values were recorded. Some significant results have 
 reported p-values close to 1, suggesting that authors reported the cumulative 
 distribution, $\Phi(z)$. Therefore, for each row we also calculated 
-$2\cdot\min\{p,1-p\}$. When a CI-derived z-statistic was available, we chose 
+$2\cdot\min\{p,1-p\}$. When a CI-derived z-value was available, we chose 
 whichever p-value led to a z-value that was closest to the CI-derived z.
 
-To avoid dropping rows, we retained unsigned z-statistics when the sign could 
+To avoid dropping rows, we retain unsigned z-statistics when the sign could 
 not be determined. If the sign of the effect was known, we applied it to the 
 p-derived z; otherwise we used its absolute value.
 
 
 
-### Choice of a single z-value when multiple candidates are available
+## Choice of a single z-value when multiple candidates are available
 
 In situations where $z$ can be derived from both CIs and p-values, we choose a
 single "best" z-statistic per row as follows. We prefer the CI-derived $z$ when 
 it looked like a plausible Wald interval on the chosen scale, meaning: (1) 
 finite $z$ and standard error, (2) positive standard error, (3) not flagged as 
-non-Wald by keyword search in the measure label, and (4) either missing symmetry 
-information or symmetry above 0.8. Otherwise we used the p-derived z.
+non-Wald by keyword search in the measure label (see above), and (4) either 
+missing symmetry information or symmetry above 0.8. Otherwise we used the 
+p-derived z.
 
 
 
-### Bounded and infinite z-values
+## Truncation and infinite z-values
 
-For reported two-sided p-value bounds, $p<c$ gives a lower bound on $|z|$,
-and $p>c$ gives an upper bound. `z_operator` records this as `>` or `<`;
-`=` denotes a value treated as exact. The operator applies to the magnitude,
-including when the stored z-value is negative. For example, a stored value of
-$-1.96$ with operator `>` means a negative direction and magnitude greater than
-1.96, not $z>-1.96$.
+For reported two-sided p-value bounds, $p<c$ gives a lower bound on $|z|$.
+This inequality is recorded to BEAR. Importantly for some future modelling,
+the operator in BEAR data applies to the magnitude, including when the stored 
+z-value is negative. For example, a stored value of $-1.96$ with operator `>` 
+means a negative direction and magnitude greater than 1.96, not $z>-1.96$.
 
-Exact zero p-values can produce infinite z-values. We retain infinities arising
-from valid source information, including boundary correlations; a missing or
-invalid input is distinct from an infinite derived value. The dataset-specific
-notes identify any source bounds or reporting conventions.
+Exact zero p-values can produce infinite z-values. We retain infinities in BEAR
+source data, although note that in modelling signal-to-noise ratios these infinite 
+values are truncated.
+

@@ -71,7 +71,7 @@ Here is a short summary of what’s included in BEAR:
 
 | Dataset | Domain | Values | Meta-analyses | Studies | Values/study | Significant |
 |:---|:---|---:|---:|---:|---:|---:|
-| Barnett and Wren\* | biomedicine | 50,000 | \- | 50,000 | 1.0 | 82.4% |
+| Barnett and Wren\* | biomedicine | 50,000 | \- | 50,000 | 1.0 | 82.8% |
 | Chavalarias et al\* | biomedicine | 50,000 | \- | 50,000 | 1.0 | 63.1% |
 | Head et al\* | biomedicine | 50,000 | \- | 50,000 | 1.0 | 59.8% |
 | Jager and Leek | biomedicine | 15,653 | \- | 5,322 | 2.9 | 77.7% |
@@ -94,7 +94,7 @@ additional columns that store values from original studies.
 | curated      |        8 |  37,269 |               | 123,277 |       43.4% |
 | meta         |        9 |  57,594 |         7,677 | 200,264 |       42.9% |
 | replications |        3 |     388 |            28 |   1,956 |       44.2% |
-| scrape       |        4 | 155,322 |               | 165,653 |       69.3% |
+| scrape       |        4 | 155,322 |               | 165,653 |       69.4% |
 
 # Downloading BEAR data
 

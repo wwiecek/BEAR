@@ -17,14 +17,23 @@ Authors scraped (via regular expressions, followed by an independent check using
 These are "ratio estimates" such as odds ratios, hazard ratios and risk ratios. Note that binary outcomes tend to contain (much) less information than continuous outcomes.
 
 **Data processing:**
-We exclude a small fraction of data. First, we restrict the data to 95% 
-confidence intervals: where `ci.level` was missing we assume it was 0.95; 
-among intervals with a known `ci.level`, about 0.3% were not 95% and are dropped. 
-We drop intervals with non-positive width (i.e. `lower >= upper`). We use 
-the log scale (we replace zero or negative lower bounds with a small positive 
-constant; this affects about 0.1% of the sample) and back out an approximate 
-standard error and point estimate under the usual normal approximation for a 95% 
-CI, setting the point estimate to the midpoint of the interval.
+
+We use the default approach to deriving estimates from confidence intervals (see 
+elsewhere in the documentation). We set missing `ci.level` values to 0.95. 
+Among intervals with a known confidence level, only about 0.3% are not 95%.
+
+Of note, over 6% of rows are removed due to low symmetry of confidence intervals.
+These rows likely correspond to cases of non-Wald confidence intervals. However,
+we do not have any details of measures to investigate this further. A small fraction
+of a percent has other invalid rows. Rows excluded under the default CI procedure 
+remain in the individual dataset
+for future investigations.
+
+Since all measures are ratios, we use the log scale for all calculations. There 
+are some differences between using the interval 
+midpoint or reported point estimate as effect size. (As per default approach we 
+do the latter.) Using the interval midpoint would change the significant 
+proportion by under 2 percentage points in eligible pre-thinning data.
 
 For the main version of BEAR dataset, `BEAR.rds`, 
 50,000 studies are selected at random, with

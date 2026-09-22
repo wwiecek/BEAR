@@ -9,6 +9,7 @@ filter <- dplyr::filter
 dtlist <- list()
 source("R/helpers.R")
 source("R/settings.R")
+source("R/z_derivation_helpers.R")
 
 
 
@@ -290,23 +291,22 @@ dtlist[["Metapsy"]] <- readRDS("data/Metapsy.rds") %>%
 
 dtlist[["BarnettWren"]] <- readRDS("data/BarnettWren.rds") %>%
   filter(!mistake) %>%
-  # 0.3% of available values have CI widths other than 95%, let's remove these
-  # but if ci.level is unknown, assume that it's actually 95%
+  # Use reported CI levels; where missing, assume a 95% interval.
   mutate(ci.level = ifelse(is.na(ci.level), 0.95, ci.level)) %>%
-  filter(ci.level == 0.95) %>%
-  # Remove cases where CI is zero
-  filter(lower < upper) %>%
-  # To allow for log(lower), add a tiny value to zeroes (~0.1% of the sample)
-  mutate(lower = ifelse(lower > 0, lower, 1e-05)) %>%
-  mutate(se = (log(upper) - log(lower))/(2*1.96)) %>%
-  mutate(b = (log(upper) + log(lower))/2) %>%
-  mutate(z = b/se) %>%
+  bind_cols(
+    derive_trial_z(
+      estimate = .$mean, lower = .$lower, upper = .$upper,
+      p_value = rep(NA_real_, length(.$mean)), ci_level = .$ci.level,
+      ci_sides = rep(2L, length(.$mean)),
+      measure_label = rep("ratio", length(.$mean))
+    )
+  ) %>%
   transmute(metaid = NA,
             studyid = pubmed,
             method = NA,
             measure = "ratio",
             effect_scale = "log",
-            z = b/se,
+            z,
             b = b,
             se = se,
             year = Year,

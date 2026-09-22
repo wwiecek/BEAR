@@ -1,45 +1,142 @@
-% Paper-specific appendix, maintained by hand.
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\documentclass[
+  11pt,
+]{article}
+\usepackage{xcolor}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{graphicx}
+\makeatletter
+\newsavebox\pandoc@box
+\newcommand*\pandocbounded[1]{% scales image to fit in text height/width
+  \sbox\pandoc@box{#1}%
+  \Gscale@div\@tempa{\textheight}{\dimexpr\ht\pandoc@box+\dp\pandoc@box\relax}%
+  \Gscale@div\@tempb{\linewidth}{\wd\pandoc@box}%
+  \ifdim\@tempb\p@<\@tempa\p@\let\@tempa\@tempb\fi% select the smaller of both
+  \ifdim\@tempa\p@<\p@\scalebox{\@tempa}{\usebox\pandoc@box}%
+  \else\usebox{\pandoc@box}%
+  \fi%
+}
+% Set default figure placement to htbp
+\def\fps@figure{htbp}
+\makeatother
+% definitions for citeproc citations
+\NewDocumentCommand\citeproctext{}{}
+\NewDocumentCommand\citeproc{mm}{%
+  \begingroup\def\citeproctext{#2}\cite{#1}\endgroup}
+\makeatletter
+ % allow citations to break across lines
+ \let\@cite@ofmt\@firstofone
+ % avoid brackets around text for \cite:
+ \def\@biblabel#1{}
+ \def\@cite#1#2{{#1\if@tempswa , #2\fi}}
+\makeatother
+\newlength{\cslhangindent}
+\setlength{\cslhangindent}{1.5em}
+\newlength{\csllabelwidth}
+\setlength{\csllabelwidth}{3em}
+\newenvironment{CSLReferences}[2] % #1 hanging-indent, #2 entry-spacing
+ {\begin{list}{}{%
+  \setlength{\itemindent}{0pt}
+  \setlength{\leftmargin}{0pt}
+  \setlength{\parsep}{0pt}
+  % turn on hanging indent if param 1 is 1
+  \ifodd #1
+   \setlength{\leftmargin}{\cslhangindent}
+   \setlength{\itemindent}{-1\cslhangindent}
+  \fi
+  % set entry spacing
+  \setlength{\itemsep}{#2\baselineskip}}}
+ {\end{list}}
+\usepackage{calc}
+\newcommand{\CSLBlock}[1]{\hfill\break\parbox[t]{\linewidth}{\strut\ignorespaces#1\strut}}
+\newcommand{\CSLLeftMargin}[1]{\parbox[t]{\csllabelwidth}{\strut#1\strut}}
+\newcommand{\CSLRightInline}[1]{\parbox[t]{\linewidth - \csllabelwidth}{\strut#1\strut}}
+\newcommand{\CSLIndent}[1]{\hspace{\cslhangindent}#1}
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\usepackage{bookmark}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  pdftitle={Datasets used in the paper},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+\title{Datasets used in the paper}
+\usepackage{etoolbox}
+\makeatletter
+\providecommand{\subtitle}[1]{% add subtitle to \maketitle
+  \apptocmd{\@title}{\par {\large #1 \par}}{}{}
+}
+\makeatother
+\subtitle{Appendix}
+\author{}
+\date{\vspace{-2.5em}2026-09-21}
+
+\begin{document}
+\maketitle
+
 This appendix describes the 16 corpora used in the paper. Note that the
 full BEAR database contains additional datasets. More complete
 documentation is available online.
-
-The analysis in the paper is based on the second release of the BEAR
-dataset (June 2026), available at
-\url{https://github.com/wwiecek/BEAR/releases/tag/v2}.
-
-\begingroup
-\setlength{\parskip}{0.35\baselineskip}
-\let\datasetsitemize\itemize
-\let\enddatasetsitemize\enditemize
-\renewenvironment{itemize}
-  {\datasetsitemize
-   \setlength{\itemsep}{0pt}
-   \setlength{\parsep}{0pt}
-   \setlength{\topsep}{0.25\baselineskip}
-   \setlength{\partopsep}{0pt}}
-  {\enddatasetsitemize}
 
 \newpage
 
 \subsection{psymetadata and Nuijten et al (psychology
 datasets)}\label{psymetadata-and-nuijten-et-al-psychology-datasets}
 
-\textbf{Reference:} A set of psychology datasets compiled by
-\textcite{rodriguez2022psymetadata}. We also disaggregate a large
-meta-meta-analysis of intelligence research
-\autocite{nuijten2020intelligence}.
+\textbf{Reference:} A set of psychology datasets compiled by Rodriguez
+and Williams (2022). We also disaggregate a large meta-meta-analysis of
+intelligence research (Nuijten et al. 2020).
 
 \textbf{Snapshot date:} January 2026
 
 \textbf{Research question:} \emph{psymetadata} is an R package that
 curates multiple open datasets from published meta-analyses in
-psychology for teaching and demonstrations.
-\textcite{nuijten2020intelligence} is a large meta-meta-analysis of
-intelligence research, which focused on power and small study effects.
+psychology for teaching and demonstrations. Nuijten et al. (2020) is a
+large meta-meta-analysis of intelligence research, which focused on
+power and small study effects.
 
 \textbf{Data availability:} 22 datasets are distributed with the
-\texttt{psymetadata} R package (CRAN). After separately representing the
-intelligence meta-meta-analysis, the psychology datasets used here range
+\texttt{psymetadata} R package (CRAN). We do not use its Many Labs 2
+dataset, which we obtain from the original source and include
+separately. After excluding Many Labs 2 and separately representing the
+intelligence meta-meta-analysis, the remaining psychology datasets range
 from 65 rows to over 1,000. The package is GPL-3; individual datasets
 originate from the cited source papers.
 
@@ -51,6 +148,7 @@ z-values were computed as effect sizes divided by their standard errors.
 \textbf{Study characteristics:}
 
 \begin{itemize}
+\tightlist
 \item
   \textbf{psymetadata:} the designs of the primary studies are not
   harmonised across the imported datasets.
@@ -73,7 +171,7 @@ z-values were computed as effect sizes divided by their standard errors.
 \subsection{Askarov et al 2023
 (economics)}\label{askarov-et-al-2023-economics}
 
-\textbf{Reference:} \textcite{askarov2023significance}.
+\textbf{Reference:} Askarov et al. (2023).
 
 \textbf{Research question:} Impact of mandatory data sharing on
 (excessive) statistical significance in economics papers
@@ -115,6 +213,7 @@ effect sizes divided by their standard errors.
 \textbf{Study characteristics:}
 
 \begin{itemize}
+\tightlist
 \item
   \textbf{Study ID:} we use the source study identifier.
 \item
@@ -146,10 +245,10 @@ psychotherapeutic interventions.
 \textbf{Data availability:} Metapsy is maintained by an international
 collaboration led by Vrije Universiteit Amsterdam. Databases are
 available at \url{https://www.metapsy.org/} and through the R package
-\texttt{metapsyData} \autocite{harrer2022metapsydata}. The Metapsy FAQ
-states that all data provided as part of the project are open access and
-that attribution is required. The source contains RCTs of
-psychotherapeutic interventions.
+\texttt{metapsyData} (Harrer et al. 2022). The Metapsy FAQ states that
+all data provided as part of the project are open access and that
+attribution is required. The source contains RCTs of psychotherapeutic
+interventions.
 
 \textbf{Data processing:} We merged 20 individual datasets in Metapsy
 and performed some cleaning (e.g.~to extract study dates from titles).
@@ -186,7 +285,7 @@ by their standard errors.
 \subsection{Arel-Bundock et al 2022 (political
 science)}\label{arel-bundock-et-al-2022-political-science}
 
-\textbf{Reference:} \textcite{arel2022quantitative}.
+\textbf{Reference:} Arel-Bundock et al. (2022).
 
 \textbf{Research question:} assess statistical power in political
 science research
@@ -219,6 +318,7 @@ the distributions of z-values matched those in the article.
 \textbf{Study characteristics:}
 
 \begin{itemize}
+\tightlist
 \item
   \textbf{Study ID:} we use author's study ID; for \textbf{meta-analysis
   ID} we use \texttt{question\_id}.
@@ -231,42 +331,72 @@ the distributions of z-values matched those in the article.
 
 \newpage
 
-\subsection{Costello and Fox 2022 (ecology and
-evolution)}\label{costello-and-fox-2022-ecology-and-evolution}
+\subsection{Costello and Fox 2022; Yang et al 2023, 2024 (ecology and
+evolution)}\label{costello-and-fox-2022-yang-et-al-2023-2024-ecology-and-evolution}
 
-\textbf{Reference:} \textcite{costello2022decline}.
+\textbf{Reference:} These two datasets come from the same replication
+package and were processed using the shared pipeline in Yang et al.~2024
+(Yang et al. 2024). The original references for the datasets are Yang et
+al.~2023 and Costello and Fox 2022 (Yang et al. 2023; Costello and Fox
+2022).
 
-\textbf{Research question:} decline effects in ecology and evolution.
+\textbf{Research question:} decline effects in ecology (Costello and
+Fox) and publication bias and performance of empirical research (Yang et
+al)
 
 \textbf{Data collection:} Costello and Fox examined 466 meta-analyses
 identified by searching Web of Science. The reproducibility dataset
-includes 88,000 rows across 466 analyses in 232 papers.
+includes 88,000 rows across 466 analyses in 232 papers. Subsequently,
+Yang et al.~removed duplicated studies and zeroes, discarding about 20\%
+of rows. Yang et al.~collected 102 meta-analyses published in relevant
+journals between 2010 and 2019, after removing records duplicated in the
+Costello and Fox dataset.
 
-\textbf{Data availability:} The dataset may be downloaded from
-\url{https://github.com/Yefeng0920/replication_EcoEvo_git/}. It is
+\textbf{Data availability:} The two datasets may be downloaded from
+\url{https://github.com/Yefeng0920/replication_EcoEvo_git/}. They are
 available under a CC BY 4.0 licence.
 
-\textbf{Data processing:} We cleaned study years and computed signed
-z-values as effect sizes divided by their standard errors. In
-\texttt{BEAR.rds}, we re-label the effect measures as SMD, response
-ratio and correlation.
+\textbf{Data processing:} The only additional processing was to clean up
+study years. Signed z-values were computed as effect sizes divided by
+their standard errors. For Yang et al, BEAR uses the source file names
+as meta-analysis identifiers.
+
+\textbf{Costello and Fox:}
+
+In \texttt{BEAR.rds}, we re-label the effect measures as SMD, response
+ratio and correlation. The individual dataset keeps the original Yang et
+al.~coding (Zr, lnRR, SMD).
+
+\textbf{Yang:}
+
+In \texttt{BEAR.rds}, we code Fisher's z as ``correlation'' and lnRR as
+``response\_ratio'' for consistency with other datasets.
 
 \textbf{Study characteristics:}
 
 \begin{itemize}
 \item
-  \textbf{Study ID:} we use \texttt{study2}.
+  \textbf{Study ID:} for Costello and Fox, we use \texttt{study2}; for
+  Yang, we use \texttt{study\_ID}.
 \item
-  \textbf{Meta-analysis ID:} we use \texttt{meta.analysis.id}.
+  \textbf{Meta-analysis ID:} for Costello and Fox, we use
+  \texttt{meta.analysis.id}; for Yang, we use \texttt{meta\_id}.
 \item
-  \textbf{Topic:} ecology, evolution or other ecology/evolution.
+  \textbf{Topic:} for Costello and Fox, we use ecology, evolution or
+  other ecology/evolution. Yang has no topic classification.
 \item
-  The primary-study design is not classified.
+  \textbf{Costello and Fox:} the primary-study design is not classified.
 \item
-  Effects are standardised mean differences, log response ratios,
-  Fisher's z correlations, or less common measures. Less common measures
-  include regression coefficients, log odds ratios and mean differences.
-  Some standardised mean differences are recorded as absolute values.
+  \textbf{Costello and Fox:} effects are standardised mean differences,
+  log response ratios, Fisher's z correlations, or less common measures.
+  Less common measures include regression coefficients, log odds ratios
+  and mean differences. Some standardised mean differences are recorded
+  as absolute values.
+\item
+  \textbf{Yang:} the primary-study design is not classified.
+\item
+  \textbf{Yang:} effects are standardised mean differences, log response
+  ratios, or Fisher's z correlations.
 \end{itemize}
 
 \newpage
@@ -275,7 +405,7 @@ ratio and correlation.
 (education)}\label{what-works-clearinghouse-education}
 
 Large database of education effect sizes created by the Institute of
-Education Sciences \autocite{wwc2025studyfindings}.
+Education Sciences (Institute of Education Sciences 2025).
 
 \textbf{Snapshot date:} 17 May 2025
 
@@ -311,6 +441,7 @@ so z-values are signed where the effect size is non-zero.
 \textbf{Study characteristics:}
 
 \begin{itemize}
+\tightlist
 \item
   \textbf{Study ID:} we use citation-derived author and year; we use the
   original \texttt{WWCStudy} as fall-back in some cases.
@@ -327,14 +458,13 @@ so z-values are signed where the effect size is non-zero.
 (CDSR)}\label{cochrane-database-of-systematic-reviews-cdsr}
 
 Trials with results available in CDSR,
-\url{https://www.cochranelibrary.com/} \autocite{cochrane2025cdsr}.
+\url{https://www.cochranelibrary.com/} (Cochrane Collaboration 2025).
 
 \textbf{Snapshot date:} 20 November 2025
 
-\textbf{Data collection:} Using the R package \texttt{cochrane}
-\autocite{schwab2024cochrane}, we combined data from 8,726 CDSR review
-records into a single file, \texttt{cdsr\_interventions\_19nov2025.csv}
-(63 MB).
+\textbf{Data collection:} Using the R package \texttt{cochrane} (Schwab
+2024), we combined data from 8,726 CDSR review records into a single
+file, \texttt{cdsr\_interventions\_19nov2025.csv} (63 MB).
 
 \textbf{Data processing:} We applied several processing steps and
 extensive filtering.
@@ -358,6 +488,7 @@ heavily. There are five important decisions:
 
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}
+\tightlist
 \item
   Use only the outcome and comparison from each review coded as ``1'',
   as these are most likely to be the primary outcome and most relevant
@@ -445,7 +576,7 @@ and the conventional significance threshold at 1.96.
 \subsection{Chavalarias et al.~2016
 (PubMed/Medline)}\label{chavalarias-et-al.-2016-pubmedmedline}
 
-\textbf{Reference:} \textcite{chavalarias2016evolution}.
+\textbf{Reference:} Chavalarias et al. (2016).
 
 \textbf{Research question:} reporting of p-values in the biomedical
 literature
@@ -476,6 +607,7 @@ the file size manageable.
 \textbf{Study characteristics:}
 
 \begin{itemize}
+\tightlist
 \item
   \textbf{Study ID:} we use the PubMed identifier (\texttt{PMID}).
 \item
@@ -493,7 +625,7 @@ the file size manageable.
 
 \subsection{SCORE (social science)}\label{score-social-science}
 
-\textbf{Reference:} \textcite{tyner2026investigating}.
+\textbf{Reference:} {Tyner et al.} (2026).
 
 \textbf{Research question:} investigating the replicability of published
 claims in the social and behavioural sciences.
@@ -533,6 +665,7 @@ error, and text order.
 \textbf{Study characteristics:}
 
 \begin{itemize}
+\tightlist
 \item
   \textbf{Study ID:} we use the DOI/source-paper identifier in both
   outputs.
@@ -553,7 +686,7 @@ error, and text order.
 
 \subsection{Lang 2025 (economics)}\label{lang-2025-economics}
 
-\textbf{Reference:} \textcite{lang2025credible}.
+\textbf{Reference:} Lang (2025).
 
 \textbf{Research question:} How frequently are statistically significant
 rejections of null hypotheses in recent empirical economics false
@@ -562,9 +695,10 @@ positives?
 \textbf{Data collection:} Lang samples empirical articles from the top
 five economics journals in 2021 and also articles previously collected
 in Brodeur, Cook, and Heyes, who sampled articles published in 2015 and
-2018 in 25 leading economics journals. The sample consists mainly of
-natural, laboratory, or field experiments, excluding articles focused on
-theory, structural estimation, or econometric methods.
+2018 in 25 leading economics journals. (See also the ``Brodeur'' dataset
+in BEAR for more details.) The sample consists mainly of natural,
+laboratory, or field experiments, excluding articles focused on theory,
+structural estimation, or econometric methods.
 
 Lang re-extracted results from all articles rather than using the
 hypothesis tests extracted by Brodeur, Cook, and Heyes. Research
@@ -608,6 +742,7 @@ to adjudicate.
 \textbf{Study characteristics:}
 
 \begin{itemize}
+\tightlist
 \item
   \textbf{Study ID:} \texttt{studyid} is \texttt{Lang\_paper\_} followed
   by Lang's \texttt{unique\_paperid}, but with a few minor corrections
@@ -640,7 +775,7 @@ to adjudicate.
 \subsection{Szucs and Ioannidis 2017 (cognitive
 neuroscience)}\label{szucs-and-ioannidis-2017-cognitive-neuroscience}
 
-\textbf{Reference:} \textcite{szucs2017empirical}.
+\textbf{Reference:} Szucs and Ioannidis (2017).
 
 \textbf{Research question:} empirical assessment of published effect
 sizes, statistical significance, and power in the literature on
@@ -666,6 +801,7 @@ z-values from t-values.
 \textbf{Study characteristics:}
 
 \begin{itemize}
+\tightlist
 \item
   \textbf{Study ID:} to make look-ups of articles easier, we use
   \texttt{journal\_\textless{}journal\_code\textgreater{}\_article\_\textless{}article\_id\textgreater{}}.
@@ -684,8 +820,8 @@ z-values from t-values.
 \subsection{ClinicalTrials.gov
 snapshot}\label{clinicaltrials.gov-snapshot}
 
-Trials that reported results at ClinicalTrials.gov
-\autocite{clinicaltrials2025}.
+Trials that reported results at ClinicalTrials.gov (National Library of
+Medicine 2025).
 
 \textbf{Snapshot date:} 12 August 2025
 
@@ -714,6 +850,7 @@ using two data sources:
 
 \begin{enumerate}
 \def\labelenumi{(\arabic{enumi})}
+\tightlist
 \item
   Author-reported effect sizes
 \item
@@ -772,6 +909,7 @@ missing.
 \textbf{Study characteristics:}
 
 \begin{itemize}
+\tightlist
 \item
   \textbf{Study ID:} we use the ClinicalTrials.gov trial identifier
   (\texttt{nct\_id}).
@@ -795,18 +933,19 @@ missing.
 CTR)}\label{eu-clinical-trials-register-eu-ctr}
 
 Trials that reported results in the EU Clinical Trials Register,
-\url{https://www.clinicaltrialsregister.eu/} \autocite{euctr2025}.
+\url{https://www.clinicaltrialsregister.eu/} (European Medicines Agency
+2025).
 
 \textbf{Snapshot date:} 18 January 2026
 
-\textbf{Data collection:} We used the R package \texttt{ctrdata}
-\autocite{herold2025ctrdata} to create a snapshot of EU CTR
-(\texttt{collection\ =\ "euctr"}); we downloaded only trial records with
-results. We stored the downloaded records in a local SQLite database and
-extracted a fixed set of protocol and results fields plus several fields
-computed by \texttt{ctrdata} (trial phase, sample size, and a ``first
-primary endpoint'' p-value/size derived by the package). We use only the
-EU CTR portion of this extraction in BEAR.
+\textbf{Data collection:} We used the R package \texttt{ctrdata} (Herold
+2025) to create a snapshot of EU CTR (\texttt{collection\ =\ "euctr"});
+we downloaded only trial records with results. We stored the downloaded
+records in a local SQLite database and extracted a fixed set of protocol
+and results fields plus several fields computed by \texttt{ctrdata}
+(trial phase, sample size, and a ``first primary endpoint'' p-value/size
+derived by the package). We use only the EU CTR portion of this
+extraction in BEAR.
 
 \textbf{Data availability:} EUCTR is publicly accessible. The EUCTR
 legal notice notes that publication on EUCTR does not constitute an
@@ -851,7 +990,7 @@ phase labels to follow the same naming convention as ClinicalTrials.gov.
 \subsection{Barnett and Wren 2019
 (PubMed/Medline)}\label{barnett-and-wren-2019-pubmedmedline}
 
-\textbf{Reference:} \textcite{barnett2019examination}.
+\textbf{Reference:} Barnett and Wren (2019).
 
 \textbf{Research question:} Bias for statistical significance in health
 and medical journals
@@ -873,17 +1012,16 @@ manual checks for 10,000 intervals) 968,000 CIs from abstracts and
 hazard ratios and risk ratios. Note that binary outcomes tend to contain
 (much) less information than continuous outcomes.
 
-\textbf{Data processing:} We exclude a small fraction of data. First, we
-restrict the data to 95\% confidence intervals: where \texttt{ci.level}
-was missing we assume it was 0.95; among intervals with a known
-\texttt{ci.level}, about 0.3\% were not 95\% and are dropped. We drop
-intervals with non-positive width
-(i.e.~\texttt{lower\ \textgreater{}=\ upper}). We use the log scale (we
-replace zero or negative lower bounds with a small positive constant;
-this affects about 0.1\% of the sample) and back out an approximate
-standard error and point estimate under the usual normal approximation
-for a 95\% CI, setting the point estimate to the midpoint of the
-interval.
+\textbf{Data processing:} We set missing \texttt{ci.level} values to
+0.95. Among intervals with a known confidence level, only about 0.3\%
+are not 95\%. Rows excluded under the default CI procedure remain in the
+individual dataset for future investigations.
+
+We use the default approach to deriving estimates from confidence
+intervals (see elsewhere in the documentation). Since all measures are
+ratios, we use the log scale for all calculations. Using the interval
+midpoint rather than the reported point estimate changes the significant
+proportion by under 2 percentage points in eligible pre-thinning data.
 
 For the main version of BEAR dataset, \texttt{BEAR.rds}, 50,000 studies
 are selected at random, with one row per study, in order to keep the
@@ -892,6 +1030,7 @@ file size manageable.
 \textbf{Study characteristics:}
 
 \begin{itemize}
+\tightlist
 \item
   \textbf{Study ID:} we use the PubMed identifier (\texttt{pubmed}).
 \item
@@ -908,8 +1047,7 @@ file size manageable.
 \subsection{Open Science Collaboration 2015
 (psychology)}\label{open-science-collaboration-2015-psychology}
 
-\textbf{Reference:}
-\textcite{opensciencecollaborationEstimatingReproducibilityPsychological2015a}.
+\textbf{Reference:} Open Science Collaboration (2015).
 
 \textbf{Research question:} replications of a quasi-random sample of 100
 experiments in psychology.
@@ -938,6 +1076,7 @@ on the fact that is the column from original dataset that we use.
 \textbf{Study characteristics:}
 
 \begin{itemize}
+\tightlist
 \item
   BEAR treats the replication studies as RCTs.
 \item
@@ -963,9 +1102,9 @@ values}\label{data-cleaning-and-default-values}
 For confidence interval levels, we set implausible values to missing
 (e.g.~values above 100 or below 0) and standardise proportions and
 percentages: investigators sometimes report 90 and sometimes 0.9 for a
-90\% confidence interval. In EU CTR, confidence levels can be missing,
-and we assume 95\% by default. Some data state whether CIs or p-values
-are one- or two-sided.
+90\% confidence interval. If a confidence interval is present but its
+level is missing, we assume 95\% by default. Some data state whether CIs
+or p-values are one- or two-sided.
 
 Similarly, when working with p-values we assume a two-sided test when no
 additional information is stated.
@@ -974,26 +1113,36 @@ additional information is stated.
 
 When working with CIs, we analyse ratio measures on the log scale when
 the lower bound, upper bound, and point estimate are all strictly
-positive; we keep non-ratio measures on the raw scale.
+positive; we keep non-ratio measures on the raw scale. When constructing
+\texttt{BEAR.rds} we drop rows where where the lower bound is higher
+than the upper bound.
 
 To derive SEs from confidence intervals, we first compute the critical
 value. To avoid undefined critical values (e.g.~at 100\% or extremely
-close to it), we bound the implied \(\alpha\) at a small value. We then
-compute two one-sided standard error estimates from the upper and lower
-bounds and use their average when both are finite.
-
-We compute a simple symmetry diagnostic for the confidence interval on
-the chosen scale, defined as the smaller of the two half-widths divided
-by the larger. We treat intervals as ``symmetric enough'' only if this
-ratio exceeds 0.8. This arbitrary threshold affects when we use the
-CI-derived z-statistic; otherwise, we use a p-derived z-statistic where
-one is available.
+close to it), we bound the implied \(\alpha\) at a small value. After
+conversion to the chosen scale, we compute the two half-widths around
+the reported point estimate, convert each to a standard error, and use
+their average when both are finite.
 
 Where additional information is available, we look for potentially
 non-Wald intervals by matching text in the parameter-type column. We
 search for keywords such as median, Hodges, posterior/Bayes, exact,
 Fieller, bootstrap, and permutation. For flagged estimates, we prefer to
 derive the z-value from the p-value.
+
+Moreover, we compute a simple symmetry diagnostic for the confidence
+interval on the chosen scale, defined as the smaller of the two
+half-widths divided by the larger. We treat intervals as ``symmetric
+enough'' only if this ratio exceeds 0.8. Otherwise, we use a p-derived
+z-statistic where one is available; if not, we drop the row from
+\texttt{BEAR.rds}. The original values remain available in the
+individual datasets for other investigations.
+
+In the current version, this rule either selects p-values for about
+5--10\% of eligible clinical-trial registry rows or removes CI-only
+rows, including some Barnett--Wren intervals. A 0.95 cut-off would
+remove or replace roughly twice as many registry intervals. The
+implications depend on the analysis.
 
 \subsection{p-values}\label{p-values}
 
@@ -1037,4 +1186,110 @@ Exact zero p-values can produce infinite z-values. We retain infinities
 in BEAR source data, although signal-to-noise models truncate these
 infinite values.
 
-\endgroup
+\protect\phantomsection\label{refs}
+\begin{CSLReferences}{1}{1}
+\bibitem[\citeproctext]{ref-arel2022quantitative}
+Arel-Bundock, Vincent, Ryan C. Briggs, Hristos Doucouliagos, Marco
+Mendoza Aviña, and Tom D. Stanley. 2022. {``Quantitative {Political
+Science Research} Is {Greatly Underpowered}.''} \emph{I4R Discussion
+Paper Series}, no. 6.
+
+\bibitem[\citeproctext]{ref-askarov2023significance}
+Askarov, Zohid, Anthony Doucouliagos, Hristos Doucouliagos, and T D
+Stanley. 2023. {``The Significance of Data-Sharing Policy.''}
+\emph{Journal of the European Economic Association} 21 (3): 1191--226.
+
+\bibitem[\citeproctext]{ref-barnett2019examination}
+Barnett, Adrian Gerard, and Jonathan D Wren. 2019. {``Examination of
+{CIs} in Health and Medical Journals from 1976 to 2019: An Observational
+Study.''} \emph{BMJ Open} 9 (11): e032506.
+
+\bibitem[\citeproctext]{ref-chavalarias2016evolution}
+Chavalarias, David, Joshua David Wallach, Alvin Ho Ting Li, and John P A
+Ioannidis. 2016. {``Evolution of Reporting p Values in the Biomedical
+Literature, 1990-2015.''} \emph{Journal of the American Medical
+Association} 315 (11): 1141--48.
+
+\bibitem[\citeproctext]{ref-cochrane2025cdsr}
+Cochrane Collaboration. 2025. \emph{Cochrane Database of Systematic
+Reviews}. \url{https://www.cochranelibrary.com/cdsr}.
+
+\bibitem[\citeproctext]{ref-costello2022decline}
+Costello, Laura, and Jeremy W Fox. 2022. {``Decline Effects Are Rare in
+Ecology.''} \emph{Ecology} 103 (6): e3680.
+
+\bibitem[\citeproctext]{ref-euctr2025}
+European Medicines Agency. 2025. \emph{EU Clinical Trials Register}.
+\url{https://www.clinicaltrialsregister.eu/}.
+
+\bibitem[\citeproctext]{ref-harrer2022metapsydata}
+Harrer, Mathias, Eirini Karyotaki, and Pim Cuijpers. 2022.
+\emph{metapsyData: Meta-Analytic Psychotherapy Databases}.
+\url{https://CRAN.R-project.org/package=metapsyData}.
+
+\bibitem[\citeproctext]{ref-herold2025ctrdata}
+Herold, R. 2025. {``Aggregating and Analysing Clinical Trials Data from
+Multiple Public Registers Using r Package Ctrdata.''} \emph{Research
+Synthesis Methods}, 1--33. \url{https://doi.org/10.1017/rsm.2025.10061}.
+
+\bibitem[\citeproctext]{ref-wwc2025studyfindings}
+Institute of Education Sciences. 2025. \emph{What Works Clearinghouse
+Study Findings}. \url{https://ies.ed.gov/ncee/wwc/studyfindings}.
+
+\bibitem[\citeproctext]{ref-lang2025credible}
+Lang, Kevin. 2025. {``How Credible Is the Credibility Revolution?''}
+\emph{Journal of Labor Economics} 43 (2): 635--63.
+\url{https://doi.org/10.1086/732772}.
+
+\bibitem[\citeproctext]{ref-clinicaltrials2025}
+National Library of Medicine. 2025. \emph{ClinicalTrials.gov}.
+\url{https://clinicaltrials.gov/}.
+
+\bibitem[\citeproctext]{ref-nuijten2020intelligence}
+Nuijten, Michèle B., Marcel A. L. M. Van Assen, Hilde E. M. Augusteijn,
+Elise A. V. Crompvoets, and Jelte M. Wicherts. 2020. {``Effect {Sizes},
+{Power}, and {Biases} in {Intelligence Research}: {A
+Meta-Meta-Analysis}.''} \emph{Journal of Intelligence} 8 (4): 36.
+\url{https://doi.org/10.3390/jintelligence8040036}.
+
+\bibitem[\citeproctext]{ref-opensciencecollaborationEstimatingReproducibilityPsychological2015a}
+Open Science Collaboration. 2015. {``Estimating the Reproducibility of
+Psychological Science.''} \emph{Science} 349 (6251): aac4716.
+
+\bibitem[\citeproctext]{ref-rodriguez2022psymetadata}
+Rodriguez, Josue E., and Donald R. Williams. 2022. {``Psymetadata: An r
+Package Containing Open Datasets from Meta-Analyses in Psychology.''}
+\emph{Journal of Open Psychology Data}, ahead of print.
+\url{https://doi.org/10.5334/jopd.61}.
+
+\bibitem[\citeproctext]{ref-schwab2024cochrane}
+Schwab, Simon. 2024. \emph{Cochrane: Import Data from the Cochrane
+Database of Systematic Reviews (CDSR)}.
+\url{https://github.com/schw4b/cochrane}.
+
+\bibitem[\citeproctext]{ref-szucs2017empirical}
+Szucs, Denes, and John P. A. Ioannidis. 2017. {``Empirical Assessment of
+Published Effect Sizes and Power in the Recent Cognitive Neuroscience
+and Psychology Literature.''} \emph{PLoS Biology} 15 (3): e2000797.
+\url{https://doi.org/10.1371/journal.pbio.2000797}.
+
+\bibitem[\citeproctext]{ref-tyner2026investigating}
+{Tyner, Andrew H., Anna Lou Abatayo, Mason Daley, et al.} 2026.
+{``Investigating the Replicability of the Social and Behavioural
+Sciences.''} \emph{Nature} 652: 143--50.
+\url{https://doi.org/10.1038/s41586-025-10078-y}.
+
+\bibitem[\citeproctext]{ref-yang2023publication}
+Yang, Yefeng, Alfredo Sánchez-Tójar, Rose E O'Dea, et al. 2023.
+{``Publication Bias Impacts on Effect Size, Statistical Power, and
+Magnitude (Type {M}) and Sign (Type {S}) Errors in Ecology and
+Evolutionary Biology.''} \emph{BMC Biology} 21 (1): 71.
+
+\bibitem[\citeproctext]{ref-yang2024large}
+Yang, Yefeng, Erik van Zwet, Nikolaos Ignatiadis, and Shinichi Nakagawa.
+2024. {``A Large-Scale in Silico Replication of Ecological and
+Evolutionary Studies.''} \emph{Nature Ecology \& Evolution}, 1--5.
+
+\end{CSLReferences}
+
+\end{document}

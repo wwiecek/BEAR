@@ -63,7 +63,7 @@ gg2 <- map_dfr(names(mfl), ~{
   scale_y_continuous(breaks = seq(0, 1, 0.25), limits = c(0, 1),
                      expand = expansion(mult = 0)) +
   scale_x_continuous(breaks = 0:5, limits = c(0, 5),
-                     expand = expansion(mult = c(0, 0.05))) +
+                     expand = expansion(mult = 0)) +
   scale_colour_manual(values = paper_group_colors) +
   labs(x = "|z|", y = "Probability") +
   theme_bw(base_size = 12) +

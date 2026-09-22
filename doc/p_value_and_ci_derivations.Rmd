@@ -12,9 +12,9 @@ intervals and effect sizes, but z- and p-values may be missing.
 
 For confidence interval levels, we set implausible values to missing (e.g. values
 above 100 or below 0) and standardise proportions and percentages: investigators
-sometimes report 90 and sometimes 0.9 for a 90% confidence interval. In EU CTR,
-confidence levels can be missing, and we assume 95% by default. Some data state
-whether CIs or p-values are one- or two-sided. 
+sometimes report 90 and sometimes 0.9 for a 90% confidence interval. If a
+confidence interval is present but its level is missing, we assume 95% by
+default. Some data state whether CIs or p-values are one- or two-sided. 
 
 Similarly, when working with p-values we assume a two-sided test when no additional
 information is stated.
@@ -25,19 +25,14 @@ information is stated.
 
 When working with CIs, we analyse ratio measures on the log scale when the lower
 bound, upper bound, and point estimate are all strictly positive; we keep
-non-ratio measures on the raw scale.
+non-ratio measures on the raw scale. When constructing `BEAR.rds` we drop rows
+where where the lower bound is higher than the upper bound.
 
 To derive SEs from confidence intervals, we first compute the critical value. To
 avoid undefined critical values (e.g. at 100% or extremely close to it), we bound
-the implied $\alpha$ at a small value. We then compute two one-sided standard
-error estimates from the upper and lower bounds and use their average when both
-are finite.
-
-We compute a simple symmetry diagnostic for the confidence interval on the chosen
-scale, defined as the smaller of the two half-widths divided by the larger. We
-treat intervals as "symmetric enough" only if this ratio exceeds
-0.8. This arbitrary threshold affects when we use the CI-derived z-statistic;
-otherwise, we use a p-derived z-statistic where one is available.
+the implied $\alpha$ at a small value. After conversion to the chosen scale, we
+compute the two half-widths around the reported point estimate, convert each to
+a standard error, and use their average when both are finite.
 
 Where additional information is available, we look for potentially non-Wald
 intervals by matching text in the parameter-type column. We search for keywords
@@ -45,10 +40,21 @@ such as median, Hodges, posterior/Bayes, exact, Fieller, bootstrap, and
 permutation. For flagged estimates, we prefer to derive the z-value from the
 p-value.
 
+Moreover, we compute a simple symmetry diagnostic for the confidence interval on
+the chosen scale, defined as the smaller of the two half-widths divided by the
+larger. We treat intervals as "symmetric enough" only if this ratio exceeds
+0.8. Otherwise, we use a p-derived z-statistic where one is available; if not,
+we drop the row from `BEAR.rds`. The original values remain available in the
+individual datasets for other investigations.
+
+In the current version, this rule either selects p-values for about 5--10% of
+eligible clinical-trial registry rows or removes CI-only rows, including some
+Barnett--Wren intervals. A 0.95 cut-off would remove or replace roughly twice
+as many registry intervals. The implications depend on the analysis.
+
 
 
 ## p-values
-
 
 When a source reports t-statistics and degrees of freedom, we first derive the 
 two-sided p-value from the t distribution and then derive the z-value (retaining the

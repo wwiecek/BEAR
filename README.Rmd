@@ -132,6 +132,7 @@ You can also re-generate that file yourself. To work with individual datasets or
 ```
 git clone https://github.com/wwiecek/BEAR
 cd BEAR
+curl -L -o BEAR.rds https://github.com/wwiecek/BEAR/releases/download/v2/BEAR.rds
 git submodule update --init --recursive --depth 1
 ```
 

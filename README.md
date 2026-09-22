@@ -37,11 +37,11 @@ Here is a short summary of what’s included in BEAR:
 | Dataset | Domain | Values | Meta-analyses | Studies | Values/study | Significant |
 |:---|:---|---:|---:|---:|---:|---:|
 | Cochrane\* | medicine & health | 35,687 | 5,780 | 27,513 | 1.3 | 33.1% |
-| EUDRA | clinical trials | 8,650 | \- | 8,650 | 1.0 | 41.4% |
+| EUDRA | clinical trials | 8,616 | \- | 8,616 | 1.0 | 41.4% |
 | Metapsy | psychotherapy | 4,395 | 20 | 1,494 | 2.9 | 48.4% |
 | Nuijten et al | intelligence | 2,439 | \- | 1,913 | 1.3 | 52.9% |
 | What Works Clearing. | education | 7,080 | \- | 1,402 | 5.0 | 34.2% |
-| clinicaltrials.gov | clinical trials | 60,470 | \- | 23,060 | 2.6 | 40.6% |
+| clinicaltrials.gov | clinical trials | 60,436 | \- | 23,052 | 2.6 | 40.7% |
 | psymetadata | psychology | 8,514 | \- | 721 | 11.8 | 35.8% |
 
 ### Metascience datasets
@@ -71,9 +71,9 @@ Here is a short summary of what’s included in BEAR:
 
 | Dataset | Domain | Values | Meta-analyses | Studies | Values/study | Significant |
 |:---|:---|---:|---:|---:|---:|---:|
-| Barnett and Wren\* | biomedicine | 50,000 | \- | 50,000 | 1.0 | 81.9% |
+| Barnett and Wren\* | biomedicine | 50,000 | \- | 50,000 | 1.0 | 82.4% |
 | Chavalarias et al\* | biomedicine | 50,000 | \- | 50,000 | 1.0 | 63.1% |
-| Head et al\* | biomedicine | 50,000 | \- | 50,000 | 1.0 | 59.2% |
+| Head et al\* | biomedicine | 50,000 | \- | 50,000 | 1.0 | 59.8% |
 | Jager and Leek | biomedicine | 15,653 | \- | 5,322 | 2.9 | 77.7% |
 
 *Main file `BEAR.rds` makes available a smaller analysis subset.
@@ -91,10 +91,10 @@ additional columns that store values from original studies.
 
 | Category     | Datasets | Studies | Meta-analyses |  Values | Significant |
 |:-------------|---------:|--------:|--------------:|--------:|------------:|
-| curated      |        8 |  37,311 |               | 123,345 |       43.3% |
+| curated      |        8 |  37,269 |               | 123,277 |       43.4% |
 | meta         |        9 |  57,594 |         7,677 | 200,264 |       42.9% |
 | replications |        3 |     388 |            28 |   1,956 |       44.2% |
-| scrape       |        4 | 155,322 |               | 165,653 |       69.0% |
+| scrape       |        4 | 155,322 |               | 165,653 |       69.3% |
 
 # Downloading BEAR data
 
@@ -116,6 +116,7 @@ outputs), you need to grab a “submodule” repo that has contents of
 
     git clone https://github.com/wwiecek/BEAR
     cd BEAR
+    curl -L -o BEAR.rds https://github.com/wwiecek/BEAR/releases/download/v2/BEAR.rds
     git submodule update --init --recursive --depth 1
 
 That will download about 100 MB of latest versions of individual

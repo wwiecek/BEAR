@@ -1,4 +1,10 @@
 # Shared z-derivation helpers for trial-style p-value and CI data.
+# This code was derived by LLMs from various workflows that were
+# previously put together for individual datasets. The objective
+# is to use as many of these helpers across datasets as possible,
+# but it remains (autumn 2026) work in progress.
+# See doc/p_value_and_ci_derivations.Rmd for details/motivation
+
 
 # Normalise labels before regex-based measure and CI parsing.
 norm_trial_text <- function(x) {
@@ -6,6 +12,8 @@ norm_trial_text <- function(x) {
 }
 
 # Clean CI levels to percentages; optionally fill dataset-specific defaults.
+# This preserves the cleaned value for auditing; zero cannot yield a usable
+# critical value.
 clean_ci_level <- function(x, default = NA_real_) {
   out <- suppressWarnings(as.numeric(x))
   out <- ifelse(!is.na(out) & out > 100, NA_real_, out)
@@ -28,6 +36,8 @@ clean_ci_sides <- function(x, default = 2L) {
 }
 
 # Critical value implied by CI level and one-/two-sided interval reporting.
+# Missing levels ultimately default to 95%; bounding alpha keeps an implausibly
+# high CI level from producing infinity.
 ci_critical_value <- function(level, sides) {
   level <- ifelse(is.na(level), 95, as.numeric(level))
   sides <- ifelse(is.na(sides) | !(sides %in% c(1L, 2L)), 2L, as.integer(sides))
@@ -35,7 +45,8 @@ ci_critical_value <- function(level, sides) {
   ifelse(sides == 1L, qnorm(1 - alpha), qnorm(1 - alpha / 2))
 }
 
-# Map noisy trial estimand labels to broad BEAR measure classes.
+# Map noisy trial estimand labels to broad BEAR measure classes. More specific
+# patterns precede generic "ratio" and "difference" labels deliberately.
 classify_trial_measure <- function(x) {
   raw <- stringr::str_squish(ifelse(is.na(x), "", as.character(x)))
   x0 <- norm_trial_text(x)
@@ -62,7 +73,8 @@ classify_trial_measure <- function(x) {
   )
 }
 
-# Ratio measures are analysed on the log scale when values allow it.
+# Ratio measures are analysed on the log scale when values allow it; this
+# identifies labels for which a multiplicative CI should be treated as additive.
 is_ratio_measure <- function(measure_class) {
   measure_class %in% c(
     "Odds Ratio", "Risk Ratio", "Hazard Ratio", "Rate Ratio",
@@ -70,13 +82,15 @@ is_ratio_measure <- function(measure_class) {
   )
 }
 
-# EUCTR sometimes flags already-log estimates in the estimand label.
+# EUCTR sometimes flags already-log estimates in the estimand label. These must
+# not be logged again.
 is_log_measure_label <- function(x) {
   x0 <- norm_trial_text(x)
   stringr::str_detect(x0, "\\.log\\b|\\blog\\b") | x0 %in% c("orl", "hrl", "rrl")
 }
 
-# Labels that suggest CIs should not be treated as simple Wald intervals.
+# Labels that suggest CIs should not be treated as simple Wald intervals. A
+# p-derived z is preferred where one is available in these cases.
 is_non_wald_ci_label <- function(x) {
   stringr::str_detect(
     norm_trial_text(x),
@@ -85,6 +99,7 @@ is_non_wald_ci_label <- function(x) {
 }
 
 # Convert p-value bounds to the corresponding absolute-z bound direction.
+# The stored z may retain its sign, so the operator always refers to |z|.
 z_operator_from_p_operator <- function(p_operator) {
   op <- as.character(p_operator)
   dplyr::case_when(
@@ -95,7 +110,8 @@ z_operator_from_p_operator <- function(p_operator) {
   )
 }
 
-# P-value to z-value using reported sidedness, defaulting to two-sided.
+# P-value to z-value using reported sidedness, defaulting to two-sided. The
+# small-p approximation avoids loss of precision in extreme normal tails.
 z_from_p_value <- function(p, sides = 2L) {
   p <- suppressWarnings(as.numeric(p))
   p <- ifelse(!is.na(p) & p >= 0 & p <= 1, p, NA_real_)
@@ -116,6 +132,7 @@ z_from_p_value <- function(p, sides = 2L) {
 }
 
 # Convert a signed t-statistic and df to its normal-equivalent z-statistic.
+# The t distribution supplies the two-sided p-value; the original sign is kept.
 z_from_t_value <- function(t_value, df) {
   t_value <- suppressWarnings(as.numeric(t_value))
   df <- suppressWarnings(as.numeric(df))
@@ -128,6 +145,7 @@ z_from_t_value <- function(t_value, df) {
 }
 
 # Derive candidate CI and p-value z-statistics, then choose CI if trusted.
+# The returned intermediate fields make the choice auditable in each processor.
 derive_trial_z <- function(estimate, lower, upper, p_value, p_operator = NULL,
                            ci_level = NULL, ci_sides = NULL, p_sides = NULL,
                            measure_label = NULL, default_ci_level = NA_real_,
@@ -140,9 +158,13 @@ derive_trial_z <- function(estimate, lower, upper, p_value, p_operator = NULL,
   if (is.null(measure_label)) measure_label <- rep(NA_character_, n)
   if (is.null(already_log)) already_log <- is_log_measure_label(measure_label)
 
+  # Standardise inputs before deciding whether a row has usable CI or p-value
+  # information. A reversed or zero-width CI is a data error, not a reason to
+  # substitute a p-value, so it is excluded from the derived BEAR data.
   estimate <- suppressWarnings(as.numeric(estimate))
   lower <- suppressWarnings(as.numeric(lower))
   upper <- suppressWarnings(as.numeric(upper))
+  ci_bounds_reversed <- is.finite(lower) & is.finite(upper) & upper <= lower
   p_num <- suppressWarnings(as.numeric(p_value))
   p_num <- ifelse(!is.na(p_num) & p_num >= 0 & p_num <= 1, p_num, NA_real_)
   p_operator <- ifelse(is.na(p_operator), "=", as.character(p_operator))
@@ -151,6 +173,9 @@ derive_trial_z <- function(estimate, lower, upper, p_value, p_operator = NULL,
   p_sides <- clean_ci_sides(p_sides)
   z_crit <- ci_critical_value(ci_level, ci_sides)
 
+  # Choose the analysis scale. Ratios need strictly positive estimate and
+  # bounds before log conversion; otherwise the CI is unusable rather than
+  # being analysed on an inappropriate raw scale.
   measure_class <- classify_trial_measure(measure_label)
   ratio_like <- is_ratio_measure(measure_class)
   log_ok <- ratio_like & !already_log &
@@ -165,11 +190,14 @@ derive_trial_z <- function(estimate, lower, upper, p_value, p_operator = NULL,
   est_x[log_idx] <- log(estimate[log_idx])
   lo_x[log_idx] <- log(lower[log_idx])
   hi_x[log_idx] <- log(upper[log_idx])
-  bad_log_idx <- scale == "log" & !already_log & !log_ok
+  # A ratio CI with a non-positive value cannot be analysed on the log scale.
+  bad_log_idx <- ratio_like & !already_log & !log_ok
   est_x[bad_log_idx] <- NA_real_
   lo_x[bad_log_idx] <- NA_real_
   hi_x[bad_log_idx] <- NA_real_
 
+  # Treat the CI as an approximate Wald interval: convert each half-width to
+  # an SE around the reported point estimate, then average the two estimates.
   ci_ok <- is.finite(est_x) & is.finite(lo_x) & is.finite(hi_x) &
     hi_x > lo_x & is.finite(z_crit) & z_crit > 0
   se_hi <- ifelse(ci_ok, (hi_x - est_x) / z_crit, NA_real_)
@@ -187,6 +215,8 @@ derive_trial_z <- function(estimate, lower, upper, p_value, p_operator = NULL,
     NA_real_
   )
 
+  # Registry p-values can be either tail probabilities or Phi(z). When a CI
+  # candidate exists, select the interpretation whose magnitude agrees best.
   p_tail <- p_num
   p_cdf <- ifelse(
     !is.na(p_num) & p_sides == 1L,
@@ -208,10 +238,14 @@ derive_trial_z <- function(estimate, lower, upper, p_value, p_operator = NULL,
   z_sign <- ifelse(z_sign_known, sign(est_x), NA_real_)
   z_p <- ifelse(z_sign_known, z_sign * z_p_unsigned, z_p_unsigned)
 
+  # CI-derived z-values are used only for plausible, sufficiently symmetric
+  # Wald intervals. Other usable rows fall back to the p-derived candidate.
   bad_ci_type <- is_non_wald_ci_label(measure_label)
   use_ci <- is.finite(z_ci) & is.finite(se_ci) & se_ci > 0 &
     !bad_ci_type & (is.na(sym_ratio) | sym_ratio > 0.8)
-  z <- ifelse(use_ci, z_ci, z_p)
+  z <- ifelse(ci_bounds_reversed, NA_real_, ifelse(use_ci, z_ci, z_p))
+  # Keep the analysed-scale point estimate. If a p-value is selected, infer its
+  # SE from that estimate and z; if no estimate is available, retain z alone.
   b <- ifelse(is.finite(est_x), est_x, NA_real_)
   se <- dplyr::case_when(
     use_ci ~ se_ci,
@@ -219,11 +253,17 @@ derive_trial_z <- function(estimate, lower, upper, p_value, p_operator = NULL,
     TRUE ~ NA_real_
   )
   z_source <- dplyr::case_when(
+    ci_bounds_reversed ~ NA_character_,
     use_ci ~ "ci",
     !is.na(z_p) ~ "p",
     TRUE ~ NA_character_
   )
-  z_operator <- ifelse(use_ci, "=", z_operator_from_p_operator(p_operator))
+  z_operator <- dplyr::case_when(
+    ci_bounds_reversed ~ NA_character_,
+    use_ci ~ "=",
+    !is.na(z_p) ~ z_operator_from_p_operator(p_operator),
+    TRUE ~ NA_character_
+  )
 
   tibble::tibble(
     measure_class, ratio_like, already_log, scale, log_ok,

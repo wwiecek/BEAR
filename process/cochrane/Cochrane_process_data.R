@@ -8,8 +8,8 @@ library(metafor)
 source("process/cochrane/Cochrane_helpers.R")
 source("process/cochrane/Cochrane_rct_score.R")
 
-manifest_path <- "data_raw/Cochrane/data/cdsr_interventions_19nov2025.csv"
-rm5_dir <- "data/Cochrane/rm5"
+manifest_path <- "data_raw/Cochrane/data/cdsr_interventions_9jul2026.csv"
+rm5_dir <- "data_raw/Cochrane/rm5"
 checkpoint_path <- "data_raw/Cochrane/data/cdsr_rm5_results.rds"
 output_path <- "data/Cochrane.rds"
 

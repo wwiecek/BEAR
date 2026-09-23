@@ -91,8 +91,47 @@ empty_cochrane_results <- function() {
   tibble::tibble(
     cochrane_id = character(), id = character(), doi = character(),
     file = character(), studies = list(), ma = list(),
-    ok = logical(), error = character()
+    ok = logical(), error = character(), failure_reason = character()
   )
+}
+
+classify_failure_reason <- function(error) {
+  if (is.na(error) || !nzchar(error)) return(NA_character_)
+
+  if (stringr::str_detect(
+    error, stringr::regex("Too Many Requests|HTTP 429", ignore_case = TRUE)
+  )) {
+    return("rate_limited")
+  }
+
+  if (stringr::str_detect(error, stringr::regex("HTTP 404", ignore_case = TRUE))) {
+    return("review_not_found")
+  }
+
+  if (stringr::str_detect(
+    error,
+    stringr::regex(
+      "could not open html session|cloudflare|\\b403\\b", ignore_case = TRUE
+    )
+  )) {
+    return("access_blocked")
+  }
+
+  if (stringr::str_detect(
+    error,
+    stringr::regex(
+      "RM5 file not found after download|could not download data",
+      ignore_case = TRUE
+    )
+  )) {
+    return("download_unavailable")
+  }
+
+  if (stringr::str_detect(error, stringr::regex("File is not XML", TRUE))) {
+    return("html_or_invalid_rm5")
+  }
+
+  "parse_error"
 }
 
 # Read one RM5 file while preserving failures as checkpoint rows.
@@ -109,7 +148,8 @@ read_rm5_one <- function(file, rm5_dir, doi = NA_character_,
         studies = list(review[[1]]),
         ma = list(review[[2]]),
         ok = TRUE,
-        error = NA_character_
+        error = NA_character_,
+        failure_reason = NA_character_
       )
     },
     error = function(e) {
@@ -121,7 +161,8 @@ read_rm5_one <- function(file, rm5_dir, doi = NA_character_,
         studies = list(NULL),
         ma = list(NULL),
         ok = FALSE,
-        error = conditionMessage(e)
+        error = conditionMessage(e),
+        failure_reason = classify_failure_reason(conditionMessage(e))
       )
     }
   )

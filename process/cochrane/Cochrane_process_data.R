@@ -8,7 +8,7 @@ library(metafor)
 source("process/cochrane/Cochrane_helpers.R")
 source("process/cochrane/Cochrane_rct_score.R")
 
-manifest_path <- "data_raw/Cochrane/data/cdsr_interventions_9jul2026.csv"
+manifest_path <- "data_raw/Cochrane/data/cdsr_interventions_23sep2026.csv"
 rm5_dir <- "data_raw/Cochrane/rm5"
 checkpoint_path <- "data_raw/Cochrane/data/cdsr_rm5_results.rds"
 output_path <- "data/Cochrane.rds"
@@ -202,7 +202,6 @@ studies_long <- results_all_fixed %>%
       outcome.measure %in% c("SMD", "Std. Mean Difference") ~ "SMD",
       TRUE ~ NA_character_
     )),
-    z = effect.size / se,
     outcome_group = factor(
       classify_outcome_group(comparison.name, outcome.name, subgroup.name),
       levels = c("efficacy", "safety", "dropouts", "bias")
@@ -245,6 +244,8 @@ if (nrow(binary) > 0L) {
 }
 
 cdsr <- bind_rows(continuous, binary) %>%
+  # Note that z is not calculated as reported effect.size divided by reported SE,
+  # but instead based on raw inputs like means, SDs, Ns, events  
   mutate(z = yi / sqrt(vi))
 
 saveRDS(cdsr, output_path)

@@ -15,7 +15,7 @@ rm5_dir         <- "data_raw/Cochrane/rm5"
 checkpoint_path <- "data_raw/Cochrane/data/cdsr_rm5_results.rds"
 retryable_failure_path <- "data_raw/Cochrane/data/cdsr_rm5_retryable_failures.rds"
 retryable_rm5_dir <- "data_raw/Cochrane/rm5_failed/retryable"
-sleep_sec <- 15
+sleep_sec <- 3
 max_consecutive_access_failures <- 3L
 
 dir_create(rm5_dir)
@@ -125,6 +125,7 @@ message("Still to do: ", nrow(pending))
 
 if (nrow(pending) > 0L) {
   consecutive_access_failures <- 0L
+  access_failure_reasons <- character()
 
   for (i in seq_len(nrow(pending))) {
     result <- download_and_read_one(pending$doi[[i]], rm5_dir, sleep_sec)
@@ -157,17 +158,31 @@ if (nrow(pending) > 0L) {
       results_all <- bind_rows(results_all, result)
     }
 
+    if (!result$ok[[1]]) {
+      message(
+        Sys.time(), " ", result$cochrane_id[[1]], " failed [",
+        result$failure_reason[[1]], "]: ", result$error[[1]]
+      )
+    }
+
     consecutive_access_failures <- if (is_retryable_failure) {
       consecutive_access_failures + 1L
     } else {
       0L
+    }
+    access_failure_reasons <- if (is_retryable_failure) {
+      c(access_failure_reasons, result$failure_reason[[1]])
+    } else {
+      character()
     }
 
     if (consecutive_access_failures >= max_consecutive_access_failures) {
       saveRDS(results_all, checkpoint_path)
       stop(
         "Stopped after ", max_consecutive_access_failures,
-        " consecutive rate-limit or access failures. Wait before retrying.",
+        " consecutive retryable failures [",
+        paste(access_failure_reasons, collapse = ", "), "]. Last error: ",
+        result$error[[1]], ". Wait before retrying.",
         call. = FALSE
       )
     }

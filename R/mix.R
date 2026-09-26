@@ -252,11 +252,18 @@ optimise_mixture_unconstr <- function(z, z_operator, weights, k = 4) {
 
 # Functions for fitting and plotting of mixtures -----
 
-# shorthand for df's
-fit_mixture_df <- function(df, ...) fit_mixture(z = df$z, 
-                                                operator = df$z_operator,
-                                                weights = df$weights,
-                                                ...)
+# shorthand for mixture fitting of df's
+# I automatically calculate weights and assume "=" where missing
+fit_mixture_df <- function(df, ...) {
+  s <- sum(is.na(df$z_operator))
+  if(s > 0){
+    message(paste0(s, "/", nrow(df), " z-values where z_operator was NA are treated as '='"))
+    df<- mutate(df, z_operator = ifelse(is.na(z_operator), "=", z_operator))
+  }
+  if(is.null(df$weights))
+    df <- calc_study_weights(df)    
+  fit_mixture(z = df$z, operator = df$z_operator, weights = df$weights, ...)
+}
 
 # Prepare BEAR z values for mixture work while leaving stored inputs unchanged.
 prepare_mixture_z <- function(z, operator = NULL, z_star = 25,

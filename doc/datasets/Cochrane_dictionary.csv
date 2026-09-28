@@ -1,0 +1,44 @@
+group,variable,type,definition,applies_to,source,allowed_values_or_units,missingness,notes
+Review identifiers,cochrane_id,character,Stable CD review identifier from the RM5 filename.,all rows,BEAR processing,CD plus six digits,Never missing,
+Review identifiers,doi,character,"DOI of the RM5 source edition, where established; a checkpoint label is used only when no contrary evidence exists.",all rows,"RM5 header, checked edition mapping or checkpoint",Cochrane review DOI,May be missing if conflicting labels cannot be resolved,"The local edition audit records whether the DOI came from the RM5 file, a checked correction or an unverified checkpoint label."
+Review identifiers,withdrawn,integer,Whether the source RM5 review has withdrawal status W; repeated on every study-result row.,all rows,RM5 STATUS,0 active or other; 1 withdrawn,Never missing,The main BEAR dataset excludes withdrawn rows.
+Review characteristics,specialty,factor,Cochrane Review Group code for the source edition.,all rows,CDSR export or RM5 GROUP_ID,Review group code,May be missing if neither source supplies a code,
+Review characteristics,rct,logical,Whether the matching edition abstract's eligibility section supports RCT-only classification.,all rows,BEAR abstract classifier,TRUE or FALSE,Missing when no matching abstract is available,
+Review characteristics,id,factor,Review identifier supplied by the RM5 parser.,all rows,RM5 study table,CD review edition identifier,Never missing,May include edition suffix; use cochrane_id for the stable review identifier.
+Analysis identifiers,comparison.nr,integer,Comparison number within the review.,all rows,RM5 study table,Integer,Never missing,
+Analysis identifiers,comparison.name,character,Comparison label.,all rows,RM5 study table,Text,Never missing,
+Analysis identifiers,comparison.id,character,Internal comparison identifier.,all rows,RM5 study table,Identifier,Never missing,
+Analysis identifiers,outcome.nr,integer,Outcome number within the comparison.,all rows,RM5 study table,Integer,Never missing,
+Analysis identifiers,outcome.name,character,Outcome label.,all rows,RM5 study table,Text,Never missing,
+Analysis identifiers,outcome.measure,character,Effect measure named for the source outcome.,all rows,RM5 study table,Effect measure label,Never missing,
+Analysis identifiers,outcome.id,character,Internal outcome identifier.,all rows,RM5 study table,Identifier,Never missing,
+Analysis identifiers,outcome.flag,factor,Source result family.,all rows,RM5 study table,CONT or DICH,Never missing in public rows,
+Analysis identifiers,subgroup.nr,character,Subgroup number within the outcome.,all rows,RM5 study table,Identifier,Never missing,
+Analysis identifiers,subgroup.name,character,Subgroup label.,all rows,RM5 study table,Text,Never missing,
+Analysis identifiers,subgroup.id,character,Internal subgroup identifier.,all rows,RM5 study table,Identifier,May be missing,
+Study characteristics,study.id,character,Internal source study identifier.,all rows,RM5 study table,Identifier,Never missing,
+Study characteristics,study.name,character,Study label used as studyid in BEAR.,all rows,RM5 study table,Text,Never missing,
+Study characteristics,study.year,integer,Year parsed from the source study label or year field; implausible years are missing.,all rows,BEAR processing,Calendar year,May be missing,
+Study characteristics,study.data_source,character,Source status of the study data.,all rows,RM5 study table,"PUB, UNPUB, SOUGHT or MIX",Never missing,
+Reported effects,effect.size,numeric,Effect estimate reported in the RM5 study table.,all rows,RM5 study table,Source outcome scale,Never missing,"Source-reported quantity; BEAR recalculates yi, vi and z from arm inputs."
+Reported effects,se,numeric,Reported standard error for effect.size.,all rows,RM5 study table,Source outcome scale,Never missing,"Source-reported quantity; BEAR recalculates yi, vi and z from arm inputs."
+Reported effects,ci.lower,numeric,Reported confidence interval lower limit.,all rows,RM5 study table,Source outcome scale,Never missing,"Source-reported quantity; BEAR recalculates yi, vi and z from arm inputs."
+Reported effects,ci.upper,numeric,Reported confidence interval upper limit.,all rows,RM5 study table,Source outcome scale,Never missing,"Source-reported quantity; BEAR recalculates yi, vi and z from arm inputs."
+Reported effects,weight,numeric,Analysis weight reported in the RM5 study table.,all rows,RM5 study table,Source weight units,Never missing,
+Reported effects,order,numeric,Source ordering of the study result within the analysis.,all rows,RM5 study table,Integer,Never missing,
+Arm inputs,events1,numeric,Event count in arm 1 for dichotomous outcomes.,dichotomous rows,RM5 study table,Events,Missing for continuous outcomes,
+Arm inputs,total1,numeric,Participant count in arm 1.,all rows,RM5 study table,Participants,Never missing; positive rows retained,
+Arm inputs,mean1,numeric,Mean in arm 1 for continuous outcomes.,continuous rows,RM5 study table,Outcome units,Missing for dichotomous outcomes,
+Arm inputs,sd1,numeric,Standard deviation in arm 1 for continuous outcomes.,continuous rows,RM5 study table,Outcome units,Missing for dichotomous outcomes,
+Arm inputs,events2,numeric,Event count in arm 2 for dichotomous outcomes.,dichotomous rows,RM5 study table,Events,Missing for continuous outcomes,
+Arm inputs,total2,numeric,Participant count in arm 2.,all rows,RM5 study table,Participants,Never missing; positive rows retained,
+Arm inputs,mean2,numeric,Mean in arm 2 for continuous outcomes.,continuous rows,RM5 study table,Outcome units,Missing for dichotomous outcomes,
+Arm inputs,sd2,numeric,Standard deviation in arm 2 for continuous outcomes.,continuous rows,RM5 study table,Outcome units,Missing for dichotomous outcomes,
+BEAR calculations,measure_group,factor,Broad effect measure category from outcome.measure.,all rows,BEAR processing,"RR, OR, PETO_OR, RD, MD or SMD",May be missing if measure unsupported,
+BEAR calculations,outcome_group,factor,"Heuristic outcome category from comparison, outcome and subgroup labels.",all rows,BEAR processing,"efficacy, safety, dropouts or bias",Never missing,
+BEAR calculations,phase,logical,Unused placeholder for trial phase.,all rows,BEAR processing,Missing,Always missing,
+BEAR calculations,yi,numeric,Recalculated Hedges g or probit difference from arm inputs.,all rows,metafor escalc,Standardised effect scale,May be missing when inputs cannot support calculation,
+BEAR calculations,vi,numeric,Sampling variance of yi.,all rows,metafor escalc,Squared effect units,May be missing when inputs cannot support calculation,
+BEAR calculations,measure,character,Broad label for the recalculated effect.,all rows,BEAR processing,SMD or probit,Never missing,
+BEAR calculations,measure_detailed,character,Detailed label for the recalculated effect.,all rows,BEAR processing,SMD (Hedges g) or probit,Never missing,
+BEAR calculations,z,numeric,yi divided by the square root of vi.,all rows,BEAR processing,Standard normal units,May be missing when yi or vi is missing,

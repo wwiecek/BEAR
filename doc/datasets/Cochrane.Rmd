@@ -26,7 +26,7 @@ differences for dichotomous outcomes. This puts continuous and binary outcomes o
 a comparable scale.
 
 Unlike in most of the other datasets in BEAR, we filter CDSR data heavily. 
-There are five important decisions:
+There are six important decisions:
 
 1. Use only the outcome and comparison from each review coded as "1", as these 
 are most likely to be the primary outcome and most relevant comparison. 
@@ -40,12 +40,16 @@ Peto OR, mean difference, standardised mean difference, and risk difference)
 and rows with no participants.
 5. Remove count data with no events or a 100% event rate in both arms (see the
    discussion of zero-event studies).
+6. Exclude reviews marked as withdrawn in the source RM5 file.
 
 These processing steps are applied in the main dataset, `BEAR.rds`. Additional
 rows are still available to researchers in the individual dataset, `Cochrane.rds`.
+That file retains withdrawn reviews with a `withdrawn` indicator (1 for
+withdrawn, 0 otherwise). Its single `doi` field identifies the source edition
+where this could be established from the saved file or an edition audit.
 
 As a result, the distributed `BEAR.rds` file includes a smaller analysis subset with about
-36,000 rows: the first comparison and first outcome from each review, restricted
+33,500 rows: the first comparison and first outcome from each review, restricted
 to efficacy outcomes. The processed `data/Cochrane.rds` file is larger and is
 available for users who want to make different selection decisions. It contains
 760,486 result rows, representing 90,042 review-study pairs across 6,619
@@ -53,8 +57,8 @@ Cochrane reviews.
 
 A large proportion of CDSR rows have binary outcomes with no events in either 
 arm or events in all participants in both arms. In the BEAR analysis subset 
-before this exclusion, 2,371 of 26,619 binary rows (8.9%) met one of these 
-conditions: 2,247 rows (8.4%) had no events in either arm and 124 rows (0.5%) 
+before this exclusion, 2,327 of 24,959 binary rows (9.3%) met one of these 
+conditions: 2,208 rows (8.8%) had no events in either arm and 119 rows (0.5%) 
 had all participants experiencing the event in both arms.
 
 Zero-event studies may be important for some metascientific analyses, but for 
@@ -75,8 +79,8 @@ between zero and the conventional significance threshold at 1.96.
 - **Topic:** we use the Cochrane specialty.
 - `subset` records study-data provenance: published, unpublished, sought or mixed.
 - `method`: We review meta-analysis eligibility criteria to determine which meta-analyses 
-  included only randomised trials. This classifies 69% of estimates as RCTs; the 
-  remaining 31% could not be classified reliably, although many are likely to be 
+  included only randomised trials. This classifies 67% of estimates as RCTs; the 
+  remaining 33% could not be classified reliably, although many are likely to be 
   RCTs because Cochrane meta-analyses typically include RCT or quasi-randomised 
   evidence.
 - `measure`: About 32% of estimates are standardised mean differences and 68% 

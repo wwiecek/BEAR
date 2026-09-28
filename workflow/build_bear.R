@@ -67,8 +67,6 @@ dtlist[["Lang"]] <- readRDS("data/Lang.rds") %>%
 
 # Askarov -----
 
-# data from https://github.com/anthonydouc/Datasharing/blob/master/Stata/Mandatory%20data-sharing%2030%20Aug%202022.dta
-
 dtlist[["Askarov"]] <- readRDS("data/Askarov.rds") %>%
   mutate(z = effectsize/standarderror) %>%
   dplyr:: filter(Excludegroup==0) %>%
@@ -323,6 +321,7 @@ dtlist[["Cochrane"]] <- readRDS("data/Cochrane.rds") %>%
   # This dataset has >700,00 rows but for main BEAR I care about
   # main comparisons and main outcomes
   dplyr::filter(
+    withdrawn == 0L,
     !is.na(measure_group), #in last version this is zero
     # Even though we make our own calculation, it's better to
     # Remove small minority of studies that would require more complicated calculations

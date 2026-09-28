@@ -47,7 +47,7 @@ The input and output paths are local variables near the top of each script:
 -  `manifest_path`: CSV exported from CDSR. The download script reads its DOI 
     list; the processing script also reads abstracts and review-group codes 
     when available. 
-    Defaults to `data_raw/Cochrane/data/cdsr_interventions_9jul2026.csv`
+    Defaults to `data_raw/Cochrane/data/cdsr_interventions_23sep2026.csv`
 -  `rm5_dir`: Directory containing one downloaded `*StatsDataOnly.rm5` file per 
     review. Defaults to `data_raw/Cochrane/rm5`
 -  `checkpoint_path`: Resumable RDS checkpoint. 
@@ -56,7 +56,7 @@ The input and output paths are local variables near the top of each script:
     Defaults to `data_raw/Cochrane/data/cdsr_rm5_results.rds`.
 -  `output_path`: Final processed dataset, `data/Cochrane.rds` by default.
 
-The checked-in values resume the July 2026 data cut from the local checkpoint.
+The checked-in values use the September 2026 export with the saved RM5 files.
 To use another CDSR export, edit `manifest_path`, `rm5_dir`, and
 `checkpoint_path` in both scripts. Keep the values identical across the two
 scripts. Use new, dated RM5 and checkpoint paths for an independent data cut.
@@ -77,7 +77,7 @@ Rscript --vanilla process/cochrane/Cochrane_download_data.R
 `Cochrane_download_data.R` derives each `CD######` review identifier from its
 DOI, downloads the corresponding RM5 file, and parses it into the checkpoint.
 It skips RM5 files already on disk, resumes from reviews already recorded in
-the checkpoint, saves progress every 20 reviews, and waits 15 seconds between
+the checkpoint, saves progress every 20 reviews, and waits 3 seconds between
 download attempts. It records HTTP 429 responses as `rate_limited` and HTTP
 404 responses as `review_not_found`, then saves the checkpoint and stops after
 three consecutive rate-limit, access-block, unavailable, or non-XML responses.
@@ -105,6 +105,17 @@ optional review annotations from the CSV file (aka "manifest"). It recalculates
 continuous effects as standardized mean differences and binary effects on the 
 probit scale, then saves `data/Cochrane.rds`. See dataset documentation for a 
 bit more info on this.
+
+Processing uses each saved RM5 file once. Its `STATUS` supplies the public
+`withdrawn` indicator (1 for `W`, 0 otherwise). Its embedded DOI is preferred
+for the single public `doi` field. `edition_corrections.csv` records further
+source-edition matches tied to checkpoint labels from the local comparison
+audit. When one file has two checkpoint labels, the audit's source DOI resolves
+both. Remaining checkpoint labels are used only when unchallenged and marked
+as unverified in the local
+`data_raw/Cochrane/data/edition_audit.csv`. Abstract classification is joined
+by source-edition DOI, using the November 2025 export when needed. The main
+BEAR build excludes withdrawn rows; the fuller Cochrane file retains them.
 
 If the checkpoint is absent but RM5 files are available,
 `Cochrane_process_data.R` parses those files and creates the checkpoint first.

@@ -10,7 +10,7 @@ library(fs)
 
 source("process/cochrane/Cochrane_helpers.R")
 
-manifest_path   <- "data_raw/Cochrane/data/cdsr_interventions_9jul2026.csv"
+manifest_path   <- "data_raw/Cochrane/data/cdsr_interventions_23sep2026.csv"
 rm5_dir         <- "data_raw/Cochrane/rm5"
 checkpoint_path <- "data_raw/Cochrane/data/cdsr_rm5_results.rds"
 retryable_failure_path <- "data_raw/Cochrane/data/cdsr_rm5_retryable_failures.rds"
@@ -34,6 +34,10 @@ if (!file_exists(manifest_path)) {
 }
 
 manifest <- manifest_from_csv(manifest_path)
+corrections <- read_csv("process/cochrane/edition_corrections.csv",
+                        show_col_types = FALSE) %>%
+  distinct(cochrane_id, doi)
+stopifnot(!anyDuplicated(corrections$cochrane_id))
 if (nrow(manifest) == 0L) {
   stop("The Cochrane manifest contains no usable DOI/review ID rows.")
 }
@@ -45,7 +49,7 @@ if (!requireNamespace("cochrane", quietly = TRUE)) {
 }
 
 # Download only when needed, then parse the expected RM5 file into one row.
-download_and_read_one <- function(doi, rm5_dir, sleep_sec = 15) {
+download_and_read_one <- function(doi, rm5_dir, sleep_sec = 3) {
   cochrane_id <- id_from_doi(doi)
   file <- file_from_id(cochrane_id)
   full_path <- path(rm5_dir, file)
@@ -93,6 +97,13 @@ download_and_read_one <- function(doi, rm5_dir, sleep_sec = 15) {
     }
   }
 
+  header <- tryCatch(rm5_header(file, rm5_dir), error = function(e) NULL)
+  source_doi <- if (is.null(header)) NA_character_ else header$source_doi[[1]]
+  if (!is.na(source_doi) &&
+      str_to_lower(source_doi) != str_to_lower(doi)) {
+    stop("RM5 file ", file, " has edition DOI ", source_doi,
+         ", not requested DOI ", doi)
+  }
   read_rm5_one(file, rm5_dir, doi, cochrane_id)
 }
 
@@ -128,6 +139,30 @@ if (nrow(pending) > 0L) {
   access_failure_reasons <- character()
 
   for (i in seq_len(nrow(pending))) {
+    pending_file <- file_from_doi(pending$doi[[i]])
+    if (file_exists(path(rm5_dir, pending_file))) {
+      header <- tryCatch(rm5_header(pending_file, rm5_dir),
+                         error = function(e) NULL)
+      source_doi <- if (is.null(header)) NA_character_ else header$source_doi[[1]]
+      if (!is.null(header)) {
+        source_doi <- coalesce(
+          source_doi,
+          corrections$doi[match(id_from_doi(pending_file),
+                                corrections$cochrane_id)]
+        )
+      }
+      prior_label <- results_all$doi[results_all$file == pending_file]
+      different_source <- !is.na(source_doi) &&
+        str_to_lower(source_doi) != str_to_lower(pending$doi[[i]])
+      reused_file <- !is.null(header) && is.na(source_doi) &&
+        length(prior_label) > 0L &&
+        !str_to_lower(pending$doi[[i]]) %in% str_to_lower(prior_label)
+      if (different_source || reused_file) {
+        message("Skipping ", pending$doi[[i]], ": existing RM5 file ",
+                pending_file, " is not verified for this edition.")
+        next
+      }
+    }
     result <- download_and_read_one(pending$doi[[i]], rm5_dir, sleep_sec)
 
     is_retryable_failure <- !result$ok[[1]] &&

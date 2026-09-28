@@ -12,6 +12,33 @@ file_from_doi <- function(doi) {
   file_from_id(id_from_doi(doi))
 }
 
+# Read review-level provenance from the opening tag of a saved RM5 file.
+rm5_header <- function(file, rm5_dir) {
+  path <- fs::path(rm5_dir, file)
+  if (!fs::file_exists(path)) stop("Missing Cochrane RM5 file: ", path)
+  con <- base::file(path, "rb")
+  on.exit(close(con))
+  header <- ""
+  repeat {
+    chunk <- readBin(con, "raw", n = 8192L)
+    if (length(chunk) == 0L) break
+    header <- paste0(header, rawToChar(chunk))
+    if (stringr::str_detect(header, "<COCHRANE_REVIEW\\b[^>]*>")) break
+    if (nchar(header) > 1000000L) break
+  }
+  tag <- stringr::str_extract(header, "<COCHRANE_REVIEW\\b[^>]*>")
+  if (is.na(tag)) stop("Missing COCHRANE_REVIEW tag in: ", path)
+  attribute <- function(name) {
+    value <- stringr::str_match(
+      tag, paste0("\\b", name, '="([^"]*)"')
+    )[, 2]
+    if (is.na(value) || value == "") NA_character_ else value
+  }
+  tibble::tibble(file = file, source_doi = attribute("DOI"),
+                 status = attribute("STATUS"), type = attribute("TYPE"),
+                 group_id = attribute("GROUP_ID"))
+}
+
 # Read the minimum DOI manifest and standardize optional review annotations.
 manifest_from_csv <- function(path) {
   manifest <- readr::read_csv(path, show_col_types = FALSE)

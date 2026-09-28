@@ -9,8 +9,11 @@ source("process/cochrane/Cochrane_helpers.R")
 source("process/cochrane/Cochrane_rct_score.R")
 
 manifest_path <- "data_raw/Cochrane/data/cdsr_interventions_23sep2026.csv"
+older_manifest_path <- "data_raw/Cochrane/data/cdsr_interventions_19nov2025.csv"
 rm5_dir <- "data_raw/Cochrane/rm5"
 checkpoint_path <- "data_raw/Cochrane/data/cdsr_rm5_results.rds"
+corrections_path <- "process/cochrane/edition_corrections.csv"
+audit_path <- "data_raw/Cochrane/data/edition_audit.csv"
 output_path <- "data/Cochrane.rds"
 
 dir_create(path_dir(checkpoint_path))
@@ -54,6 +57,65 @@ if (!"cochrane_id" %in% names(results_all)) {
 if (!"doi" %in% names(results_all)) {
   results_all$doi <- NA_character_
 }
+
+# The checkpoint can label one RM5 file with several edition DOIs. Each file
+# represents one source edition and must contribute its study rows only once.
+results_all <- results_all %>%
+  filter(ok %in% TRUE, !is.na(file)) %>%
+  mutate(cochrane_id = id_from_doi(file))
+headers <- map_dfr(unique(results_all$file), rm5_header, rm5_dir = rm5_dir)
+corrections <- read_csv(corrections_path, show_col_types = FALSE)
+stopifnot(!anyDuplicated(corrections[c("cochrane_id", "label_doi")]))
+corrections <- corrections %>% rename(correction_doi = doi)
+review_corrections <- corrections %>%
+  distinct(cochrane_id, correction_doi) %>%
+  rename(duplicate_doi = correction_doi)
+stopifnot(!anyDuplicated(review_corrections$cochrane_id))
+file_labels <- results_all %>%
+  group_by(file) %>%
+  summarise(n_labels = n_distinct(doi), .groups = "drop")
+results_all <- results_all %>%
+  distinct(file, .keep_all = TRUE) %>%
+  rename(label_doi = doi) %>%
+  mutate(label_doi = str_to_lower(label_doi)) %>%
+  left_join(headers, by = "file") %>%
+  left_join(corrections, by = c("cochrane_id", "label_doi")) %>%
+  left_join(review_corrections, by = "cochrane_id") %>%
+  left_join(file_labels, by = "file") %>%
+  mutate(across(c(label_doi, source_doi, correction_doi), str_to_lower))
+
+conflict <- results_all %>%
+  filter(!is.na(source_doi), !is.na(correction_doi),
+         source_doi != correction_doi)
+if (nrow(conflict) > 0L) {
+  stop("Edition corrections disagree with embedded RM5 DOIs: ",
+       paste(conflict$file, collapse = ", "))
+}
+if (any(is.na(results_all$status))) {
+  stop("RM5 review status is missing for: ",
+       paste(results_all$file[is.na(results_all$status)], collapse = ", "))
+}
+if (any(!results_all$status %in% c("A", "W"))) {
+  stop("Unexpected RM5 review status: ",
+       paste(unique(results_all$status[!results_all$status %in% c("A", "W")]),
+             collapse = ", "))
+}
+
+results_all <- results_all %>%
+  mutate(doi = coalesce(source_doi, correction_doi,
+                        if_else(n_labels > 1L, duplicate_doi, NA_character_),
+                        if_else(n_labels == 1L, label_doi, NA_character_)),
+         withdrawn = as.integer(status == "W"),
+         doi_basis = case_when(
+           !is.na(source_doi) ~ "embedded_doi",
+           !is.na(correction_doi) ~ basis,
+           n_labels > 1L & !is.na(duplicate_doi) ~ "duplicate_label_audit",
+           !is.na(doi) ~ "checkpoint_label_unverified",
+           TRUE ~ "unresolved"
+         ))
+write_csv(results_all %>%
+            select(cochrane_id, file, label_doi, doi, doi_basis,
+                   status, withdrawn, n_labels), audit_path)
 
 results_all_fixed <- results_all %>%
   mutate(
@@ -145,10 +207,14 @@ classify_outcome_group <- function(comparison_name, outcome_name,
   )
 }
 
-# Add optional review metadata without creating many-to-many joins. DOI takes
-# priority because manifests can occasionally contain repeated review IDs.
-if (file_exists(manifest_path)) {
-  manifest <- manifest_from_csv(manifest_path)
+# Review abstracts describe an edition. Join only when their DOI matches the
+# source edition, using the older export for editions absent from the newer one.
+manifest_paths <- c(manifest_path, older_manifest_path)
+manifest_paths <- manifest_paths[file_exists(manifest_paths)]
+if (length(manifest_paths) > 0L) {
+  manifest <- map_dfr(manifest_paths, manifest_from_csv) %>%
+    mutate(doi = str_to_lower(doi)) %>%
+    distinct(doi, .keep_all = TRUE)
   manifest$rct <- NA
   has_abstract <- !is.na(manifest$abstract) & manifest$abstract != ""
   if (any(has_abstract)) {
@@ -164,27 +230,13 @@ if (file_exists(manifest_path)) {
   )
 }
 
-doi_lookup <- !duplicated(manifest$doi) & !is.na(manifest$doi)
-id_lookup <- !duplicated(manifest$cochrane_id) & !is.na(manifest$cochrane_id)
-doi_match <- match(results_all_fixed$doi, manifest$doi[doi_lookup])
-id_match <- match(
-  results_all_fixed$cochrane_id,
-  manifest$cochrane_id[id_lookup]
-)
-
-doi_specialty <- manifest$specialty[doi_lookup][doi_match]
-id_specialty <- manifest$specialty[id_lookup][id_match]
-doi_rct <- manifest$rct[doi_lookup][doi_match]
-id_rct <- manifest$rct[id_lookup][id_match]
-
+doi_match <- match(results_all_fixed$doi, manifest$doi)
 results_all_fixed <- results_all_fixed %>%
-  mutate(
-    specialty = coalesce(doi_specialty, id_specialty),
-    rct = coalesce(doi_rct, id_rct)
-  )
+  mutate(specialty = coalesce(manifest$specialty[doi_match], group_id),
+         rct = manifest$rct[doi_match])
 
 studies_long <- results_all_fixed %>%
-  select(cochrane_id, doi, specialty, rct, studies) %>%
+  select(cochrane_id, doi, withdrawn, specialty, rct, studies) %>%
   unnest(studies) %>%
   mutate(
     study.year = sanitize_study_year(study.year),

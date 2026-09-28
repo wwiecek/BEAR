@@ -1,5 +1,13 @@
 # Changelog
 
+## 2026-09-28
+
+- Rebuilt saved RM5 processing around one source file per review, correcting
+  edition DOI labels and recording withdrawal status from each file.
+- Joined abstract classifications by source edition and excluded withdrawn
+  reviews from the main BEAR analysis while retaining them in Cochrane.rds.
+- Added a public Cochrane dictionary and a local edition audit.
+
 ## 2026-07-09
 
 - Moved the Cochrane download, processing, and RCT-classification scripts into

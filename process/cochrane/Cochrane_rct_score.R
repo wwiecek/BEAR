@@ -9,8 +9,10 @@ classify_design_v2 <- function(abstracts) {
       sel_start = loc_sel[, "start"],
       elig_start = loc_elig[, "start"],
       section_start = dplyr::coalesce(sel_start, elig_start),
-      loc_dc = stringr::str_locate(text, "data collection"),
-      dc_start = loc_dc[, "start"],
+      loc_next = stringr::str_locate(
+        text, "data collection|main results|authors['’] conclusions"
+      ),
+      next_start = loc_next[, "start"],
       has_selection_section = !is.na(section_start),
       sel_block = dplyr::if_else(
         has_selection_section,
@@ -18,8 +20,8 @@ classify_design_v2 <- function(abstracts) {
           text,
           section_start,
           dplyr::if_else(
-            !is.na(dc_start) & dc_start > section_start,
-            dc_start - 1L,
+            !is.na(next_start) & next_start > section_start,
+            next_start - 1L,
             nchar(text)
           )
         ),

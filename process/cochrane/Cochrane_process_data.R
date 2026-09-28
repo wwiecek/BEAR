@@ -230,10 +230,27 @@ if (length(manifest_paths) > 0L) {
   )
 }
 
-doi_match <- match(results_all_fixed$doi, manifest$doi)
+# Match the source edition by DOI, then use its review ID when the DOI is
+# absent or not present in the manifests. RM5 group_id values are codes, not
+# the reader-facing specialty labels used for topic.
+doi_lookup <- !duplicated(manifest$doi) & !is.na(manifest$doi)
+id_lookup <- !duplicated(manifest$cochrane_id) & !is.na(manifest$cochrane_id)
+doi_match <- match(results_all_fixed$doi, manifest$doi[doi_lookup])
+id_match <- match(
+  results_all_fixed$cochrane_id,
+  manifest$cochrane_id[id_lookup]
+)
+
+doi_specialty <- manifest$specialty[doi_lookup][doi_match]
+id_specialty <- manifest$specialty[id_lookup][id_match]
+doi_rct <- manifest$rct[doi_lookup][doi_match]
+id_rct <- manifest$rct[id_lookup][id_match]
+
 results_all_fixed <- results_all_fixed %>%
-  mutate(specialty = coalesce(manifest$specialty[doi_match], group_id),
-         rct = manifest$rct[doi_match])
+  mutate(
+    specialty = coalesce(doi_specialty, id_specialty),
+    rct = coalesce(doi_rct, id_rct)
+  )
 
 studies_long <- results_all_fixed %>%
   select(cochrane_id, doi, withdrawn, specialty, rct, studies) %>%

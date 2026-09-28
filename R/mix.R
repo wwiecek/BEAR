@@ -81,8 +81,8 @@ log1mexp <- function(a) {            # vectorised, works for any finite a
   out <- a                         # allocate
   a   <- pmin(a, 0)                # force a ≤ 0; anything >0 → 0
   i   <- a > log(0.5)
-  out[ ok &  i] <- log1p(-exp(a[ ok &  i]))
-  out[ ok & !i] <- log(-expm1(a[ ok & !i]))
+  out[ ok &  i] <- log(-expm1(a[ ok &  i]))
+  out[ ok & !i] <- log1p(-exp(a[ ok & !i]))
   out
 }
 
@@ -156,8 +156,13 @@ loglik_op <- function(theta, z, operator,
     low_cut  <- !high_cut                     # c_j below c*
     
     ##  a)  (c_j, ∞) entirely above c*
-    if (any(high_cut))
-      log_lik[idx][ high_cut] <- log1mexp(log_F[idx][ high_cut])
+    if (any(high_cut)) {
+      # Calculate the tail directly: the CDF can round to one for large z.
+      log_tail <- outer(abs_z[idx][high_cut], s, function(x, sigma)
+        log(2) + pnorm(x, sd = sigma, lower.tail = FALSE, log.p = TRUE))
+      log_lik[idx][high_cut] <-
+        rowLogSumExp(sweep(log_tail, 2, log(p), "+"))
+    }
     
     ##  b)  interval crosses c*:  (1−F(c*)) + ω [F(c*) − F(c_j)]
     if (any(low_cut)) {
@@ -171,18 +176,28 @@ loglik_op <- function(theta, z, operator,
 
 # Mixture optimisation function -----
 
-initial_mixture_par <- function(z, k = 4) {
-  c(rep(1 / k, k - 1),
-    c(1.2, if (k > 2) 2:(k - 1), max(abs(z))),
-    .5)
+initial_mixture_par <- function(z, k = 4, random_start = FALSE) {
+  p <- rep(1 / k, k)
+  sigma <- c(1.2, if (k > 2) 2:(k - 1), max(abs(z)))
+  omega <- .5
+  # Vary weights and scales to reduce dependence on the original start.
+  if (random_start) {
+    p <- rexp(k)
+    p <- p / sum(p)
+    sigma <- 1 + (sigma - 1) * exp(rnorm(k))
+    omega <- runif(1, .1, .9)
+  }
+  c(p[1:(k - 1)], sigma, omega)
 }
 
-optimise_mixture <- function(z, z_operator, weights, k = 4) {
+optimise_mixture <- function(z, z_operator, weights, k = 4,
+                             random_start = FALSE) {
   z <- abs(z)
   
   ## starting values (WW added large sigma as last entry, sigma = k too inflexible)
-  theta0 <- initial_mixture_par(z, k)
+  theta0 <- initial_mixture_par(z, k, random_start)
 
+  # Nelder-Mead uses explicit constraints, including omega <= 1.
   ui <- c(rep(-1, k - 1), rep(0, k), 0)
   ui <- rbind(ui, cbind(diag(2 * k)))
   ui <- rbind(ui, c(rep(0, 2*k-1), -1))  
@@ -201,11 +216,15 @@ optimise_mixture <- function(z, z_operator, weights, k = 4) {
   sigma <- par[k:(2 * k - 1)]
   omega <- par[2 * k]
   
-  data.frame(p = p, m = 0, sigma = sigma, omega = omega, 
-             AIC = 2*k + 2*(opt$value),
-             BIC = 2*log(sum(weights)) + 2*(opt$value))
+  # There are 2k parameters: k-1 weights, k scales and omega.
+  # For BIC, retain the sum of study weights as the sample size.
+  data.frame(p = p, m = 0, sigma = sigma, omega = omega,
+             AIC = 4 * k + 2 * opt$value,
+             BIC = 2 * k * log(sum(weights)) + 2 * opt$value)
 }
 
+# These transformations enforce valid weights and sigma > 1, omega > 0.
+# They allow BFGS to work without explicit constraints; omega may exceed one.
 unconstr_to_mixture_par <- function(theta, k = 4) {
   a <- c(0, theta[1:(k - 1)])
   p <- exp(a - max(a))
@@ -222,9 +241,11 @@ mixture_par_to_unconstr <- function(par, k = 4) {
   c(log(p[-1] / p[1]), log(sigma - 1), log(omega))
 }
 
-optimise_mixture_unconstr <- function(z, z_operator, weights, k = 4) {
+optimise_mixture_unconstr <- function(z, z_operator, weights, k = 4,
+                                      random_start = FALSE) {
   z <- abs(z)
-  theta0 <- mixture_par_to_unconstr(initial_mixture_par(z, k), k)
+  theta0 <- mixture_par_to_unconstr(
+    initial_mixture_par(z, k, random_start), k)
   objective <- function(theta) {
     if (any(!is.finite(theta))) return(1e12)
     par <- unconstr_to_mixture_par(theta, k)
@@ -244,9 +265,10 @@ optimise_mixture_unconstr <- function(z, z_operator, weights, k = 4) {
   sigma <- par[k:(2 * k - 1)]
   omega <- par[2 * k]
 
+  # There are 2k parameters; BIC uses the sum of study weights as above.
   data.frame(p = p, m = 0, sigma = sigma, omega = omega,
-             AIC = 2 * k + 2 * opt$value,
-             BIC = 2 * log(sum(weights)) + 2 * opt$value)
+             AIC = 4 * k + 2 * opt$value,
+             BIC = 2 * k * log(sum(weights)) + 2 * opt$value)
 }
 
 
@@ -296,13 +318,21 @@ fit_mixture <- function(z,
                         z_star = 25,
                         z0_bound = 0.5,
                         mode = "constr",
+                        n_runs = 1,
                         ...){
   mode <- match.arg(mode, c("constr", "unconstr"))
+  stopifnot(length(n_runs) == 1, is.finite(n_runs),
+            n_runs >= 1, n_runs == as.integer(n_runs))
   prepared <- prepare_mixture_z(z, operator, z_star,
                                 z0_bound = z0_bound, report = TRUE)
 
   optimise <- if(mode == "unconstr") optimise_mixture_unconstr else optimise_mixture
-  fit <- optimise(z = prepared$z, z_operator = prepared$operator, ...)
+  # Keep the original start first. Set a seed before calling for repeatability.
+  fits <- lapply(seq_len(n_runs), function(i)
+    optimise(z = prepared$z, z_operator = prepared$operator,
+             random_start = i > 1, ...))
+  # All runs have the same parameter count, so lowest AIC is best likelihood.
+  fit <- fits[[which.min(vapply(fits, function(x) x$AIC[1], numeric(1)))]]
   fit$sigma_SNR <- sqrt(fit$sigma^2 - 1)          # stdev van SNR
   
   return(fit)

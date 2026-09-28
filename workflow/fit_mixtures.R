@@ -6,6 +6,7 @@ source("R/settings.R")
 source("R/mix.R")
 # source("R/mix_v2.R") #faster alternatives!
 set.seed(1990)
+n_runs <- 5
 
 bear_list <-
   readRDS("BEAR.rds") %>%
@@ -46,8 +47,10 @@ bear_list <- c(bear_list, original_bear_list)
 bear_list_thin <- lapply(bear_list, thin_df)
 
 mixture_input_cols <- c("z", "z_operator", "weights")
+# Changes to the fitting code or number of starts also require new fits.
+mixture_code_hash <- digest("R/mix.R", file = TRUE)
 bear_hash <- lapply(bear_list_thin, function(df) {
-  digest(df[mixture_input_cols])
+  digest(list(df[mixture_input_cols], mixture_code_hash, n_runs))
 })
 
 previous_hash <- if(file.exists("results/mixtures_hash.rds")) {
@@ -75,9 +78,11 @@ for(nm in mtofit) {
   cat(nm); cat("\n")
   tic()
   df <- bear_list_thin[[nm]]
+  # Keep starts reproducible even when only a subset of datasets needs refitting.
+  set.seed(1990)
   cfit <- fit_mixture(
     z = df$z, operator = df$z_operator, weights = df$weights,
-    mode = "unconstr"
+    mode = "unconstr", n_runs = n_runs
   )
   saveRDS(cfit, fnm)
   toc()

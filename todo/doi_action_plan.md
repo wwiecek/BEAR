@@ -1,9 +1,12 @@
-# DOI coverage and remaining enrichment
+# DOI action plan
 
-Checked against all 23 local `data/*.rds` files on 14 September 2026.
-Nine files now have a `doi` column. Coverage counts describe saved metadata,
-not a claim that every DOI has been manually verified. Source-supplied,
-screened lookup and review-publication identifiers are distinguished explicitly.
+## DOI coverage and remaining enrichment
+
+The source-file inventory below was checked against all 23 local `data/*.rds`
+files on 14 September 2026. Nine files then had a `doi` column. These dated
+counts describe saved metadata; they do not imply manual verification of every
+DOI. Source-supplied, screened lookup and review-publication identifiers are
+distinguished explicitly.
 
 ## Current inventory
 
@@ -33,10 +36,33 @@ screened lookup and review-publication identifiers are distinguished explicitly.
 | `WWC.rds` | No column | — | No DOI column; source citations available. |
 | `Yang.rds` | No column | — | No DOI column; primary-study bibliography needed. |
 
-The assembled `BEAR.rds` (491,218 rows) currently has no DOI column and was not
-rebuilt for this task. This inventory concerns the source datasets in `data/`;
+The assembled `BEAR.rds` had 488,970 rows and no DOI column when checked on
+28 September 2026. The inventory above concerns the source datasets in `data/`;
 adding identifiers to the common schema is separate work. Existing study IDs
 were retained throughout.
+
+## Next actions
+
+1. Add `doi` to the common `BEAR.rds` schema for the article represented by a
+   row, keeping `studyid` and `metaid` unchanged. Review the scope of each
+   source `doi` before promoting it: leave Bartoš source meta-analysis DOIs
+   and Cochrane review DOIs in their source datasets, rather than attaching
+   them to primary-study rows. For SCORE replication rows, do not put the
+   original paper's DOI in the replication row's `doi`; use the explicitly
+   named `original_doi` if that link is promoted to the common data. Document
+   the field's meaning and missingness in the common data dictionary. Check
+   that selection, row order, statistics and all non-identifier fields are
+   unchanged.
+2. Continue article DOI enrichment in source datasets using the priorities and
+   qualifications under Remaining work. OSC, WWC and Sladekova are the smaller
+   near-term candidates. First validate Chavalarias identifier namespaces;
+   only then plan any large PMID conversion. Barnett–Wren is another large
+   batch after lookup throughput is established.
+3. Keep `studyid` and `metaid` semantics as a separate identifier review.
+   Adding a DOI does not establish that source rows share a primary study.
+   In particular, Bartoš source meta-analysis DOIs cannot identify primary
+   trials. Retain registry and replication-site identifiers where they are
+   the meaningful source units.
 
 ## Priority 1: implemented, with unresolved records retained for review
 
@@ -131,8 +157,9 @@ validation table is
 
 ## Remaining work
 
-Priorities 2–3 and source-work rows remain follow-up work; they were not run.
-Counts in this table retain the source-field inventory from 10 September 2026.
+Priorities 2–3 and source-work rows remain follow-up work; they were not run
+as part of the 14 September inventory. Counts in this table retain the
+source-field inventory from 10 September 2026.
 
 | Priority | Dataset and available metadata | Action and qualification |
 |---|---|---|

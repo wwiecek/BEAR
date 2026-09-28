@@ -29,6 +29,9 @@ Read both files before making changes in `BEAR/`.
 - For generated website assets, track only the canonical source artifact when
   GitHub Actions can materialize the site-local copy during render.
 - When working on processing data from papers and needing context, read PDF of the paper, which will typically be located in a subfolder of `data_raw/`
+- Keep local copies of source article PDFs in the relevant `data_raw/` subfolder
+  when a dataset is based on an article or PDF reference. Use readable
+  filenames such as `Author Year Short Title.pdf`.
 - It is OK to save artefacts from reading a PDF for faster processing in the future, but keep the folders clean when you do it
 - Do not track content under `data_raw/` in the repository. Use `data_raw/`
   locally for source downloads, local READMEs explaining how to obtain data,
@@ -42,6 +45,16 @@ Read both files before making changes in `BEAR/`.
 - Avoid committing large files in BEAR unless explicitly requested. Prefer
   ignored local storage for raw data, PDFs, generated binaries, and bulky
   intermediate artifacts.
+
+## todo.md and issue tracking
+
+I often work on issues by storing them in todo.md and fetching them into Codex.
+When starting to work on an issue, check against .md files in todo/ to see if
+you are working on a "live" issue. If yes, propose to remove the relevant description
+from the .md file when done OR propose additions/modifications to issues that 
+haven't been fully resolved or require a follow up work. 
+Make sure I approve them before removing/adding/editing.
+
 
 ## Current Assumptions
 - Processed inputs under `data/` are available locally as `.rds` files.

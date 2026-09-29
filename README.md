@@ -36,7 +36,7 @@ Here is a short summary of what’s included in BEAR:
 
 | Dataset | Domain | Values | Meta-analyses | Studies | Values/study | Significant |
 |:---|:---|---:|---:|---:|---:|---:|
-| Cochrane\* | medicine & health | 35,687 | 5,780 | 27,513 | 1.3 | 33.1% |
+| Cochrane\* | medicine & health | 33,507 | 5,529 | 26,095 | 1.3 | 33.2% |
 | EUDRA | clinical trials | 8,616 | \- | 8,616 | 1.0 | 41.4% |
 | Metapsy | psychotherapy | 4,395 | 20 | 1,494 | 2.9 | 48.4% |
 | Nuijten et al | intelligence | 2,439 | \- | 1,913 | 1.3 | 52.9% |
@@ -92,7 +92,7 @@ additional columns that store values from original studies.
 | Category     | Datasets | Studies | Meta-analyses |  Values | Significant |
 |:-------------|---------:|--------:|--------------:|--------:|------------:|
 | curated      |        8 |  37,269 |               | 123,277 |       43.4% |
-| meta         |        9 |  57,594 |         7,677 | 200,264 |       42.9% |
+| meta         |        9 |  56,176 |         7,426 | 198,084 |       43.0% |
 | replications |        3 |     388 |            28 |   1,956 |       44.2% |
 | scrape       |        4 | 155,322 |               | 165,653 |       69.4% |
 

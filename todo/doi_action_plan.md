@@ -12,7 +12,8 @@ distinguished explicitly.
 
 | Dataset file | Rows with DOI / total rows | Distinct DOIs | Provenance and status |
 |---|---:|---:|---|
-| `ArelBundock.rds` | No column | — | No DOI column; source crosswalk needed. |
+| `ArelBundock.rds`, `doi_collection` | 16,413 / 16,649 | 45 | Source publication DOI for 45/46 meta-collection records; the book `GreGer2019` remains unresolved. This is not a primary-study identifier. |
+| `ArelBundock.rds`, `doi_study` | 3,788 / 16,649 | 405 | Primary-publication DOI matched to 440 Briggs source keys across 26 source publications; no Doucouliagos rows are covered. See `doi/ArelBundock/study_review.md` for matching rules and audit. |
 | `Askarov.rds` | No column | — | No DOI column; numeric source IDs need a crosswalk. |
 | `BarnettWren.rds` | No column | — | No DOI column; 419,234 distinct source PubMed identifiers retained. |
 | `Bartos.rds` | 2,166 / 2,239 | 87 | New: source and screened Crossref DOIs of meta-analyses; `doi_scope` makes this explicit. |
@@ -40,6 +41,13 @@ The assembled `BEAR.rds` had 488,970 rows and no DOI column when checked on
 28 September 2026. The inventory above concerns the source datasets in `data/`;
 adding identifiers to the common schema is separate work. Existing study IDs
 were retained throughout.
+
+Within the Briggs subset, `doi_study` covers 3,788/9,810 estimate rows
+(38.6%) and 440/1,374 distinct source study keys (32.0%). It is present in
+26/33 Briggs source publications. The Doucouliagos subset has 0/6,839 rows
+with `doi_study`; its numeric study IDs require a source-specific citation
+crosswalk. These are DOI coverage rates, not estimates of how many included
+studies were journal articles or had registered DOIs.
 
 ## Next actions
 
@@ -169,7 +177,8 @@ source-field inventory from 10 September 2026.
 | 3 | Barnett–Wren: 419,234 distinct PubMed identifiers | Batch unique PMIDs through Europe PMC after the smaller Jager–Leek run validates coverage and throughput. Reuse mappings across datasets. |
 | 3 | Chavalarias: 1,896,954 distinct article identifiers across abstract and full-text sources | Validate identifier namespaces in each source before conversion; do not assume every numeric full-text ID is a PMID. Batch validated PMIDs and retain source indicators. |
 | Source work | Costello–Fox/Yang: study labels and meta-analysis membership | Recover primary-study references from each source meta-analysis; distinguish primary articles from the meta-analysis publication. |
-| Source work | Arel-Bundock: 2,251 study IDs; Askarov: 2,021 numeric study IDs | Inspect source workbooks/packages for article crosswalks. Numeric IDs alone are insufficient for bibliographic search. |
+| Source work | Arel-Bundock: 934 unmatched Briggs keys; 6,839 Doucouliagos rows | Extract included-study bibliographies and keys from source articles, supplements and replication files, starting with Briggs groups with no matches and the `MunRam2021` appendix. Resolve 36 ambiguous Briggs keys against full citations; review 11 plausible non-journal items separately. Build source-specific citation crosswalks before searching Doucouliagos numeric IDs. Keep `doi_collection` separate from `doi_study`; retain missing values where no primary-paper DOI is established. |
+| Source work | Askarov: 2,021 numeric study IDs | Inspect source workbooks/packages for article crosswalks. Numeric IDs alone are insufficient for bibliographic search. |
 | Source work | psymetadata: package datasets currently reduced to numeric/local IDs | Inspect original package fields and documentation by dataset; preserve existing identifiers before searching references. Local IDs must be scoped by source dataset. |
 | Source work | ManyLabs2: 28 replication analyses, site/file study IDs | Inspect the original-effects table and key table for original-paper references. A site/file identifier does not denote a separate publication. |
 | Source work | Szucs: 3,801 constructed article IDs | Locate the article metadata crosswalk for journal/article indices in the source supplement; do not search constructed IDs. |

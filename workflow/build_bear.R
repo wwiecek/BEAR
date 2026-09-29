@@ -105,8 +105,7 @@ dtlist[["ArelBundock"]] <-
     # in data/ArelBundock.rds.
     metaid = question_id,
     studyid = study_id,
-    # Opaque source subfields are not promoted to public topics.
-    topic = NA_character_,
+    topic = topic,
     method = NA,
     measure = NA,
     subset = meta_id,

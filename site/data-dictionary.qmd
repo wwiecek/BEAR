@@ -1,5 +1,0 @@
----
-title: "Data dictionary"
----
-
-The data dictionary is now part of [Documentation](documentation.qmd#data-dictionary).

@@ -73,4 +73,42 @@ dat <- dat |>
   filter(n >= 5)
 
 # write_csv(dat, ("data/Arel-Bundock/estimates.csv"))
+articles <- read_csv("doi/ArelBundock/article_metadata.csv",
+                     show_col_types = FALSE) %>%
+  select(meta_id, topic_detailed = topic_detail,
+         topic_subject = topic)
+dois <- read_csv("doi/ArelBundock/final/doi_mapping.csv",
+                 show_col_types = FALSE)
+stopifnot(nrow(articles) == 46L, !anyDuplicated(articles$meta_id),
+          !anyDuplicated(dois$meta_id), setequal(dat$meta_id, articles$meta_id),
+          setequal(articles$meta_id, dois$meta_id))
+rows_before <- nrow(dat)
+dat <- dat %>% left_join(articles, by = "meta_id") %>%
+  left_join(dois, by = "meta_id")
+dat <- dat %>%
+  mutate(topic_detailed = paste(topic_subject, topic_detailed, sep = ": "),
+         topic = recode(subfield,
+                        AP = "American Politics",
+                        CP = "Comparative Politics",
+                        IR = "International Relations",
+                        PA = "Public Administration",
+                        PE = "Political Economy")) %>%
+  select(-topic_subject)
+stopifnot(nrow(dat) == rows_before, !anyNA(dat$topic_detailed),
+          !anyNA(dat$topic))
+
+study_mapping_path <- "doi/ArelBundock/final/study_doi_mapping.csv"
+if (file.exists(study_mapping_path)) {
+  study_dois <- read_csv(study_mapping_path, show_col_types = FALSE) %>%
+    mutate(sample = "Briggs")
+  study_key <- c("sample", "meta_id", "study_id", "study_year",
+                 "study_journal")
+  stopifnot(!anyDuplicated(study_dois[study_key]))
+  dat <- dat %>% left_join(study_dois, by = study_key,
+                           relationship = "many-to-one")
+} else {
+  dat$doi_study <- NA_character_
+}
+stopifnot(nrow(dat) == rows_before,
+          all(is.na(dat$doi_study[dat$sample != "Briggs"])))
 saveRDS(dat, "data/ArelBundock.rds")

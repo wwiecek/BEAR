@@ -311,7 +311,9 @@ lookup_identifiers <- function(papers, cache_path, provider = "crossref") {
     status = character())
   stopifnot(!anyDuplicated(cache$query), all(cache$provider == provider))
   if (provider == "crossref" && nrow(cache) &&
-      any(!is.na(papers$source_journal))) {
+      any(!is.na(papers$source_journal) |
+          !is.na(papers$source_year) | !is.na(papers$source_author) |
+          !is.na(papers$source_doi_pattern) | !is.na(papers$source_doi))) {
     if (!all(c(fields, "lookup_version") %in% names(cache)) ||
         any(cache$lookup_version != 3L)) {
       stop("Journal-aware lookup requires a new cache path")
@@ -335,7 +337,11 @@ lookup_identifiers <- function(papers, cache_path, provider = "crossref") {
       if (provider == "crossref") {
         args <- as.list(remaining[i, c("query", fields)])
         # Preserve the two-argument interface for metadata-free lookups.
-        if (is.na(args$source_journal)) args <- args[c("query", "source_title")]
+        if (all(is.na(unlist(args[c("source_journal", "source_year",
+                                     "source_author", "source_doi_pattern",
+                                     "source_doi")])))) {
+          args <- args[c("query", "source_title")]
+        }
         do.call(lookup_crossref, args)
       } else
         lookup_epmc(query, if (provider == "doi_to_pmid") "doi" else "pmid")

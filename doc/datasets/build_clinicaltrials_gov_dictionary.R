@@ -72,13 +72,11 @@ dictionary_summary <- function(variable, data) {
     "effect_source", "study_type", "phase", "overall_status", "allocation",
     "intervention_model", "primary_purpose", "masking", "domain_primary",
     "intervention_type_primary", "lead_sponsor_class", "outcome_type",
-    "measure_class", "scale", "z_operator", "raw_measure",
-    "raw_effect_family", "import_decision"
+    "measure_class", "scale", "z_operator"
   )
   numeric_vars <- c(
     "year", "enrollment", "number_of_arms", "number_of_groups",
-    "n_design_groups", "n_effect_rows_per_study", "n_outcomes_per_study",
-    "n_raw_overlap_matches"
+    "n_design_groups", "n_effect_rows_per_study", "n_outcomes_per_study"
   )
   logical_vars <- c(
     "direction_unknown", "has_posted_results", "is_factorial", "is_crossover",
@@ -132,5 +130,5 @@ lines <- unlist(c(
   })
 ))
 
-writeLines(lines, out_file)
+writeLines(head(lines, -1), out_file)
 message("Wrote ", out_file)

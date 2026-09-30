@@ -122,6 +122,10 @@ checks <- tibble::tibble(
     "dictionary_groups_ordered",
     "required_public_bear_fields_present",
     "public_raw_input_fields_present",
+    "public_raw_group_context_present",
+    "public_excludes_duplicate_audit_fields",
+    "public_effects_match_merge_audit",
+    "effect_family_and_scale_remain_distinct",
     "author_rows_retain_author_inputs",
     "raw_rows_retain_selected_raw_inputs",
     "build_bear_clinicaltrials_surface_complete",
@@ -147,6 +151,17 @@ checks <- tibble::tibble(
           "se", "z_operator") %in% names(public)),
     all(c("raw_event_t", "raw_event_c", "raw_n_t", "raw_n_c", "raw_mean_t",
           "raw_mean_c", "raw_sd_t", "raw_sd_c") %in% names(public)),
+    all(c("raw_group_t_id", "raw_group_c_id", "raw_group_t_title",
+          "raw_group_c_title", "direction_unknown", "raw_multi_arm_trial") %in%
+        names(public)),
+    !any(c("import_decision", "author_group_pair_key",
+           "n_raw_overlap_matches", "raw_measure", "raw_effect_family") %in%
+           names(public)),
+    identical(public$effect_id, merged$effect_id) &&
+      all(vapply(c("b", "se", "z", "z_operator", "measure_class", "scale"),
+                 function(x) identical(public[[x]], merged[[x]]), logical(1))),
+    all(c("measure_class", "scale") %in% names(public)) &&
+      n_distinct(public$scale[public$measure_class == "Odds Ratio"]) > 1,
     public %>%
       filter(effect_source == "author_reported") %>%
       summarise(

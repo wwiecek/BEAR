@@ -254,7 +254,7 @@ trial_characteristic_cols <- c(
 
 public_cols <- c(
   "effect_id", "author_effect_id", "raw_effect_id", "effect_source",
-  "include_in_bear", "import_decision", "author_raw_overlap_key", "nct_id",
+  "include_in_bear", "author_raw_overlap_key", "nct_id",
   "outcome_id", "outcome_analysis_id",
   "brief_title", "official_title", "study_type", "phase", "overall_status",
   "year", "enrollment", "enrollment_type", "number_of_arms",
@@ -275,10 +275,9 @@ public_cols <- c(
   "measurement_stratum_id", "measurement_title", "measurement_units",
   "measure_class", "measure_detailed", "scale", "effect", "b", "se", "z", "z_operator",
   "linked_result_group_ids", "linked_group_codes",
-  "n_linked_groups", "author_group_pair_key", "method", "param_type",
+  "n_linked_groups", "method", "param_type",
   "estimate", "lower", "upper", "p_value", "p_value_modifier",
-  "ci_percent", "ci_n_sides", "raw_measure", "raw_effect_family",
-  "n_raw_overlap_matches",
+  "ci_percent", "ci_n_sides",
   "raw_event_t", "raw_event_c", "raw_n_t", "raw_n_c",
   "raw_mean_t", "raw_mean_c", "raw_sd_t", "raw_sd_c",
   "raw_group_t_id", "raw_group_c_id",

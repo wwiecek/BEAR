@@ -127,6 +127,17 @@ BEAR-facing copy after retaining author and selected raw rows separately,
 marking `include_in_bear`, and keeping completed studies. The main BEAR build
 applies the fewer-than-20 candidate-row rule downstream.
 
+The public table retains `measure_class` (effect family) and `scale` (units
+of `b` and `se`) as separate fields. For example, reported ratio measures
+can be analysed on a raw or log scale. The selected raw measure and binary/
+continuous family are recoverable from these fields and `effect_source`, so
+they remain in the merge audit rather than the public table. The audit also
+retains merge decisions, group-pair keys, and overlap counts; the public
+table keeps `include_in_bear` and `author_raw_overlap_key`. Raw result-group
+IDs and titles remain public to identify and interpret the focal and
+comparator arms. `raw_multi_arm_trial` refers to eligible result groups
+for the outcome and can differ from study-level `is_multi_arm`.
+
 ## Endpoint Source Classes And Formulas
 
 The endpoint workflow uses arm-level AACT outcome measurements from primary

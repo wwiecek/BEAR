@@ -36,17 +36,20 @@ available in the full data table. For (2), we use standardised mean differences 
 continuous outcomes and probit differences for count outcomes.
 
 When working with the full dataset, variable `author_raw_overlap_key` can be used
-to link the two different calculations of the same effect; 
+to link the two different calculations of the same effect;
 variable `include_in_bear` identifies rows included after applying this
-rule preferring author-reported estimates.
+rule preferring author-reported estimates. `measure_class` records the
+effect family, while `scale` records the units of the stored estimate.
+For raw-derived effects, result-group IDs and titles identify the two
+arms used to calculate the estimate.
 
 The main BEAR dataset keeps studies that (1) are randomised, (2) are interventional,
 and (3) have fewer than 20 candidate effect rows (see the description in this section).
 
 The full ClinicalTrials.gov table uses only completed studies but does not apply
-these three restrictions. It contains 151,313 rows from 27,446 studies;
-46.3% are author-reported and 53.7% are derived from raw data. The randomised interventional
-subset used in the main BEAR release contains 60,470 rows from 23,060 studies.
+these three restrictions. It contains 151,248 rows from 27,435 studies;
+46.2% are author-reported and 53.8% are derived from raw data. The randomised interventional
+subset used in the main BEAR release contains 60,436 rows from 23,052 studies.
 
 Note that a single ClinicalTrials.gov
 study can contribute several primary outcome IDs, and each primary outcome can
@@ -77,8 +80,8 @@ included because they are not missing.
 - **Study ID:** we use the ClinicalTrials.gov trial identifier (`nct_id`).
 - `subset` records trial phase.
 - We include only randomised interventional studies, including parallel, crossover and factorial designs.
-- About half of all effects (by which we mean both reported and our derived 
-  estimates) are standardised mean differences, mean differences, or probit 
-  differences. Another 14% are hazard, odds, risk, geometric, or rate ratios; 
-  5% have the other category (in `BEAR.rds` this is coded as "other"), and 20% 
+- About half of all effects (by which we mean both reported and our derived
+  estimates) are standardised mean differences, mean differences, or probit
+  differences. Another 14% are hazard, odds, risk, geometric, or rate ratios;
+  5% have the other category (in `BEAR.rds` this is coded as "other"), and 20%
   have no measure.

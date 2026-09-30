@@ -40,8 +40,8 @@ safe_name <- function(x) {
     str_replace_all("^_|_$", "")
 }
 
-clean_measure <- function(measure_class, raw_measure, scale) {
-  clean_group(coalesce(measure_class, raw_measure, scale)) %>%
+clean_measure <- function(measure_class, scale) {
+  clean_group(coalesce(measure_class, scale)) %>%
     recode("Raw" = "Unclassified raw scale")
 }
 
@@ -76,7 +76,7 @@ ct_all <- readRDS("data/clinicaltrialsgov.rds") %>%
     phase_group = clean_group(phase),
     domain = clean_group(domain_primary),
     trial_type = clean_group(intervention_type_primary),
-    measure = clean_measure(measure_class, raw_measure, scale),
+    measure = clean_measure(measure_class, scale),
     source = clean_group(effect_source)
   ) %>%
   filter(!is.na(z))

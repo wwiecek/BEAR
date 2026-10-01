@@ -10,8 +10,8 @@ The summary column is computed from `clinicaltrialsgov.rds` when this dictionary
 | `author_effect_id` | Identifier for the author-reported outcome-analysis effect row. |  |
 | `raw_effect_id` | Identifier for the selected raw endpoint calculation row. |  |
 | `effect_source` | Source of the effect estimate used for b, se, z, and z_operator. | raw_derived 81,321 (53.8%); author_reported 69,927 (46.2%) |
-| `include_in_bear` | Whether this row is used by the main BEAR ClinicalTrials.gov build. TRUE keeps author-reported rows and raw-derived rows only when no author-reported overlap is available. | TRUE 132,039 (87.3%) |
-| `author_raw_overlap_key` | Shared key for linking author-reported rows to raw-derived rows for the same study, outcome, and result-group pair. |  |
+| `include_in_bear` | Selected by the author-versus-raw rule for possible inclusion in BEAR.rds. When both values are available for the same comparison, BEAR.rds uses the author-reported value; the raw-derived value remains available in this ClinicalTrials.gov dataset with this flag set to FALSE. | TRUE 132,039 (87.3%) |
+| `result_id` | BEAR-defined identifier linking calculations for the same trial, outcome and unordered pair of result groups. |  |
 | `nct_id` | ClinicalTrials.gov study identifier. |  |
 | `outcome_id` | AACT outcome identifier linked to the effect row. |  |
 | `outcome_analysis_id` | AACT outcome-analysis identifier for source-reported analyses. |  |

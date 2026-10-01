@@ -65,6 +65,11 @@ Make sure I approve them before removing/adding/editing.
   z-value or Fisher's z-transformed effect is infinite.
 
 
+## Documentation style
+
+- Use the `$write-style` skill (if available) when drafting or revising 
+  data dictionaries and user-facing documentation.
+
 ## datasets.Rmd
 
 In datasets.Rmd do not write down documentation for this repo.

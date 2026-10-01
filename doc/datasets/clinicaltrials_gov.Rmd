@@ -35,10 +35,14 @@ Where both (1) and (2) are available, we prefer (1), but also make (2)
 available in the full data table. For (2), we use standardised mean differences for
 continuous outcomes and probit differences for count outcomes.
 
-When working with the full dataset, variable `author_raw_overlap_key` can be used
-to link the two different calculations of the same effect;
-variable `include_in_bear` identifies rows included after applying this
-rule preferring author-reported estimates. `measure_class` records the
+For the full dataset, we treat an author-reported and raw-derived row as
+overlapping when they have the same trial, outcome and pair of result
+groups. This match need not identify the same measurement or timepoint.
+Use `result_id` and `include_in_bear` to identify calculations accompanying
+the same group-pair comparison. `include_in_bear` is TRUE for all
+author-reported rows and for raw-derived rows without such a match. It is
+FALSE for matched raw-derived rows. The main BEAR dataset also applies
+the study-level restrictions described next. `measure_class` records the
 effect family, while `scale` records the units of the stored estimate.
 For raw-derived effects, result-group IDs and titles identify the two
 arms used to calculate the estimate.

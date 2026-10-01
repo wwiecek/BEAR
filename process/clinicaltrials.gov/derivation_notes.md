@@ -133,7 +133,7 @@ can be analysed on a raw or log scale. The selected raw measure and binary/
 continuous family are recoverable from these fields and `effect_source`, so
 they remain in the merge audit rather than the public table. The audit also
 retains merge decisions, group-pair keys, and overlap counts; the public
-table keeps `include_in_bear` and `author_raw_overlap_key`. Raw result-group
+table keeps `include_in_bear` and `result_id`. Raw result-group
 IDs and titles remain public to identify and interpret the focal and
 comparator arms. `raw_multi_arm_trial` refers to eligible result groups
 for the outcome and can differ from study-level `is_multi_arm`.
@@ -277,7 +277,7 @@ is currently defined by `nct_id`, `outcome_id`, and the linked result-group
 pair when that pair is available. Raw rows that overlap an author-reported row
 are retained as public rows but marked `include_in_bear = FALSE` with
 `import_decision = "exclude_author_preferred_overlap"`. The shared
-`author_raw_overlap_key` links author and raw rows with the same `nct_id`,
+`result_id` links author and raw rows with the same `nct_id`,
 `outcome_id`, and result-group pair. This link is not proof that the
 author-reported effect was calculated from a particular raw measurement row:
 ClinicalTrials.gov can store multiple measurement strata, categories, or

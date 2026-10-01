@@ -169,16 +169,6 @@ Run the existing paired comparison of author-reported and
 raw-outcome-derived effect sizes, and interpret its plots and summary
 tables.
 
-## ctgov variables
-
-aren't scale and measure_class and raw_measure redundant with each
-other? wouldn't it be better to create a single categorical variable
-here? how are they used in build_bear?
-
-Most of "Raw result-group metadata" does not seem very relevant/useful
-to an end user. Please review and consider which variables to retain.
-Feel free to disagree.
-
 ## PubMed downloads
 
 Can we get:

@@ -95,7 +95,7 @@ author_import <- author %>%
     excluded_by_author_preference = FALSE,
     overlap_reason = NA_character_,
     n_raw_overlap_matches = coalesce(n_raw_overlap_matches, 0L),
-    author_raw_overlap_key = case_when(
+    result_id = case_when(
       !is.na(author_group_pair_key) ~
         str_c(nct_id, outcome_id, author_group_pair_key, sep = "||"),
       TRUE ~ NA_character_
@@ -124,7 +124,7 @@ raw_import <- raw_for_import %>%
     author_effect_id = NA_character_,
     n_raw_overlap_matches = NA_integer_,
     include_in_bear = import_decision == "include_raw_only",
-    author_raw_overlap_key = case_when(
+    result_id = case_when(
       !is.na(raw_group_pair_key) ~
         str_c(nct_id, outcome_id, raw_group_pair_key, sep = "||"),
       TRUE ~ NA_character_
@@ -254,7 +254,7 @@ trial_characteristic_cols <- c(
 
 public_cols <- c(
   "effect_id", "author_effect_id", "raw_effect_id", "effect_source",
-  "include_in_bear", "author_raw_overlap_key", "nct_id",
+  "include_in_bear", "result_id", "nct_id",
   "outcome_id", "outcome_analysis_id",
   "brief_title", "official_title", "study_type", "phase", "overall_status",
   "year", "enrollment", "enrollment_type", "number_of_arms",

@@ -87,7 +87,7 @@ ct <- ct_all %>%
 
 paired_pool <- ct_all %>%
   filter(study_type == "INTERVENTIONAL", allocation == "RANDOMIZED",
-         !is.na(author_raw_overlap_key),
+         !is.na(result_id),
          effect_source %in% c("author_reported", "raw_derived"))
 
 sample_flow <- tibble(
@@ -139,7 +139,7 @@ write_csv(summary_table,
 write_csv(mixture_manifest, file.path(out_dir, "ctgov_mixture_manifest.csv"))
 
 paired <- paired_pool %>%
-  group_by(author_raw_overlap_key, effect_source) %>%
+  group_by(result_id, effect_source) %>%
   summarise(
     n_effects = n(),
     z = median(z, na.rm = TRUE),
@@ -152,7 +152,7 @@ paired <- paired_pool %>%
   filter(!is.na(z_author_reported), !is.na(z_raw_derived)) %>%
   left_join(
     paired_pool %>%
-      group_by(author_raw_overlap_key) %>%
+      group_by(result_id) %>%
       summarise(
         nct_id = first(nct_id),
         phase = first(phase_group),
@@ -161,7 +161,7 @@ paired <- paired_pool %>%
         measure = first(measure),
         .groups = "drop"
       ),
-    by = "author_raw_overlap_key"
+    by = "result_id"
   ) %>%
   mutate(
     z_diff = z_author_reported - z_raw_derived,

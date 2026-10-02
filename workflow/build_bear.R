@@ -109,10 +109,12 @@ dtlist[["ArelBundock"]] <-
     method = NA,
     measure = NA,
     subset = meta_id,
-    z = as.numeric(estimate)/as.numeric(std.error),
+    z = z,
     b = as.numeric(estimate),
     se = as.numeric(std.error),
-    ss = n,
+    # Round fractional sizes; zero is invalid. Large grid-year samples remain.
+    ss = if_else(is.finite(sample_size) & sample_size > 0,
+                 round(sample_size), NA_real_),
     year = study_year)
 
 

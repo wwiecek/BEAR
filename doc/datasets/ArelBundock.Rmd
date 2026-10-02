@@ -27,26 +27,28 @@ datasets separate.
 We used the same code as the original authors (a replication package that uses
 makefiles), but skipped some additional processing they performed for their paper.
 BEAR uses `question_id` as `metaid` (351 groups defined by meta-analysis or research question).
-Signed z-values were
-computed as reported estimates divided by their standard errors. We verified
-that the distributions of z-values matched those in the article.
+Signed z-values are calculated as reported estimates divided by their standard
+errors. We verified that their distribution matched the published histogram in
+@arel2022quantitative
 
 **Study characteristics:**
 
 - **Study ID:** we use author's study ID; for **meta-analysis ID** we use `question_id`.
 - `subset` is the source article's `meta_id`; each article may contain several
   groupings into meta-analyses 
-- `topic` uses the column `subfield` from original dataset (American Politics, 
-  Comparative Politics, International Relations, Public Administration, and 
-  Political Economy).
-- `topic_detailed` is assigned by us, but available only in `data/ArelBundock.rds` 
-  it has more detailed classification into topics (instead of subfields) of 
-  research.
-- `doi_collection` identifies the source publication containing a given collection
-  of meta-analyses. It is NOT the indvidual study DOI, nor the meta-analysis DOI.
+- `topic` is classification from the original dataset into American Politics,
+  Comparative Politics, International Relations, Public Administration and
+  Political Economy (`subfield` in original data)
+- `topic_detailed` is our more detailed subject classification and is
+  available only in `data/ArelBundock.rds`.
+- `doi_collection` identifies the source publication containing a collection
+  of meta-analyses, not an individual meta-analysis or study.
 - `doi_study` is the individual paper DOI, reconstructed by matching labels within
-  the dataset to bibliographies in 46 datasets and cross-referencing them. 
+  the dataset to bibliographies in 46 collections and cross-referencing them. 
   However, it is only available for a minority of studies.
+- `ss` is the number of observations; it uses the `sample_size` variable in the
+  original dataset, rounded to an integer where positive; 
+  three zeros are treated as missing. 
 - We do not have information on the study design or measure of effect size.
 
 There are at least several other useful columns in the original replication 

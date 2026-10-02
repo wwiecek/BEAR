@@ -39,7 +39,7 @@ doucouliagos <- data.table::fread(("data_raw/ArelBundock/ps_power_replication_20
   clean_character_columns()
 
 dat <- bind_rows(briggs, doucouliagos) |>
-  mutate(z_stat = estimate / std.error,
+  mutate(z = estimate / std.error,
          dv = ifelse(is.na(dv), "", dv),
          iv = ifelse(is.na(iv), "", iv),
          question_id = ifelse(sample == "Briggs", paste(meta_id, iv, dv, sep = "; "), question_id)) |>
@@ -68,9 +68,8 @@ dat <- dat |>
   # mark all rows with n_per_question < 5 for removal.
   # TriWen2020 especially contributed hundred of rows with few obs per question
   group_by(question_id) |>
-  add_count() |>
-  ungroup() |>
-  filter(n >= 5)
+  filter(n() >= 5) |>
+  ungroup()
 
 # write_csv(dat, ("data/Arel-Bundock/estimates.csv"))
 articles <- read_csv("doi/ArelBundock/article_metadata.csv",
@@ -93,7 +92,7 @@ dat <- dat %>%
                         IR = "International Relations",
                         PA = "Public Administration",
                         PE = "Political Economy")) %>%
-  select(-topic_subject)
+  select(-topic_subject, -subfield)
 stopifnot(nrow(dat) == rows_before, !anyNA(dat$topic_detailed),
           !anyNA(dat$topic))
 

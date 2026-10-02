@@ -274,9 +274,9 @@ studies_long <- results_all_fixed %>%
     outcome_group = factor(
       classify_outcome_group(comparison.name, outcome.name, subgroup.name),
       levels = c("efficacy", "safety", "dropouts", "bias")
-    ),
-    phase = NA
+    )
   ) %>%
+  select(-weight, -order) %>%
   filter(total1 > 0, total2 > 0)
 
 if (nrow(studies_long) == 0L) {

@@ -15,7 +15,7 @@ filtering and dataset-specific conventions.
 | `effect_scale` | Representation of `b` and `se`. | Does not establish comparable units across studies. |
 | `z` | Normal-equivalent test statistic. | Signed where direction is available; see derivations. |
 | `z_operator` | Bound on the magnitude of `z`. | Applies to `abs(z)`, never directly to signed `z`. |
-| `p` | Retained p-value. | Interpretation and sidedness depend on the source. |
+| `p` | p-value | Interpretation and sidedness depend on the source. |
 | `b` | Effect estimate. | On the scale given by `effect_scale`, where known. |
 | `se` | Standard error corresponding to `b`. | Reported or derived. |
 | `ss` | Sample size. | Source-specific definition; consult the dataset page. |
@@ -48,6 +48,8 @@ dataset-specific; consult the individual dataset documentation before grouping.
 medical specialty, clinical condition, outcome domain or cognitive domain.
 Taxonomies and granularity differ across sources. It is primarily intended for
 within-dataset grouping; cross-dataset comparisons require further harmonisation.
+Classifications may be supplied by the source dataset or assigned by BEAR;
+the dataset page identifies their provenance.
 Missing values mean no subject classification has been assigned.
 
 `subset` describes a sampling, provenance, reporting or analysis grouping,

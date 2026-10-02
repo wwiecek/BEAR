@@ -1,8 +1,11 @@
-# DOI lookup outputs, intermediate artefacts and final identifier mappings are
-# local and reproducible. Keep only durable scripts and Markdown review notes.
+# Keep DOI scripts, review notes and the small accepted Arel-Bundock mappings.
+# API caches and other generated outputs remain local.
 *
 !.gitignore
 !**/
 !**/*.R
 !**/*.md
 !**/article_metadata.csv
+!ArelBundock/final/doi_mapping.csv
+!ArelBundock/final/study_doi_mapping.csv
+!ArelBundock/final/references_without_doi_mapping.csv

@@ -162,7 +162,10 @@ if (anyDuplicated(lang$estimate_id) > 0) {
 # Preserve current assignments, including independent manual corrections.
 if (file.exists("data/Lang.rds")) {
   previous_lang <- readRDS("data/Lang.rds")
-  if ("doi" %in% names(previous_lang)) {
+  if ("doi_study" %in% names(previous_lang)) {
+    lang <- join_identifiers(lang,
+      rename(previous_lang, doi = doi_study), "estimate_id", "doi")
+  } else if ("doi" %in% names(previous_lang)) {
     lang <- join_identifiers(lang, previous_lang, "estimate_id", "doi")
   }
 }
@@ -193,6 +196,7 @@ if (file.exists("doi/Lang/derived/lang_doi_journal_lookup.csv")) {
 if (!"doi" %in% names(lang)) lang$doi <- NA_character_
 lang <- lang %>% mutate(doi = coalesce(unname(manual_dois[studyid]), doi))
 stopifnot(n_distinct(lang$source_title[lang$studyid == "Lang_paper_474"]) == 1L)
+lang <- lang %>% rename(doi_study = doi)
 saveRDS(lang, "data/Lang.rds")
 
 # Validation summary -----

@@ -63,5 +63,22 @@ if (nrow(doi_mapping)) {
   metapsy <- join_identifiers(metapsy,
     doi_mapping, c("metaid", "study", "reference"), "doi")
 }
-metapsy <- select(metapsy, -reference)
+# Four source citations recur with conflicting DOI suffixes. Publisher or
+# registry records identify the article from its title, authors and journal.
+metapsy <- metapsy %>% mutate(doi = case_when(
+  metaid == "depression-psyctr" & study == "Sadler, 2018" &
+    str_detect(reference, fixed("Cognitive behavior therapy for older adults with insomnia and depression")) ~
+    "10.1093/sleep/zsy104",
+  metaid == "gad-psyctr" & study == "Andersson, 2012" &
+    str_detect(reference, fixed("Internet-based psychodynamic versus cognitive behavioral guided self-help")) ~
+    "10.1159/000339371",
+  metaid == "gad-psyctr" & study == "Bakhshani, 2007" &
+    str_detect(reference, fixed("Effectiveness of short term cognitive behavior therapy")) ~
+    "10.3923/jms.2007.1076.1081",
+  metaid == "gad-psyctr" & study == "Barlow, 1992" &
+    str_detect(reference, fixed("Behavioral treatment of generalized anxiety disorder")) ~
+    "10.1016/s0005-7894(05)80221-7",
+  TRUE ~ doi
+))
+metapsy <- select(metapsy, -reference) %>% rename(doi_study = doi)
 saveRDS(metapsy, "data/Metapsy.rds")

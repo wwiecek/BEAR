@@ -51,7 +51,7 @@ stopifnot(!anyDuplicated(pmid$doi))
 d %>% 
   join_identifiers(rename(pmid, first.doi = doi), "first.doi", "pmid") %>%
   select(journal.name, first.doi, pmid, p.value, operator, section, Category, year) %>% 
-  mutate(doi = first.doi) %>%
+  mutate(doi_study = first.doi) %>%
   saveRDS("data/Head.rds") #compression: 30x smaller than CSV
   # write_csv("data_raw/Head/derived/p_values_cleaned_ww.csv")
 

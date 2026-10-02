@@ -34,14 +34,14 @@ alternative `myz` field in original data is not populated for all publication
 years in the replication file.)
 
 We obtained article DOIs by matching titles, authors, journals and publication
-years against Crossref metadata. The additional `doi` column contains the
+years against Crossref metadata. The additional `doi_study` column contains the
 highest-ranked candidate; uncertain matches are flagged for review. These
 article identifiers are distinct from the trial-registration DOIs supplied
 with the source data. They do not replace the paper titles used as study IDs.
 
 
 **Study characteristics:**
-- **Study ID:** we use the paper title; we include `doi` as an additional column
+- **Study ID:** we use the paper title; we include `doi_study` as an additional column
   in `Brodeur.rds`
 - `subset` records preregistration and pre-analysis-plan status, which was the
   focus of the original study.

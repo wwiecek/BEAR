@@ -55,7 +55,7 @@ cases. For several edge cases we used LLM review to adjudicate.
 
 - **Study ID:** `studyid` is `Lang_paper_` followed by Lang's `unique_paperid`,
   but with a few minor corrections from us (see GitHub repository for details). 
-  Article DOIs are also available as an additional column in `Lang.rds`.
+  Article DOIs are also available as `doi_study` in `Lang.rds`.
 - **Subset:** `subset` distinguishes observations drawn from the
   Brodeur--Cook--Heyes 2015/2018 source universe from Lang's 2021 top-five
   additions.

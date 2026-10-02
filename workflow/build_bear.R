@@ -20,6 +20,7 @@ dtlist[["Brodeur"]] <- readRDS("data/Brodeur.rds") %>%
   transmute(
     metaid = NA,
     studyid = title,
+    doi_study = doi_study,
     method = method,
     measure = NA,
     subset = case_when(
@@ -54,6 +55,7 @@ dtlist[["Lang"]] <- readRDS("data/Lang.rds") %>%
   transmute(
     metaid = NA,
     studyid = studyid,
+    doi_study = doi_study,
     method = method,
     measure = NA,
     z = z,
@@ -105,6 +107,7 @@ dtlist[["ArelBundock"]] <-
     # in data/ArelBundock.rds.
     metaid = question_id,
     studyid = study_id,
+    doi_study = doi_study,
     topic = topic,
     method = NA,
     measure = NA,
@@ -220,6 +223,7 @@ dtlist[["JagerLeek"]] <-
   transmute(
     metaid = NA,
     studyid = pubmedID,
+    doi_study = doi_study,
     method = method,
     measure = NA,
     p = pvalue,
@@ -275,6 +279,7 @@ dtlist[["Metapsy"]] <- readRDS("data/Metapsy.rds") %>%
   transmute(
     metaid = metaid,
     studyid = study,
+    doi_study = doi_study,
     topic = unname(metapsy_topics[metaid]),
     method = "RCT", #Metapsy only includes RCTs
     measure = "SMD",
@@ -340,6 +345,7 @@ dtlist[["Cochrane"]] <- readRDS("data/Cochrane.rds") %>%
   transmute(
     metaid = id,
     studyid = study.name,
+    doi_meta = doi_meta,
     year = study.year,
     # Still working on this one:
     method = ifelse(rct, "RCT", "unknown"),
@@ -468,6 +474,7 @@ dtlist[["clinicaltrials"]] <- readRDS("data/clinicaltrialsgov.rds") %>%
 dtlist[["Head"]] <- readRDS("data/Head.rds") %>%
   transmute(metaid = NA,
             studyid = pmid,
+            doi_study = doi_study,
             topic = Category,
             subset = case_when(
               section == "abstract" ~ "abstract",
@@ -550,6 +557,7 @@ dtlist[["OSC"]] <- readRDS("data/OSC.rds") %>%
   transmute(
     metaid = NA,
     studyid = Study.Num,
+    doi_replication = doi_replication,
     method = "RCT",
     measure = "r",
     z,
@@ -579,6 +587,7 @@ dtlist[["OSC"]] <- readRDS("data/OSC.rds") %>%
 dtlist[["Bartos"]] <- readRDS("data/Bartos.rds") %>%
   transmute(
     metaid = as.character(meta_id),
+    doi_meta = doi_meta,
     # The source's id is row-unique; no primary-RCT identifier is supplied.
     studyid = as.character(id),
     method = "RCT",
@@ -631,6 +640,7 @@ dtlist[["SCORE_replications"]] <- score_replications %>%
   ) %>%
   transmute(
     metaid, studyid, method = NA_character_, measure,
+    doi_study, doi_replication,
     z, z_operator, p, b, se, ss, year, source, topic = subset,
     orig.z, orig.z_operator, orig.p, orig.b, orig.se, orig.ss
   )
@@ -638,6 +648,7 @@ dtlist[["SCORE_replications"]] <- score_replications %>%
 dtlist[["SCORE_claims"]] <- readRDS("data/SCORE_all_claims.rds") %>%
   transmute(
     metaid, studyid, method = NA_character_, measure,
+    doi_study,
     z, z_operator, p, b, se, ss, year, source, topic = subset
   )
 

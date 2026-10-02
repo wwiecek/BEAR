@@ -1,9 +1,20 @@
 # DOI action plan
 
+## Naming convention
+
+Use `doi_collection` for a publication containing several meta-analyses,
+`doi_meta` for an individual meta-analysis or systematic review, and
+`doi_study` for an individual paper. Include only DOI levels established for
+the dataset. Matched replication outputs use `doi_study` for the original
+paper on both rows and `doi_replication` for the replication publication,
+if known. One replication publication may cover several original papers.
+Retain `doi_meta`, `doi_study` and `doi_replication` where available in
+`BEAR.rds`; keep PMID, NCT ID, `studyid` and `metaid` as distinct identifiers.
+
 ## DOI coverage and remaining enrichment
 
 The source-file inventory below was checked against all 23 local `data/*.rds`
-files on 14 September 2026. Nine files then had a `doi` column. These dated
+files on 2 October 2026. Twelve files have a level-specific DOI column. These dated
 counts describe saved metadata; they do not imply manual verification of every
 DOI. Source-supplied, screened lookup and review-publication identifiers are
 distinguished explicitly.
@@ -16,31 +27,32 @@ distinguished explicitly.
 | `ArelBundock.rds`, `doi_study` | 3,788 / 16,649 | 405 | Primary-publication DOI matched to 440 Briggs source keys across 26 source publications; no Doucouliagos rows are covered. See `doi/ArelBundock/study_review.md` for matching rules and audit. |
 | `Askarov.rds` | No column | — | No DOI column; numeric source IDs need a crosswalk. |
 | `BarnettWren.rds` | No column | — | No DOI column; 419,234 distinct source PubMed identifiers retained. |
-| `Bartos.rds` | 2,166 / 2,239 | 87 | New: source and screened Crossref DOIs of meta-analyses; `doi_scope` makes this explicit. |
-| `Brodeur.rds` | 16,390 / 16,390 | 329 | Final title-level article DOI mapping, including 33 accepted version replacements, is saved locally in `doi/Brodeur/final/doi_map.csv` and validated against raw source values. `doinumber` is a separate registration identifier. |
+| `Bartos.rds`, `doi_meta` | 2,166 / 2,239 | 87 | New: source and screened Crossref DOIs of meta-analyses; `doi_meta` makes this explicit. |
+| `Brodeur.rds`, `doi_study` | 16,390 / 16,390 | 329 | Final title-level article DOI mapping, including 33 accepted version replacements, is saved locally in `doi/Brodeur/final/doi_map.csv` and validated against raw source values. `doinumber` is a separate registration identifier. |
 | `Chavalarias.rds` | No column | — | No DOI column; validate source identifier namespaces before conversion. |
 | `clinicaltrialsgov.rds` | No column | — | Registry identifiers retained; no article DOI enrichment planned. |
-| `Cochrane.rds` | 760,486 / 760,486 | 6,619 | Existing: review DOIs, not included primary-paper DOIs. |
+| `Cochrane.rds`, `doi_meta` | 760,486 / 760,486 | 6,619 | Existing: review DOIs, not included primary-paper DOIs. |
 | `CostelloFox.rds` | No column | — | No DOI column; primary-study bibliography needed. |
 | `euctr.rds` | No column | — | Registry identifiers retained; no article DOI enrichment planned. |
-| `Head.rds` | 2,010,875 / 2,010,875 | 219,867 | Existing: source article DOIs; `doi` aliases `first.doi`; 2,005,687 PMIDs retained. |
-| `JagerLeek.rds` | 15,633 / 15,653 | 5,317 | New: Europe PMC DOI mapping; original `pubmedID` retained. |
-| `Lang.rds` | 3,885 / 3,885 | 730 | Existing: source, lookup and explicitly reviewed article DOIs. |
-| `ManyLabs2.rds` | No column | — | No DOI column; original-publication crosswalk needed. |
-| `Metapsy.rds` | 3,155 / 4,505 | 1,105 | Source, screened Crossref and reviewed article DOI mappings; joined by database, study label and exact reference. |
-| `OSC.rds` | No column | — | No DOI column; original and replication publications need separate treatment. |
+| `Head.rds`, `doi_study` | 2,010,875 / 2,010,875 | 219,867 | Existing: source article DOIs; `doi_study` aliases `first.doi`; 2,005,687 PMIDs retained. |
+| `JagerLeek.rds`, `doi_study` | 15,633 / 15,653 | 5,317 | New: Europe PMC DOI mapping; original `pubmedID` retained. |
+| `Lang.rds`, `doi_study` | 3,885 / 3,885 | 730 | Existing: source, lookup and explicitly reviewed article DOIs. |
+| `ManyLabs2.rds`, `doi_replication` | 1,592 / 1,592 | 1 | Shared Many Labs 2 publication DOI; original-publication crosswalk still needed. |
+| `Metapsy.rds`, `doi_study` | 3,155 / 4,505 | 1,091 | Source, screened Crossref and reviewed article DOI mappings; joined by database, study label and exact reference. Four repeated citations with conflicting source DOI suffixes were corrected against article records. |
+| `OSC.rds`, `doi_replication` | 168 / 168 | 1 | Shared Open Science Collaboration publication DOI; original-publication DOIs remain unavailable. |
 | `psymetadata.rds` | No column | — | No DOI column in the combined package output, including Nuijten. |
-| `SCORE_all_claims.rds` | 3,066 / 3,066 | 200 | New: source original-publication DOIs exposed separately from `studyid`. |
-| `SCORE_replications.rds` | 274 / 548 | 164 | New: `doi` on 274 original rows only; `original_doi` on all 548 rows. Replication-publication DOIs remain missing. |
+| `SCORE_all_claims.rds`, `doi_study` | 3,066 / 3,066 | 200 | New: source original-publication DOIs exposed separately from `studyid`. |
+| `SCORE_replications.rds`, `doi_study` | 548 / 548 | 164 | Original paper DOI is on both matched rows. |
+| `SCORE_replications.rds`, `doi_replication` | 274 / 548 | 1 | Shared SCORE publication DOI on replication rows. |
 | `Sladekova.rds` | No column | — | No DOI column; the current output has no IDs classified as DOI-derived. |
 | `Szucs.rds` | No column | — | No DOI column; source article crosswalk needed. |
 | `WWC.rds` | No column | — | No DOI column; source citations available. |
 | `Yang.rds` | No column | — | No DOI column; primary-study bibliography needed. |
 
-The assembled `BEAR.rds` had 488,970 rows and no DOI column when checked on
-28 September 2026. The inventory above concerns the source datasets in `data/`;
-adding identifiers to the common schema is separate work. Existing study IDs
-were retained throughout.
+The assembled `BEAR.rds` retains `doi_meta`, `doi_study` and
+`doi_replication` where available.
+Collection DOIs remain in their source datasets. Existing study IDs are retained.
+Several original studies may share one `doi_replication`.
 
 Within the Briggs subset, `doi_study` covers 3,788/9,810 estimate rows
 (38.6%) and 440/1,374 distinct source study keys (32.0%). It is present in
@@ -51,19 +63,15 @@ studies were journal articles or had registered DOIs.
 
 ## Next actions
 
-1. Add `doi` to the common `BEAR.rds` schema for the article represented by a
-   row, keeping `studyid` and `metaid` unchanged. Review the scope of each
-   source `doi` before promoting it: leave Bartoš source meta-analysis DOIs
-   and Cochrane review DOIs in their source datasets, rather than attaching
-   them to primary-study rows. For SCORE replication rows, do not put the
-   original paper's DOI in the replication row's `doi`; use the explicitly
-   named `original_doi` if that link is promoted to the common data. Document
-   the field's meaning and missingness in the common data dictionary. Check
-   that selection, row order, statistics and all non-identifier fields are
-   unchanged.
+1. For future DOI additions, promote only the matching publication level to
+   `BEAR.rds`. Bartoš and Cochrane provide `doi_meta`, while Arel-Bundock's
+   `doi_collection` remains source-only. SCORE matched rows retain the original
+   publication as `doi_study`; SCORE, Many Labs 2 and OSC use their project
+   papers as `doi_replication`. Keep `studyid` and `metaid` unchanged. Check
+   row order, statistics and all non-identifier fields after rebuilding.
 2. Continue article DOI enrichment in source datasets using the priorities and
-   qualifications under Remaining work. OSC, WWC and Sladekova are the smaller
-   near-term candidates. First validate Chavalarias identifier namespaces;
+   qualifications under Remaining work. OSC original papers, WWC and Sladekova
+   are the smaller near-term candidates. First validate Chavalarias identifiers;
    only then plan any large PMID conversion. Barnett–Wren is another large
    batch after lookup throughput is established.
 3. Keep `studyid` and `metaid` semantics as a separate identifier review.
@@ -102,7 +110,7 @@ Unassigned includes weak candidates and records lacking enough metadata.
   a different publication. Legacy DOI suffixes containing angle brackets are
   preserved.
 
-  The current output has 3,155 DOI-bearing rows and 1,105 distinct DOIs. Eleven
+  The current output has 3,155 DOI-bearing rows and 1,091 distinct DOIs. Eleven
   reviewed mappings are saved in `doi/Metapsy/final/manual_doi_map.csv`, including the
   known replacement cases; known false-positive candidates remain missing. The
   metadata-aware refresh uses `doi/Metapsy/derived/crossref_references_v3.rds` and can
@@ -112,7 +120,8 @@ Unassigned includes weak candidates and records lacking enough metadata.
   titles; the article titles agree and the audit records this. Five PMIDs have
   no DOI in the response. All original PMIDs remain available.
 - **SCORE:** no lookup was needed. The 274 replication rows retain the matched
-  original publication as `original_doi`; their own `doi` remains missing.
+  original publication as `doi_study` on both matched rows;
+  `doi_replication` identifies the shared SCORE publication on replication rows.
 
 Crossref matches were screened using title, journal, author, year and article
 type. Passing these checks is not manual adjudication. Weak candidates were
@@ -182,7 +191,7 @@ source-field inventory from 10 September 2026.
 | Source work | psymetadata: package datasets currently reduced to numeric/local IDs | Inspect original package fields and documentation by dataset; preserve existing identifiers before searching references. Local IDs must be scoped by source dataset. |
 | Source work | ManyLabs2: 28 replication analyses, site/file study IDs | Inspect the original-effects table and key table for original-paper references. A site/file identifier does not denote a separate publication. |
 | Source work | Szucs: 3,801 constructed article IDs | Locate the article metadata crosswalk for journal/article indices in the source supplement; do not search constructed IDs. |
-| Separate task | Cochrane: existing `doi` identifies the review | Obtain included-study references from the review source before searching primary-paper DOIs. Preserve the review DOI and use an explicitly named primary-article field. |
+| Separate task | Cochrane: `doi_meta` identifies the review | Obtain included-study references from the review source before searching primary-paper DOIs. Preserve the review DOI and use an explicitly named primary-article field. |
 | No action | ClinicalTrials.gov, EUCTR and their combined registry outputs | Retain registry identifiers; article DOI enrichment is not needed for this task. |
 
 # Dealing with DOI lookup issues

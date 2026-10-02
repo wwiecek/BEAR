@@ -87,6 +87,17 @@ Preserve source-supplied identifiers, name BEAR-obtained identifiers in the
 dataset prose, and use a distinct column where identifier types would otherwise
 be confused.
 
+Name DOI columns by publication level: `doi_collection` for a publication
+containing several meta-analyses, `doi_meta` for a meta-analysis or systematic
+review, and `doi_study` for an individual paper. Include only levels established
+for that dataset. Retain `doi_meta`, `doi_study` and `doi_replication` where
+available in `BEAR.rds`; do not substitute a collection or review DOI for a
+study-paper DOI.
+Keep PMID, NCT ID and other identifiers in their own fields.
+For matched replications, retain the original paper as `doi_study` on both
+rows and use `doi_replication` for the replication publication, if known.
+Several original studies may share one `doi_replication`.
+
 The reusable functions are in `R/doi_lookup.R`. Load `tidyverse` and `httr2`,
 then source that file. `lookup_identifiers(papers, cache_path, provider)` takes
 one row per `query` and optional title, journal, year, author and DOI-pattern
@@ -111,7 +122,8 @@ For every feasible DOI or PMID enrichment, follow this sequence:
    and any accepted mapping under `doi/<dataset>/final/`. The latter two
    directories are ignored. Normal processing and `main.R` must not make
    network requests. Canonical processors may read these files if present, but
-   must create a missing `doi` or `pmid` column rather than require them.
+   must create a missing level-specific DOI or `pmid` column rather than
+   require one.
 3. Produce a one-off Markdown review report from the flagged candidates and
    hand it over with the relevant source data and processed `.rds` file. It
    should state the review task and flag meanings, then list source metadata,
@@ -168,6 +180,13 @@ come from mixed source statistics.
 Explicitly decide and document the row unit, `studyid`, its uniqueness scope,
 `metaid` where applicable, `topic`, `subset`, `measure`, `effect_scale`, `method`,
 z derivation, `z_operator`, `ss` and `year`. State when metadata are unavailable.
+Check these mappings against `doc/bear_data_dictionary.md`. Use `ss` for
+the number of subjects or other observational units contributing to an
+estimate, not the number of estimates in a meta-analysis. Check zero,
+negative, fractional and unusually large values against their source
+units; round counts where appropriate, and leave `ss` missing
+when a valid size cannot be established. If a source-specific output
+retains a derived z-value, name it `z`.
 Use `topic` for what the research is about; use `subset` for sampling, provenance,
 reporting or analysis strata. Do not label an effect/row ID `studyid` when a
 genuine study-level identifier exists. Under **Study characteristics**, include

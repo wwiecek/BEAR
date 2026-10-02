@@ -7,7 +7,7 @@ One row is one study result within a Cochrane review analysis. Summaries count r
 | Variable | Definition | Summary |
 |:--|:--|:--|
 | `cochrane_id` | Cochrane review identifier. |  |
-| `doi` | DOI of the review. |  |
+| `doi_meta` | DOI of the review. |  |
 | `withdrawn` | Whether the review was withdrawn. | 0 733,563 / 760,486 (96.5%); 1 26,923 / 760,486 (3.5%) |
 
 ### Review characteristics

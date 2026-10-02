@@ -32,21 +32,21 @@ expected <- c(
   Lang_paper_530 = "10.1016/j.jdeveco.2018.07.008",
   Lang_paper_689 = "10.1093/qje/qjx040")
 for (id in names(expected)) {
-  stopifnot(all(after$doi[after$studyid == id] == expected[[id]]))
+  stopifnot(all(after$doi_study[after$studyid == id] == expected[[id]]))
 }
-articles <- after %>% distinct(studyid, doi)
+articles <- after %>% distinct(studyid, doi = doi_study)
 stopifnot(nrow(articles) == 730L, !anyNA(articles$doi),
           !anyDuplicated(str_to_lower(str_trim(articles$doi))))
 
 audit <- read_csv("data_raw/Lang/derived/lang_doi_journal_lookup.csv",
                   show_col_types = FALSE) %>%
   select(paper_id, source_doi_pattern, legacy_prefix_mismatch)
-flagged <- after %>% distinct(paper_id, doi) %>%
+flagged <- after %>% distinct(paper_id, doi = doi_study) %>%
   inner_join(filter(audit, legacy_prefix_mismatch), by = "paper_id")
 stopifnot(nrow(flagged) == 38L,
           all(str_detect(flagged$doi, flagged$source_doi_pattern)))
 retained <- paste0("Lang_paper_", c(208, 279, 280, 570, 581, 584:586,
                                   589:591, 627, 641, 656))
 stopifnot(identical(before$doi[before$paper_id %in% retained],
-                    after$doi[after$paper_id %in% retained]))
+                    after$doi_study[after$paper_id %in% retained]))
 cat("Lang corrections passed: 3,885 rows, 730 articles, one DOI per article.\n")

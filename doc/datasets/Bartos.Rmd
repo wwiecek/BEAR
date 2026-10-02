@@ -27,8 +27,9 @@ from 215 meta-analyses.
 **Data processing:**
 Z-values were computed as the effect size divided by its reported standard error.
 No filtering or recoding beyond variable renaming was required.
-DOIs were extracted from the supplied references or obtained through Crossref.
-They identify source meta-analyses, not the underlying primary trials.
+DOIs of meta-analyses were extracted from the supplied references or obtained 
+through Crossref.
+
 
 **Study characteristics:**
 
@@ -38,7 +39,8 @@ They identify source meta-analyses, not the underlying primary trials.
   is unfortunately no data to distinguish which data come from the same study and 
   further work on this will be needed.
 - **Meta-analysis ID:** we use the source meta-analysis label in the original 
-  data, `meta_id`.
+  data, `meta_id`. You can find the DOI of the meta-analysis in `doi_meta`; note
+  that a single publication will on average contribute a few meta-analyses.
 - **Topic:** we use categories from original data: "executive function", 
   "general cognition" or "memory".
 - All studies are RCTs.

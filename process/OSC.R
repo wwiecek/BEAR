@@ -6,6 +6,7 @@ osc_raw <- read.csv("data_raw/OSC/reproducibility_package/rpp_data.csv",
 char_cols <- vapply(osc_raw, is.character, logical(1))
 osc_raw[char_cols] <- lapply(osc_raw[char_cols], iconv, from = "latin1",
                              to = "UTF-8", sub = "")
+osc_raw$doi_replication <- "10.1126/science.aac4716"
 # dt_osc <-  osc_raw %>% 
 #   transmute(p_orig = T_pval_USE..O., 
 #             p_repl = T_pval_USE..R.) %>% 

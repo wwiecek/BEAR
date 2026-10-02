@@ -12,7 +12,7 @@ journal_names <- paste(c("American Economic Review", "Quarterly Journal of Econo
   collapse = "|")
 papers <- lang %>%
   distinct(paper_id, studyid, source_title, citation, journal, year, source_author1,
-           previous_doi = doi) %>%
+           previous_doi = doi_study) %>%
   mutate(
     citation_clean = str_replace_all(citation, fixed("¬†"), " "),
     source_journal = coalesce(journal,

@@ -1,6 +1,6 @@
 group,variable,type,definition,applies_to,source,allowed_values_or_units,missingness,notes
 Review identifiers,cochrane_id,character,Cochrane review identifier.,all rows,BEAR processing,CD plus six digits,Never missing,
-Review identifiers,doi,character,DOI of the review.,all rows,"RM5 header, checked edition mapping or checkpoint",Cochrane review DOI,May be missing if conflicting labels cannot be resolved,"The local edition audit records whether the DOI came from the RM5 file, a checked correction or an unverified checkpoint label."
+Review identifiers,doi_meta,character,DOI of the review.,all rows,"RM5 header, checked edition mapping or checkpoint",Cochrane review DOI,May be missing if conflicting labels cannot be resolved,"The local edition audit records whether the DOI came from the RM5 file, a checked correction or an unverified checkpoint label."
 Review identifiers,withdrawn,integer,Whether the review was withdrawn.,all rows,RM5 STATUS,0 active or other; 1 withdrawn,Never missing,The main BEAR dataset excludes withdrawn rows.
 Review characteristics,specialty,factor,Cochrane specialty / review group.,all rows,CDSR export or RM5 GROUP_ID,Review group code,May be missing if neither source supplies a code,
 Review characteristics,rct,logical,Whether review eligibility criteria indicate RCTs only.,all rows,BEAR abstract classifier,TRUE or FALSE,Missing when no matching abstract is available,

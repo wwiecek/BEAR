@@ -11,7 +11,8 @@ papers <- brodeur %>% distinct(title, journal, year, author1) %>%
          source_author = author1,
          query = str_c(title, journal, year, coalesce(author1, ""), sep = " "))
 stopifnot(!anyDuplicated(papers$title))
-legacy_dois <- brodeur %>% distinct(title, journal, year, legacy_doi = doi)
+legacy_dois <- brodeur %>% distinct(title, journal, year,
+                                    legacy_doi = doi_study)
 stopifnot(!anyDuplicated(legacy_dois[c("title", "journal", "year")]))
 papers <- papers %>% left_join(legacy_dois, by = c("title", "journal", "year"))
 papers <- papers %>% mutate(source_doi = legacy_doi)
@@ -24,7 +25,7 @@ if (!"doi" %in% names(papers)) papers$doi <- NA_character_
 
 # Normalised titles identify comparison candidates, not verified equivalences.
 lang <- readRDS("data/Lang.rds") %>%
-  distinct(paper_id, source_title, doi) %>%
+  distinct(paper_id, source_title, doi = doi_study) %>%
   mutate(title_key = str_remove_all(normalise_text(source_title), " ")) %>%
   filter(!is.na(title_key), nzchar(title_key)) %>%
   group_by(title_key) %>% summarise(

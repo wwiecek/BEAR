@@ -39,6 +39,9 @@ exactness, the available effect and standard error, and text order.
 **Study characteristics:**
 
 - **Study ID:** we use the DOI/source-paper identifier in both outputs.
+- `doi_study` identifies the original paper on both matched rows;
+  `doi_replication` identifies the shared SCORE replication publication on
+  replication rows. The all-claims output also uses `doi_study`.
 - **Topic:** field of study (e.g. "political science") as classified by the authors.
 - The underlying study design is not systematically described.
 - Measures: SCORE "claims" dataset measures include regression coefficients, 

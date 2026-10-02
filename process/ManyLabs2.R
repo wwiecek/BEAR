@@ -58,6 +58,7 @@ extract_analysis <- function(metaid, analysis_subset, primary_results,
       ss = stat.N,
       year = NA_real_,
       source = "replication",
+      doi_replication = "10.1177/2515245918810225",
       subset = analysis_subset
     ) %>%
     filter(!is.na(z), !is.na(b), !is.na(se), !is.na(ss),
@@ -134,6 +135,7 @@ manylabs2 <- map2(
     ss = as.numeric(ss),
     year = as.numeric(year),
     source,
+    doi_replication,
     subset,
     orig.z = as.numeric(orig.z),
     orig.z_operator,

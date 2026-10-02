@@ -1,7 +1,8 @@
 # Validate the stable schema and categories of the combined BEAR dataset.
 
 bear_schema_columns <- c(
-  "dataset", "metaid", "studyid", "method", "measure", "subset", "z",
+  "dataset", "metaid", "studyid", "doi_meta", "doi_study",
+  "doi_replication", "method", "measure", "subset", "z",
   "b", "se", "year", "topic", "ss", "z_operator", "effect_scale", "p",
   "outcome_group", "orig.z", "orig.z_operator", "orig.p",
   "orig.b", "orig.se", "orig.ss", "source"
@@ -15,7 +16,8 @@ check_bear_schema <- function(bear) {
     stop("BEAR columns do not match the expected schema.", call. = FALSE)
 
   character_columns <- c(
-    "dataset", "metaid", "studyid", "method", "measure", "subset", "topic",
+    "dataset", "metaid", "studyid", "doi_meta", "doi_study",
+    "doi_replication", "method", "measure", "subset", "topic",
     "z_operator", "effect_scale", "outcome_group", "source"
   )
   numeric_columns <- c(

@@ -15,6 +15,8 @@ Read both files before making changes in `BEAR/`.
 - Put process-specific helper code under `process/`; reserve `R/` for reusable project-wide helpers.
 - When adding or materially changing a dataset, consult `doc/adding_new_datasets.md`
   and keep the implementation and documentation aligned with that workflow.
+- When adding or editing a dataset, check variable definitions and mappings
+  against `doc/bear_data_dictionary.md`.
 - When adding or materially changing a dataset, update
   `doc/dataset_construction_reference.md` and ensure it is aligned with `doc/datasets.Rmd`.
 - When adding or materially changing a dataset, update

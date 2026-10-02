@@ -37,6 +37,8 @@ replication estimates.
 **Study characteristics:**
 
 - **Study ID:** we combine `study.source` and `source.Filename` to identify a replication site/sample.
+- `doi_replication` identifies the Many Labs 2 paper reporting these
+  replication results; it is shared across sites and analyses.
 - **Meta-analysis ID:** we use `analysis.name`.
 - `subset` records the authors’ primary or secondary analysis classification.
 

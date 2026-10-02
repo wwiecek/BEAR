@@ -183,13 +183,19 @@ replication_long <- main_replication_source %>%
 score_replications <- bind_rows(original_long, replication_long) %>%
   calc_study_weights() %>%
   arrange(paper_id, claim_id, source) %>%
+  mutate(doi_study = original_doi,
+         doi_replication = if_else(source == "replication",
+                                   "10.1038/s41586-025-10078-y",
+                                   NA_character_)) %>%
   select(
-    dataset, metaid, studyid, doi, original_doi, estimate_id, paper_id, claim_id, report_id,
+    dataset, metaid, studyid, doi_study, doi_replication,
+    estimate_id, paper_id, claim_id, report_id,
     citation, journal, discipline, year, source, subset, measure, z, abs_z,
     z_operator, p, b, se, ss, weights, significant,
     replication_type, type_internal, z_source, z_from_coef, z_from_stat,
     z_from_p, everything()
-  )
+  ) %>%
+  select(-doi, -original_doi)
 
 score_replication_pairs_main <- main_replication_source %>%
   left_join(paper_lookup, by = "paper_id") %>%

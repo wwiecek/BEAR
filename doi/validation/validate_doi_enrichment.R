@@ -9,15 +9,15 @@ checks <- map_dfr(c("Lang", "Head", "Brodeur"), function(dataset) {
   new <- readRDS(paste0("data/", dataset, ".rds"))
   unchanged <- if (dataset == "Lang") {
     setdiff(names(old), c("studyid", "source_title", "doi"))
-  } else names(old)
+  } else setdiff(names(old), "doi")
   stopifnot(identical(old[unchanged], new[unchanged]))
   tibble(dataset, rows = nrow(new), unchanged_columns_preserved = TRUE,
          corrected_columns = if_else(dataset == "Lang",
                                       "studyid;source_title;doi", ""),
-         doi_rows = sum(!is.na(new$doi)))
+         doi_rows = sum(!is.na(new$doi_study)))
 })
 head <- readRDS("data/Head.rds")
-stopifnot(identical(head$doi, head$first.doi))
+stopifnot(identical(head$doi_study, head$first.doi))
 old <- readRDS("data_raw/doi_validation/doi2pmid_progress.rds")
 new <- readRDS("data_raw/Head/derived/doi2pmid_progress.rds")
 stopifnot(identical(old, new))

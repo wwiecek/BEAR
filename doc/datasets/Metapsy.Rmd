@@ -25,6 +25,9 @@ Signed z-values were computed as effect sizes divided by their standard errors.
 - **Sample size and year:** `ss` is the sum of `n_arm1` and `n_arm2` when both are supplied; `year` is the source year or a year parsed from the study label.
 
 - **Study ID:** we use the source `study` label within each database.
+- `doi_study` identifies individual papers where DOI's were supplied
+  or matched (by us) to the study reference.
+  (A few repeated citations had conflicting DOI suffixes; these were corrected.)
 - **Meta-analysis ID:** we use the Metapsy database identifier.
 - **Topic:** we use an explicit clinical-subject lookup; 
   datasets `peer-support` and `total-response` are labelled as "mental health".

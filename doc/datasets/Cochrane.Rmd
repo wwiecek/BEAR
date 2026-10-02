@@ -45,8 +45,8 @@ and rows with no participants.
 These processing steps are applied in the main dataset, `BEAR.rds`. Additional
 rows are still available to researchers in the individual dataset, `Cochrane.rds`.
 That file retains withdrawn reviews with a `withdrawn` indicator (1 for
-withdrawn, 0 otherwise). Its single `doi` field identifies the source edition
-where this could be established from the saved file or an edition audit.
+withdrawn, 0 otherwise). We also determined review DOIs from either the saved 
+file or a further search (for reviews that had multiple editions).
 
 As a result, the distributed `BEAR.rds` file includes a smaller analysis subset with about
 33,500 rows: the first comparison and first outcome from each review, restricted
@@ -75,7 +75,8 @@ between zero and the conventional significance threshold at 1.96.
 - **Sample size and year:** `ss` is the sum of the two arm totals; `year` is `study.year`.
 
 - **Study ID:** we use `study.name`.
-- **Meta-analysis ID:** we use the Cochrane review identifier (`id`).
+- **Meta-analysis ID:** we use the Cochrane review identifier (`id`). Refer to 
+  `doi_meta` for DOI identifiers of reviews.
 - **Topic:** we use the Cochrane specialty.
 - `subset` records study-data provenance: published, unpublished, sought or mixed.
 - `method`: We review meta-analysis eligibility criteria to determine which meta-analyses 

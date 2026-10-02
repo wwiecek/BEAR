@@ -20,4 +20,4 @@ if (file.exists("doi/Bartos/final/doi_mapping.rds")) {
   exercise <- join_identifiers(exercise,
     readRDS("doi/Bartos/final/doi_mapping.rds"), "reference", "doi")
 }
-saveRDS(exercise, file = "data/Bartos.rds")
+saveRDS(rename(exercise, doi_meta = doi), file = "data/Bartos.rds")

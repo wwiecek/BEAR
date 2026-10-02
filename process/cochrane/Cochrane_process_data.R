@@ -320,5 +320,5 @@ cdsr <- bind_rows(continuous, binary) %>%
   # but instead based on raw inputs like means, SDs, Ns, events
   mutate(z = yi / sqrt(vi))
 
-saveRDS(cdsr, output_path)
+saveRDS(rename(cdsr, doi_meta = doi), output_path)
 message("Saved processed Cochrane data: ", output_path)

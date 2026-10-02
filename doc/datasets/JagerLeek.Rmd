@@ -20,7 +20,7 @@ Notably, a large proportion of p-values are truncated, almost always at 0.0001, 
 **Study characteristics:**
 
 - **Study ID:** we use the PubMed identifier (`pubmedID`). Additionally,
-  article DOIs were obtained from Europe PMC.
+  article DOIs were obtained from Europe PMC and stored as `doi_study`.
 - Study design is not avaialble, but 30% of rows are flagged as RCTs based on scanning 
   publication titles.
 - The extracted p-values are converted to z-values. 

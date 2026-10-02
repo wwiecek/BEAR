@@ -23,5 +23,5 @@ if (file.exists("doi/Brodeur/final/doi_map.csv")) {
 } else {
   df <- df %>% select(-source_doi) %>% mutate(doi = NA_character_)
 }
-df <- df %>% select(-title_key)
+df <- df %>% select(-title_key) %>% rename(doi_study = doi)
 saveRDS(df, file = "data/Brodeur.rds")

@@ -7,11 +7,11 @@ Additions:
 
 - Standardised `measure` and `method` columns; added `effect_scale` (for example, raw and log).
 - Added `topic` for dataset-specific subject classifications and removed the incomplete common `field` column.
-- Added a bunch of `doi` columns in different datasets so that it's easier to find the source articles.
+- Added DOI identifiers to many datasets, differentiating between DOIs of papers
+  and DOIs of meta-analyses; also `doi_replication` for replication efforts.
 
-Both `doi` and `topic` have a bit of subjectivity to them and may not be completely
-accurate. Rememeber to distinguish DOI of paper, meta-analysis, and  
-(meta-meta) collections.
+Some DOI assignments and `topic` classifications may be guesses; please refer to
+dataset documentation.
 
 Dataset-specific updates:
 

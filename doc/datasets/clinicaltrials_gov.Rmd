@@ -3,7 +3,7 @@
 Trials that reported results at ClinicalTrials.gov [@clinicaltrials2025].
 
 **Snapshot date:**
-13 October 2026
+12 August 2025
 
 **Data source:**
 This is a set of flat files of studies obtained from the AACT downloads page
@@ -51,9 +51,9 @@ The main BEAR dataset keeps studies that (1) are randomised, (2) are interventio
 and (3) have fewer than 20 candidate effect rows (see the description in this section).
 
 The full ClinicalTrials.gov table uses only completed studies but does not apply
-these three restrictions. It contains 164,453 rows from 29,852 studies;
-46.4% are author-reported and 53.6% are derived from raw data. The randomised interventional
-subset used in the main BEAR release contains 66,082 rows from 25,017 studies.
+these three restrictions. It contains 151,248 rows from 27,435 studies;
+46.2% are author-reported and 53.8% are derived from raw data. The randomised interventional
+subset used in the main BEAR release contains 60,436 rows from 23,052 studies.
 
 Note that a single ClinicalTrials.gov
 study can contribute several primary outcome IDs, and each primary outcome can
@@ -77,30 +77,6 @@ reports the number of sides for confidence intervals but not for p-values, so we
 treated p-values as two-sided. We dropped rows only when `z` was missing. Notably,
 infinite z-values can arise when `p_value` is recorded as exactly 0, and these are
 included because they are not missing.
-
-Some author-reported effects and confidence intervals are reported in terms 
-of percentages. We identify these rows by searching `param_type` for values 
-that include `%`, `percent`, or `x 100` and dividing the estimates
-and confidence intervals by 100 before deriving z-values. There are also some values,
-like `Ratio of geometric means`, that have at least some effect rows in percentages;
-future work should include identifying a rule to identify which of these rows are
-problematic. 
-
-The `non_inferiority_type` column gives the type of statistical test that an 
-author-reported p-value is being tested against. When the `non_inferiority_type` 
-is not `superiority` (6.4% of all effect rows), the p-value tests the estimate 
-relative to the potentially non-zero margin. Information about the margin is
-sometimes included in `non_inferiority_description`.
-
-`non_inferiority_type` is often inconsistent with the description; for
-example, many rows typed as equivalence or non-inferiority tests describe
-ordinary difference tests. `non_inferior_type_constructed` therefore
-classifies the test as superiority, non-inferiority, equivalence,
-non-inferiority or equivalence, or unknown from the description where one
-exists (`non_inferior_desc_exists`), and from `non_inferiority_type` otherwise,
-treating superiority and other types without a description as superiority
-tests. `non_inferior_margin` records the margin or threshold stated in the
-description.
 
 
 **Study characteristics:**

@@ -8,8 +8,8 @@ non-inferiority review, documentation updates and the report.
 
 ## Non-inferiority test type and margin
 
-The columns `description_exists`, `standardized_non_inferiority_type` and
-`extracted_margin` of `data/clinicaltrialsgov.rds` come from rules in
+The columns `non_inferior_desc_exists`, `non_inferior_type_constructed` and
+`non_inferior_margin` of `data/clinicaltrialsgov.rds` come from rules in
 `lib/non_inferiority.R` (step 07) and from recorded manual review decisions
 in `lib/manual_review/non_inferiority_review.csv` (step 10).
 

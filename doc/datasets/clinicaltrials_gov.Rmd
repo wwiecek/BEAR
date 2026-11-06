@@ -94,18 +94,13 @@ sometimes included in `non_inferiority_description`.
 
 `non_inferiority_type` is often inconsistent with the description; for
 example, many rows typed as equivalence or non-inferiority tests describe
-ordinary difference tests. `standardized_non_inferiority_type` therefore
+ordinary difference tests. `non_inferior_type_constructed` therefore
 classifies the test as superiority, non-inferiority, equivalence,
 non-inferiority or equivalence, or unknown from the description where one
-exists (`description_exists`), and from `non_inferiority_type` otherwise,
+exists (`non_inferior_desc_exists`), and from `non_inferiority_type` otherwise,
 treating superiority and other types without a description as superiority
-tests. `extracted_margin` records the margin or threshold stated in the
-description. Both columns combine text-matching rules with a recorded manual
-review of descriptions the rules could not settle. Of the 18,033
-author-reported rows with a description, 49.9% are classified as
-superiority, 25.8% as non-inferiority, 15.7% as equivalence, 1.1% as
-non-inferiority or equivalence and 7.4% as unknown; 6,965 rows have an
-extracted margin. The main BEAR dataset does not filter on these columns.
+tests. `non_inferior_margin` records the margin or threshold stated in the
+description.
 
 
 **Study characteristics:**

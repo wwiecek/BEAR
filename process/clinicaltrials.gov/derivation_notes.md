@@ -224,24 +224,19 @@ identifies these yet.
 the test type and margin for author-reported rows (raw-derived rows are
 missing):
 
-- `description_exists`: whether a description is present.
-- `standardized_non_inferiority_type`: `SUPERIORITY`, `NON_INFERIORITY`,
+- `non_inferior_desc_exists`: whether a description is present.
+- `non_inferior_type_constructed`: `SUPERIORITY`, `NON_INFERIORITY`,
   `EQUIVALENCE`, `NON_INFERIORITY_OR_EQUIVALENCE` or `UNKNOWN`, classified
   from the description when there is one and mapped from
   `non_inferiority_type` otherwise. Without a description, the superiority
   types and `OTHER` map to `SUPERIORITY`.
-- `extracted_margin`: the margin or threshold stated in the description, as
+- `non_inferior_margin`: the margin or threshold stated in the description, as
   text.
 
-Step 07 applies regex rules from `lib/non_inferiority.R`. Step 10 replaces the
-rule-based values with the decisions recorded in
-`lib/manual_review/non_inferiority_review.csv` and writes descriptions the
-rules cannot settle to
-`validation/manual_review/non_inferiority_review_queue.csv`. Queued rows keep
-their rule-based values until reviewed. `non_inferiority_review_procedure.md`
-documents the rules, the review procedure and the classification conventions.
-Step 10's run message gives the number of reviewed and queued descriptions;
-counts by type are in `data_summary/clinicaltrialsgov.md`.
+When classifying `non_inferior_type_constructed` from the description, a
+combination of regex rules stored in `lib/non_inferiority.R` and manual review 
+decisions recorded in `lib/manual_review/non_inferiority_review.csv` 
+was used. 
 
 ## Pre/Post Side Tables
 
@@ -329,7 +324,7 @@ separate genuinely comparable author/raw scales from non-comparable pairs
 before summarising disagreements.
 
 Manual review integration (step 10) checks that the row count is unchanged,
-that every `standardized_non_inferiority_type` is a valid category, that
+that every `non_inferior_type_constructed` is a valid category, that
 raw-derived rows have no non-inferiority values, and that a margin appears
 only where a description exists. It reports the number of descriptions and
 rows waiting in the review queue.

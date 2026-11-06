@@ -110,11 +110,11 @@ z_table <- z_table %>%
   left_join(ni_descriptions %>% select(non_inferiority_description, rule_type, rule_margin),
             by = "non_inferiority_description") %>%
   mutate(
-    description_exists = !is.na(non_inferiority_description) &
+    non_inferior_desc_exists = !is.na(non_inferiority_description) &
       str_trim(non_inferiority_description) != "",
-    standardized_non_inferiority_type = ctgov_ni_resolve_type(
-      rule_type, non_inferiority_type, description_exists),
-    extracted_margin = if_else(description_exists, rule_margin, NA_character_)
+    non_inferior_type_constructed = ctgov_ni_resolve_type(
+      rule_type, non_inferiority_type, non_inferior_desc_exists),
+    non_inferior_margin = if_else(non_inferior_desc_exists, rule_margin, NA_character_)
   ) %>%
   select(-rule_type, -rule_margin)
 
@@ -124,7 +124,7 @@ validation_checks <- tibble::tibble(
     "valid_z_operator_values",
     "no_duplicate_outcome_analysis_id",
     "all_saved_rows_have_z",
-    "valid_standardized_non_inferiority_type",
+    "valid_non_inferior_type_constructed",
     "margin_only_with_description"
   ),
   passed = c(
@@ -135,8 +135,8 @@ validation_checks <- tibble::tibble(
     all(is.na(z_table$z_operator) | z_table$z_operator %in% c("=", "<", ">")),
     anyDuplicated(z_table %>% select(nct_id, outcome_analysis_id)) == 0,
     all(!is.na(z_table$z)),
-    all(z_table$standardized_non_inferiority_type %in% ctgov_ni_types),
-    all(z_table$description_exists | is.na(z_table$extracted_margin))
+    all(z_table$non_inferior_type_constructed %in% ctgov_ni_types),
+    all(z_table$non_inferior_desc_exists | is.na(z_table$non_inferior_margin))
   )
 )
 

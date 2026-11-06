@@ -2,8 +2,8 @@
 
 ## 2026-10-30 standardised non-inferiority test type and margin
 
-- Added `description_exists`, `standardized_non_inferiority_type` and
-  `extracted_margin` for author-reported rows (`NA` for raw-derived rows).
+- Added `non_inferior_desc_exists`, `non_inferior_type_constructed` and
+  `non_inferior_margin` for author-reported rows (`NA` for raw-derived rows).
   The type is classified from `non_inferiority_description` when present and
   mapped from `non_inferiority_type` otherwise; the margin is the value stated
   in the description, as text.

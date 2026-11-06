@@ -148,7 +148,7 @@ the maintainer. Work through the steps in order and do not skip the checks.
    library(dplyr); library(purrr)
    source("process/clinicaltrials.gov/lib/non_inferiority.R")
    dec <- read.csv("process/clinicaltrials.gov/lib/manual_review/non_inferiority_review.csv")
-   d <- readRDS("data/clinicaltrialsgov.rds") %>% filter(description_exists %in% TRUE)
+   d <- readRDS("data/clinicaltrialsgov.rds") %>% filter(non_inferior_desc_exists %in% TRUE)
    nrow(dec); table(dec$reviewed_type)
    sum(ctgov_ni_description_id(d$non_inferiority_description) %in% dec$description_id)
    ```
@@ -181,10 +181,10 @@ median(per$o); median(per$r)
 round(100 * mean(d$non_inferiority_type %in% c(
   "NON_INFERIORITY", "EQUIVALENCE", "NON_INFERIORITY_OR_EQUIVALENCE",
   "NON_INFERIORITY_OR_EQUIVALENCE_LEGACY")), 1)
-desc <- d %>% filter(description_exists %in% TRUE)
+desc <- d %>% filter(non_inferior_desc_exists %in% TRUE)
 nrow(desc)
-round(100 * prop.table(table(desc$standardized_non_inferiority_type)), 1)
-sum(!is.na(d$extracted_margin))
+round(100 * prop.table(table(desc$non_inferior_type_constructed)), 1)
+sum(!is.na(d$non_inferior_margin))
 ```
 
 Then update these places. Find them by their text; line numbers shift.

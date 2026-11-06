@@ -45,11 +45,11 @@ public <- public %>%
             by = "non_inferiority_description", na_matches = "never") %>%
   mutate(
     author_row = effect_source == "author_reported",
-    standardized_non_inferiority_type = if_else(
+    non_inferior_type_constructed = if_else(
       author_row,
-      ctgov_ni_resolve_type(final_type, non_inferiority_type, description_exists),
+      ctgov_ni_resolve_type(final_type, non_inferiority_type, non_inferior_desc_exists),
       NA_character_),
-    extracted_margin = if_else(author_row & description_exists, final_margin, NA_character_)
+    non_inferior_margin = if_else(author_row & non_inferior_desc_exists, final_margin, NA_character_)
   ) %>%
   select(-author_row, -final_type, -final_margin)
 
@@ -62,16 +62,16 @@ ni_queue <- ni_final %>%
 validation_checks <- tibble::tibble(
   check = c(
     "row_count_unchanged",
-    "valid_standardized_non_inferiority_type",
+    "valid_non_inferior_type_constructed",
     "raw_rows_have_no_non_inferiority_columns",
     "margin_only_with_description"
   ),
   passed = c(
     nrow(public) == n_before,
-    all(public$standardized_non_inferiority_type[public$effect_source == "author_reported"] %in%
+    all(public$non_inferior_type_constructed[public$effect_source == "author_reported"] %in%
           ctgov_ni_types),
-    all(is.na(public$standardized_non_inferiority_type[public$effect_source == "raw_derived"])),
-    all(is.na(public$extracted_margin) | public$description_exists %in% TRUE)
+    all(is.na(public$non_inferior_type_constructed[public$effect_source == "raw_derived"])),
+    all(is.na(public$non_inferior_margin) | public$non_inferior_desc_exists %in% TRUE)
   )
 )
 

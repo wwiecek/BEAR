@@ -6,12 +6,12 @@ the rules cannot settle. Follow it whenever the pipeline reports
 non-inferiority descriptions in the review queue, and whenever the rules
 change.
 
-- `description_exists`: whether the analysis has a
+- `non_inferior_desc_exists`: whether the analysis has a
   `non_inferiority_description`.
-- `standardized_non_inferiority_type`: the type of hypothesis the analysis
+- `non_inferior_type_constructed`: the type of hypothesis the analysis
   tests: `SUPERIORITY`, `NON_INFERIORITY`, `EQUIVALENCE`,
   `NON_INFERIORITY_OR_EQUIVALENCE` or `UNKNOWN`.
-- `extracted_margin`: the margin or threshold stated in the description, as
+- `non_inferior_margin`: the margin or threshold stated in the description, as
   text.
 
 The columns apply to author-reported rows. Raw-derived rows have `NA` in all
@@ -37,7 +37,7 @@ its changelog records how they evolved.
 
 ### 1.1 Description exists
 
-`description_exists` is `TRUE` when `non_inferiority_description` is not
+`non_inferior_desc_exists` is `TRUE` when `non_inferiority_description` is not
 missing and not blank.
 
 ### 1.2 Test type from `non_inferiority_type` (rows without a description)
@@ -98,7 +98,7 @@ the row is known.
 
 ### 1.4 Margin from the description
 
-`extracted_margin` holds the margin or threshold as stated in the
+`non_inferior_margin` holds the margin or threshold as stated in the
 description, as text (`ctgov_ni_extract_margin()`). Values are not converted
 to a common scale. The first rule that finds a value wins:
 

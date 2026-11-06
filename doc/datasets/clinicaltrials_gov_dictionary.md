@@ -113,9 +113,9 @@ The summary column is computed from `clinicaltrialsgov.rds` when this dictionary
 | `ci_n_sides` | Number of sides for the source-reported confidence interval. |  |
 | `non_inferiority_type` | Type of hypothesis tested by the source-reported analysis. |  |
 | `non_inferiority_description` | Source-reported free-text description of the non-inferiority or equivalence analysis. |  |
-| `description_exists` | Whether the source-reported analysis has a non_inferiority_description. |  |
-| `standardized_non_inferiority_type` | Type of hypothesis tested, classified from non_inferiority_description when present and from non_inferiority_type otherwise. |  |
-| `extracted_margin` | Margin or threshold stated in non_inferiority_description. |  |
+| `non_inferior_desc_exists` | Whether the source-reported analysis has a non_inferiority_description. |  |
+| `non_inferior_type_constructed` | Type of hypothesis tested, classified from non_inferiority_description when present and from non_inferiority_type otherwise. |  |
+| `non_inferior_margin` | Margin or threshold stated in non_inferiority_description. |  |
 
 ### Raw endpoint calculation inputs
 

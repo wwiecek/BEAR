@@ -27,10 +27,10 @@ ctgov_ni_map_type <- function(type) {
 # NO_SIGNAL descriptions say nothing about the test: SUPERIORITY on
 # superiority types, UNKNOWN otherwise
 ctgov_ni_resolve_type <- function(description_type, non_inferiority_type,
-                                  description_exists) {
+                                  non_inferior_desc_exists) {
   mapped <- ctgov_ni_map_type(non_inferiority_type)
   case_when(
-    !description_exists | description_type == "FROM_TYPE" ~ mapped,
+    !non_inferior_desc_exists | description_type == "FROM_TYPE" ~ mapped,
     description_type == "NO_SIGNAL" ~
       if_else(mapped == "SUPERIORITY", "SUPERIORITY", "UNKNOWN"),
     TRUE ~ description_type

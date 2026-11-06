@@ -75,7 +75,7 @@ site_data_label_override <- function(path, key) {
     "Bartos" = "2.2k studies in 215 meta-analyses",
     "Brodeur" = "328 RCTs from econ journals",
     "Chavalarias" = "1.9mln studies from MEDLINE/PubMed",
-    "clinicaltrials" = "registry of 16.6k clinical trials",
+    "clinicaltrials" = "registry of 25k clinical trials",
     "Cochrane" = "90k studies in 6.6k Cochrane reviews",
     "CostelloFox" = "13k studies from 466 meta-analyses",
     "euctr" = "registry of 8.7k clinical trials",

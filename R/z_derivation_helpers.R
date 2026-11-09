@@ -89,6 +89,12 @@ is_log_measure_label <- function(x) {
   stringr::str_detect(x0, "\\.log\\b|\\blog\\b") | x0 %in% c("orl", "hrl", "rrl")
 }
 
+# Labels marking estimates reported as percentages (x 100): "%", "percent" or
+# "x 100". For ratios this means a null of 100 rather than 1.
+is_percent_measure_label <- function(x) {
+  stringr::str_detect(norm_trial_text(x), "%|percent|x ?100|× ?100")
+}
+
 # Labels that suggest CIs should not be treated as simple Wald intervals. A
 # p-derived z is preferred where one is available in these cases.
 is_non_wald_ci_label <- function(x) {
@@ -207,6 +213,13 @@ derive_trial_z <- function(estimate, lower, upper, p_value, p_operator = NULL,
   # being analysed on an inappropriate raw scale.
   measure_class <- classify_trial_measure(measure_label)
   ratio_like <- is_ratio_measure(measure_class)
+  # Put estimates reported as percentages back on the proportion scale. For
+  # ratios this takes the estimate, SE and sign against a null of 1, whichever
+  # of the CI or p-value later supplies z; raw-scale z-values are unchanged.
+  percent_rescaled <- !already_log & is_percent_measure_label(measure_label)
+  estimate[percent_rescaled] <- estimate[percent_rescaled] / 100
+  lower[percent_rescaled] <- lower[percent_rescaled] / 100
+  upper[percent_rescaled] <- upper[percent_rescaled] / 100
   log_ok <- ratio_like & !already_log &
     is.finite(estimate) & is.finite(lower) & is.finite(upper) &
     estimate > 0 & lower > 0 & upper > 0
@@ -295,7 +308,7 @@ derive_trial_z <- function(estimate, lower, upper, p_value, p_operator = NULL,
   )
 
   tibble::tibble(
-    measure_class, ratio_like, already_log, scale, log_ok,
+    measure_class, ratio_like, already_log, percent_rescaled, scale, log_ok,
     ci_level, ci_sides, p_sides, z_crit, p_num, z_ci, z_p, z_source, use_ci,
     b, se, z, sym_ratio, z_operator
   )

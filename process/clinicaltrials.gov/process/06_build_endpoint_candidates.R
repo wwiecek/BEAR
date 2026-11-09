@@ -147,8 +147,13 @@ candidate_summary <- bind_rows(
 ) %>%
   arrange(section, source_row_class, effect_family, measure)
 
+ctgov_record_counts("06_build_endpoint_candidates", c(
+  endpoint_candidate_rows = nrow(candidate)
+))
+
+# Every prioritized endpoint effect is kept: annotation adds columns, not rows.
 stopifnot(
-  nrow(candidate) == 250444,
+  nrow(candidate) == nrow(raw_endpoint),
   all(c(
     "measure", "effect_family", "source_row_class", "validity_tier",
     "orientation_rule", "pair_selection_rule", "author_overlap_band",

@@ -19,6 +19,16 @@ default. Some data state whether CIs or p-values are one- or two-sided.
 Similarly, when working with p-values we assume a two-sided test when no additional
 information is stated.
 
+Some registry estimates are reported as percentages. When the measure label
+contains a percent sign, the word "percent" or a multiplication by 100, and
+the estimate is not marked as already log-transformed, we divide the estimate
+and both confidence limits by 100 before deriving the z-value. For ratio
+measures this places the null at 1 rather than 100, so the log-scale
+estimate, its standard error and the sign are taken against the correct
+null. For other measures the estimate and standard error are expressed as
+proportions and the z-value is unchanged. In the current version this rule
+applies only to ClinicalTrials.gov rows.
+
 
 
 ## Confidence intervals

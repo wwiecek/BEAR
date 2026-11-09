@@ -171,9 +171,9 @@ plot_lines <- function(plot_rows) {
 }
 
 provenance_labels <- c(
-  Original = "Taken from the source, with minimal changes",
+  Original = "Taken from variables in the source data, with minimal changes",
   Derived = "Calculated from other variables in the data",
-  Constructed = "Built from recoded, cleaned and/or categorized source variables"
+  Constructed = "Built from cleaned or recoded variables in the source data"
 )
 
 provenance_legend <- function() {

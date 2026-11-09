@@ -15,6 +15,9 @@ contrasts <- readRDS(file.path(out_dir, "prepost_contrast_candidates.rds"))
 endpoint_source_rows <- readRDS(file.path(out_dir, "endpoint_source_rows.rds"))
 source_rows_classified <- readRDS(file.path(out_dir, "endpoint_source_rows_classified.rds"))
 raw_effects_v2 <- readRDS(file.path(out_dir, "raw_endpoint_effects.rds"))
+expected_endpoint_rows <- ctgov_recorded_count(
+  "02_derive_endpoint_effects", "raw_endpoint_effect_rows"
+)
 
 required_cols <- c(
   "prepost_pair_id", "nct_id", "outcome_id", "result_group_id",
@@ -95,7 +98,9 @@ qc_checks <- tibble(
     ),
     nrow(contrasts) == 0 ||
       n_distinct(contrasts$prepost_contrast_candidate_id) == nrow(contrasts),
-    nrow(raw_effects_v2) == 250444,
+    # Pre/post side tables must not change the endpoint effects written by
+    # step 02 in this snapshot's run (skipped if step 02 recorded no count).
+    is.na(expected_endpoint_rows) || nrow(raw_effects_v2) == expected_endpoint_rows,
     nrow(source_rows_classified) == nrow(endpoint_source_rows) &
       all(source_rows_classified$outcome_measurement_id == endpoint_source_rows$outcome_measurement_id)
   )

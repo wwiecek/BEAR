@@ -9,6 +9,9 @@ library(tibble)
 
 source("process/clinicaltrials.gov/lib/paths.R")
 
+# Cached extracts below are reused only if they come from this snapshot.
+ctgov_reset_caches_if_snapshot_changed()
+
 snapshot_zip <- ctgov_snapshot_zip
 out_dir <- ctgov_intermediate_dir
 candidate_csv <- file.path(out_dir, "outcome_measurements_first_pass_candidates.csv")
@@ -17,6 +20,10 @@ outcome_measurements_long_path <- file.path(
   out_dir, "outcome_measurements_first_pass_long.rds"
 )
 outcome_measurements_long_endpoint_path <- file.path(out_dir, "outcome_measurements_long.rds")
+# Candidate keys and IDs from the unfiltered first-pass candidates. The saved
+# first-pass long table is filtered further, so a cached run must not take its
+# IDs from that table, or later supporting tables lose trials.
+first_pass_ids_path <- file.path(out_dir, "outcome_measurements_first_pass_ids.rds")
 
 # Helpers -----
 
@@ -447,16 +454,17 @@ if (file.exists(candidate_csv_endpoint)) {
   )
 }
 
-if (file.exists(outcome_measurements_long_path)) {
+if (file.exists(outcome_measurements_long_path) && file.exists(first_pass_ids_path)) {
   message("Using existing ", outcome_measurements_long_path)
   outcome_measurements_long_existing <- readRDS(outcome_measurements_long_path)
-  candidate_keys <- outcome_measurements_long_existing %>%
-    distinct(nct_id, outcome_id, result_group_id, ctgov_group_code)
-  candidate_nct_ids_first_pass <- unique(outcome_measurements_long_existing$nct_id)
-  candidate_outcome_ids_first_pass <- unique(outcome_measurements_long_existing$outcome_id)
-  candidate_group_ids_first_pass <- unique(outcome_measurements_long_existing$result_group_id)
-  measurement_candidates_n <- nrow(outcome_measurements_long_existing)
-  measurement_candidates_nct <- n_distinct(outcome_measurements_long_existing$nct_id)
+  first_pass_ids <- readRDS(first_pass_ids_path)
+  candidate_keys <- first_pass_ids$keys
+  candidate_nct_ids_first_pass <- first_pass_ids$nct_ids
+  candidate_outcome_ids_first_pass <- first_pass_ids$outcome_ids
+  candidate_group_ids_first_pass <- first_pass_ids$group_ids
+  measurement_candidates_n <- first_pass_ids$n_rows
+  measurement_candidates_nct <- first_pass_ids$n_trials
+  rm(first_pass_ids)
 } else {
   message("Reading reduced outcome-measurement candidates")
   measurement_candidates <- read_generated_csv(candidate_csv) %>%
@@ -473,6 +481,17 @@ if (file.exists(outcome_measurements_long_path)) {
   candidate_group_ids_first_pass <- unique(measurement_candidates$result_group_id)
   measurement_candidates_n <- nrow(measurement_candidates)
   measurement_candidates_nct <- n_distinct(measurement_candidates$nct_id)
+  saveRDS(
+    list(
+      keys = candidate_keys,
+      nct_ids = candidate_nct_ids_first_pass,
+      outcome_ids = candidate_outcome_ids_first_pass,
+      group_ids = candidate_group_ids_first_pass,
+      n_rows = measurement_candidates_n,
+      n_trials = measurement_candidates_nct
+    ),
+    first_pass_ids_path
+  )
 }
 
 message("Reading broad v2 outcome-measurement candidates")

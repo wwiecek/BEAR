@@ -42,19 +42,3 @@ _Working with correlations_ for its Fisher-transformed entries.
   one conflicting classification is left missing.
 - The designs of the primary studies are not classified.
 
-**Individual dataset dictionary:**
-
-| Column | Description |
-|---|---|
-| `studyid` | Study grouping within a meta-analysis |
-| `study_label` | Study description derived from source data, often author-year. |
-| `metaid` | Identifier of the source meta-analytic dataset. |
-| `doi_meta` | DOI of the original meta-analytic paper. |
-| `topic` | Psychology subfield of the meta-analytic paper. |
-| `measure` | Type of effect, such as a correlation, where known. |
-| `effect_scale` | `fisher_z` or `raw` correlations; three other categories used when raw correlation was paired with variance for Fisher's z, there was a possible mismatch, or if we do not have enough information to determine scale. These latter categories are guesses by an LLM. |
-| `b` | Effect estimate supplied by authors. |
-| `se` | Square root of the variance supplied by authors; note that this may be on a different scale from `b` (see effect_scale). |
-| `z` | Effect divided by `se`; questionable scale pairings may give misleading values. |
-| `ss` | Number of participants or units used to obtain the estimate, where available. |
-| `year` | Study or publication year as determined by authors. |

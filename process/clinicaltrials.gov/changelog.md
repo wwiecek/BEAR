@@ -2,11 +2,16 @@
 
 ## 2026-11-20 AACT snapshot
 
-- Processed the 20 November 2026 snapshot. The public file contains 165,571
+- Processed the 20 November 2026 snapshot. The public file contains 165,567
   rows from 30,084 trials, up from 164,453 rows and 29,852 trials in October.
 - Reviewed 11 new non-inferiority descriptions covering 43 rows. Recorded
   six superiority, one non-inferiority and four `NO_SIGNAL` decisions.
   The review queue is empty and all validation checks passed.
+- Reran the affected stages with the narrower percentage conversion rule.
+  It changed 14 retained z-values and removed four author analyses whose
+  confidence intervals did not meet the symmetry rule and whose p-values
+  were missing. The BEAR subset contains 66,639 rows from 25,206 trials.
+  Archive: `20112026/20261120_export_ctgov.zip`.
 
 ## 2026-10-30 standardised non-inferiority test type and margin
 

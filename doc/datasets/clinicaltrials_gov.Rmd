@@ -51,9 +51,9 @@ The main BEAR dataset keeps studies that (1) are randomised, (2) are interventio
 and (3) have fewer than 20 candidate effect rows (see the description in this section).
 
 The full ClinicalTrials.gov table uses only completed studies but does not apply
-these three restrictions. It contains 165,571 rows from 30,084 studies. Of these rows,
+these three restrictions. It contains 165,567 rows from 30,084 studies. Of these rows,
 46.5% are author-reported and 53.5% are derived from raw data. The randomised interventional
-subset used in the main BEAR release contains 66,642 rows from 25,206 studies.
+subset selected by the BEAR build rules contains 66,639 rows from 25,206 studies.
 
 Note that a single ClinicalTrials.gov
 study can contribute several primary outcome IDs, and each primary outcome can
@@ -78,13 +78,13 @@ treated p-values as two-sided. We dropped rows only when `z` was missing. Notabl
 infinite z-values can arise when `p_value` is recorded as exactly 0, and these are
 included because they are not missing.
 
-Some author-reported effects and confidence intervals are reported in terms 
-of percentages. We identify these rows by searching `param_type` for values 
-that include `%`, `percent`, or `x 100` and dividing the estimates
-and confidence intervals by 100 before deriving z-values. There are also some values,
-like `Ratio of geometric means`, that have at least some effect rows in percentages;
-future work should include identifying a rule to identify which of these rows are
-problematic. 
+We convert author-reported estimates when `param_type` identifies percentage
+units, as in `Ratio (%)`, `Ratio x 100` or `Difference in percentages`.
+Confidence levels do not indicate the units of the estimate. For ratios, we
+divide the estimate and confidence limits by 100 before taking logs. For
+additive effects, we divide the estimate and standard error by 100 after
+deriving the z-value. We retain the units of already logged estimates and
+of estimates whose percentage units are unstated.
 
 The `non_inferiority_type` column records the type of statistical test.
 The registry labels 6.3% of all effect rows as non-inferiority or

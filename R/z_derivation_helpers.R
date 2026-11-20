@@ -89,6 +89,26 @@ is_log_measure_label <- function(x) {
   stringr::str_detect(x0, "\\.log\\b|\\blog\\b") | x0 %in% c("orl", "hrl", "rrl")
 }
 
+# Identify unit markers in estimand labels. An embedded percentage can refer
+# to the confidence level or to a component of a ratio.
+is_percent_measure_label <- function(x, ratio_like) {
+  x <- norm_trial_text(x)
+  symbol <- "(?<![0-9])(?<![0-9] )%"
+  word <- "(?<![0-9] )\\bpercent(?:age)?s?\\b"
+  unit <- paste0("(?:", symbol, "|", word, ")")
+  scaled <- "(?:\\bx\\s*|×\\s*)100\\b(?![.,][0-9])"
+  unit_marker <- paste0("^", symbol, "|^", word, "|", symbol, "$|",
+                        "(?<!\\bof )\\b", word, "$|",
+                        "[(\\[]\\s*(?:in\\s+)?", unit, "(?:[- ]points?)?\\s*[)\\];]")
+  ratio_unit <- paste0(symbol, "\\s*ratio\\b|\\bratio[,;:]\\s*", unit)
+  additive_unit <- paste0("\\b(?:in|of)(?: the)?\\s+", unit, "|", unit,
+                          "\\s+(?:change|diff(?:erence)?|reduction|increase|of)\\b|",
+                          "\\b(?:diff(?:erence)?|change)\\s*", unit)
+  stringr::str_detect(x, paste(scaled, unit_marker, sep = "|")) |
+    (ratio_like & stringr::str_detect(x, ratio_unit)) |
+    (!ratio_like & stringr::str_detect(x, additive_unit))
+}
+
 # Labels that suggest CIs should not be treated as simple Wald intervals. A
 # p-derived z is preferred where one is available in these cases.
 is_non_wald_ci_label <- function(x) {
@@ -207,6 +227,13 @@ derive_trial_z <- function(estimate, lower, upper, p_value, p_operator = NULL,
   # being analysed on an inappropriate raw scale.
   measure_class <- classify_trial_measure(measure_label)
   ratio_like <- is_ratio_measure(measure_class)
+  # Rescale ratios before taking logs so an estimate of 100 maps to the null.
+  percent_rescaled <- !already_log &
+    is_percent_measure_label(measure_label, ratio_like)
+  ratio_rescaled <- percent_rescaled & ratio_like
+  estimate[ratio_rescaled] <- estimate[ratio_rescaled] / 100
+  lower[ratio_rescaled] <- lower[ratio_rescaled] / 100
+  upper[ratio_rescaled] <- upper[ratio_rescaled] / 100
   log_ok <- ratio_like & !already_log &
     is.finite(estimate) & is.finite(lower) & is.finite(upper) &
     estimate > 0 & lower > 0 & upper > 0
@@ -281,6 +308,11 @@ derive_trial_z <- function(estimate, lower, upper, p_value, p_operator = NULL,
     !is.na(z) & z != 0 & is.finite(b) ~ abs(b) / abs(z),
     TRUE ~ NA_real_
   )
+  # For additive effects, convert units after deriving z so rescaling cannot
+  # move the CI symmetry ratio across the cutoff through rounding.
+  additive_rescaled <- percent_rescaled & !ratio_like
+  b[additive_rescaled] <- b[additive_rescaled] / 100
+  se[additive_rescaled] <- se[additive_rescaled] / 100
   z_source <- dplyr::case_when(
     ci_bounds_reversed ~ NA_character_,
     use_ci ~ "ci",
@@ -295,7 +327,7 @@ derive_trial_z <- function(estimate, lower, upper, p_value, p_operator = NULL,
   )
 
   tibble::tibble(
-    measure_class, ratio_like, already_log, scale, log_ok,
+    measure_class, ratio_like, already_log, percent_rescaled, scale, log_ok,
     ci_level, ci_sides, p_sides, z_crit, p_num, z_ci, z_p, z_source, use_ci,
     b, se, z, sym_ratio, z_operator
   )

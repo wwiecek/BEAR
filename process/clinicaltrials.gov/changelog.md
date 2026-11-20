@@ -1,5 +1,52 @@
 # Changelog
 
+## 2026-10-30 standardised non-inferiority test type and margin
+
+- Added `non_inferior_desc_exists`, `non_inferior_type_constructed` and
+  `non_inferior_margin` for author-reported rows (`NA` for raw-derived rows).
+  The type is classified from `non_inferiority_description` when present and
+  mapped from `non_inferiority_type` otherwise; the margin is the value stated
+  in the description, as text.
+- Rules are in `lib/non_inferiority.R` (step 07). New step
+  `10_integrate_manual_review.R` applies recorded decisions from
+  `lib/manual_review/non_inferiority_review.csv` (2,032 descriptions for the
+  13 October 2026 snapshot) and writes descriptions that still need review to
+  `validation/manual_review/non_inferiority_review_queue.csv`.
+- `non_inferiority_review_procedure.md` documents the rules and the review
+  conventions; helper scripts are in `review/`, and `AGENTS.md` points agents
+  to the procedure.
+
+## 2026-10-23 percentages, non-inferiority tests and step 01 cache
+
+- Author-reported estimates and CI bounds with `%`, `percent` or `x 100` in
+  `param_type` are divided by 100 before z derivation (`percent_rescaled`
+  flags them), so ratios reported x100 are tested against 1.
+- Added `non_inferiority_type` and `non_inferiority_description` from
+  `outcome_analyses` to the public file; for non-inferiority and equivalence
+  analyses the reported p-value tests a margin, not zero.
+- Step 01 now saves the first-pass candidate IDs, so runs with cached extracts
+  match fresh runs. Step 07 needs step 00 output; the old
+  `clinicaltrials.gov_aug2025.rds` lacks the new columns.
+
+## 2026-10-19 snapshot-independent pipeline
+
+- The AACT snapshot is now set with the `CTGOV_SNAPSHOT_ZIP` environment
+  variable instead of a hard-coded path. Any snapshot with the same tables and
+  columns runs without code changes.
+- Added `process/00_prepare_author_analyses.R` as the first pipeline step. It
+  replaces `process/clinicaltrials_prepare_data.R`, reads directly from the
+  zip (no unzipping), and writes `derived/author_reported_raw.rds`. Step 07
+  still reads the old `clinicaltrials.gov_aug2025.rds` if step 00 has not run.
+  Removed the `CTGOV_REBUILD_AUTHOR` option, which stopped instead of
+  rebuilding.
+- Added `lib/snapshot.R`. `derived/snapshot_stamp.txt` records which snapshot
+  the cached derived files came from; when the snapshot changes, cached files
+  are removed and rebuilt, so old and new snapshots cannot be mixed silently.
+- Replaced the six hard-coded counts (steps 06, validate/02, validate/03) with
+  checks that hold for any snapshot (e.g. step 06 keeps every row from step
+  02). Counts are now recorded in `validation/snapshot_counts.csv`, and changes
+  against the previous snapshot are reported without stopping.
+
 ## 2026-06-25 completed-only and global row-count rule
 
 - Restricted selected raw-derived imports to completed studies, matching the

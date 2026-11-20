@@ -3,11 +3,11 @@
 Trials that reported results at ClinicalTrials.gov [@clinicaltrials2025].
 
 **Snapshot date:**
-12 August 2025
+20 November 2026
 
 **Data source:**
 This is a set of flat files of studies obtained from the AACT downloads page
-(<https://aact.ctti-clinicaltrials.org/downloads/>; over 2 GB of data for
+(<https://aact.ctti-clinicaltrials.org/snapshots>; over 2 GB of data for
 relevant tables), with relevant columns extracted and joined by us before BEAR
 processing.
 
@@ -51,9 +51,9 @@ The main BEAR dataset keeps studies that (1) are randomised, (2) are interventio
 and (3) have fewer than 20 candidate effect rows (see the description in this section).
 
 The full ClinicalTrials.gov table uses only completed studies but does not apply
-these three restrictions. It contains 151,248 rows from 27,435 studies;
-46.2% are author-reported and 53.8% are derived from raw data. The randomised interventional
-subset used in the main BEAR release contains 60,436 rows from 23,052 studies.
+these three restrictions. It contains 165,571 rows from 30,084 studies. Of these rows,
+46.5% are author-reported and 53.5% are derived from raw data. The randomised interventional
+subset used in the main BEAR release contains 66,642 rows from 25,206 studies.
 
 Note that a single ClinicalTrials.gov
 study can contribute several primary outcome IDs, and each primary outcome can
@@ -77,6 +77,29 @@ reports the number of sides for confidence intervals but not for p-values, so we
 treated p-values as two-sided. We dropped rows only when `z` was missing. Notably,
 infinite z-values can arise when `p_value` is recorded as exactly 0, and these are
 included because they are not missing.
+
+Some author-reported effects and confidence intervals are reported in terms 
+of percentages. We identify these rows by searching `param_type` for values 
+that include `%`, `percent`, or `x 100` and dividing the estimates
+and confidence intervals by 100 before deriving z-values. There are also some values,
+like `Ratio of geometric means`, that have at least some effect rows in percentages;
+future work should include identifying a rule to identify which of these rows are
+problematic. 
+
+The `non_inferiority_type` column records the type of statistical test.
+The registry labels 6.3% of all effect rows as non-inferiority or
+equivalence tests. These tests compare the estimate with a potentially
+non-zero margin, which is sometimes stated in `non_inferiority_description`.
+
+`non_inferiority_type` is often inconsistent with the description; for
+example, many rows typed as equivalence or non-inferiority tests describe
+ordinary difference tests. `non_inferior_type_constructed` therefore
+classifies the test as superiority, non-inferiority, equivalence,
+non-inferiority or equivalence, or unknown from the description where one
+exists (`non_inferior_desc_exists`), and from `non_inferiority_type` otherwise,
+treating superiority and other types without a description as superiority
+tests. `non_inferior_margin` records the margin or threshold stated in the
+description.
 
 
 **Study characteristics:**

@@ -99,7 +99,8 @@ public <- readRDS(data_file)
 
 stopifnot(
   setequal(dictionary$variable, names(public)),
-  all(table(dictionary$variable) == 1)
+  all(table(dictionary$variable) == 1),
+  dictionary$provenance %in% c("Original", "Derived", "Constructed")
 )
 
 dictionary$summary <- vapply(

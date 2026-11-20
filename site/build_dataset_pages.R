@@ -170,12 +170,61 @@ plot_lines <- function(plot_rows) {
   }))
 }
 
+provenance_labels <- c(
+  Original = "Taken from variables in the source data, with minimal changes",
+  Derived = "Calculated from other variables in the data",
+  Constructed = "Built from cleaned or recoded variables in the source data"
+)
+
+provenance_legend <- function() {
+  paste0(
+    "<div class=\"dataset-tag-legend\" aria-label=\"Variable category legend\">",
+    "<div class=\"dataset-tag-legend-title\">Variable Category</div>",
+    "<ul class=\"provenance-legend-items\">",
+    paste0(
+      "<li><span class=\"provenance-dot provenance-",
+      tolower(names(provenance_labels)), "\"></span><strong>",
+      names(provenance_labels), "</strong>: ",
+      html_escape(provenance_labels), "</li>",
+      collapse = ""
+    ),
+    "</ul></div>"
+  )
+}
+
+provenance_dot <- function(x) {
+  paste0(
+    "<span class=\"provenance-dot provenance-", tolower(x),
+    "\" role=\"img\" aria-label=\"", x, "\"></span>"
+  )
+}
+
+# Add a provenance dot to each dictionary row and a legend before the first
+# table. The markdown in doc/datasets stays plain.
+add_provenance <- function(lines, dictionary) {
+  rows <- grepl("^\\| `[^`]+` \\|", lines)
+  variable <- sub("^\\| `([^`]+)` \\|.*$", "\\1", lines[rows])
+  provenance <- dictionary$provenance[match(variable, dictionary$variable)]
+  stopifnot(provenance %in% names(provenance_labels))
+  lines[rows] <- paste0("| ", provenance_dot(provenance), " ",
+                        sub("^\\| ", "", lines[rows]))
+  append(lines, c(provenance_legend(), ""),
+         after = which(grepl("^### ", lines))[1] - 1)
+}
+
 dictionary_lines <- function(source_file) {
   dictionary_source <- file.path(
     dataset_dir,
     paste0(tools::file_path_sans_ext(source_file), "_dictionary.md")
   )
   if (!file.exists(dictionary_source)) return(character())
+  dictionary_csv <- sub("\\.md$", ".csv", dictionary_source)
+  dictionary <- read.csv(dictionary_csv, stringsAsFactors = FALSE)
+  if ("provenance" %in% names(dictionary)) {
+    lines <- readLines(dictionary_source, warn = FALSE)
+    return(c("::: {.dataset-dictionary}", "",
+             add_provenance(lines, dictionary), "", ":::", ""))
+  }
   dictionary_include <- file.path(
     "../../doc/datasets",
     basename(dictionary_source)

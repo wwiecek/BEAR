@@ -459,6 +459,24 @@ body.quarto-dark {
   vertical-align: top;
 }
 .dataset-dictionary code { white-space: normal; }
+.provenance-dot {
+  border-radius: 50%;
+  display: inline-block;
+  height: 0.7rem;
+  margin-right: 0.15rem;
+  vertical-align: baseline;
+  width: 0.7rem;
+}
+.provenance-original { background: #1a9e96; }
+.provenance-derived { background: #e58a1f; }
+.provenance-constructed { background: #7b4fb5; }
+.provenance-legend-items {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.provenance-legend-items li { font-size: 0.9rem; margin-bottom: 0.2rem; }
+.provenance-legend-items .provenance-dot { margin-right: 0.45rem; }
 @media (max-width: 700px) {
   .dataset-dictionary { overflow-x: auto; }
   [data-tooltip]::after,

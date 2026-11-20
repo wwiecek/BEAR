@@ -2,9 +2,9 @@ Instructions in the repository's root `AGENTS.md` also apply here.
 
 ## Running the pipeline on a new snapshot
 
-Follow `LLM_run_pipeline.md` step by step when asked to process a new AACT
-snapshot: preparation, the run, checks against the previous file, the
-non-inferiority review, documentation updates and the report.
+Use the [snapshot runbook](LLM_run_pipeline.md) to run, check and publish a
+new AACT snapshot. Follow the [README](README.md#run-and-check) for the
+command and output paths.
 
 ## Non-inferiority test type and margin
 

@@ -1,10 +1,37 @@
 # Non-inferiority test type and margin: procedure
 
-This document describes how the ClinicalTrials.gov pipeline builds three
-columns of `data/clinicaltrialsgov.rds`, and how to review the descriptions
-the rules cannot settle. Follow it whenever the pipeline reports
-non-inferiority descriptions in the review queue, and whenever the rules
-change.
+## Reviewing the queue
+
+Work from the BEAR root when step 10 reports descriptions to review.
+
+1. Print the queue grouped into near-duplicates with
+   `Rscript process/clinicaltrials.gov/review/ni_print_queue.R`. Groups share
+   their first 70 letters, ignoring case, digits and punctuation. Optional
+   arguments select the first group, last group and maximum text length.
+2. Read the descriptions and follow the
+   [classification conventions](#2-choices-made-in-manual-classification).
+   Check each member when the rule type or margin varies within a group.
+   If many descriptions share a missed pattern, see
+   [Changing the rules](#17-changing-the-rules).
+3. Run `Rscript process/clinicaltrials.gov/review/ni_record_decisions.R decisions.tsv`.
+   Supply a headerless TSV with four columns in order: target, type, margin,
+   note. The target is a group from the last print, a description ID or an
+   ID prefix of at least eight characters. Type takes a full name or
+   S, NI, EQ, NE, U, T or N. Leave the margin blank if absent and give a
+   reason for any non-obvious decision. The script updates the tracked
+   decisions file.
+4. Keep `CTGOV_SNAPSHOT_ZIP` set to the same archive and apply and validate
+   the recorded decisions:
+
+   ```sh
+   Rscript --vanilla process/clinicaltrials.gov/process/10_integrate_manual_review.R
+   Rscript --vanilla process/clinicaltrials.gov/validate/05_validate_final_merge.R
+   ```
+
+   Confirm that the queue is empty and the validation checks pass. Record
+   the number of decisions and any new conventions in the changelog.
+
+## Output fields
 
 - `non_inferior_desc_exists`: whether the analysis has a
   `non_inferiority_description`.
@@ -182,43 +209,9 @@ empty, and margins appear only with a description. It gives the same result
 when rerun.
 
 Decisions are kept even when a snapshot does not use them; a description
-that changes by one character gets a new id and returns to the queue.
+with edited text gets a new ID and is queued if the rules flag it.
 
-### 1.7 Reviewing the queue
-
-When step 10 reports descriptions that need review:
-
-1. Print the queue grouped into near-duplicates:
-   `Rscript process/clinicaltrials.gov/review/ni_print_queue.R [from] [to] [max_chars]`.
-   The queue (`non_inferiority_review_queue.csv`) lists, per description, the
-   review reason, the number of rows, the `non_inferiority_type` values, the
-   rule-based type and margin, and the text. Groups share their first 70
-   letters, ignoring case, digits and punctuation; templated text from one
-   sponsor is common.
-2. Read every description in full, or at least the part around each number.
-   When the members of a group differ in rule type or margin, read each
-   member. Decide the type and margin following section 2.
-3. Record the decisions with
-   `Rscript process/clinicaltrials.gov/review/ni_record_decisions.R decisions.tsv`.
-   The TSV has no header and four columns: target (a group such as `g12` from
-   the last print, a description id, or an id prefix of at least 8
-   characters), type (full name or S, NI, EQ, NE, U, T, N), margin (empty for
-   none) and note (short reason, required for anything not obvious). The
-   script writes rows of `non_inferiority_review.csv` with
-   `description_id`, `reviewed_type`, `reviewed_margin`, `note` and
-   `non_inferiority_description` (the text, so the file stays readable and
-   can be re-keyed), and replaces any earlier decision for the same
-   description.
-4. Do not edit the output data directly; decisions are applied only through
-   step 10.
-5. Rerun step 10 (`process/10_integrate_manual_review.R`) and confirm that
-   the queue is empty and the checks pass.
-6. If many descriptions share a pattern the rules miss, change the rules
-   instead (section 1.8) and review only what remains.
-7. Add a dated entry to the changelog with the number of decisions and any
-   new convention.
-
-### 1.8 Changing the rules
+### 1.7 Changing the rules
 
 The rules in `lib/non_inferiority.R` affect every description, so check each
 change against the previous output:
@@ -240,7 +233,7 @@ change against the previous output:
 5. Update section 1 of this document to match the rules, and rerun steps 07,
    09 and 10 (or the full pipeline).
 
-### 1.9 Decisions file
+### 1.8 Decisions file
 
 | Column | Content |
 |---|---|
@@ -262,10 +255,7 @@ when the text gives it (`margin 1.30 (HR)`, `margin 0.5 (Cohen's d)`).
 Decisions from the first review round use some freer labels (`NI margin 5%`,
 `HR 1.3`, `performance goal ...`); they are valid as stated.
 
-As of 30 October 2026 the file holds 2,032 decisions covering 4,153 rows of
-the 13 October 2026 snapshot: 913 `SUPERIORITY`, 226 `NON_INFERIORITY`, 230
-`EQUIVALENCE`, 2 `NON_INFERIORITY_OR_EQUIVALENCE`, 113 `UNKNOWN`, 37
-`FROM_TYPE` and 511 `NO_SIGNAL`.
+See the [changelog](changelog.md) for counts from past reviews.
 
 ## 2. Choices made in manual classification
 
@@ -409,7 +399,7 @@ restates the margin in another unit, keep the primary one ("non-inferiority
 margin of +1.6 units corresponds to an 8% margin": `margin +1.6 units`). When
 it gives a primary margin and a later, stricter one, keep the primary one
 (`margin 20%` when 20% is primary and 12% secondary). Hierarchical
-descriptions keep all values with their test labels (section 1.9).
+descriptions keep all values with their test labels (section 1.8).
 
 **Sources other than a test criterion.** Precision targets in sample-size
 text ("the 95% CI will stay within ± 45 PRU (non-inferiority margin)") are

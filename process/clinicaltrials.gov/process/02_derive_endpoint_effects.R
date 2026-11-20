@@ -931,6 +931,10 @@ saveRDS(
   file.path(out_dir, "raw_endpoint_effect_pairs.rds")
 )
 saveRDS(raw_endpoint_effects, file.path(out_dir, "raw_endpoint_effects.rds"))
+ctgov_record_counts("02_derive_endpoint_effects", c(
+  raw_endpoint_effect_rows = nrow(raw_endpoint_effects),
+  raw_endpoint_trials = n_distinct(raw_endpoint_effects$nct_id)
+))
 
 write_csv(endpoint_summary, file.path(validation_dir, "endpoint_effects_summary.csv"))
 write_csv(

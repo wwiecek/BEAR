@@ -18,8 +18,9 @@ variable: the path to the pipe-delimited flat-file zip downloaded from AACT,
 for example `data_raw/clinicaltrials.gov/<DDMMYYYY>/<file>.zip`. Scripts read
 tables directly from the zip; it does not need to be unzipped. Any snapshot
 with the same tables and columns can be used without code changes. The
-current files were built from the 13 October 2026 snapshot
-(`13102026/briz20jy4pzxe9cbsvkjw6lki2oa.zip`); earlier releases used the 12
+current files were built from the 20 November 2026 snapshot
+(`20112026/20261120_export_ctgov.zip`). Earlier runs used the 13 October
+2026 snapshot (`13102026/briz20jy4pzxe9cbsvkjw6lki2oa.zip`) and the 12
 August 2025 snapshot (`12082025/a1hlrix83cqvhi5qn0jya3f8mdik.zip`).
 
 `derived/snapshot_stamp.txt` records the snapshot the cached derived files

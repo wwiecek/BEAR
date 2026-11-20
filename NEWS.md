@@ -16,6 +16,7 @@ dataset documentation.
 Dataset-specific updates:
 
 - **ClinicalTrials.gov**
+    - updated to the 20 November 2026 AACT snapshot (165,571 rows from 30,084 trials)
     - data is now much larger by combining author-reported results with effects derived from outcome data
     - estimates reported as percentages (`%`, `percent` or `x 100` in `param_type`) are divided by 100 before deriving z-values
     - added `non_inferiority_type` and `non_inferiority_description`; non-inferiority and equivalence p-values test a margin, not zero

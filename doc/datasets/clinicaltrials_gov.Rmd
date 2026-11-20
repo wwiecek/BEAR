@@ -3,11 +3,11 @@
 Trials that reported results at ClinicalTrials.gov [@clinicaltrials2025].
 
 **Snapshot date:**
-13 October 2026
+20 November 2026
 
 **Data source:**
 This is a set of flat files of studies obtained from the AACT downloads page
-(<https://aact.ctti-clinicaltrials.org/downloads/>; over 2 GB of data for
+(<https://aact.ctti-clinicaltrials.org/snapshots>; over 2 GB of data for
 relevant tables), with relevant columns extracted and joined by us before BEAR
 processing.
 
@@ -51,9 +51,9 @@ The main BEAR dataset keeps studies that (1) are randomised, (2) are interventio
 and (3) have fewer than 20 candidate effect rows (see the description in this section).
 
 The full ClinicalTrials.gov table uses only completed studies but does not apply
-these three restrictions. It contains 164,453 rows from 29,852 studies;
-46.4% are author-reported and 53.6% are derived from raw data. The randomised interventional
-subset used in the main BEAR release contains 66,082 rows from 25,017 studies.
+these three restrictions. It contains 165,571 rows from 30,084 studies. Of these rows,
+46.5% are author-reported and 53.5% are derived from raw data. The randomised interventional
+subset used in the main BEAR release contains 66,642 rows from 25,206 studies.
 
 Note that a single ClinicalTrials.gov
 study can contribute several primary outcome IDs, and each primary outcome can
@@ -86,11 +86,10 @@ like `Ratio of geometric means`, that have at least some effect rows in percenta
 future work should include identifying a rule to identify which of these rows are
 problematic. 
 
-The `non_inferiority_type` column gives the type of statistical test that an 
-author-reported p-value is being tested against. When the `non_inferiority_type` 
-is not `superiority` (6.4% of all effect rows), the p-value tests the estimate 
-relative to the potentially non-zero margin. Information about the margin is
-sometimes included in `non_inferiority_description`.
+The `non_inferiority_type` column records the type of statistical test.
+The registry labels 6.3% of all effect rows as non-inferiority or
+equivalence tests. These tests compare the estimate with a potentially
+non-zero margin, which is sometimes stated in `non_inferiority_description`.
 
 `non_inferiority_type` is often inconsistent with the description; for
 example, many rows typed as equivalence or non-inferiority tests describe

@@ -262,10 +262,10 @@ when the text gives it (`margin 1.30 (HR)`, `margin 0.5 (Cohen's d)`).
 Decisions from the first review round use some freer labels (`NI margin 5%`,
 `HR 1.3`, `performance goal ...`); they are valid as stated.
 
-As of 30 October 2026 the file holds 2,032 decisions covering 4,153 rows of
-the 13 October 2026 snapshot: 913 `SUPERIORITY`, 226 `NON_INFERIORITY`, 230
-`EQUIVALENCE`, 2 `NON_INFERIORITY_OR_EQUIVALENCE`, 113 `UNKNOWN`, 37
-`FROM_TYPE` and 511 `NO_SIGNAL`.
+As of 20 November 2026 the file holds 2,043 decisions covering 4,196 rows of
+the 20 November 2026 snapshot. The decisions comprise 919 `SUPERIORITY`,
+227 `NON_INFERIORITY`, 230 `EQUIVALENCE`, 2 `NON_INFERIORITY_OR_EQUIVALENCE`,
+113 `UNKNOWN`, 37 `FROM_TYPE` and 515 `NO_SIGNAL`.
 
 ## 2. Choices made in manual classification
 

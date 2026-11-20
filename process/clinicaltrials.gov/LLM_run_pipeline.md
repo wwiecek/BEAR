@@ -39,7 +39,7 @@ the maintainer. Work through the steps in order and do not skip the checks.
 ## 1. Prepare
 
 1. **Snapshot.** The maintainer downloads the AACT pipe-delimited flat-file
-   zip from <https://aact.ctti-clinicaltrials.org/downloads/> and saves it as
+   zip from <https://aact.ctti-clinicaltrials.org/snapshots> and saves it as
    `data_raw/clinicaltrials.gov/<DDMMYYYY>/<file>.zip`, where `<DDMMYYYY>` is
    the snapshot date. If it is not there, stop and ask. Do not unzip it.
 2. **Tables.** Check that the zip holds every table the pipeline reads:
